@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsBusinessInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsBusinessInfo">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="BUSINESS_NUM" jdbcType="VARCHAR" property="businessNum" />
+		<result column="CHANNEL_ID" jdbcType="DECIMAL" property="channelId" />
+		<result column="BUSINESS_NAME" jdbcType="VARCHAR" property="businessName" />
+		<result column="TYPE" jdbcType="VARCHAR" property="type" />
+		<result column="TIME" jdbcType="VARCHAR" property="time" />
+		<result column="STATE" jdbcType="VARCHAR" property="state" />
+		<result column="KUAIYI_ID" jdbcType="VARCHAR" property="kuaiyiId" />
+		<result column="POS_ID" jdbcType="VARCHAR" property="posId" />
+		<result column="TOTAL_SUM" jdbcType="DECIMAL" property="totalSum" />
+		<result column="FAILURES" jdbcType="DECIMAL" property="failures" />
+		<result column="MONEY_START" jdbcType="DECIMAL" property="moneyStart" />
+		<result column="MONEY_END" jdbcType="DECIMAL" property="moneyEnd" />
+		<result column="PREMIUMERATE" jdbcType="VARCHAR" property="premiumerate" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, BUSINESS_NUM, CHANNEL_ID, BUSINESS_NAME, TYPE, TIME, STATE,
+		KUAIYI_ID, POS_ID,
+		TOTAL_SUM, FAILURES, MONEY_START, MONEY_END, PREMIUMERATE
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_BUSINESS_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<select id="selectByPrimaryKeyBusinessNum" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_BUSINESS_INFO
+		where BUSINESS_NUM = #{businessNum,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_BUSINESS_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsBusinessInfo">
+		insert into PMS_BUSINESS_INFO (ID, BUSINESS_NUM, CHANNEL_ID,
+		BUSINESS_NAME, TYPE, TIME,
+		STATE, KUAIYI_ID, POS_ID,
+		TOTAL_SUM, FAILURES, MONEY_START,
+		MONEY_END, PREMIUMERATE)
+		values (#{id,jdbcType=DECIMAL}, #{businessNum,jdbcType=VARCHAR},
+		#{channelId,jdbcType=DECIMAL},
+		#{businessName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR},
+		#{state,jdbcType=VARCHAR}, #{kuaiyiId,jdbcType=VARCHAR},
+		#{posId,jdbcType=VARCHAR},
+		#{totalSum,jdbcType=DECIMAL}, #{failures,jdbcType=DECIMAL}, #{moneyStart,jdbcType=DECIMAL},
+		#{moneyEnd,jdbcType=DECIMAL}, #{premiumerate,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsBusinessInfo">
+		insert into PMS_BUSINESS_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="businessNum != null">
+				BUSINESS_NUM,
+			</if>
+			<if test="channelId != null">
+				CHANNEL_ID,
+			</if>
+			<if test="businessName != null">
+				BUSINESS_NAME,
+			</if>
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="time != null">
+				TIME,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="kuaiyiId != null">
+				KUAIYI_ID,
+			</if>
+			<if test="posId != null">
+				POS_ID,
+			</if>
+			<if test="totalSum != null">
+				TOTAL_SUM,
+			</if>
+			<if test="failures != null">
+				FAILURES,
+			</if>
+			<if test="moneyStart != null">
+				MONEY_START,
+			</if>
+			<if test="moneyEnd != null">
+				MONEY_END,
+			</if>
+			<if test="premiumerate != null">
+				PREMIUMERATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="businessNum != null">
+				#{businessNum,jdbcType=VARCHAR},
+			</if>
+			<if test="channelId != null">
+				#{channelId,jdbcType=DECIMAL},
+			</if>
+			<if test="businessName != null">
+				#{businessName,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				#{time,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=VARCHAR},
+			</if>
+			<if test="kuaiyiId != null">
+				#{kuaiyiId,jdbcType=VARCHAR},
+			</if>
+			<if test="posId != null">
+				#{posId,jdbcType=VARCHAR},
+			</if>
+			<if test="totalSum != null">
+				#{totalSum,jdbcType=DECIMAL},
+			</if>
+			<if test="failures != null">
+				#{failures,jdbcType=DECIMAL},
+			</if>
+			<if test="moneyStart != null">
+				#{moneyStart,jdbcType=DECIMAL},
+			</if>
+			<if test="moneyEnd != null">
+				#{moneyEnd,jdbcType=DECIMAL},
+			</if>
+			<if test="premiumerate != null">
+				#{premiumerate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsBusinessInfo">
+		update PMS_BUSINESS_INFO
+		<set>
+			<if test="businessNum != null">
+				BUSINESS_NUM = #{businessNum,jdbcType=VARCHAR},
+			</if>
+			<if test="channelId != null">
+				CHANNEL_ID = #{channelId,jdbcType=DECIMAL},
+			</if>
+			<if test="businessName != null">
+				BUSINESS_NAME = #{businessName,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				TYPE = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				TIME = #{time,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="kuaiyiId != null">
+				KUAIYI_ID = #{kuaiyiId,jdbcType=VARCHAR},
+			</if>
+			<if test="posId != null">
+				POS_ID = #{posId,jdbcType=VARCHAR},
+			</if>
+			<if test="totalSum != null">
+				TOTAL_SUM = #{totalSum,jdbcType=DECIMAL},
+			</if>
+			<if test="failures != null">
+				FAILURES = #{failures,jdbcType=DECIMAL},
+			</if>
+			<if test="moneyStart != null">
+				MONEY_START = #{moneyStart,jdbcType=DECIMAL},
+			</if>
+			<if test="moneyEnd != null">
+				MONEY_END = #{moneyEnd,jdbcType=DECIMAL},
+			</if>
+			<if test="premiumerate != null">
+				PREMIUMERATE = #{premiumerate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsBusinessInfo">
+		update PMS_BUSINESS_INFO
+		set BUSINESS_NUM = #{businessNum,jdbcType=VARCHAR},
+		CHANNEL_ID = #{channelId,jdbcType=DECIMAL},
+		BUSINESS_NAME = #{businessName,jdbcType=VARCHAR},
+		TYPE = #{type,jdbcType=VARCHAR},
+		TIME = #{time,jdbcType=VARCHAR},
+		STATE = #{state,jdbcType=VARCHAR},
+		KUAIYI_ID = #{kuaiyiId,jdbcType=VARCHAR},
+		POS_ID = #{posId,jdbcType=VARCHAR},
+		TOTAL_SUM = #{totalSum,jdbcType=DECIMAL},
+		FAILURES = #{failures,jdbcType=DECIMAL},
+		MONEY_START = #{moneyStart,jdbcType=DECIMAL},
+		MONEY_END = #{moneyEnd,jdbcType=DECIMAL},
+		PREMIUMERATE = #{premiumerate,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 根据证件类型查询记录 -->
+	<select id="selectList" parameterType="xdt.model.PmsDictionary"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_BUSINESS_INFO
+		<where>
+			<if test="businessNum != null">
+				AND BUSINESS_NUM = #{businessNum,jdbcType=VARCHAR}
+			</if>
+			<if test="channelId != null">
+				AND CHANNEL_ID = #{channelId,jdbcType=DECIMAL}
+			</if>
+			<if test="businessName != null">
+				AND BUSINESS_NAME = #{businessName,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+				AND TYPE = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test="time != null">
+				AND TIME = #{time,jdbcType=VARCHAR}
+			</if>
+			<if test="state != null">
+				AND STATE = #{state,jdbcType=VARCHAR}
+			</if>
+			<if test="kuaiyiId != null">
+				AND KUAIYI_ID = #{kuaiyiId,jdbcType=VARCHAR}
+			</if>
+			<if test="posId != null">
+				AND POS_ID = #{posId,jdbcType=VARCHAR}
+			</if>
+			<if test="totalSum != null">
+				AND TOTAL_SUM = #{totalSum,jdbcType=DECIMAL}
+			</if>
+			<if test="failures != null">
+				AND FAILURES = #{failures,jdbcType=DECIMAL}
+			</if>
+			<if test="moneyStart != null">
+				AND MONEY_START = #{moneyStart,jdbcType=DECIMAL}
+			</if>
+			<if test="moneyEnd != null">
+				AND MONEY_END = #{moneyEnd,jdbcType=DECIMAL}
+			</if>
+			<if test="premiumerate != null">
+				AND PREMIUMERATE = #{premiumerate,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+</mapper>

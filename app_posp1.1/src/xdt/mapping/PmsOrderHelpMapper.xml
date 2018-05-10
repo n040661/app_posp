@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsOrderHelpMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsOrderHelp">
+		<id column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+		<result column="BUYER_MESSAGE" property="buyerMessage"
+			jdbcType="VARCHAR" />
+		<result column="RECEIVE_TYPE" property="receiveType" jdbcType="VARCHAR" />
+		<result column="ADDRESS_ID" property="addressId" jdbcType="VARCHAR" />
+		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ORDER_NO, BUYER_MESSAGE, RECEIVE_TYPE, ADDRESS_ID, ADDRESS
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_ORDER_HELP
+		where ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from PMS_ORDER_HELP
+		where ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsOrderHelp">
+		insert into PMS_ORDER_HELP (ORDER_NO, BUYER_MESSAGE, RECEIVE_TYPE,
+		ADDRESS_ID, ADDRESS)
+		values (#{orderNo,jdbcType=VARCHAR}, #{buyerMessage,jdbcType=VARCHAR},
+		#{receiveType,jdbcType=VARCHAR},
+		#{addressId,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsOrderHelp">
+		insert into PMS_ORDER_HELP
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderNo != null">
+				ORDER_NO,
+			</if>
+			<if test="buyerMessage != null">
+				BUYER_MESSAGE,
+			</if>
+			<if test="receiveType != null">
+				RECEIVE_TYPE,
+			</if>
+			<if test="addressId != null">
+				ADDRESS_ID,
+			</if>
+			<if test="address != null">
+				ADDRESS,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="buyerMessage != null">
+				#{buyerMessage,jdbcType=VARCHAR},
+			</if>
+			<if test="receiveType != null">
+				#{receiveType,jdbcType=VARCHAR},
+			</if>
+			<if test="addressId != null">
+				#{addressId,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsOrderHelp">
+		update PMS_ORDER_HELP
+		<set>
+			<if test="buyerMessage != null">
+				BUYER_MESSAGE = #{buyerMessage,jdbcType=VARCHAR},
+			</if>
+			<if test="receiveType != null">
+				RECEIVE_TYPE = #{receiveType,jdbcType=VARCHAR},
+			</if>
+			<if test="addressId != null">
+				ADDRESS_ID = #{addressId,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				ADDRESS = #{address,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsOrderHelp">
+		update PMS_ORDER_HELP
+		set BUYER_MESSAGE = #{buyerMessage,jdbcType=VARCHAR},
+		RECEIVE_TYPE = #{receiveType,jdbcType=VARCHAR},
+		ADDRESS_ID = #{addressId,jdbcType=VARCHAR},
+		ADDRESS = #{address,jdbcType=VARCHAR}
+		where ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+	</update>
+</mapper>

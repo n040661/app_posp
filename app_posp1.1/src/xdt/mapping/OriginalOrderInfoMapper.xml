@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.OriginalOrderInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.OriginalOrderInfo">
+		<id column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+		<result column="MERCHANT_ORDER_ID" property="merchantOrderId"
+			jdbcType="VARCHAR" />
+		<result column="PID" property="pid" jdbcType="VARCHAR" />
+		<result column="ORDER_TIME" property="orderTime" jdbcType="VARCHAR" />
+		<result column="ORDER_AMOUNT" property="orderAmount" jdbcType="VARCHAR" />
+		<result column="PAY_TYPE" property="payType" jdbcType="VARCHAR" />
+		<result column="BANK_ID" property="bankId" jdbcType="VARCHAR" />
+		<result column="PROCDUT_NAME" property="procdutName" jdbcType="VARCHAR" />
+		<result column="PROCDUT_NUM" property="procdutNum" jdbcType="VARCHAR" />
+		<result column="PROCDUT_DESC" property="procdutDesc" jdbcType="VARCHAR" />
+		<result column="PAGE_URL" property="pageUrl" jdbcType="VARCHAR" />
+		<result column="BG_URL" property="bgUrl" jdbcType="VARCHAR" />
+		<result column="BANK_NO" property="bankNo" jdbcType="VARCHAR" />
+		<result column="BY_USER" property="byUser" jdbcType="VARCHAR" />
+		<result column="URL" property="url" jdbcType="VARCHAR" />
+		<result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+		<result column="BANK_TYPE" property="bankType" jdbcType="VARCHAR" />
+		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
+		<result column="CVN2" property="cvn2" jdbcType="VARCHAR" />
+		<result column="EXPIRED" property="expired" jdbcType="VARCHAR" />
+		<result column="ATTACH" property="attach" jdbcType="VARCHAR" />
+		<result column="CERT_NO" property="certNo" jdbcType="VARCHAR" />
+		<result column="SUMCODE" property="sumCode" jdbcType="VARCHAR" />
+		<result column="SETTLECARDNO" property="settleCardNo" jdbcType="VARCHAR" />
+		<result column="SETTLEUSERNAME" property="settleUserName"
+			jdbcType="VARCHAR" />
+		<result column="SETTLEPMSBANKNO" property="settlePmsBankNo"
+			jdbcType="VARCHAR" />
+		<result column="USERFEE" property="userFee" jdbcType="VARCHAR" />
+		<result column="SETTLEUSERFEE" property="settleUserFee"
+			jdbcType="VARCHAR" />
+		<result column="USERID" property="userId" jdbcType="VARCHAR" />
+		<result column="VERIFYID" property="verifyId" jdbcType="VARCHAR" />
+			
+	</resultMap>
+	<sql id="Base_Column_List">
+		MERCHANT_ORDER_ID, ORDER_ID, PID, ORDER_TIME, ORDER_AMOUNT,
+		PAY_TYPE, BANK_ID,
+		PROCDUT_NAME,
+		PROCDUT_NUM, PROCDUT_DESC, PAGE_URL,
+		BG_URL,BANK_NO,BY_USER,URL,REAL_NAME,BANK_TYPE,PHONE,CVN2,EXPIRED,ATTACH,CERT_NO,SUMCODE,SETTLECARDNO,SETTLEUSERNAME,SETTLEPMSBANKNO,USERFEE,SETTLEUSERFEE
+	</sql>
+	<!-- 查询主键对象记录 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from ORIGINAL_ORDER_INFO
+		where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+	</select>
+	<!-- 根据平台订单id 查询原始订单 -->
+	<select id="getOriginalOrderInfoByOrderid" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from ORIGINAL_ORDER_INFO
+		where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+	</select>
+	<!-- 根据商户订单id 查询原始订单 -->
+	<select id="getOriginalOrderInfoByMerchanOrderId" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from ORIGINAL_ORDER_INFO
+		where MERCHANT_ORDER_ID =
+		#{merchantOrderId,jdbcType=VARCHAR}
+	</select>
+	<!-- 畅捷查询语句 -->
+	<select id="selectByCjtOriginal" parameterType="xdt.model.OriginalOrderInfo"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ORIGINAL_ORDER_INFO
+		where MERCHANT_ORDER_ID =
+		#{merchantOrderId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByOriginal" parameterType="xdt.model.OriginalOrderInfo"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ORIGINAL_ORDER_INFO
+		where MERCHANT_ORDER_ID =
+		#{merchantOrderId,jdbcType=VARCHAR}
+		AND PID=#{pid,jdbcType=VARCHAR}
+	</select>
+
+
+	<!-- 删除主键对应记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		ORIGINAL_ORDER_INFO
+		where MERCHANT_ORDER_ID =
+		#{merchantOrderId,jdbcType=VARCHAR}
+	</delete>
+	<!-- 插入原始记录数据 -->
+	<insert id="insert" parameterType="xdt.model.OriginalOrderInfo">
+		insert into
+		ORIGINAL_ORDER_INFO (ORDER_ID, MERCHANT_ORDER_ID, PID,
+		ORDER_TIME,
+		ORDER_AMOUNT, PAY_TYPE,
+		BANK_ID, PROCDUT_NAME, PROCDUT_NUM,
+		PROCDUT_DESC, " PAGE_URL", BG_URL
+		)
+		values (#{orderId,jdbcType=VARCHAR},
+		#{merchantOrderId,jdbcType=VARCHAR},
+		#{pid,jdbcType=VARCHAR},
+		#{orderTime,jdbcType=VARCHAR}, #{orderAmount,jdbcType=VARCHAR},
+		#{payType,jdbcType=VARCHAR},
+		#{bankId,jdbcType=VARCHAR},
+		#{procdutName,jdbcType=VARCHAR},
+		#{procdutNum,jdbcType=VARCHAR},
+		#{procdutDesc,jdbcType=VARCHAR}, #{pageUrl,jdbcType=VARCHAR},
+		#{bgUrl,jdbcType=VARCHAR}
+		)
+	</insert>
+	<!-- 动态插入原始记录数据 -->
+	<insert id="insertSelective" parameterType="xdt.model.OriginalOrderInfo">
+		insert into ORIGINAL_ORDER_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				ORDER_ID,
+			</if>
+			<if test="merchantOrderId != null">
+				MERCHANT_ORDER_ID,
+			</if>
+			<if test="pid != null">
+				PID,
+			</if>
+			<if test="orderTime != null">
+				ORDER_TIME,
+			</if>
+			<if test="orderAmount != null">
+				ORDER_AMOUNT,
+			</if>
+			<if test="payType != null">
+				PAY_TYPE,
+			</if>
+			<if test="bankId != null">
+				BANK_ID,
+			</if>
+			<if test="procdutName != null">
+				PROCDUT_NAME,
+			</if>
+			<if test="procdutNum != null">
+				PROCDUT_NUM,
+			</if>
+			<if test="procdutDesc != null">
+				PROCDUT_DESC,
+			</if>
+			<if test="pageUrl != null">
+				PAGE_URL,
+			</if>
+			<if test="bgUrl != null">
+				BG_URL,
+			</if>
+			<if test="bankNo != null">
+				BANK_NO,
+			</if>
+			<if test="byUser != null">
+				BY_USER,
+			</if>
+			<if test="url != null">
+				URL,
+			</if>
+			<if test="realName != null">
+				REAL_NAME,
+			</if>
+			<if test="bankType != null">
+				BANK_TYPE,
+			</if>
+			<if test="phone != null">
+				PHONE,
+			</if>
+			<if test="cvn2 != null">
+				CVN2,
+			</if>
+			<if test="expired != null">
+				EXPIRED,
+			</if>
+			<if test="attach != null">
+				ATTACH,
+			</if>
+			<if test="certNo != null">
+				CERT_NO,
+			</if>
+			<if test="settleCardNo != null">
+				SETTLECARDNO,
+			</if>
+			<if test="settleUserName != null">
+				SETTLEUSERNAME,
+			</if>
+			<if test="settlePmsBankNo != null">
+				SETTLEPMSBANKNO,
+			</if>
+			<if test="userFee != null">
+				USERFEE,
+			</if>
+			<if test="settleUserFee != null">
+				SETTLEUSERFEE,
+			</if>
+			<if test="userId != null">
+				userId,
+			</if>
+			<if test="verifyId != null">
+				verifyId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				#{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantOrderId != null">
+				#{merchantOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="orderTime != null">
+				#{orderTime,jdbcType=VARCHAR},
+			</if>
+			<if test="orderAmount != null">
+				#{orderAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="payType != null">
+				#{payType,jdbcType=VARCHAR},
+			</if>
+			<if test="bankId != null">
+				#{bankId,jdbcType=VARCHAR},
+			</if>
+			<if test="procdutName != null">
+				#{procdutName,jdbcType=VARCHAR},
+			</if>
+			<if test="procdutNum != null">
+				#{procdutNum,jdbcType=VARCHAR},
+			</if>
+			<if test="procdutDesc != null">
+				#{procdutDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="pageUrl != null">
+				#{pageUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="bgUrl != null">
+				#{bgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="bankNo != null">
+				#{bankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="byUser != null">
+				#{byUser,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="realName != null">
+				#{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankType != null">
+				#{bankType,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="cvn2 != null">
+				#{cvn2,jdbcType=VARCHAR},
+			</if>
+			<if test="expired != null">
+				#{expired,jdbcType=VARCHAR},
+			</if>
+			<if test="attach != null">
+				#{attach,jdbcType=VARCHAR},
+			</if>
+			<if test="certNo != null">
+				#{certNo,jdbcType=VARCHAR},
+			</if>
+			<if test="settleCardNo != null">
+				#{settleCardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="settleUserName != null">
+				#{settleUserName,jdbcType=VARCHAR},
+			</if>
+			<if test="settlePmsBankNo != null">
+				#{settlePmsBankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="userFee != null">
+				#{userFee,jdbcType=VARCHAR},
+			</if>
+			<if test="settleUserFee != null">
+				#{settleUserFee,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="verifyId != null">
+				#{verifyId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<!-- 动态修改原始记录数据 -->
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.OriginalOrderInfo">
+		update ORIGINAL_ORDER_INFO
+		<set>
+			<if test="merchantOrderId != null">
+				MERCHANT_ORDER_ID = #{merchantOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="pid != null">
+				PID = #{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="orderTime != null">
+				ORDER_TIME = #{orderTime,jdbcType=VARCHAR},
+			</if>
+			<if test="orderAmount != null">
+				ORDER_AMOUNT = #{orderAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="payType != null">
+				PAY_TYPE = #{payType,jdbcType=VARCHAR},
+			</if>
+			<if test="bankId != null">
+				BANK_ID = #{bankId,jdbcType=VARCHAR},
+			</if>
+			<if test="procdutName != null">
+				PROCDUT_NAME = #{procdutName,jdbcType=VARCHAR},
+			</if>
+			<if test="procdutNum != null">
+				PROCDUT_NUM = #{procdutNum,jdbcType=VARCHAR},
+			</if>
+			<if test="procdutDesc != null">
+				PROCDUT_DESC = #{procdutDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="pageUrl != null">
+				PAGE_URL= #{pageUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="bgUrl != null">
+				BG_URL = #{bgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="byUser != null">
+				BY_USER = #{byUser,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				URL = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="sumCode != null">
+				SUMCODE = #{sumCode,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+	</update>
+	<!-- 全字段修改原始记录数据 -->
+	<update id="updateByPrimaryKey" parameterType="xdt.model.OriginalOrderInfo">
+		update
+		ORIGINAL_ORDER_INFO
+		set MERCHANT_ORDER_ID =
+		#{merchantOrderId,jdbcType=VARCHAR},
+		PID = #{pid,jdbcType=VARCHAR},
+		ORDER_TIME = #{orderTime,jdbcType=VARCHAR},
+		ORDER_AMOUNT =
+		#{orderAmount,jdbcType=VARCHAR},
+		PAY_TYPE =
+		#{payType,jdbcType=VARCHAR},
+		BANK_ID = #{bankId,jdbcType=VARCHAR},
+		PROCDUT_NAME = #{procdutName,jdbcType=VARCHAR},
+		PROCDUT_NUM =
+		#{procdutNum,jdbcType=VARCHAR},
+		PROCDUT_DESC =
+		#{procdutDesc,jdbcType=VARCHAR},
+		" PAGE_URL" =
+		#{pageUrl,jdbcType=VARCHAR},
+		BG_URL = #{bgUrl,jdbcType=VARCHAR},
+		BY_USER = #{byUser,jdbcType=VARCHAR},
+		URL = #{url,jdbcType=VARCHAR}
+		where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+	</update>
+</mapper>

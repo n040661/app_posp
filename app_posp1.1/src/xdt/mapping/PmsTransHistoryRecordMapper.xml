@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsTransHistoryRecordMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsTransHistoryRecord">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="MERCID" property="mercid" jdbcType="VARCHAR" />
+		<result column="BUSINESSNUMBER" property="businessnumber"
+			jdbcType="DECIMAL" />
+		<result column="BUSINESSNAME" property="businessname" jdbcType="VARCHAR" />
+		<result column="BANKCARDNUMBER" property="bankcardnumber"
+			jdbcType="VARCHAR" />
+		<result column="BANKID" property="bankid" jdbcType="VARCHAR" />
+		<result column="BANKNAME" property="bankname" jdbcType="VARCHAR" />
+		<result column="OPENINGNAME" property="openingname" jdbcType="VARCHAR" />
+		<result column="BANKCARDNAME" property="bankcardname" jdbcType="VARCHAR" />
+		<result column="SHORTBANKCARDNAME" property="shortbankcardname"
+			jdbcType="VARCHAR" />
+		<result column="CARDHOLDERNAME" property="cardholdername"
+			jdbcType="VARCHAR" />
+		<result column="MOBILEPHONE" property="mobilephone" jdbcType="VARCHAR" />
+		<result column="SHORTBANKCARDNUMBER" property="shortbankcardnumber"
+			jdbcType="VARCHAR" />
+		<result column="PROVINCEID" property="provinceid" jdbcType="VARCHAR" />
+		<result column="CITYID" property="cityid" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+		<result column="FILED2" property="filed2" jdbcType="VARCHAR" />
+		<result column="FILED3" property="filed3" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, MERCID, BUSINESSNUMBER, BUSINESSNAME, BANKCARDNUMBER, BANKID,
+		BANKNAME, OPENINGNAME,
+		BANKCARDNAME, SHORTBANKCARDNAME, CARDHOLDERNAME, MOBILEPHONE, SHORTBANKCARDNUMBER,
+		PROVINCEID, CITYID, CREATETIME, STATE, OAGENTNO, FILED2, FILED3
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_TRANS_HISTORY_RECORD
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_TRANS_HISTORY_RECORD
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsTransHistoryRecord">
+		insert into PMS_TRANS_HISTORY_RECORD (ID, MERCID, BUSINESSNUMBER,
+		BUSINESSNAME, BANKCARDNUMBER, BANKID,
+		BANKNAME, OPENINGNAME, BANKCARDNAME,
+		SHORTBANKCARDNAME, CARDHOLDERNAME, MOBILEPHONE,
+		SHORTBANKCARDNUMBER, PROVINCEID, CITYID,
+		CREATETIME, STATE, OAGENTNO,
+		FILED2, FILED3)
+		values (#{id,jdbcType=DECIMAL}, #{mercid,jdbcType=VARCHAR},
+		#{businessnumber,jdbcType=DECIMAL},
+		#{businessname,jdbcType=VARCHAR}, #{bankcardnumber,jdbcType=VARCHAR}, #{bankid,jdbcType=VARCHAR},
+		#{bankname,jdbcType=VARCHAR}, #{openingname,jdbcType=VARCHAR},
+		#{bankcardname,jdbcType=VARCHAR},
+		#{shortbankcardname,jdbcType=VARCHAR},
+		#{cardholdername,jdbcType=VARCHAR}, #{mobilephone,jdbcType=VARCHAR},
+		#{shortbankcardnumber,jdbcType=VARCHAR},
+		#{provinceid,jdbcType=VARCHAR}, #{cityid,jdbcType=VARCHAR},
+		#{createtime,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR},
+		#{oAgentNo,jdbcType=VARCHAR},
+		#{filed2,jdbcType=VARCHAR}, #{filed3,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsTransHistoryRecord">
+		insert into PMS_TRANS_HISTORY_RECORD
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="mercid != null">
+				MERCID,
+			</if>
+			<if test="businessnumber != null">
+				BUSINESSNUMBER,
+			</if>
+			<if test="businessname != null">
+				BUSINESSNAME,
+			</if>
+			<if test="bankcardnumber != null">
+				BANKCARDNUMBER,
+			</if>
+			<if test="bankid != null">
+				BANKID,
+			</if>
+			<if test="bankname != null">
+				BANKNAME,
+			</if>
+			<if test="openingname != null">
+				OPENINGNAME,
+			</if>
+			<if test="bankcardname != null">
+				BANKCARDNAME,
+			</if>
+			<if test="shortbankcardname != null">
+				SHORTBANKCARDNAME,
+			</if>
+			<if test="cardholdername != null">
+				CARDHOLDERNAME,
+			</if>
+			<if test="mobilephone != null">
+				MOBILEPHONE,
+			</if>
+			<if test="shortbankcardnumber != null">
+				SHORTBANKCARDNUMBER,
+			</if>
+			<if test="provinceid != null">
+				PROVINCEID,
+			</if>
+			<if test="cityid != null">
+				CITYID,
+			</if>
+			<if test="createtime != null">
+				CREATETIME,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+			<if test="filed2 != null">
+				FILED2,
+			</if>
+			<if test="filed3 != null">
+				FILED3,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="mercid != null">
+				#{mercid,jdbcType=VARCHAR},
+			</if>
+			<if test="businessnumber != null">
+				#{businessnumber,jdbcType=DECIMAL},
+			</if>
+			<if test="businessname != null">
+				#{businessname,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcardnumber != null">
+				#{bankcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="bankid != null">
+				#{bankid,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				#{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="openingname != null">
+				#{openingname,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcardname != null">
+				#{bankcardname,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardname != null">
+				#{shortbankcardname,jdbcType=VARCHAR},
+			</if>
+			<if test="cardholdername != null">
+				#{cardholdername,jdbcType=VARCHAR},
+			</if>
+			<if test="mobilephone != null">
+				#{mobilephone,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardnumber != null">
+				#{shortbankcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="provinceid != null">
+				#{provinceid,jdbcType=VARCHAR},
+			</if>
+			<if test="cityid != null">
+				#{cityid,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="filed2 != null">
+				#{filed2,jdbcType=VARCHAR},
+			</if>
+			<if test="filed3 != null">
+				#{filed3,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsTransHistoryRecord">
+		update PMS_TRANS_HISTORY_RECORD
+		<set>
+			<if test="mercid != null">
+				MERCID = #{mercid,jdbcType=VARCHAR},
+			</if>
+			<if test="businessnumber != null">
+				BUSINESSNUMBER = #{businessnumber,jdbcType=DECIMAL},
+			</if>
+			<if test="businessname != null">
+				BUSINESSNAME = #{businessname,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcardnumber != null">
+				BANKCARDNUMBER = #{bankcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="bankid != null">
+				BANKID = #{bankid,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				BANKNAME = #{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="openingname != null">
+				OPENINGNAME = #{openingname,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcardname != null">
+				BANKCARDNAME = #{bankcardname,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardname != null">
+				SHORTBANKCARDNAME = #{shortbankcardname,jdbcType=VARCHAR},
+			</if>
+			<if test="cardholdername != null">
+				CARDHOLDERNAME = #{cardholdername,jdbcType=VARCHAR},
+			</if>
+			<if test="mobilephone != null">
+				MOBILEPHONE = #{mobilephone,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardnumber != null">
+				SHORTBANKCARDNUMBER = #{shortbankcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="provinceid != null">
+				PROVINCEID = #{provinceid,jdbcType=VARCHAR},
+			</if>
+			<if test="cityid != null">
+				CITYID = #{cityid,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				CREATETIME = #{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="filed2 != null">
+				FILED2 = #{filed2,jdbcType=VARCHAR},
+			</if>
+			<if test="filed3 != null">
+				FILED3 = #{filed3,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsTransHistoryRecord">
+		update PMS_TRANS_HISTORY_RECORD
+		set MERCID = #{mercid,jdbcType=VARCHAR},
+		BUSINESSNUMBER = #{businessnumber,jdbcType=DECIMAL},
+		BUSINESSNAME = #{businessname,jdbcType=VARCHAR},
+		BANKCARDNUMBER = #{bankcardnumber,jdbcType=VARCHAR},
+		BANKID = #{bankid,jdbcType=VARCHAR},
+		BANKNAME = #{bankname,jdbcType=VARCHAR},
+		OPENINGNAME = #{openingname,jdbcType=VARCHAR},
+		BANKCARDNAME = #{bankcardname,jdbcType=VARCHAR},
+		SHORTBANKCARDNAME = #{shortbankcardname,jdbcType=VARCHAR},
+		CARDHOLDERNAME = #{cardholdername,jdbcType=VARCHAR},
+		MOBILEPHONE = #{mobilephone,jdbcType=VARCHAR},
+		SHORTBANKCARDNUMBER = #{shortbankcardnumber,jdbcType=VARCHAR},
+		PROVINCEID = #{provinceid,jdbcType=VARCHAR},
+		CITYID = #{cityid,jdbcType=VARCHAR},
+		CREATETIME = #{createtime,jdbcType=VARCHAR},
+		STATE = #{state,jdbcType=VARCHAR},
+		OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+		FILED2 = #{filed2,jdbcType=VARCHAR},
+		FILED3 = #{filed3,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<!-- 根据商户ID与银行卡号判断是否已绑定此银行卡 -->
+	<select id="selectCardInfo" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM PMS_TRANS_HISTORY_RECORD t where
+		t.MERCID=#{mercId,jdbcType=VARCHAR} and t.BANKCARDNUMBER =
+		#{bankCardNumber,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 检索交易记录历史 -->
+	<select id="selectCardListByMercId" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_TRANS_HISTORY_RECORD t where t.MERCID = #{mercId}
+		<if test="businessCode != null and businessCode != '' ">
+			and t.BUSINESSNUMBER = #{businessCode}
+		</if>
+		order by t.id desc
+
+	</select>
+</mapper>

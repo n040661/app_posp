@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsUnionpayMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsUnionpay">
+		<id column="MERC_ID" property="mercId" jdbcType="VARCHAR" />
+		<result column="MERCHANT_CODE" property="merchantCode"
+			jdbcType="VARCHAR" />
+		<result column="MERCHANT_NAME" property="merchantName"
+			jdbcType="VARCHAR" />
+		<result column="POS_TERMINAL_ID" property="posTerminalId"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		MERC_ID, MERCHANT_CODE, MERCHANT_NAME, POS_TERMINAL_ID
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_UNIONPAY
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from PMS_UNIONPAY
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsUnionpay">
+		insert into PMS_UNIONPAY (MERC_ID, MERCHANT_CODE, MERCHANT_NAME,
+		POS_TERMINAL_ID)
+		values (#{mercId,jdbcType=VARCHAR}, #{merchantCode,jdbcType=VARCHAR},
+		#{merchantName,jdbcType=VARCHAR},
+		#{posTerminalId,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsUnionpay">
+		insert into PMS_UNIONPAY
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="merchantCode != null">
+				MERCHANT_CODE,
+			</if>
+			<if test="merchantName != null">
+				MERCHANT_NAME,
+			</if>
+			<if test="posTerminalId != null">
+				POS_TERMINAL_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantCode != null">
+				#{merchantCode,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantName != null">
+				#{merchantName,jdbcType=VARCHAR},
+			</if>
+			<if test="posTerminalId != null">
+				#{posTerminalId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsUnionpay">
+		update PMS_UNIONPAY
+		<set>
+			<if test="merchantCode != null">
+				MERCHANT_CODE = #{merchantCode,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantName != null">
+				MERCHANT_NAME = #{merchantName,jdbcType=VARCHAR},
+			</if>
+			<if test="posTerminalId != null">
+				POS_TERMINAL_ID = #{posTerminalId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsUnionpay">
+		update PMS_UNIONPAY
+		set MERCHANT_CODE = #{merchantCode,jdbcType=VARCHAR},
+		MERCHANT_NAME = #{merchantName,jdbcType=VARCHAR},
+		POS_TERMINAL_ID = #{posTerminalId,jdbcType=VARCHAR}
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+	</update>
+</mapper>

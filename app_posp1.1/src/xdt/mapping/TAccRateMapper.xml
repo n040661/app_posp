@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.TAccRateMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.TAccRate">
+		<result column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="DEAL_TYPE" property="dealType" jdbcType="VARCHAR" />
+		<result column="DEAL_GRADE" property="dealGrade" jdbcType="VARCHAR" />
+		<result column="RATE" property="rate" jdbcType="VARCHAR" />
+		<result column="RATE_PROMPT" property="ratePrompt" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="insert" parameterType="xdt.model.TAccRate">
+		insert into T_ACC_RATE (ID, DEAL_TYPE, DEAL_GRADE,
+		RATE, RATE_PROMPT)
+		values (#{id,jdbcType=DECIMAL}, #{dealType,jdbcType=VARCHAR},
+		#{dealGrade,jdbcType=VARCHAR},
+		#{rate,jdbcType=VARCHAR}, #{ratePrompt,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.TAccRate">
+		insert into T_ACC_RATE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="dealType != null">
+				DEAL_TYPE,
+			</if>
+			<if test="dealGrade != null">
+				DEAL_GRADE,
+			</if>
+			<if test="rate != null">
+				RATE,
+			</if>
+			<if test="ratePrompt != null">
+				RATE_PROMPT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="dealType != null">
+				#{dealType,jdbcType=VARCHAR},
+			</if>
+			<if test="dealGrade != null">
+				#{dealGrade,jdbcType=VARCHAR},
+			</if>
+			<if test="rate != null">
+				#{rate,jdbcType=VARCHAR},
+			</if>
+			<if test="ratePrompt != null">
+				#{ratePrompt,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<!--查询费率 -->
+	<select id="selectversion" resultMap="BaseResultMap">
+		select ID,DEAL_TYPE, DEAL_GRADE,RATE, RATE_PROMPT from T_ACC_RATE
+	</select>
+
+	<!-- 根据交易类型与等级查询费率 -->
+	<select id="selectRateByTypeGrade" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		select ID,DEAL_TYPE, DEAL_GRADE,RATE, RATE_PROMPT from T_ACC_RATE t where
+		t.DEAL_TYPE = #{type} and t.DEAL_GRADE=#{grade}
+	</select>
+</mapper>

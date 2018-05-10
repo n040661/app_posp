@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.ErrorLogMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.ErrorLog">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="PHONE_NO" property="phoneNo" jdbcType="VARCHAR" />
+		<result column="POSPSN" property="pospsn" jdbcType="VARCHAR" />
+		<result column="ERROR_DATE" property="errorDate" jdbcType="TIMESTAMP" />
+		<result column="ERROR_NO" property="errorNo" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PHONE_NO, POSPSN, ERROR_DATE, ERROR_NO
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from ERROR_LOG
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from ERROR_LOG
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.ErrorLog">
+		insert into ERROR_LOG (ID, PHONE_NO, POSPSN,
+		ERROR_DATE, ERROR_NO)
+		values (#{id,jdbcType=DECIMAL}, #{phoneNo,jdbcType=VARCHAR},
+		#{pospsn,jdbcType=VARCHAR},
+		#{errorDate,jdbcType=TIMESTAMP}, #{errorNo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.ErrorLog">
+		insert into ERROR_LOG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="phoneNo != null">
+				PHONE_NO,
+			</if>
+			<if test="pospsn != null">
+				POSPSN,
+			</if>
+			<if test="errorDate != null">
+				ERROR_DATE,
+			</if>
+			<if test="errorNo != null">
+				ERROR_NO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="phoneNo != null">
+				#{phoneNo,jdbcType=VARCHAR},
+			</if>
+			<if test="pospsn != null">
+				#{pospsn,jdbcType=VARCHAR},
+			</if>
+			<if test="errorDate != null">
+				#{errorDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="errorNo != null">
+				#{errorNo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.ErrorLog">
+		update ERROR_LOG
+		<set>
+			<if test="phoneNo != null">
+				PHONE_NO = #{phoneNo,jdbcType=VARCHAR},
+			</if>
+			<if test="pospsn != null">
+				POSPSN = #{pospsn,jdbcType=VARCHAR},
+			</if>
+			<if test="errorDate != null">
+				ERROR_DATE = #{errorDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="errorNo != null">
+				ERROR_NO = #{errorNo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.ErrorLog">
+		update ERROR_LOG
+		set PHONE_NO = #{phoneNo,jdbcType=VARCHAR},
+		POSPSN = #{pospsn,jdbcType=VARCHAR},
+		ERROR_DATE = #{errorDate,jdbcType=TIMESTAMP},
+		ERROR_NO = #{errorNo,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+</mapper>

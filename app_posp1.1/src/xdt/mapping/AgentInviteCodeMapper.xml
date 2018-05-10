@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.AgentInviteCodeMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.AgentInviteCode">
+		<id column="OAGENTNO" property="oagentno" jdbcType="VARCHAR" />
+		<id column="INVITECODE" property="invitecode" jdbcType="VARCHAR" />
+		<result column="AGENTNO" property="agentno" jdbcType="VARCHAR" />
+		<result column="MERCNUM" property="mercNum" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="BATCHNO" property="batchno" jdbcType="VARCHAR" />
+		<result column="CREATEPEOPLE" property="createpeople" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+		<result column="UPDATETIME" property="updatetime" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		OAGENTNO, INVITECODE, AGENTNO,MERCNUM, STATUS, BATCHNO, CREATEPEOPLE,
+		CREATETIME,UPDATETIME
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="xdt.model.AgentInviteCodePrimaryKey">
+		select
+		<include refid="Base_Column_List" />
+		from AGENT_INVITE_CODE
+		where OAGENTNO = #{oagentno,jdbcType=VARCHAR}
+		and INVITECODE = #{invitecode,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByPrimaryKey2" resultMap="BaseResultMap"
+		parameterType="xdt.model.AgentInviteCodePrimaryKey">
+		select
+		<include refid="Base_Column_List" />
+		from AGENT_INVITE_CODE
+		where OAGENTNO = #{oagentno,jdbcType=VARCHAR}
+		and INVITECODE = #{invitecode,jdbcType=VARCHAR}
+	</select>
+	<insert id="insert" parameterType="xdt.model.AgentInviteCode">
+		insert into AGENT_INVITE_CODE (OAGENTNO, INVITECODE, AGENTNO,MERCNUM,
+		STATUS, BATCHNO, CREATEPEOPLE,
+		CREATETIME,UPDATETIME)
+		values (#{oagentno,jdbcType=VARCHAR}, #{invitecode,jdbcType=VARCHAR},
+		#{agentno,jdbcType=VARCHAR},#{mercNum,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR}, #{batchno,jdbcType=VARCHAR},
+		#{createpeople,jdbcType=VARCHAR},
+		#{createtime,jdbcType=VARCHAR},#{updatetime,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.AgentInviteCode">
+		insert into AGENT_INVITE_CODE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="oagentno != null">
+				OAGENTNO,
+			</if>
+			<if test="invitecode != null">
+				INVITECODE,
+			</if>
+			<if test="agentno != null">
+				AGENTNO,
+			</if>
+			<if test="mercNum != null">
+				MERCNUM,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="batchno != null">
+				BATCHNO,
+			</if>
+			<if test="createpeople != null">
+				CREATEPEOPLE,
+			</if>
+			<if test="createtime != null">
+				CREATETIME,
+			</if>
+			<if test="updatetime != null">
+				UPDATETIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="oagentno != null">
+				#{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="invitecode != null">
+				#{invitecode,jdbcType=VARCHAR},
+			</if>
+			<if test="agentno != null">
+				#{agentno,jdbcType=VARCHAR},
+			</if>
+			<if test="mercNum != null">
+				#{mercNum,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="batchno != null">
+				#{batchno,jdbcType=VARCHAR},
+			</if>
+			<if test="createpeople != null">
+				#{createpeople,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.AgentInviteCode">
+		update AGENT_INVITE_CODE
+		<set>
+			<if test="agentno != null">
+				AGENTNO = #{agentno,jdbcType=VARCHAR},
+			</if>
+			<if test="mercNum != null">
+				MERCNUM = #{mercNum,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="batchno != null">
+				BATCHNO = #{batchno,jdbcType=VARCHAR},
+			</if>
+			<if test="createpeople != null">
+				CREATEPEOPLE = #{createpeople,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				CREATETIME = #{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="updatetime != null">
+				UPDATETIME = #{updatetime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where OAGENTNO = #{oagentno,jdbcType=VARCHAR}
+		and INVITECODE = #{invitecode,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.AgentInviteCode">
+		update AGENT_INVITE_CODE
+		set AGENTNO = #{agentno,jdbcType=VARCHAR},
+		MERCNUM = #{mercNum,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=VARCHAR},
+		BATCHNO = #{batchno,jdbcType=VARCHAR},
+		CREATEPEOPLE = #{createpeople,jdbcType=VARCHAR},
+		CREATETIME = #{createtime,jdbcType=VARCHAR},
+		UPDATETIME = #{updatetime,jdbcType=VARCHAR}
+		where OAGENTNO = #{oagentno,jdbcType=VARCHAR}
+		and INVITECODE = #{invitecode,jdbcType=VARCHAR}
+	</update>
+</mapper>

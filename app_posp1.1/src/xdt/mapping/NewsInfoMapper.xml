@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.NewsInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.NewsInfo">
+		<id column="NEWS_ID" property="newsId" jdbcType="DECIMAL" />
+		<result column="NEWS_TITLE" property="newsTitle" jdbcType="VARCHAR" />
+		<result column="NEWS_TYPE" property="newsType" jdbcType="VARCHAR" />
+		<result column="NEWS_DATE" property="newsDate" jdbcType="VARCHAR" />
+		<result column="IAMGES_URL" property="iamgesUrl" jdbcType="VARCHAR" />
+		<result column="ORIGINALADDR" property="orginalAddr" jdbcType="VARCHAR" />
+		<result column="H5_URL" property="h5Url" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="SORT_NUM" property="sortNum" jdbcType="DECIMAL" />
+		<result column="OAGENTNO" property="oagentno" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="xdt.model.NewsInfo"
+		extends="BaseResultMap">
+		<result column="NEWS_CONTENT" property="newsContent" jdbcType="CLOB" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		NEWS_ID, NEWS_TITLE, NEWS_TYPE, NEWS_DATE, IAMGES_URL,ORIGINALADDR, H5_URL,
+		STATUS, SORT_NUM,
+		OAGENTNO
+	</sql>
+	<sql id="Blob_Column_List">
+		NEWS_CONTENT
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from NEWS_INFO
+		where NEWS_ID = #{newsId,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from NEWS_INFO
+		where NEWS_ID = #{newsId,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.NewsInfo">
+		insert into NEWS_INFO (NEWS_ID, NEWS_TITLE, NEWS_TYPE,
+		NEWS_DATE, IAMGES_URL,ORIGINALADDR, H5_URL,
+		STATUS, SORT_NUM, OAGENTNO,
+		NEWS_CONTENT)
+		values (#{newsId,jdbcType=DECIMAL}, #{newsTitle,jdbcType=VARCHAR},
+		#{newsType,jdbcType=VARCHAR},
+		#{newsDate,jdbcType=VARCHAR}, #{iamgesUrl,jdbcType=VARCHAR}, #{originalAddr,jdbcType=VARCHAR},
+		#{h5Url,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR}, #{sortNum,jdbcType=DECIMAL}, #{oagentno,jdbcType=VARCHAR},
+		#{newsContent,jdbcType=CLOB})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.NewsInfo">
+		insert into NEWS_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="newsId != null">
+				NEWS_ID,
+			</if>
+			<if test="newsTitle != null">
+				NEWS_TITLE,
+			</if>
+			<if test="newsType != null">
+				NEWS_TYPE,
+			</if>
+			<if test="newsDate != null">
+				NEWS_DATE,
+			</if>
+			<if test="iamgesUrl != null">
+				IAMGES_URL,
+			</if>
+			<if test="originalAddr != null">
+				ORIGINALADDR,
+			</if>
+			<if test="h5Url != null">
+				H5_URL,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="sortNum != null">
+				SORT_NUM,
+			</if>
+			<if test="oagentno != null">
+				OAGENTNO,
+			</if>
+			<if test="newsContent != null">
+				NEWS_CONTENT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="newsId != null">
+				#{newsId,jdbcType=DECIMAL},
+			</if>
+			<if test="newsTitle != null">
+				#{newsTitle,jdbcType=VARCHAR},
+			</if>
+			<if test="newsType != null">
+				#{newsType,jdbcType=VARCHAR},
+			</if>
+			<if test="newsDate != null">
+				#{newsDate,jdbcType=VARCHAR},
+			</if>
+			<if test="iamgesUrl != null">
+				#{iamgesUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="originalAddr != null">
+				#{originalAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="h5Url != null">
+				#{h5Url,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNum != null">
+				#{sortNum,jdbcType=DECIMAL},
+			</if>
+			<if test="oagentno != null">
+				#{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="newsContent != null">
+				#{newsContent,jdbcType=CLOB},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.NewsInfo">
+		update NEWS_INFO
+		<set>
+			<if test="newsTitle != null">
+				NEWS_TITLE = #{newsTitle,jdbcType=VARCHAR},
+			</if>
+			<if test="newsType != null">
+				NEWS_TYPE = #{newsType,jdbcType=VARCHAR},
+			</if>
+			<if test="newsDate != null">
+				NEWS_DATE = #{newsDate,jdbcType=VARCHAR},
+			</if>
+			<if test="iamgesUrl != null">
+				IAMGES_URL = #{iamgesUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="originalAddr != null">
+				originalAddr = #{originalAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="h5Url != null">
+				H5_URL = #{h5Url,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNum != null">
+				SORT_NUM = #{sortNum,jdbcType=DECIMAL},
+			</if>
+			<if test="oagentno != null">
+				OAGENTNO = #{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="newsContent != null">
+				NEWS_CONTENT = #{newsContent,jdbcType=CLOB},
+			</if>
+		</set>
+		where NEWS_ID = #{newsId,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="xdt.model.NewsInfo">
+		update NEWS_INFO
+		set NEWS_TITLE = #{newsTitle,jdbcType=VARCHAR},
+		NEWS_TYPE = #{newsType,jdbcType=VARCHAR},
+		NEWS_DATE = #{newsDate,jdbcType=VARCHAR},
+		IAMGES_URL = #{iamgesUrl,jdbcType=VARCHAR},
+		originalAddr = #{originalAddr,jdbcType=VARCHAR},
+		H5_URL = #{h5Url,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=VARCHAR},
+		SORT_NUM = #{sortNum,jdbcType=DECIMAL},
+		OAGENTNO = #{oagentno,jdbcType=VARCHAR},
+		NEWS_CONTENT = #{newsContent,jdbcType=CLOB}
+		where NEWS_ID = #{newsId,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.NewsInfo">
+		update NEWS_INFO
+		set NEWS_TITLE = #{newsTitle,jdbcType=VARCHAR},
+		NEWS_TYPE = #{newsType,jdbcType=VARCHAR},
+		NEWS_DATE = #{newsDate,jdbcType=VARCHAR},
+		IAMGES_URL = #{iamgesUrl,jdbcType=VARCHAR},
+		originalAddr = #{originalAddr,jdbcType=VARCHAR},
+		H5_URL = #{h5Url,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=VARCHAR},
+		SORT_NUM = #{sortNum,jdbcType=DECIMAL},
+		OAGENTNO = #{oagentno,jdbcType=VARCHAR}
+		where NEWS_ID = #{newsId,jdbcType=DECIMAL}
+	</update>
+
+
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="xdt.util.PageView">
+		SELECT * FROM (SELECT A.*, ROWNUM RN FROM (
+
+		SELECT * FROM news_info obj where obj.oagentno =
+		#{searchBean,jdbcType=VARCHAR} and obj.status = '1' order by
+		obj.SORT_NUM desc
+
+		)A WHERE ROWNUM &lt;= 1* (#{pageNum}*#{pageSize}))
+		WHERE RN &gt;= (#{pageNum}-1)*#{pageSize}+1
+	</select>
+
+
+	<select id="total" resultType="int" parameterType="xdt.util.PageView">
+		select count(*) from news_info obj where obj.oagentno =
+		#{searchBean,jdbcType=VARCHAR} and obj.status = '1'
+	</select>
+
+	<select id="totalCountByOagentNo" resultType="int"
+		parameterType="java.lang.String">
+		select count(*) from news_info obj where obj.oagentno =
+		#{oagentNo,jdbcType=VARCHAR} and obj.status = '1'
+	</select>
+
+
+	<select id="selectAllIds" resultType="String" parameterType="java.lang.String">
+		select obj.news_id from news_info obj where obj.oagentno =
+		#{oagentNo,jdbcType=VARCHAR} and obj.status = '1'
+	</select>
+
+	<select id="selectLoginRemind" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from news_info obj where obj.oagentno = #{oagentNo,jdbcType=VARCHAR}
+		and obj.status = '1' and news_used = '1' and rownum &lt; 2 order by
+		news_date desc
+	</select>
+
+
+</mapper>

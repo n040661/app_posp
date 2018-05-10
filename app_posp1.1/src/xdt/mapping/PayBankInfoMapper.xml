@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PayBankInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PayBankInfo" autoMapping="true">
+		<result column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="BANK_CODE" jdbcType="VARCHAR" property="bank_code" />
+		<result column="BANK_NAME" jdbcType="VARCHAR" property="bank_name" />
+		<result column="BANK_SHORT_TITLE" jdbcType="VARCHAR" property="bank_short_title" />
+		<result column="BANK_ID" jdbcType="VARCHAR" property="bank_Id" />
+		<result column="BANK_PMSBANKNO" jdbcType="VARCHAR" property="bank_pmsbankNo" />
+		<result column="BANK_PROVINCE" jdbcType="VARCHAR" property="bank_province" />
+		<result column="BANK_PROVINCE_ID" jdbcType="VARCHAR" property="bank_province_Id" />
+		<result column="BANK_CITY" jdbcType="VARCHAR" property="bank_city" />
+		<result column="BANK_CITY_ID" jdbcType="VARCHAR" property="bank_city_Id" />
+		<result column="BANK_STATUS" jdbcType="VARCHAR" property="bank_status" />
+		<result column="BANK_CODE_ID" jdbcType="VARCHAR" property="bank_code_id" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID,BANK_CODE, BANK_NAME, BANK_SHORT_TITLE,
+		BANK_ID,
+		BANK_PMSBANKNO, BANK_PROVINCE,
+		BANK_PROVINCE_ID, BANK_CITY,
+		BANK_CITY_ID,
+		BANK_STATUS,BANK_CODE_ID
+	</sql>
+	<insert id="insert" parameterType="xdt.model.PayBankInfo">
+		insert into PAY_BANKINFO
+		(BANK_CODE, BANK_NAME, BANK_SHORT_TITLE,
+		BANK_ID, BANK_PMSBANKNO,
+		BANK_PROVINCE,
+		BANK_PROVINCE_ID, BANK_CITY, BANK_CITY_ID,
+		BANK_STATUS
+		)
+		values (#{bank_code,jdbcType=VARCHAR}, #{bank_name,jdbcType=VARCHAR},
+		#{bank_short_title,jdbcType=VARCHAR},
+		#{bank_Id,jdbcType=VARCHAR},
+		#{bank_pmsbankNo,jdbcType=VARCHAR}, #{bank_province,jdbcType=VARCHAR},
+		#{bank_province_Id,jdbcType=VARCHAR}, #{bank_city,jdbcType=VARCHAR},
+		#{bank_city_Id,jdbcType=VARCHAR},
+		#{bank_status,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PayBankInfo">
+		insert into PAY_BANKINFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bank_code != null">
+				BANK_CODE,
+			</if>
+			<if test="bank_name != null">
+				BANK_NAME,
+			</if>
+			<if test="bank_short_title != null">
+				BANK_SHORT_TITLE,
+			</if>
+			<if test="bank_Id != null">
+				BANK_ID,
+			</if>
+			<if test="bank_pmsbankNo != null">
+				BANK_PMSBANKNO,
+			</if>
+			<if test="bank_province != null">
+				BANK_PROVINCE,
+			</if>
+			<if test="bank_province_Id != null">
+				BANK_PROVINCE_ID,
+			</if>
+			<if test="bank_city != null">
+				BANK_CITY,
+			</if>
+			<if test="bank_city_Id != null">
+				BANK_CITY_ID,
+			</if>
+			<if test="bank_status != null">
+				BANK_STATUS,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bank_code != null">
+				#{bank_code,jdbcType=VARCHAR},
+			</if>
+			<if test="bank_name != null">
+				#{bank_name,jdbcType=VARCHAR},
+			</if>
+			<if test="bank_short_title != null">
+				#{bank_short_title,jdbcType=VARCHAR},
+			</if>
+			<if test="bank_Id != null">
+				#{bank_Id,jdbcType=VARCHAR},
+			</if>
+			<if test="bank_pmsbankNo != null">
+				#{bank_pmsbankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="bank_province != null">
+				#{bank_province,jdbcType=VARCHAR},
+			</if>
+			<if test="bank_province_Id != null">
+				#{bank_province_Id,jdbcType=VARCHAR},
+			</if>
+			<if test="bank_city != null">
+				#{bank_city,jdbcType=VARCHAR},
+			</if>
+			<if test="bank_city_Id != null">
+				#{bank_city_Id,jdbcType=VARCHAR},
+			</if>
+			<if test="bank_status!= null">
+				#{bank_status,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<!-- 根据开户行查询银行卡列表信息 -->
+	<select id="selectBankInfo" parameterType="xdt.model.PayBankInfo"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PAY_BANKINFO t where t.BANK_PMSBANKNO = #{bank_pmsbankNo,jdbcType=VARCHAR}
+	</select>
+	<!-- 根据开户行查询银行卡列表信息 -->
+	<select id="selectBankCodes" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PAY_BANKINFO t where t.BANK_CODE = #{bank_code,jdbcType=VARCHAR}
+	</select>
+	
+
+
+</mapper>

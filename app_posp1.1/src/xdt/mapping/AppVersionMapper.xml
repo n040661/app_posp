@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.AppVersionMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.AppVersion">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="VERSION" property="version" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="FORCE_FLAG" property="forceFlag" jdbcType="VARCHAR" />
+		<result column="CLIENT_TYPE" property="clientType" jdbcType="VARCHAR" />
+		<result column="DOWN_URL" property="downUrl" jdbcType="VARCHAR" />
+		<result column="VERSION_CODE" property="versionCode" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, VERSION, DESCRIPTION, STATUS,
+		CREATETIME,FORCE_FLAG,CLIENT_TYPE,DOWN_URL,VERSION_CODE,OAGENTNO
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from APP_VERSION
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from APP_VERSION
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.AppVersion">
+		insert into APP_VERSION (ID, VERSION, DESCRIPTION,
+		STATUS, CREATETIME,FORCE_FLAG,CLIENT_TYPE,DOWN_URL,VERSION_CODE,OAGENTNO)
+		values (#{id,jdbcType=DECIMAL}, #{version,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{forceFlag,jdbcType=TIMESTAMP},
+		#{clientType,jdbcType=TIMESTAMP}, #{downUrl,jdbcType=TIMESTAMP}),
+		#{versionCode,jdbcType=TIMESTAMP}, #{oAgentNo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.AppVersion">
+		insert into APP_VERSION
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="version != null">
+				VERSION,
+			</if>
+			<if test="description != null">
+				DESCRIPTION,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="createtime != null">
+				CREATETIME,
+			</if>
+			<if test="forceFlag != null">
+				FORCE_FLAG,
+			</if>
+			<if test="clientType != null">
+				CLIENT_TYPE,
+			</if>
+			<if test="downUrl != null">
+				DOWN_URL,
+			</if>
+			<if test="versionCode != null">
+				VERSION_CODE,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="forceFlag != null">
+				#{forceFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="clientType != null">
+				#{clientType,jdbcType=VARCHAR},
+			</if>
+			<if test="downUrl != null">
+				#{downUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="versionCode != null">
+				#{versionCode,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.AppVersion">
+		update APP_VERSION
+		<set>
+			<if test="version != null">
+				VERSION = #{version,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				DESCRIPTION = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="forceFlag != null">
+				FORCE_FLAG = #{forceFlag,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clientType != null">
+				CLIENT_TYPE = #{clientType,jdbcType=TIMESTAMP},
+			</if>
+			<if test="downUrl != null">
+				DOWN_URL = #{downUrl,jdbcType=TIMESTAMP},
+			</if>
+			<if test="versionCode != null">
+				VERSION_CODE = #{versionCode,jdbcType=TIMESTAMP},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.AppVersion">
+		update APP_VERSION
+		set VERSION = #{version,jdbcType=VARCHAR},
+		DESCRIPTION = #{description,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=VARCHAR},
+		CREATETIME = #{createtime,jdbcType=TIMESTAMP}
+		FORCE_FLAG = #{forceFlag,jdbcType=TIMESTAMP}
+		CLIENT_TYPE = #{clientType,jdbcType=TIMESTAMP}
+		DOWN_URL = #{downUrl,jdbcType=TIMESTAMP}
+		VERSION_CODE = #{versionCode,jdbcType=TIMESTAMP}
+		OAGENTNO = #{oAgentNo,jdbcType=TIMESTAMP}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<select id="selectNewestOne" resultMap="BaseResultMap"
+		parameterType="xdt.model.AppVersion">
+		select * from (select * from app_version where status = '1' and client_type=
+		#{clientType,jdbcType=DECIMAL} and
+		OAGENTNO=#{oAgentNo,jdbcType=VARCHAR} order by createtime desc) where
+		rownum=1
+	</select>
+</mapper>

@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.TTransSettleAgentT0Mapper">
+	<resultMap id="BaseResultMap" type="xdt.model.TTransSettleAgentT0">
+		<id column="ORDERID" property="orderid" jdbcType="VARCHAR" />
+		<result column="MERC_ID" property="mercId" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oagentno" jdbcType="VARCHAR" />
+		<result column="FACTAMOUNT" property="factamount" jdbcType="VARCHAR" />
+		<result column="ORDERAMOUNT" property="orderamount" jdbcType="VARCHAR" />
+		<result column="POUNDAGE" property="poundage" jdbcType="VARCHAR" />
+		<result column="SETTLEPOUNDAGE" property="settlepoundage"
+			jdbcType="VARCHAR" />
+		<result column="TOTALPOUNDAGE" property="totalpoundage"
+			jdbcType="VARCHAR" />
+		<result column="FACTPOUNDAGE" property="factpoundage" jdbcType="VARCHAR" />
+		<result column="PAYAMOUNT" property="payamount" jdbcType="VARCHAR" />
+		<result column="FACTSETTLEAMOUNT" property="factsettleamount"
+			jdbcType="VARCHAR" />
+		<result column="BANKSYSNUMBER" property="banksysnumber"
+			jdbcType="VARCHAR" />
+		<result column="BANKNAME" property="bankname" jdbcType="VARCHAR" />
+		<result column="CLR_MERC" property="clrMerc" jdbcType="VARCHAR" />
+		<result column="SETTLEMENTNAME" property="settlementname"
+			jdbcType="VARCHAR" />
+		<result column="SETTLEPOUNDAGEFLAG" property="settlepoundageflag"
+			jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="SETTLEFLAG" property="settleflag" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+		<result column="FINISH_TIME" property="finishTime" jdbcType="VARCHAR" />
+		<result column="PAYSTATUST" property="paystatust" jdbcType="VARCHAR" />
+		<result column="PAYMSG" property="paymsg" jdbcType="VARCHAR" />
+		<result column="REQUESTSN" property="requestsn" jdbcType="VARCHAR" />
+		<result column="RECORDSN" property="recordsn" jdbcType="VARCHAR" />
+		<result column="PAYREQUESTTIME" property="payrequesttime"
+			jdbcType="VARCHAR" />
+		<result column="PAYFINISHTIME" property="payfinishtime"
+			jdbcType="VARCHAR" />
+		<result column="PAYRETURNCODE" property="payreturncode"
+			jdbcType="VARCHAR" />
+		<result column="PAYRETURNMSG" property="payreturnmsg" jdbcType="VARCHAR" />
+		<result column="CHANNELPAYTYPE" property="channelpaytype"
+			jdbcType="VARCHAR" />
+		<result column="CHANNELPAYMSG" property="channelpaymsg"
+			jdbcType="VARCHAR" />
+		<result column="PAYORDERID" property="payorderid" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ORDERID, MERC_ID, OAGENTNO, FACTAMOUNT, ORDERAMOUNT, POUNDAGE, SETTLEPOUNDAGE,
+		TOTALPOUNDAGE,
+		FACTPOUNDAGE, PAYAMOUNT,
+		FACTSETTLEAMOUNT,BANKSYSNUMBER,BANKNAME,CLR_MERC,SETTLEMENTNAME,
+		SETTLEPOUNDAGEFLAG,STATUS, SETTLEFLAG, CREATE_TIME, FINISH_TIME,
+		PAYSTATUST, PAYMSG, REQUESTSN, RECORDSN, PAYREQUESTTIME,
+		PAYFINISHTIME, PAYRETURNCODE,
+		PAYRETURNMSG,CHANNELPAYTYPE,CHANNELPAYMSG,PAYORDERID
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from T_TRANS_SETTLE_AGENT_T0
+		where ORDERID = #{orderid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from T_TRANS_SETTLE_AGENT_T0
+		where ORDERID = #{orderid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insertAccountHistoryFor0" parameterType="xdt.model.TTransSettleAgentT0">
+		insert into T_TRANS_SETTLE_AGENT_T0 (ORDERID, MERC_ID, OAGENTNO,
+		FACTAMOUNT, ORDERAMOUNT, POUNDAGE,
+		SETTLEPOUNDAGE, TOTALPOUNDAGE, FACTPOUNDAGE,
+		PAYAMOUNT, FACTSETTLEAMOUNT,
+		BANKSYSNUMBER,BANKNAME,CLR_MERC,SETTLEMENTNAME,SETTLEPOUNDAGEFLAG,
+		STATUS,SETTLEFLAG, CREATE_TIME, FINISH_TIME,
+		PAYSTATUST, PAYMSG, REQUESTSN,
+		RECORDSN, PAYREQUESTTIME, PAYFINISHTIME,
+		PAYRETURNCODE, PAYRETURNMSG,CHANNELPAYTYPE,CHANNELPAYMSG,PAYORDERID)
+		values (#{orderid,jdbcType=VARCHAR}, #{mercId,jdbcType=VARCHAR},
+		#{oagentno,jdbcType=VARCHAR},
+		#{factamount,jdbcType=VARCHAR}, #{orderamount,jdbcType=VARCHAR}, #{poundage,jdbcType=VARCHAR},
+		#{settlepoundage,jdbcType=VARCHAR}, #{totalpoundage,jdbcType=VARCHAR},
+		#{factpoundage,jdbcType=VARCHAR},
+		#{payamount,jdbcType=VARCHAR}, #{factsettleamount,jdbcType=VARCHAR},
+		#{banksysnumber,jdbcType=VARCHAR},#{bankname,jdbcType=VARCHAR},
+		#{clrMerc,jdbcType=VARCHAR}, #{settlementname,jdbcType=VARCHAR},
+		#{settlepoundageflag,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},#{settleflag,jdbcType=VARCHAR},
+		#{createTime,jdbcType=VARCHAR}, #{finishTime,jdbcType=VARCHAR},
+		#{paystatust,jdbcType=VARCHAR}, #{paymsg,jdbcType=VARCHAR},
+		#{requestsn,jdbcType=VARCHAR},
+		#{recordsn,jdbcType=VARCHAR}, #{payrequesttime,jdbcType=VARCHAR},
+		#{payfinishtime,jdbcType=VARCHAR},
+		#{payreturncode,jdbcType=VARCHAR}, #{payreturnmsg,jdbcType=VARCHAR},
+		#{channelpaytype,jdbcType=VARCHAR}, #{channelpaymsg,jdbcType=VARCHAR}, #{payorderid,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.TTransSettleAgentT0">
+		insert into T_TRANS_SETTLE_AGENT_T0
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderid != null">
+				ORDERID,
+			</if>
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="oagentno != null">
+				OAGENTNO,
+			</if>
+			<if test="factamount != null">
+				FACTAMOUNT,
+			</if>
+			<if test="orderamount != null">
+				ORDERAMOUNT,
+			</if>
+			<if test="poundage != null">
+				POUNDAGE,
+			</if>
+			<if test="settlepoundage != null">
+				SETTLEPOUNDAGE,
+			</if>
+			<if test="totalpoundage != null">
+				TOTALPOUNDAGE,
+			</if>
+			<if test="factpoundage != null">
+				FACTPOUNDAGE,
+			</if>
+			<if test="payamount != null">
+				PAYAMOUNT,
+			</if>
+			<if test="factsettleamount != null">
+				FACTSETTLEAMOUNT,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="settleflag != null">
+				SETTLEFLAG,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="finishTime != null">
+				FINISH_TIME,
+			</if>
+			<if test="paystatust != null">
+				PAYSTATUST,
+			</if>
+			<if test="paymsg != null">
+				PAYMSG,
+			</if>
+			<if test="requestsn != null">
+				REQUESTSN,
+			</if>
+			<if test="recordsn != null">
+				RECORDSN,
+			</if>
+			<if test="payrequesttime != null">
+				PAYREQUESTTIME,
+			</if>
+			<if test="payfinishtime != null">
+				PAYFINISHTIME,
+			</if>
+			<if test="payreturncode != null">
+				PAYRETURNCODE,
+			</if>
+			<if test="payreturnmsg != null">
+				PAYRETURNMSG,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderid != null">
+				#{orderid,jdbcType=VARCHAR},
+			</if>
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="oagentno != null">
+				#{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="factamount != null">
+				#{factamount,jdbcType=VARCHAR},
+			</if>
+			<if test="orderamount != null">
+				#{orderamount,jdbcType=VARCHAR},
+			</if>
+			<if test="poundage != null">
+				#{poundage,jdbcType=VARCHAR},
+			</if>
+			<if test="settlepoundage != null">
+				#{settlepoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="totalpoundage != null">
+				#{totalpoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="factpoundage != null">
+				#{factpoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="payamount != null">
+				#{payamount,jdbcType=VARCHAR},
+			</if>
+			<if test="factsettleamount != null">
+				#{factsettleamount,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="settleflag != null">
+				#{settleflag,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="finishTime != null">
+				#{finishTime,jdbcType=VARCHAR},
+			</if>
+			<if test="paystatust != null">
+				#{paystatust,jdbcType=VARCHAR},
+			</if>
+			<if test="paymsg != null">
+				#{paymsg,jdbcType=VARCHAR},
+			</if>
+			<if test="requestsn != null">
+				#{requestsn,jdbcType=VARCHAR},
+			</if>
+			<if test="recordsn != null">
+				#{recordsn,jdbcType=VARCHAR},
+			</if>
+			<if test="payrequesttime != null">
+				#{payrequesttime,jdbcType=VARCHAR},
+			</if>
+			<if test="payfinishtime != null">
+				#{payfinishtime,jdbcType=VARCHAR},
+			</if>
+			<if test="payreturncode != null">
+				#{payreturncode,jdbcType=VARCHAR},
+			</if>
+			<if test="payreturnmsg != null">
+				#{payreturnmsg,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.TTransSettleAgentT0">
+		update T_TRANS_SETTLE_AGENT_T0
+		<set>
+			<if test="mercId != null">
+				MERC_ID = #{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="oagentno != null">
+				OAGENTNO = #{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="factamount != null">
+				FACTAMOUNT = #{factamount,jdbcType=VARCHAR},
+			</if>
+			<if test="orderamount != null">
+				ORDERAMOUNT = #{orderamount,jdbcType=VARCHAR},
+			</if>
+			<if test="poundage != null">
+				POUNDAGE = #{poundage,jdbcType=VARCHAR},
+			</if>
+			<if test="settlepoundage != null">
+				SETTLEPOUNDAGE = #{settlepoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="totalpoundage != null">
+				TOTALPOUNDAGE = #{totalpoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="factpoundage != null">
+				FACTPOUNDAGE = #{factpoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="payamount != null">
+				PAYAMOUNT = #{payamount,jdbcType=VARCHAR},
+			</if>
+			<if test="factsettleamount != null">
+				FACTSETTLEAMOUNT = #{factsettleamount,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="settleflag != null">
+				SETTLEFLAG = #{settleflag,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="finishTime != null">
+				FINISH_TIME = #{finishTime,jdbcType=VARCHAR},
+			</if>
+			<if test="paystatust != null">
+				PAYSTATUST = #{paystatust,jdbcType=VARCHAR},
+			</if>
+			<if test="paymsg != null">
+				PAYMSG = #{paymsg,jdbcType=VARCHAR},
+			</if>
+			<if test="requestsn != null">
+				REQUESTSN = #{requestsn,jdbcType=VARCHAR},
+			</if>
+			<if test="recordsn != null">
+				RECORDSN = #{recordsn,jdbcType=VARCHAR},
+			</if>
+			<if test="payrequesttime != null">
+				PAYREQUESTTIME = #{payrequesttime,jdbcType=VARCHAR},
+			</if>
+			<if test="payfinishtime != null">
+				PAYFINISHTIME = #{payfinishtime,jdbcType=VARCHAR},
+			</if>
+			<if test="payreturncode != null">
+				PAYRETURNCODE = #{payreturncode,jdbcType=VARCHAR},
+			</if>
+			<if test="payreturnmsg != null">
+				PAYRETURNMSG = #{payreturnmsg,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ORDERID = #{orderid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.TTransSettleAgentT0">
+		update T_TRANS_SETTLE_AGENT_T0
+		set MERC_ID = #{mercId,jdbcType=VARCHAR},
+		OAGENTNO = #{oagentno,jdbcType=VARCHAR},
+		FACTAMOUNT = #{factamount,jdbcType=VARCHAR},
+		ORDERAMOUNT = #{orderamount,jdbcType=VARCHAR},
+		POUNDAGE = #{poundage,jdbcType=VARCHAR},
+		SETTLEPOUNDAGE = #{settlepoundage,jdbcType=VARCHAR},
+		TOTALPOUNDAGE = #{totalpoundage,jdbcType=VARCHAR},
+		FACTPOUNDAGE = #{factpoundage,jdbcType=VARCHAR},
+		PAYAMOUNT = #{payamount,jdbcType=VARCHAR},
+		FACTSETTLEAMOUNT = #{factsettleamount,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=VARCHAR},
+		SETTLEFLAG = #{settleflag,jdbcType=VARCHAR},
+		CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+		FINISH_TIME = #{finishTime,jdbcType=VARCHAR},
+		PAYSTATUST = #{paystatust,jdbcType=VARCHAR},
+		PAYMSG = #{paymsg,jdbcType=VARCHAR},
+		REQUESTSN = #{requestsn,jdbcType=VARCHAR},
+		RECORDSN = #{recordsn,jdbcType=VARCHAR},
+		PAYREQUESTTIME = #{payrequesttime,jdbcType=VARCHAR},
+		PAYFINISHTIME = #{payfinishtime,jdbcType=VARCHAR},
+		PAYRETURNCODE = #{payreturncode,jdbcType=VARCHAR},
+		PAYRETURNMSG = #{payreturnmsg,jdbcType=VARCHAR}
+		where ORDERID = #{orderid,jdbcType=VARCHAR}
+	</update>
+
+
+	<!--按月份的数据统计,默认获取一年的数据 -->
+	<select id="selectLatestMonth" resultMap="transLatestData"
+		parameterType="java.util.HashMap">
+		select * from
+		(select *
+		from (select
+		substr(to_char(to_date(substr(t.finish_time,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 7) as
+		timestr,substr(to_char(to_date(substr(t.CREATE_TIME,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0,7) as timestrtrade,
+		sum(t.FACTSETTLEAMOUNT) as amountsum,
+		sum(t.FACTPOUNDAGE) as poundagesum
+		from T_TRANS_SETTLE_AGENT_T0 t where
+		t.status = '0'
+		and t.merc_id = #{mercid,jdbcType=VARCHAR}
+		group by
+		substr(to_char(to_date(substr(t.finish_time,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 7),
+		substr(to_char(to_date(substr(t.CREATE_TIME,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0,7))
+		order by timestr desc)
+		where rownum &lt;= 12
+	</select>
+
+
+
+	<!--近N天的数据统计分页 -->
+	<select id="selectLatestDayDataPage" resultMap="transLatestData"
+		parameterType="java.util.HashMap">
+
+		SELECT * FROM (SELECT A.*, ROWNUM RN FROM (
+		select * from
+		(select *
+		from (select *
+		from (select
+		substr(to_char(to_date(substr(t.finish_time,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10) as
+		timestr,substr(to_char(to_date(substr(t.CREATE_TIME,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10) as timestrtrade,
+		sum(t.FACTSETTLEAMOUNT) as amountsum,
+		sum(t.FACTPOUNDAGE) as poundagesum
+		from T_TRANS_SETTLE_AGENT_T0 t where
+		t.status = '0'
+		and t.merc_id = #{mercid,jdbcType=VARCHAR}
+		<if test="beginMonth != null and endMonth != null">
+			and
+			substr(to_char(to_date(substr(t.finish_time,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+			0, 7) between #{beginMonth,jdbcType=VARCHAR} and
+			#{endMonth,jdbcType=VARCHAR}
+		</if>
+		group by
+		substr(to_char(to_date(substr(t.finish_time,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10),
+		substr(to_char(to_date(substr(t.CREATE_TIME,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10))
+		order by timestr desc
+		)
+		)
+		)A WHERE ROWNUM &lt;= 1* (#{pageNum}*#{pageSize}))
+		WHERE RN &gt;= (#{pageNum}-1)*#{pageSize}+1
+
+	</select>
+
+	<!--近n天的数据统计分页 条数 -->
+	<select id="selectLatestDayDataPageCount" resultType="java.lang.Integer"
+		parameterType="java.util.HashMap">
+		select count(*)
+		from (select *
+		from (select
+		substr(to_char(to_date(substr(t.finish_time,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10) as
+		timestr,substr(to_char(to_date(substr(t.CREATE_TIME,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10) as timestrtrade,
+		sum(t.FACTSETTLEAMOUNT) as amountsum,
+		sum(t.FACTPOUNDAGE) as poundagesum
+		from T_TRANS_SETTLE_AGENT_T0
+		t where
+		t.status = '0'
+		and t.MERC_ID = #{mercid,jdbcType=VARCHAR}
+		<if test="beginMonth != null and endMonth != null">
+			and
+			substr(to_char(to_date(substr(t.finish_time,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+			0, 7) between #{beginMonth,jdbcType=VARCHAR} and
+			#{endMonth,jdbcType=VARCHAR}
+		</if>
+		group by
+		substr(to_char(to_date(substr(t.finish_time,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10),
+		substr(to_char(to_date(substr(t.CREATE_TIME,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10))
+		order by timestr desc)
+
+	</select>
+
+
+	<resultMap id="transLatestData" type="xdt.model.TransLatestData">
+		<result column="TIMESTR" jdbcType="VARCHAR" property="dateStr" />
+		<result column="TIMESTRTRADE" jdbcType="VARCHAR" property="dateStrTrade" />
+		<result column="AMOUNTSUM" jdbcType="VARCHAR" property="amountSum" />
+		<result column="POUNDAGESUM" jdbcType="DOUBLE" property="poundageSum" />
+	</resultMap>
+</mapper>

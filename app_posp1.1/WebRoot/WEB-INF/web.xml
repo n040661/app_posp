@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/j2ee     
+	http://xmlns.jcp.org/xml/ns/javaee/web-app_3_0.xsd">
+	<!-- 欢迎页面 -->
+	<welcome-file-list>
+		<welcome-file>/index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<servlet>
+		<servlet-name>SessionConfigurationAction</servlet-name>
+		<servlet-class>xdt.controller.SessionConfigurationAction</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>RandCodeImage</servlet-name>
+		<servlet-class>xdt.servlet.RandCodeImageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RandCodeImage</servlet-name>
+		<url-pattern>/RandCodeImage</url-pattern>
+	</servlet-mapping>
+
+
+	 <servlet>
+    <servlet-name>PictureCheckCode</servlet-name>
+    <servlet-class>xdt.servlet.PictureCheckCode</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>PictureCheckCode</servlet-name>
+    <url-pattern>/PictureCheckCode</url-pattern>
+  </servlet-mapping>    
+	<!-- 加载spring配置文件 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring.xml,classpath:spring-mybatis.xml,classpath:spring-quartz.xml</param-value>
+	</context-param>
+
+	<!-- 字符过滤器 -->
+	<filter>
+		<description>字符集过滤器</description>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<description>字符集编码</description>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 日志记录 -->
+	<context-param>
+		<!-- 日志配置文件路径 -->
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:log4j.properties</param-value>
+	</context-param>
+	<context-param>
+		<!-- 日志页面的刷新间隔 -->
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>6000</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+
+	<!-- spring的监听器 -->
+	<listener>
+		<description>spring监听器</description>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- 防止spring内存溢出监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+
+   <!--<filter>
+		<filter-name>verifyFilter</filter-name>
+		<filter-class>xdt.filter.VerifyFilter</filter-class>
+		<init-param>
+			<description>不用过滤的url</description>
+			<param-name>notFilterUrl</param-name>
+			<param-value>merchantCollectMoneyAction.action,baiduOrderCallBack.action,offiOrderCallBack.action,appErrorLogInsert.action,view.action,yDHBOrderCallBack.action,newestAppVersion.action,reloadChannelInfo.action,pay.action,bgPayResult.action,pagePayResult.action,queryPayResult.action,signForWap.action,dimension.action,refund.action,flushes.action,query.action,querySign.action,paySign.action,scan_param.action,scan.action,refundSign,notify,callback,valida,updateRate,register,downkey,createWechatQrcodeUrl.action,wechatWebPayEntry.action,wechatWebPay.action,micro_param.action,micro.action,orderquery_param.action,solidtwodimension.action,merchantOrderTest.action,Notify.action,merchantOrderTestH5.action,orderQueryTest.action,ReturnH5.action,registers.action,fsfsf.action,paySign1.action,payQuery.action,codeSign.action,microSign.action,orderSign.action,,select.action,update.action,merchantDownload.action,selectSettlementStatus.action,payClienty.action,hfpay1.action,hfpay.action,hfmessage.action,hfconsume.action,hfbgPayResultT1.action,hfbgPayResultT0.action,hfpagePayResult.action,hfqueryPayResult.action,hfsignForWap.action,hfsignmessage.action,hfsignconsume.action,hfsignquery.action,hengfengPayResult.action,interface.action,JsdsgPayResult.action,JsbgPayResult.action,customerRegister.action,gateway.action,notifyUrl.action,returnUrl.action,wxpayParameter.action,payApplyParameter.action,payApply.action,paySelect.action,jqParameter.action,jq.action,cardSelect.action,cardPay.action,cardPayParameter.action,settle.action,settleQuery.action,settleSign.action,merchantOrderParameter.action,merchantOrderApi.action,signSimpleSubContract.action,collect.action,queryOrderStatus.action,querySubContractId.action,subConstractExtension.action,ysbsigntime.action,ysbsignquery.action,ysbsignmerchant.action,queryOrderStatusdaiKou.action,collect1.action,alipayScanParam.action</param-value>
+		</init-param>
+		<init-param>
+			<description>握手的url</description>
+			<param-name>shakeHandsUrl</param-name>
+			<param-value>shakeHands.action</param-value>
+		</init-param>
+		<init-param>
+			<description>会话超时间</description>
+			<param-name>sessionTime</param-name>
+			<param-value>600</param-value>
+		</init-param>
+		<init-param>
+			<description>开关以前数据格式</description>
+			<param-name>flag</param-name>
+			<param-value>0</param-value>
+		</init-param>
+		<init-param>
+			<description>检查防重发url</description>
+			<param-name>checkTokenIdUrl</param-name>
+			<param-value>submitOrderPay.action</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>verifyFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>-->
+
+	spring MVC servlet
+	<servlet>
+		<servlet-name>SpringMVC</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<description>spring MVC 配置文件</description>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SpringMVC</servlet-name>
+		<url-pattern>*.action</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- 错误跳转页面 -->
+	<error-page>
+		<!-- 路径不正确 -->
+		<error-code>404</error-code>
+		<location>/errorpage/error_404.jsp</location>
+	</error-page>
+	<error-page>
+		<!-- 没有访问权限，访问被禁止 -->
+		<error-code>405</error-code>
+		<location>/errorpage/error_405.jsp</location>
+	</error-page>
+	<error-page>
+		<!-- 内部错误 -->
+		<error-code>500</error-code>
+		<location>/errorpage/error_500.jsp</location>
+	</error-page>
+	<!-- 设置session失效，单位分 -->
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
+
+	<!--图片查询 -->
+	<servlet>
+		<servlet-name>ShowPicServ</servlet-name>
+		<servlet-class>xdt.servlet.ShowPic</servlet-class>
+		<init-param>
+			<param-name>url</param-name>
+			<param-value>http://60.28.24.164:8102/app_posp</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ShowPicServ</servlet-name>
+		<url-pattern>/ShowPic</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- 实名认证图片上传 -->
+	<servlet>
+		<servlet-name>FileUpload</servlet-name>
+		<servlet-class>xdt.upload.FileUpload</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FileUpload</servlet-name>
+		<url-pattern>/FileUpload</url-pattern>
+	</servlet-mapping>
+
+	<!-- 刷卡消费图片上传 -->
+	<servlet>
+		<servlet-name>FileAutograph</servlet-name>
+		<servlet-class>xdt.upload.FileAutograph</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>XDTHttpServletRequestWrapper</servlet-name>
+		<servlet-class>xdt.servlet.XDTHttpServletRequestWrapper</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FileAutograph</servlet-name>
+		<url-pattern>/FileAutograph</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>XDTHttpServletRequestWrapper</servlet-name>
+		<url-pattern>/XDTHttpServletRequestWrapper</url-pattern>
+	</servlet-mapping>
+
+
+
+	<!--配置文件重载 -->
+	<servlet>
+		<servlet-name>InitPropertyFile</servlet-name>
+		<servlet-class>xdt.servlet.InitPropertyFile</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>InitPropertyFile</servlet-name>
+		<url-pattern>/initProperty</url-pattern>
+	</servlet-mapping>
+
+
+</web-app>

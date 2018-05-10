@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.AppOrderDetailMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.AppOrderDetail">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="PROVID" jdbcType="VARCHAR" property="provId" />
+		<result column="PROVNAME" jdbcType="VARCHAR" property="provName" />
+		<result column="CITYID" jdbcType="VARCHAR" property="cityId" />
+		<result column="CITYNAME" jdbcType="VARCHAR" property="cityName" />
+		<result column="TYPE" jdbcType="VARCHAR" property="type" />
+		<result column="PAYPROJECTNAME" jdbcType="VARCHAR" property="payProjectName" />
+		<result column="CHARGECOMPANYCODE" jdbcType="VARCHAR" property="chargeCompanyCode" />
+		<result column="PAYUNITNAME" jdbcType="VARCHAR" property="payUnitName" />
+		<result column="CARDID" jdbcType="VARCHAR" property="cardId" />
+		<result column="PRODUCTNAME" jdbcType="VARCHAR" property="productName" />
+		<result column="INPRICE" jdbcType="VARCHAR" property="inprice" />
+		<result column="CARDNUM" jdbcType="VARCHAR" property="cardnum" />
+		<result column="USERCODE" jdbcType="VARCHAR" property="userCode" />
+		<result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+		<result column="ACCOUNTNAME" jdbcType="VARCHAR" property="accountName" />
+		<result column="CONTRACTNO" jdbcType="VARCHAR" property="contractNo" />
+		<result column="GASCARDTEL" jdbcType="VARCHAR" property="gasCardTel" />
+		<result column="GASCARDNAME" jdbcType="VARCHAR" property="gasCardName" />
+		<result column="CHANNELCODE" jdbcType="VARCHAR" property="channelCode" />
+		<result column="CHANNELREMARK" jdbcType="VARCHAR" property="channelRemark" />
+		<result column="PORTORDERID" jdbcType="VARCHAR" property="portorderId" />
+		<result column="ORDERID" jdbcType="VARCHAR" property="orderId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID, PROVID, PROVNAME, CITYID, CITYNAME, TYPE, PAYPROJECTNAME,
+		CHARGECOMPANYCODE, PAYUNITNAME,
+		CARDID, PRODUCTNAME, INPRICE, CARDNUM, USERCODE,
+		ACCOUNT, ACCOUNTNAME, CONTRACTNO, GASCARDTEL, GASCARDNAME,
+		CHANNELCODE,CHANNELREMARK,PORTORDERID,ORDERID
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from APP_ORDER_DETAIL
+		where ORDERID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from APP_ORDER_DETAIL
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insertSelective" parameterType="xdt.model.AppOrderDetail">
+		insert into APP_ORDER_DETAIL
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="provId != null">
+				PROVID,
+			</if>
+			<if test="provName != null">
+				PROVNAME,
+			</if>
+			<if test="cityId != null">
+				CITYID,
+			</if>
+			<if test="cityName != null">
+				CITYNAME,
+			</if>
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="payProjectName != null">
+				PAYPROJECTNAME,
+			</if>
+			<if test="chargeCompanyCode != null">
+				CHARGECOMPANYCODE,
+			</if>
+			<if test="payUnitName != null">
+				PAYUNITNAME,
+			</if>
+			<if test="cardId != null">
+				CARDID,
+			</if>
+			<if test="productName != null">
+				PRODUCTNAME,
+			</if>
+			<if test="inprice != null">
+				INPRICE,
+			</if>
+			<if test="cardnum != null">
+				CARDNUM,
+			</if>
+			<if test="userCode != null">
+				USERCODE,
+			</if>
+			<if test="account != null">
+				ACCOUNT,
+			</if>
+			<if test="accountName != null">
+				ACCOUNTNAME,
+			</if>
+			<if test="contractNo != null">
+				CONTRACTNO,
+			</if>
+			<if test="gasCardTel != null">
+				GASCARDTEL,
+			</if>
+			<if test="gasCardName != null">
+				GASCARDNAME,
+			</if>
+			<if test="channelCode != null">
+				CHANNELCODE,
+			</if>
+			<if test="channelRemark != null">
+				CHANNELREMARK,
+			</if>
+			<if test="portorderId != null">
+				PORTORDERID,
+			</if>
+			<if test="orderId != null">
+				ORDERID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="provId != null">
+				#{provId,jdbcType=VARCHAR},
+			</if>
+			<if test="provName != null">
+				#{provName,jdbcType=VARCHAR},
+			</if>
+			<if test="cityId != null">
+				#{cityId,jdbcType=VARCHAR},
+			</if>
+			<if test="cityName != null">
+				#{cityName,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="payProjectName != null">
+				#{payProjectName,jdbcType=VARCHAR},
+			</if>
+			<if test="chargeCompanyCode != null">
+				#{chargeCompanyCode,jdbcType=VARCHAR},
+			</if>
+			<if test="payUnitName != null">
+				#{payUnitName,jdbcType=VARCHAR},
+			</if>
+			<if test="cardId != null">
+				#{cardId,jdbcType=VARCHAR},
+			</if>
+			<if test="productName != null">
+				#{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="inprice != null">
+				#{inprice,jdbcType=VARCHAR},
+			</if>
+			<if test="cardnum != null">
+				#{cardnum,jdbcType=DECIMAL},
+			</if>
+			<if test="userCode != null">
+				#{userCode,jdbcType=VARCHAR},
+			</if>
+			<if test="account != null">
+				#{account,jdbcType=VARCHAR},
+			</if>
+			<if test="accountName != null">
+				#{accountName,jdbcType=VARCHAR},
+			</if>
+			<if test="contractNo != null">
+				#{contractNo,jdbcType=VARCHAR},
+			</if>
+			<if test="gasCardTel != null">
+				#{gasCardTel,jdbcType=VARCHAR},
+			</if>
+			<if test="gasCardName != null">
+				#{gasCardName,jdbcType=VARCHAR},
+			</if>
+			<if test="channelCode != null">
+				#{channelCode,jdbcType=VARCHAR},
+			</if>
+			<if test="channelRemark != null">
+				#{channelRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="portorderId != null">
+				#{portorderId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderId != null">
+				#{orderId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.AppOrderDetail">
+		update APP_ORDER_DETAIL
+		<set>
+			<if test="provId != null">
+				PROVID = #{provId,jdbcType=VARCHAR},
+			</if>
+			<if test="provName != null">
+				PROVNAME = #{provName,jdbcType=VARCHAR},
+			</if>
+			<if test="cityId != null">
+				CITYID = #{cityId,jdbcType=VARCHAR},
+			</if>
+			<if test="cityName != null">
+				CITYNAME = #{cityName,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				TYPE = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="payProjectName != null">
+				PAYPROJECTNAME = #{payProjectName,jdbcType=VARCHAR},
+			</if>
+			<if test="chargeCompanyCode != null">
+				CHARGECOMPANYCODE = #{chargeCompanyCode,jdbcType=VARCHAR},
+			</if>
+			<if test="payUnitName != null">
+				PAYUNITNAME = #{payUnitName,jdbcType=VARCHAR},
+			</if>
+			<if test="cardId != null">
+				CARDID = #{cardId,jdbcType=VARCHAR},
+			</if>
+			<if test="productName != null">
+				PRODUCTNAME = #{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="inprice != null">
+				INPRICE = #{inprice,jdbcType=VARCHAR},
+			</if>
+			<if test="cardnum != null">
+				CARDNUM = #{cardnum,jdbcType=DECIMAL},
+			</if>
+			<if test="userCode != null">
+				USERCODE = #{userCode,jdbcType=VARCHAR},
+			</if>
+			<if test="account != null">
+				ACCOUNT = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test="accountName != null">
+				ACCOUNTNAME = #{accountName,jdbcType=VARCHAR},
+			</if>
+			<if test="contractNo != null">
+				CONTRACTNO = #{contractNo,jdbcType=VARCHAR},
+			</if>
+			<if test="gasCardTel != null">
+				GASCARDTEL = #{gasCardTel,jdbcType=VARCHAR},
+			</if>
+			<if test="gasCardName != null">
+				GASCARDNAME = #{gasCardName,jdbcType=VARCHAR},
+			</if>
+			<if test="channelCode != null">
+				CHANNELCODE = #{channelCode,jdbcType=VARCHAR},
+			</if>
+			<if test="channelRemark != null">
+				CHANNELREMARK = #{channelRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="portorderId  != null">
+				PORTORDERID = #{portorderId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderId  != null">
+				ORDERID = #{orderId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

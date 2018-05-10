@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapper.PmsWeixinMerchartInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsWeixinMerchartInfo">
+		<id column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+		<result column="MERCHART_ID" property="merchartId" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+		<result column="MERCHART_NAME" property="merchartName"
+			jdbcType="VARCHAR" />
+		<result column="MERCHART_NAME_SORT" property="merchartNameSort"
+			jdbcType="VARCHAR" />
+		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR" />
+		<result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+		<result column="CERT_TYPE" property="certType" jdbcType="VARCHAR" />
+		<result column="CERT_NO" property="certNo" jdbcType="VARCHAR" />
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+		<result column="LOCATION" property="location" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="DECIMAL" />
+		<result column="PRIVATE_KEY" property="privateKey" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="WX_RATE" property="wxRate" jdbcType="VARCHAR" />
+		<result column="ALIPAY_RATE" property="alipayRate" jdbcType="VARCHAR" />
+		<result column="WXT1FEE" property="wxT1Fee" jdbcType="VARCHAR" />
+		<result column="WXT0FEE" property="wxT0Fee" jdbcType="VARCHAR" />
+		<result column="ALIPAYT1FEE" property="alipayT1Fee" jdbcType="VARCHAR" />
+		<result column="ALIPAYT0FEE" property="alipayT0Fee" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+		<result column="SUBCONTRACTID" property="subContractId" jdbcType="VARCHAR" />
+		<result column="blendFee" property="blendFee" jdbcType="VARCHAR" />
+		<result column="standard" property="standard" jdbcType="VARCHAR" />
+		<result column="withdrawDepositRate" property="withdrawDepositRate" jdbcType="VARCHAR" />
+		<result column="withdrawDepositSingleFee" property="withdrawDepositSingleFee" jdbcType="VARCHAR" />
+		<result column="bankCode" property="bankCode" jdbcType="VARCHAR" />
+		<result column="bankAbbr" property="bankAbbr" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+		<result column="blendFee" property="blendFee" jdbcType="VARCHAR" />
+		<result column="standard" property="standard" jdbcType="VARCHAR" />
+		<result column="withdrawDepositRate" property="withdrawDepositRate" jdbcType="VARCHAR" />
+		<result column="withdrawDepositSingleFee" property="withdrawDepositSingleFee" jdbcType="VARCHAR" />
+		<result column="bankCode" property="bankCode" jdbcType="VARCHAR" />
+		<result column="bankAbbr" property="bankAbbr" jdbcType="VARCHAR" />
+		<result column="debitRate" property="debitRate" jdbcType="VARCHAR" />
+		<result column="debitCapAmount" property="debitCapAmount" jdbcType="VARCHAR" />
+		<result column="creditRate" property="creditRate" jdbcType="VARCHAR" />
+		<result column="rateCode" property="rateCode" jdbcType="VARCHAR" />
+		<result column="walletD0" property="walletD0" jdbcType="VARCHAR" />
+		<result column="walletT1" property="walletT1" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ACCOUNT, MERCHART_ID, PASSWORD, REAL_NAME, MERCHART_NAME,
+		MERCHART_NAME_SORT,
+		PHONE,
+		CARD_TYPE, CARD_NO, CERT_TYPE, CERT_NO,
+		MOBILE, LOCATION, STATUS, PRIVATE_KEY,
+		CREATE_DATE,
+		UPDATE_DATE,WX_RATE
+		,ALIPAY_RATE,WXT0FEE,ALIPAYT0FEE,OAGENTNO,SUBCONTRACTID
+		,ALIPAY_RATE,WXT0FEE,ALIPAYT0FEE,OAGENTNO,blendFee,standard,withdrawDepositRate,withdrawDepositSingleFee,bankCode
+		,bankAbbr,debitRate,debitCapAmount,creditRate,rateCode,walletD0,walletT1
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_WEIXIN_MERCHART_INFO
+		where ACCOUNT =
+		#{account,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByEntity" resultMap="BaseResultMap"
+		parameterType="xdt.model.PmsWeixinMerchartInfo">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_WEIXIN_MERCHART_INFO
+		<where>
+			<if test="account!=null">
+				and ACCOUNT = #{account,jdbcType=VARCHAR}
+			</if>
+			<if test="merchartId!=null">
+				and MERCHART_ID = #{merchartId,jdbcType=VARCHAR}
+			</if>
+			<if test="cardNo!=null">
+				and CARD_NO = #{cardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="rateCode!=null">
+				and RATECODE = #{rateCode,jdbcType=VARCHAR}
+			</if>
+			<if test="password !=null">
+				and PASSWORD = #{password,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="selectByCardEntity" resultMap="BaseResultMap"
+		parameterType="xdt.model.PmsWeixinMerchartInfo">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_WEIXIN_MERCHART_INFO
+		<where>
+			<if test="realName!=null">
+				and REAL_NAME = #{realName,jdbcType=VARCHAR}
+			</if>
+			<if test="cardNo!=null">
+				and CARD_NO = #{cardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="certNo!=null">
+				and CERT_NO = #{certNo,jdbcType=VARCHAR}
+			</if>
+			<if test="mobile!=null">
+				and MOBILE = #{mobile,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+<select id="selectList" resultMap="BaseResultMap"
+		parameterType="xdt.model.PmsWeixinMerchartInfo">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_WEIXIN_MERCHART_INFO
+		<where>
+			<if test="account!=null">
+				and ACCOUNT = #{account,jdbcType=VARCHAR}
+			</if>
+			<if test="merchartId!=null">
+				and MERCHART_ID = #{merchartId,jdbcType=VARCHAR}
+			</if>
+			<if test="cardNo!=null">
+				and CARD_NO = #{cardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="rateCode!=null">
+				and RATECODE = #{rateCode,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		PMS_WEIXIN_MERCHART_INFO
+		where ACCOUNT = #{account,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsWeixinMerchartInfo">
+		insert into
+		PMS_WEIXIN_MERCHART_INFO (ACCOUNT, MERCHART_ID, PASSWORD,
+		REAL_NAME,
+		MERCHART_NAME, MERCHART_NAME_SORT,
+		PHONE, CARD_TYPE, CARD_NO,
+		CERT_TYPE, CERT_NO, MOBILE,
+		LOCATION, STATUS, PRIVATE_KEY,
+		CREATE_DATE,
+		UPDATE_DATE)
+		values (#{account,jdbcType=VARCHAR},
+		#{merchartId,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{realName,jdbcType=VARCHAR}, #{merchartName,jdbcType=VARCHAR},
+		#{merchartNameSort,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{cardType,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR},
+		#{certType,jdbcType=VARCHAR}, #{certNo,jdbcType=VARCHAR},
+		#{mobile,jdbcType=VARCHAR},
+		#{location,jdbcType=VARCHAR},
+		#{status,jdbcType=DECIMAL}, #{privateKey,jdbcType=VARCHAR},
+		#{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsWeixinMerchartInfo">
+		insert into PMS_WEIXIN_MERCHART_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="account != null">
+				ACCOUNT,
+			</if>
+			<if test="merchartId != null">
+				MERCHART_ID,
+			</if>
+			<if test="password != null">
+				PASSWORD,
+			</if>
+			<if test="realName != null">
+				REAL_NAME,
+			</if>
+			<if test="merchartName != null">
+				MERCHART_NAME,
+			</if>
+			<if test="merchartNameSort != null">
+				MERCHART_NAME_SORT,
+			</if>
+			<if test="phone != null">
+				PHONE,
+			</if>
+			<if test="cardType != null">
+				CARD_TYPE,
+			</if>
+			<if test="cardNo != null">
+				CARD_NO,
+			</if>
+			<if test="certType != null">
+				CERT_TYPE,
+			</if>
+			<if test="certNo != null">
+				CERT_NO,
+			</if>
+			<if test="mobile != null">
+				MOBILE,
+			</if>
+			<if test="location != null">
+				LOCATION,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="privateKey != null">
+				PRIVATE_KEY,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE,
+			</if>
+			<if test="certCorrect != null">
+				CERT_CORRECT,
+			</if>
+			<if test="pmsBankNo != null">
+				PMS_BANK_NO,
+			</if>
+			<if test="cardOpposite != null">
+				CARD_OPPOSITE,
+			</if>
+			<if test="certMeet != null">
+				CERT_MEET,
+			</if>
+			<if test="cardCorrect != null">
+				CARD_CORRECT,
+			</if>
+			<if test="certOpposite != null">
+				CERT_OPPOSITE,
+			</if>
+			<if test="wxT1Fee != null">
+				WXT1FEE,
+			</if>
+			<if test="wxT0Fee != null">
+				WXT0FEE,
+			</if>
+			<if test="alipayT1Fee != null">
+				ALIPAYT1FEE,
+			</if>
+			<if test="alipayT0Fee != null">
+				ALIPAYT0FEE,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+			<if test="subContractId != null">
+				SUBCONTRACTID,
+			</if>
+			<if test="blendFee != null">
+				blendFee,
+			</if>
+			<if test="standard != null">
+				standard,
+			</if>
+			<if test="withdrawDepositRate != null">
+				withdrawDepositRate,
+			</if>
+			<if test="withdrawDepositSingleFee != null">
+				withdrawDepositSingleFee,
+			</if>
+			<if test="bankAbbr != null">
+				bankAbbr,
+			</if>
+			<if test="debitRate != null">
+				debitRate,
+			</if>
+			<if test="debitCapAmount != null">
+				debitCapAmount,
+			</if>
+			<if test="creditRate != null">
+				creditRate,
+			</if>
+			<if test="rateCode != null">
+				rateCode,
+			</if>
+			<if test="walletD0 != null">
+				walletD0,
+			</if>
+			<if test="walletT1 != null">
+				walletT1,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="account != null">
+				#{account,jdbcType=VARCHAR},
+			</if>
+			<if test="merchartId != null">
+				#{merchartId,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="realName != null">
+				#{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="merchartName != null">
+				#{merchartName,jdbcType=VARCHAR},
+			</if>
+			<if test="merchartNameSort != null">
+				#{merchartNameSort,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="cardType != null">
+				#{cardType,jdbcType=VARCHAR},
+			</if>
+			<if test="cardNo != null">
+				#{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="certType != null">
+				#{certType,jdbcType=VARCHAR},
+			</if>
+			<if test="certNo != null">
+				#{certNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="location != null">
+				#{location,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=DECIMAL},
+			</if>
+			<if test="privateKey != null">
+				#{privateKey,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="certCorrect != null">
+				#{certCorrect,jdbcType=VARCHAR},
+			</if>
+			<if test="pmsBankNo != null">
+				#{pmsBankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="cardOpposite != null">
+				#{cardOpposite,jdbcType=VARCHAR},
+			</if>
+			<if test="certMeet != null">
+				#{certMeet,jdbcType=VARCHAR},
+			</if>
+			<if test="cardCorrect != null">
+				#{cardCorrect,jdbcType=VARCHAR},
+			</if>
+			<if test="certOpposite != null">
+				#{certOpposite,jdbcType=VARCHAR},
+			</if>
+			<if test="wxT1Fee != null">
+				#{wxT1Fee,jdbcType=VARCHAR},
+			</if>
+			<if test="wxT0Fee != null">
+				#{wxT0Fee,jdbcType=VARCHAR},
+			</if>
+			<if test="alipayT1Fee != null">
+				#{alipayT1Fee,jdbcType=VARCHAR},
+			</if>
+			<if test="alipayT0Fee != null">
+				#{alipayT0Fee,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="subContractId != null">
+				#{subContractId,jdbcType=VARCHAR},
+			</if>
+			<if test="blendFee != null">
+				#{blendFee,jdbcType=VARCHAR},
+			</if>
+			<if test="standard != null">
+				#{standard,jdbcType=VARCHAR},
+			</if>
+			<if test="withdrawDepositRate != null">
+				#{withdrawDepositRate,jdbcType=VARCHAR},
+			</if>
+			<if test="withdrawDepositSingleFee != null">
+				#{withdrawDepositSingleFee,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAbbr != null">
+				#{bankAbbr,jdbcType=VARCHAR},
+			</if>
+			<if test="debitRate != null">
+				#{debitRate,jdbcType=VARCHAR},
+			</if>
+			<if test="debitCapAmount != null">
+				#{debitCapAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="creditRate != null">
+				#{creditRate,jdbcType=VARCHAR},
+			</if>
+			<if test="rateCode != null">
+				#{rateCode,jdbcType=VARCHAR},
+			</if>
+			<if test="walletD0 != null">
+				#{walletD0,jdbcType=VARCHAR},
+			</if>
+			<if test="walletT1 != null">
+				#{walletT1,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsWeixinMerchartInfo">
+		update PMS_WEIXIN_MERCHART_INFO
+		<set>
+			<if test="merchartId != null">
+				MERCHART_ID = #{merchartId,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				PASSWORD = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="realName != null">
+				REAL_NAME = #{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="merchartName != null">
+				MERCHART_NAME = #{merchartName,jdbcType=VARCHAR},
+			</if>
+			<if test="merchartNameSort != null">
+				MERCHART_NAME_SORT =
+				#{merchartNameSort,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				PHONE = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="cardType != null">
+				CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+			</if>
+			<if test="cardNo != null">
+				CARD_NO = #{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="certType != null">
+				CERT_TYPE = #{certType,jdbcType=VARCHAR},
+			</if>
+			<if test="certNo != null">
+				CERT_NO = #{certNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				MOBILE = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="location != null">
+				LOCATION = #{location,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=DECIMAL},
+			</if>
+			<if test="privateKey != null">
+				PRIVATE_KEY = #{privateKey,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="alipayRate != null">
+				ALIPAY_RATE = #{alipayRate,jdbcType=VARCHAR},
+			</if>
+			<if test="wxRate != null">
+				WX_RATE = #{wxRate,jdbcType=VARCHAR},
+			</if>
+			<if test="blendFee != null">
+				blendFee= #{blendFee,jdbcType=VARCHAR},
+			</if>
+			<if test="standard != null">
+				standard= #{standard,jdbcType=VARCHAR},
+			</if>
+			<if test="withdrawDepositRate != null">
+				withdrawDepositRate =#{withdrawDepositRate,jdbcType=VARCHAR},
+			</if>
+			<if test="withdrawDepositSingleFee != null">
+				withdrawDepositSingleFee =#{withdrawDepositSingleFee,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAbbr != null">
+				bankAbbr =#{bankAbbr,jdbcType=VARCHAR},
+			</if>
+			<if test="debitRate != null">
+				debitRate =#{debitRate,jdbcType=VARCHAR},
+			</if>
+			<if test="debitCapAmount != null">
+				debitCapAmount =#{debitCapAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="creditRate != null">
+				creditRate =#{creditRate,jdbcType=VARCHAR},
+			</if>
+			<if test="walletD0 != null">
+				walletD0 =#{walletD0,jdbcType=VARCHAR},
+			</if>
+			<if test="walletT1 != null">
+				walletT1 =#{walletT1,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ACCOUNT = #{account,jdbcType=VARCHAR} and rateCode =#{rateCode,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsWeixinMerchartInfo">
+		update
+		PMS_WEIXIN_MERCHART_INFO
+		set MERCHART_ID =
+		#{merchartId,jdbcType=VARCHAR},
+		PASSWORD =
+		#{password,jdbcType=VARCHAR},
+		REAL_NAME = #{realName,jdbcType=VARCHAR},
+		MERCHART_NAME = #{merchartName,jdbcType=VARCHAR},
+		MERCHART_NAME_SORT =
+		#{merchartNameSort,jdbcType=VARCHAR},
+		PHONE =
+		#{phone,jdbcType=VARCHAR},
+		CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+		CARD_NO = #{cardNo,jdbcType=VARCHAR},
+		CERT_TYPE =
+		#{certType,jdbcType=VARCHAR},
+		CERT_NO = #{certNo,jdbcType=VARCHAR},
+		MOBILE = #{mobile,jdbcType=VARCHAR},
+		LOCATION =
+		#{location,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=DECIMAL},
+		PRIVATE_KEY = #{privateKey,jdbcType=VARCHAR},
+		CREATE_DATE =
+		#{createDate,jdbcType=TIMESTAMP},
+		UPDATE_DATE =
+		#{updateDate,jdbcType=TIMESTAMP},
+		RATE = #{rate,jdbcType=VARCHAR}
+		where
+		ACCOUNT = #{account,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByMerchartId" parameterType="xdt.model.PmsWeixinMerchartInfo">
+		update PMS_WEIXIN_MERCHART_INFO
+		<set>
+			<if test="customerNum != null">
+				CUSTOMERNUM = #{customerNum,jdbcType=VARCHAR},
+			</if>
+			<if test="apiKey != null">
+				APIKEY = #{apiKey,jdbcType=VARCHAR}
+			</if>
+
+		</set>
+		where MERCHART_ID = #{merchartId,jdbcType=VARCHAR}
+	</update>
+	<!-- 代付补款D0 -->
+	<update id="updataPay"  parameterType="java.util.Map">
+		update PMS_WEIXIN_MERCHART_INFO t set t.walletd0=(select to_number(m.walletd0) from PMS_WEIXIN_MERCHART_INFO m where m.account=#{account,jdbcType=VARCHAR} and m.merchart_id=#{machId,jdbcType=VARCHAR})+ to_number(#{payMoney,jdbcType=VARCHAR}) where t.account=#{account,jdbcType=VARCHAR} and t.merchart_id=#{machId,jdbcType=VARCHAR}
+	</update>
+	<!-- 代付补款T0 -->
+	<update id="updataPayT1"  parameterType="java.util.Map">
+		update PMS_WEIXIN_MERCHART_INFO t set t.walletT1=(select to_number(m.walletT1) from PMS_WEIXIN_MERCHART_INFO m where m.account=#{account,jdbcType=VARCHAR} and m.merchart_id=#{machId,jdbcType=VARCHAR})+ to_number(#{payMoney,jdbcType=VARCHAR}) where t.account=#{account,jdbcType=VARCHAR} and t.merchart_id=#{machId,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 代付扣款D0 -->
+	<update id="updataD0"  parameterType="java.util.Map">
+		update PMS_WEIXIN_MERCHART_INFO t set t.walletd0=(select to_number(m.walletd0) from PMS_WEIXIN_MERCHART_INFO m where m.account=#{account,jdbcType=VARCHAR} and m.merchart_id=#{machId,jdbcType=VARCHAR})- to_number(#{payMoney,jdbcType=VARCHAR})-((select to_number(m.withdrawdepositsinglefee) from PMS_WEIXIN_MERCHART_INFO m where m.account=#{account,jdbcType=VARCHAR} and m.merchart_id=#{machId,jdbcType=VARCHAR}))-((select to_number(r.withdrawdepositrate) from PMS_WEIXIN_MERCHART_INFO r where r.account=#{account,jdbcType=VARCHAR} and r.merchart_id=#{machId,jdbcType=VARCHAR})* to_number(#{payMoney,jdbcType=VARCHAR})) where t.account=#{account,jdbcType=VARCHAR} and t.merchart_id=#{machId,jdbcType=VARCHAR}
+	</update>
+	<!-- 代付扣款T1 -->
+	<update id="updataT1"  parameterType="java.util.Map">
+		update PMS_WEIXIN_MERCHART_INFO t set t.walletT1=(select to_number(m.walletT1) from PMS_WEIXIN_MERCHART_INFO m where m.account=#{account,jdbcType=VARCHAR} and m.merchart_id=#{machId,jdbcType=VARCHAR})- to_number(#{payMoney,jdbcType=VARCHAR})-((select to_number(m.withdrawdepositsinglefee) from PMS_WEIXIN_MERCHART_INFO m where m.account=#{account,jdbcType=VARCHAR} and m.merchart_id=#{machId,jdbcType=VARCHAR}))-((select to_number(r.withdrawdepositrate) from PMS_WEIXIN_MERCHART_INFO r where r.account=#{account,jdbcType=VARCHAR} and r.merchart_id=#{machId,jdbcType=VARCHAR})* to_number(#{payMoney,jdbcType=VARCHAR})) where t.account=#{account,jdbcType=VARCHAR} and t.merchart_id=#{machId,jdbcType=VARCHAR}
+	</update>
+	
+</mapper>

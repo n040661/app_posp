@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/task 
+       http://www.springframework.org/schema/task/spring-task-3.0.xsd
+   ">
+   
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:config.properties" />
+	<!-- service包(自动注入) -->
+	<context:component-scan base-package="xdt.service" />
+	<!-- dao包(自动注入) -->
+	<context:component-scan base-package="xdt.dao" />
+	<!-- xdt.offi 包(自动注入) -->
+	<context:component-scan base-package="xdt.offi" />
+	<!-- encode包(自动注入) -->
+	<context:component-scan base-package="xdt.encode" />
+	<!-- upload包(自动注入) -->
+	<context:component-scan base-package="xdt.upload" />
+	<!-- schedule 包(自动注入) -->
+	<context:component-scan base-package="xdt.schedule" />
+	<!-- servlet 包(自动注入) -->
+	<context:component-scan base-package="xdt.servlet" />
+	<!-- aspect 包(自动注入) -->
+	<context:component-scan base-package="xdt.aspect" />
+	<!-- mobao 包（自动注入） -->
+	<context:component-scan base-package="xdt.quickpay.mobao" />
+	<context:component-scan base-package="xdt.pufa" />
+	
+	<!-- 构造初始化BeenCloud -->
+	<!-- <bean id="beenCloud" init-method="init" class="xdt.quickpay.beencloud.BeenCloud">
+		<constructor-arg type="java.lang.String" value="c5d1cba1-5e3f-4ba0-941d-9b0a371fe719"/>
+		<constructor-arg type="java.lang.String" value="4bfdd244-574d-4bf3-b034-0c751ed34fee"/>
+		<constructor-arg type="java.lang.String" value="39a7a518-9ac8-4a9e-87bc-7885f33cf18c"/>
+		<constructor-arg type="java.lang.String" value="e14ae2db-608c-4f8b-b863-c8c18953eef2"/>
+		<constructor-arg type="java.lang.String" value="81facd62-23bf-4608-b528-75949d68b980"/>
+		<constructor-arg type="java.lang.String" value="f04690e4-908d-4707-8dfb-6de4ac1d176a"/>
+		<constructor-arg type="java.lang.String" value="fef63ce3-cc84-40b4-8083-807b07e69f7c"/>
+		<constructor-arg type="java.lang.String" value="e01b7efd-1bd1-456b-9706-bdebe596fadc"/>
+	</bean> -->
+	
+		<!-- <bean id="user" class="xdt.aspect.PayTiming" />
+	  <task:scheduled-tasks>
+	后面的是1分中執行一次0 0/1 * * * ? 3分钟执行一次
+	<task:scheduled ref="user" method="PayTimingSelect"
+		cron="0/3 * * * * ? " />  
+    	  	
+	</task:scheduled-tasks>
+		<bean id="user1" class="xdt.aspect.JsTimeTask" />
+	  <task:scheduled-tasks>  
+	  后面的是1分中執行一次0 0/1 * * * ? 3分钟执行一次
+    	<task:scheduled ref="user1" method="JsTimeSelect" cron="0/1 * * * * ? " />  
+    	  	
+	</task:scheduled-tasks> 
+	 <bean id="user2" class="xdt.aspect.PayeasyTimeTask" />
+	  <task:scheduled-tasks>  
+	  后面的是1分中執行一次0 0/1 * * * ? 3分钟执行一次
+    	<task:scheduled ref="user2" method="payTimeSelect" cron="0/30 * * * * ? " />  
+    	  	
+	</task:scheduled-tasks>
+	<bean id="user3" class="xdt.aspect.PayeasyDaifuTimeTask" />
+	  <task:scheduled-tasks>  
+	  后面的是1分中執行一次0 0/1 * * * ? 3分钟执行一次
+    	<task:scheduled ref="user3" method="daifuTimeSelect" cron="0/3 * * * * ? " />  
+    	  	
+	</task:scheduled-tasks> 
+<bean id="user4" class="xdt.aspect.YilianTime" />
+	  <task:scheduled-tasks>  
+	  后面的是1分中執行一次0 0/1 * * * ? 3分钟执行一次
+    	<task:scheduled ref="user4" method="yilianSelect" cron="0/3 * * * * ? " />  
+    	  	
+	</task:scheduled-tasks>
+	<bean id="user5" class="xdt.aspect.PayeasyDaifuTimeTask2"/>
+	  <task:scheduled-tasks>  
+	  后面的是1分中執行一次0 0/1 * * * ? 3分钟执行一次
+    	<task:scheduled ref="user5" method="daifuTimeSelect" cron="0/3 * * * * ? " />  
+    	  	
+	</task:scheduled-tasks> -->
+	<!--
+	  <bean id="user6" class="xdt.aspect.CJPayTiming" />
+	   <task:scheduled-tasks>
+	<task:scheduled ref="user6" method="CJPayTimingSelect"
+		cron="0 0/1 * * * ? " />  
+	</task:scheduled-tasks>  
+	 <task:scheduled-tasks>
+	<task:scheduled ref="user6" method="CJTimingSelect"
+		cron="0 0/10 * * * ? " />  
+    	  	
+	</task:scheduled-tasks>  -->
+	
+</beans>

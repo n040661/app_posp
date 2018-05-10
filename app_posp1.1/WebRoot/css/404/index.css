@@ -1,0 +1,22 @@
+/* @CHARSET "UTF-8"; */
+* {
+	margin: auto;
+	padding: 0px;
+	font-size: 18px;
+}
+#total{
+	width: 700px;
+	height: 500px;
+	/* border: 1px solid red;  */
+}
+#one,#two,#three{
+	width: 700px;
+	height: 500px;
+	/* border: 1px solid #333; */
+	padding-top:50px;
+}
+h1{
+	padding-left: 150px;
+	color: red;
+	font-size: 24px;
+}

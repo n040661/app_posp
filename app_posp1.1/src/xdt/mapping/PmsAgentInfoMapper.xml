@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsAgentInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsAgentInfo">
+		<id column="AGENT_ID" jdbcType="DECIMAL" property="agentId" />
+		<result column="AGENT_NUMBER" jdbcType="VARCHAR" property="agentNumber" />
+		<result column="AGENT_NAME" jdbcType="VARCHAR" property="agentName" />
+		<result column="AGENT_CREATE_PERSON" jdbcType="VARCHAR"
+			property="agentCreatePerson" />
+		<result column="AGENT_CREATE_DATE" jdbcType="VARCHAR" property="agentCreateDate" />
+		<result column="AGENT_TYPE" jdbcType="VARCHAR" property="agentType" />
+		<result column="AGENT_LEVEL" jdbcType="VARCHAR" property="agentLevel" />
+		<result column="AGENT_STATUS" jdbcType="DECIMAL" property="agentStatus" />
+		<result column="AGENT_ADDRESS" jdbcType="VARCHAR" property="agentAddress" />
+		<result column="REGIST_ADDRESS" jdbcType="VARCHAR" property="registAddress" />
+		<result column="REGIST_TYPE" jdbcType="VARCHAR" property="registType" />
+		<result column="REGIST_MONEY" jdbcType="VARCHAR" property="registMoney" />
+		<result column="ORGAN_CODE" jdbcType="VARCHAR" property="organCode" />
+		<result column="LICENSE_ISSUE_DATE" jdbcType="VARCHAR"
+			property="licenseIssueDate" />
+		<result column="LICENSE_MATURITY_DATE" jdbcType="VARCHAR"
+			property="licenseMaturityDate" />
+		<result column="BUSINESS_LICENSE_NUMBER" jdbcType="VARCHAR"
+			property="businessLicenseNumber" />
+		<result column="ACCOUNT_BANK" jdbcType="VARCHAR" property="accountBank" />
+		<result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+		<result column="BANK_ACCOUNT_NUMBER" jdbcType="VARCHAR"
+			property="bankAccountNumber" />
+		<result column="TRANSACTION_SYSTEM_NUMBER" jdbcType="VARCHAR"
+			property="transactionSystemNumber" />
+		<result column="CORPORATION_NAME" jdbcType="VARCHAR" property="corporationName" />
+		<result column="CORPORATION_PHONE" jdbcType="VARCHAR" property="corporationPhone" />
+		<result column="CORPORATION_LANDLINE" jdbcType="VARCHAR"
+			property="corporationLandline" />
+		<result column="CORPORATION_IDEN_NUMBER" jdbcType="VARCHAR"
+			property="corporationIdenNumber" />
+		<result column="CUSTOM_AREA" jdbcType="VARCHAR" property="customArea" />
+		<result column="REMOVETAG" jdbcType="DECIMAL" property="removetag" />
+		<result column="USER_NO" jdbcType="VARCHAR" property="userNo" />
+		<result column="KEK1" jdbcType="VARCHAR" property="kek1" />
+		<result column="KEK2" jdbcType="VARCHAR" property="kek2" />
+		<result column="KEK3" jdbcType="VARCHAR" property="kek3" />
+		<result column="LIMIT_IP" jdbcType="VARCHAR" property="limitIp" />
+		<result column="PARENTID" jdbcType="DECIMAL" property="parentid" />
+		<result column="KYACCOUNT" jdbcType="VARCHAR" property="kyaccount" />
+		<result column="COPY_AGENT_NUMBER" jdbcType="VARCHAR" property="copyAgentNumber" />
+		<result column="OAGENTNO" property="oAgentNo" />
+		<result column="clear_type" property="clearType" />
+		<result column="lowestSettleRate" property="lowestSettleRate" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		AGENT_ID, AGENT_NUMBER, AGENT_NAME, AGENT_CREATE_PERSON, AGENT_CREATE_DATE,
+		AGENT_TYPE,
+		AGENT_LEVEL, AGENT_STATUS, AGENT_ADDRESS, REGIST_ADDRESS, REGIST_TYPE,
+		REGIST_MONEY,
+		ORGAN_CODE, LICENSE_ISSUE_DATE, LICENSE_MATURITY_DATE, BUSINESS_LICENSE_NUMBER,
+		ACCOUNT_BANK,
+		ACCOUNT_NAME, BANK_ACCOUNT_NUMBER, TRANSACTION_SYSTEM_NUMBER, CORPORATION_NAME,
+		CORPORATION_PHONE,
+		CORPORATION_LANDLINE, CORPORATION_IDEN_NUMBER, CUSTOM_AREA, REMOVETAG, USER_NO, KEK1,
+		KEK2, KEK3, LIMIT_IP, PARENTID, KYACCOUNT,
+		COPY_AGENT_NUMBER,OAGENTNO,clear_type,lowestSettleRate
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_AGENT_INFO
+		where AGENT_ID = #{agentId,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_AGENT_INFO
+		where AGENT_ID = #{agentId,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsAgentInfo">
+		insert into PMS_AGENT_INFO (AGENT_ID, AGENT_NUMBER, AGENT_NAME,
+		AGENT_CREATE_PERSON, AGENT_CREATE_DATE, AGENT_TYPE,
+		AGENT_LEVEL, AGENT_STATUS, AGENT_ADDRESS,
+		REGIST_ADDRESS, REGIST_TYPE, REGIST_MONEY,
+		ORGAN_CODE, LICENSE_ISSUE_DATE, LICENSE_MATURITY_DATE,
+		BUSINESS_LICENSE_NUMBER, ACCOUNT_BANK, ACCOUNT_NAME,
+		BANK_ACCOUNT_NUMBER, TRANSACTION_SYSTEM_NUMBER,
+		CORPORATION_NAME, CORPORATION_PHONE, CORPORATION_LANDLINE,
+		CORPORATION_IDEN_NUMBER, CUSTOM_AREA, REMOVETAG,
+		USER_NO, KEK1, KEK2,
+		KEK3, LIMIT_IP, PARENTID,
+		KYACCOUNT, COPY_AGENT_NUMBER,clear_type,lowestSettleRate)
+		values (#{agentId,jdbcType=DECIMAL}, #{agentNumber,jdbcType=VARCHAR},
+		#{agentName,jdbcType=VARCHAR},
+		#{agentCreatePerson,jdbcType=VARCHAR}, #{agentCreateDate,jdbcType=VARCHAR}, #{agentType,jdbcType=VARCHAR},
+		#{agentLevel,jdbcType=VARCHAR}, #{agentStatus,jdbcType=DECIMAL},
+		#{agentAddress,jdbcType=VARCHAR},
+		#{registAddress,jdbcType=VARCHAR}, #{registType,jdbcType=VARCHAR}, #{registMoney,jdbcType=VARCHAR},
+		#{organCode,jdbcType=VARCHAR}, #{licenseIssueDate,jdbcType=VARCHAR},
+		#{licenseMaturityDate,jdbcType=VARCHAR},
+		#{businessLicenseNumber,jdbcType=VARCHAR},
+		#{accountBank,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR},
+		#{bankAccountNumber,jdbcType=VARCHAR},
+		#{transactionSystemNumber,jdbcType=VARCHAR},
+		#{corporationName,jdbcType=VARCHAR},
+		#{corporationPhone,jdbcType=VARCHAR},
+		#{corporationLandline,jdbcType=VARCHAR},
+		#{corporationIdenNumber,jdbcType=VARCHAR},
+		#{customArea,jdbcType=VARCHAR}, #{removetag,jdbcType=DECIMAL},
+		#{userNo,jdbcType=VARCHAR}, #{kek1,jdbcType=VARCHAR},
+		#{kek2,jdbcType=VARCHAR},
+		#{kek3,jdbcType=VARCHAR}, #{limitIp,jdbcType=VARCHAR}, #{parentid,jdbcType=DECIMAL},
+		#{kyaccount,jdbcType=VARCHAR}, #{copyAgentNumber,jdbcType=VARCHAR},
+		#{clearType,jdbcType=VARCHAR}, #{lowestSettleRate,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsAgentInfo">
+		insert into PMS_AGENT_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="agentId != null">
+				AGENT_ID,
+			</if>
+			<if test="agentNumber != null">
+				AGENT_NUMBER,
+			</if>
+			<if test="agentName != null">
+				AGENT_NAME,
+			</if>
+			<if test="agentCreatePerson != null">
+				AGENT_CREATE_PERSON,
+			</if>
+			<if test="agentCreateDate != null">
+				AGENT_CREATE_DATE,
+			</if>
+			<if test="agentType != null">
+				AGENT_TYPE,
+			</if>
+			<if test="agentLevel != null">
+				AGENT_LEVEL,
+			</if>
+			<if test="agentStatus != null">
+				AGENT_STATUS,
+			</if>
+			<if test="agentAddress != null">
+				AGENT_ADDRESS,
+			</if>
+			<if test="registAddress != null">
+				REGIST_ADDRESS,
+			</if>
+			<if test="registType != null">
+				REGIST_TYPE,
+			</if>
+			<if test="registMoney != null">
+				REGIST_MONEY,
+			</if>
+			<if test="organCode != null">
+				ORGAN_CODE,
+			</if>
+			<if test="licenseIssueDate != null">
+				LICENSE_ISSUE_DATE,
+			</if>
+			<if test="licenseMaturityDate != null">
+				LICENSE_MATURITY_DATE,
+			</if>
+			<if test="businessLicenseNumber != null">
+				BUSINESS_LICENSE_NUMBER,
+			</if>
+			<if test="accountBank != null">
+				ACCOUNT_BANK,
+			</if>
+			<if test="accountName != null">
+				ACCOUNT_NAME,
+			</if>
+			<if test="bankAccountNumber != null">
+				BANK_ACCOUNT_NUMBER,
+			</if>
+			<if test="transactionSystemNumber != null">
+				TRANSACTION_SYSTEM_NUMBER,
+			</if>
+			<if test="corporationName != null">
+				CORPORATION_NAME,
+			</if>
+			<if test="corporationPhone != null">
+				CORPORATION_PHONE,
+			</if>
+			<if test="corporationLandline != null">
+				CORPORATION_LANDLINE,
+			</if>
+			<if test="corporationIdenNumber != null">
+				CORPORATION_IDEN_NUMBER,
+			</if>
+			<if test="customArea != null">
+				CUSTOM_AREA,
+			</if>
+			<if test="removetag != null">
+				REMOVETAG,
+			</if>
+			<if test="userNo != null">
+				USER_NO,
+			</if>
+			<if test="kek1 != null">
+				KEK1,
+			</if>
+			<if test="kek2 != null">
+				KEK2,
+			</if>
+			<if test="kek3 != null">
+				KEK3,
+			</if>
+			<if test="limitIp != null">
+				LIMIT_IP,
+			</if>
+			<if test="parentid != null">
+				PARENTID,
+			</if>
+			<if test="kyaccount != null">
+				KYACCOUNT,
+			</if>
+			<if test="copyAgentNumber != null">
+				COPY_AGENT_NUMBER,
+			</if>
+			<if test="clearType != null">
+				clear_type,
+			</if>
+			<if test="lowestSettleRate != null">
+				LOWESTSETTLERATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="agentId != null">
+				#{agentId,jdbcType=DECIMAL},
+			</if>
+			<if test="agentNumber != null">
+				#{agentNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="agentName != null">
+				#{agentName,jdbcType=VARCHAR},
+			</if>
+			<if test="agentCreatePerson != null">
+				#{agentCreatePerson,jdbcType=VARCHAR},
+			</if>
+			<if test="agentCreateDate != null">
+				#{agentCreateDate,jdbcType=VARCHAR},
+			</if>
+			<if test="agentType != null">
+				#{agentType,jdbcType=VARCHAR},
+			</if>
+			<if test="agentLevel != null">
+				#{agentLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="agentStatus != null">
+				#{agentStatus,jdbcType=DECIMAL},
+			</if>
+			<if test="agentAddress != null">
+				#{agentAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="registAddress != null">
+				#{registAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="registType != null">
+				#{registType,jdbcType=VARCHAR},
+			</if>
+			<if test="registMoney != null">
+				#{registMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="organCode != null">
+				#{organCode,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseIssueDate != null">
+				#{licenseIssueDate,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseMaturityDate != null">
+				#{licenseMaturityDate,jdbcType=VARCHAR},
+			</if>
+			<if test="businessLicenseNumber != null">
+				#{businessLicenseNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="accountBank != null">
+				#{accountBank,jdbcType=VARCHAR},
+			</if>
+			<if test="accountName != null">
+				#{accountName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccountNumber != null">
+				#{bankAccountNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="transactionSystemNumber != null">
+				#{transactionSystemNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="corporationName != null">
+				#{corporationName,jdbcType=VARCHAR},
+			</if>
+			<if test="corporationPhone != null">
+				#{corporationPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="corporationLandline != null">
+				#{corporationLandline,jdbcType=VARCHAR},
+			</if>
+			<if test="corporationIdenNumber != null">
+				#{corporationIdenNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="customArea != null">
+				#{customArea,jdbcType=VARCHAR},
+			</if>
+			<if test="removetag != null">
+				#{removetag,jdbcType=DECIMAL},
+			</if>
+			<if test="userNo != null">
+				#{userNo,jdbcType=VARCHAR},
+			</if>
+			<if test="kek1 != null">
+				#{kek1,jdbcType=VARCHAR},
+			</if>
+			<if test="kek2 != null">
+				#{kek2,jdbcType=VARCHAR},
+			</if>
+			<if test="kek3 != null">
+				#{kek3,jdbcType=VARCHAR},
+			</if>
+			<if test="limitIp != null">
+				#{limitIp,jdbcType=VARCHAR},
+			</if>
+			<if test="parentid != null">
+				#{parentid,jdbcType=DECIMAL},
+			</if>
+			<if test="kyaccount != null">
+				#{kyaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="copyAgentNumber != null">
+				#{copyAgentNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="clearType != null">
+				#{clearType,jdbcType=VARCHAR},
+			</if>
+			<if test="lowestSettleRate != null">
+				#{lowestSettleRate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsAgentInfo">
+		update PMS_AGENT_INFO
+		<set>
+			<if test="agentNumber != null">
+				AGENT_NUMBER = #{agentNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="agentName != null">
+				AGENT_NAME = #{agentName,jdbcType=VARCHAR},
+			</if>
+			<if test="agentCreatePerson != null">
+				AGENT_CREATE_PERSON = #{agentCreatePerson,jdbcType=VARCHAR},
+			</if>
+			<if test="agentCreateDate != null">
+				AGENT_CREATE_DATE = #{agentCreateDate,jdbcType=VARCHAR},
+			</if>
+			<if test="agentType != null">
+				AGENT_TYPE = #{agentType,jdbcType=VARCHAR},
+			</if>
+			<if test="agentLevel != null">
+				AGENT_LEVEL = #{agentLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="agentStatus != null">
+				AGENT_STATUS = #{agentStatus,jdbcType=DECIMAL},
+			</if>
+			<if test="agentAddress != null">
+				AGENT_ADDRESS = #{agentAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="registAddress != null">
+				REGIST_ADDRESS = #{registAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="registType != null">
+				REGIST_TYPE = #{registType,jdbcType=VARCHAR},
+			</if>
+			<if test="registMoney != null">
+				REGIST_MONEY = #{registMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="organCode != null">
+				ORGAN_CODE = #{organCode,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseIssueDate != null">
+				LICENSE_ISSUE_DATE = #{licenseIssueDate,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseMaturityDate != null">
+				LICENSE_MATURITY_DATE = #{licenseMaturityDate,jdbcType=VARCHAR},
+			</if>
+			<if test="businessLicenseNumber != null">
+				BUSINESS_LICENSE_NUMBER = #{businessLicenseNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="accountBank != null">
+				ACCOUNT_BANK = #{accountBank,jdbcType=VARCHAR},
+			</if>
+			<if test="accountName != null">
+				ACCOUNT_NAME = #{accountName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccountNumber != null">
+				BANK_ACCOUNT_NUMBER = #{bankAccountNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="transactionSystemNumber != null">
+				TRANSACTION_SYSTEM_NUMBER = #{transactionSystemNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="corporationName != null">
+				CORPORATION_NAME = #{corporationName,jdbcType=VARCHAR},
+			</if>
+			<if test="corporationPhone != null">
+				CORPORATION_PHONE = #{corporationPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="corporationLandline != null">
+				CORPORATION_LANDLINE = #{corporationLandline,jdbcType=VARCHAR},
+			</if>
+			<if test="corporationIdenNumber != null">
+				CORPORATION_IDEN_NUMBER = #{corporationIdenNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="customArea != null">
+				CUSTOM_AREA = #{customArea,jdbcType=VARCHAR},
+			</if>
+			<if test="removetag != null">
+				REMOVETAG = #{removetag,jdbcType=DECIMAL},
+			</if>
+			<if test="userNo != null">
+				USER_NO = #{userNo,jdbcType=VARCHAR},
+			</if>
+			<if test="kek1 != null">
+				KEK1 = #{kek1,jdbcType=VARCHAR},
+			</if>
+			<if test="kek2 != null">
+				KEK2 = #{kek2,jdbcType=VARCHAR},
+			</if>
+			<if test="kek3 != null">
+				KEK3 = #{kek3,jdbcType=VARCHAR},
+			</if>
+			<if test="limitIp != null">
+				LIMIT_IP = #{limitIp,jdbcType=VARCHAR},
+			</if>
+			<if test="parentid != null">
+				PARENTID = #{parentid,jdbcType=DECIMAL},
+			</if>
+			<if test="kyaccount != null">
+				KYACCOUNT = #{kyaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="copyAgentNumber != null">
+				COPY_AGENT_NUMBER = #{copyAgentNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="cleartype != null">
+				clear_type = #{clearType,jdbcType=VARCHAR},
+			</if>
+			<if test="lowestSettleRate != null">
+				lowestSettleRate = #{lowestSettleRate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where AGENT_ID = #{agentId,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsAgentInfo">
+		update PMS_AGENT_INFO
+		set AGENT_NUMBER = #{agentNumber,jdbcType=VARCHAR},
+		AGENT_NAME = #{agentName,jdbcType=VARCHAR},
+		AGENT_CREATE_PERSON = #{agentCreatePerson,jdbcType=VARCHAR},
+		AGENT_CREATE_DATE = #{agentCreateDate,jdbcType=VARCHAR},
+		AGENT_TYPE = #{agentType,jdbcType=VARCHAR},
+		AGENT_LEVEL = #{agentLevel,jdbcType=VARCHAR},
+		AGENT_STATUS = #{agentStatus,jdbcType=DECIMAL},
+		AGENT_ADDRESS = #{agentAddress,jdbcType=VARCHAR},
+		REGIST_ADDRESS = #{registAddress,jdbcType=VARCHAR},
+		REGIST_TYPE = #{registType,jdbcType=VARCHAR},
+		REGIST_MONEY = #{registMoney,jdbcType=VARCHAR},
+		ORGAN_CODE = #{organCode,jdbcType=VARCHAR},
+		LICENSE_ISSUE_DATE = #{licenseIssueDate,jdbcType=VARCHAR},
+		LICENSE_MATURITY_DATE = #{licenseMaturityDate,jdbcType=VARCHAR},
+		BUSINESS_LICENSE_NUMBER = #{businessLicenseNumber,jdbcType=VARCHAR},
+		ACCOUNT_BANK = #{accountBank,jdbcType=VARCHAR},
+		ACCOUNT_NAME = #{accountName,jdbcType=VARCHAR},
+		BANK_ACCOUNT_NUMBER = #{bankAccountNumber,jdbcType=VARCHAR},
+		TRANSACTION_SYSTEM_NUMBER = #{transactionSystemNumber,jdbcType=VARCHAR},
+		CORPORATION_NAME = #{corporationName,jdbcType=VARCHAR},
+		CORPORATION_PHONE = #{corporationPhone,jdbcType=VARCHAR},
+		CORPORATION_LANDLINE = #{corporationLandline,jdbcType=VARCHAR},
+		CORPORATION_IDEN_NUMBER = #{corporationIdenNumber,jdbcType=VARCHAR},
+		CUSTOM_AREA = #{customArea,jdbcType=VARCHAR},
+		REMOVETAG = #{removetag,jdbcType=DECIMAL},
+		USER_NO = #{userNo,jdbcType=VARCHAR},
+		KEK1 = #{kek1,jdbcType=VARCHAR},
+		KEK2 = #{kek2,jdbcType=VARCHAR},
+		KEK3 = #{kek3,jdbcType=VARCHAR},
+		LIMIT_IP = #{limitIp,jdbcType=VARCHAR},
+		PARENTID = #{parentid,jdbcType=DECIMAL},
+		KYACCOUNT = #{kyaccount,jdbcType=VARCHAR},
+		COPY_AGENT_NUMBER = #{copyAgentNumber,jdbcType=VARCHAR},
+		clear_type = #{clearType,jdbcType=VARCHAR},
+		lowestSettleRate = #{lowestSettleRate,jdbcType=VARCHAR}
+		where AGENT_ID = #{agentId,jdbcType=DECIMAL}
+	</update>
+
+
+	<select id="selectByAgentNum" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_AGENT_INFO
+		where AGENT_NUMBER = #{agentNum,jdbcType=DECIMAL}
+	</select>
+
+
+	<select id="selectOagentByMercNum" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from PMS_AGENT_INFO
+		where PARENTID = 0 and agent_level = 0
+		and oagentno = (select ss.oagentno from pms_merchant_info ss where
+		ss.merc_id =#{mercNum,jdbcType=VARCHAR})
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="xdt.model.PmsAgentInfo">
+		select * from pms_agent_info
+		<where>
+			<if test="corporationName !=null  and  corporationName!=''">
+				and corporation_name=#{corporationName}
+			</if>
+			<if
+				test="transactionSystemNumber !=null  and  transactionSystemNumber!=''">
+				and transaction_system_number=#{transactionSystemNumber}
+			</if>
+			<if test="registAddress !=null  and  registAddress!=''">
+				and regist_address=#{registAddress}
+			</if>
+			<if test="licenseMaturityDate !=null  and  licenseMaturityDate!=''">
+				and license_maturity_date=#{licenseMaturityDate}
+			</if>
+			<if test="customArea !=null  and  customArea!=''">
+				and custom_area=#{customArea}
+			</if>
+			<if test="bankAccountNumber !=null  and  bankAccountNumber!=''">
+				and bank_account_number=#{bankAccountNumber}
+			</if>
+			<if test="agentStatus !=null  and  agentStatus!=''">
+				and agent_status=#{agentStatus}
+			</if>
+			<if test="removetag !=null ">
+				and removetag=#{removetag}
+			</if>
+			<if test="licenseIssueDate !=null  and  licenseIssueDate!=''">
+				and license_issue_date=#{licenseIssueDate}
+			</if>
+			<if test="agentAddress !=null  and  agentAddress!=''">
+				and agent_address=#{agentAddress}
+			</if>
+			<if test="agentCreatePerson !=null  and  agentCreatePerson!=''">
+				and agent_create_person=#{agentCreatePerson}
+			</if>
+			<if test="agentLevel !=null  and  agentLevel!=''">
+				and agent_level=#{agentLevel}
+			</if>
+			<if test="organCode !=null  and  organCode!=''">
+				and organ_code=#{organCode}
+			</if>
+			<if test="accountBank !=null  and  accountBank!=''">
+				and account_bank=#{accountBank}
+			</if>
+			<if test="registType !=null  and  registType!=''">
+				and regist_type=#{registType}
+			</if>
+			<if test="agentId !=null  and  agentId!=''">
+				and agent_id=#{agentId}
+			</if>
+			<if test="corporationPhone !=null  and  corporationPhone!=''">
+				and corporation_phone=#{corporationPhone}
+			</if>
+			<if test="registMoney !=null  and  registMoney!=''">
+				and regist_money=#{registMoney}
+			</if>
+			<if test="corporationLandline !=null  and  corporationLandline!=''">
+				and corporation_landline=#{corporationLandline}
+			</if>
+			<if test="accountName !=null  and  accountName!=''">
+				and account_name=#{accountName}
+			</if>
+			<if test="agentType !=null  and  agentType!=''">
+				and agent_type=#{agentType}
+			</if>
+			<if test="corporationIdenNumber !=null  and  corporationIdenNumber!=''">
+				and corporation_iden_number=#{corporationIdenNumber}
+			</if>
+			<if test="agentName !=null  and  agentName!=''">
+				and agent_name=#{agentName}
+			</if>
+			<if test="agentNumber !=null  and  agentNumber!=0">
+				and agent_number=#{agentNumber}
+			</if>
+			<if test="businessLicenseNumber !=null  and  businessLicenseNumber!=''">
+				and business_license_number=#{businessLicenseNumber}
+			</if>
+			<if test="agentCreateDate !=null  and  agentCreateDate!=''">
+				and agent_create_date=#{agentCreateDate}
+			</if>
+			<if test="userNo !=null  and  userNo!=''">
+				and user_no=#{userNo}
+			</if>
+			<if test="kek1 !=null  and  kek1!=''">
+				and kek1=#{kek1}
+			</if>
+			<if test="kek2 !=null  and  kek2!=''">
+				and kek2=#{kek2}
+			</if>
+			<if test="kek3 !=null  and  kek3!=''">
+				and kek3=#{kek3}
+			</if>
+			<if test="parentid !=null ">
+				and parentid=#{parentid}
+			</if>
+			<if test="kyaccount !=null  and  kyaccount!=''">
+				and kyaccount=#{kyaccount}
+			</if>
+			<if test="oAgentNo !=null  and  oAgentNo!=''">
+				and OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}
+			</if>
+			<if test="clearType !=null  and  clearType!=''">
+				and clear_type = #{clearType,jdbcType=VARCHAR}
+			</if>
+			<if test="lowestSettleRate !=null  and  lowestSettleRate!=''">
+				and lowestSettleRate =
+				#{lowestSettleRate,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getOAgent" resultMap="BaseResultMap" parameterType="xdt.model.PmsAgentInfo">
+		select * from PMS_AGENT_INFO
+		where PARENTID = 0
+		start with AGENT_NUMBER
+		= #{agentNumber,jdbcType=VARCHAR}
+		connect by prior PARENTID = AGENT_ID
+	</select>
+	<select id="getOAgentByOagentNo" resultMap="BaseResultMap"
+		parameterType="xdt.model.PmsAgentInfo">
+		select * from PMS_AGENT_INFO
+		where PARENTID = 0
+		and
+		oAgentNo = #{oAgentNo,jdbcType=VARCHAR}
+
+	</select>
+</mapper>

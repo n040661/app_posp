@@ -1,0 +1,37 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<base href="<%=basePath%>">
+
+<title>测试</title>
+
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="This is my page">
+<script src="<%=basePath%>/js/jquery-2.0.0.js"></script>
+</head>
+
+<body>
+	<fieldset>
+		<legend>测试列表</legend>
+		<ul>
+		<li><a href="<%=basePath%>/pay/qianlong/register.jsp">注册</a></li>
+		<li><a href="<%=basePath%>/pay/qianlong/validate.jsp">验证</a></li>
+		<li><a href="<%=basePath%>/pay/qianlong/smallBusiness.jsp">支付</a></li>
+		<li><a href="<%=basePath%>/pay/qianlong/solidcode.jsp">固态码</a></li>
+		<li><a href="<%=basePath%>/pay/qianlong/query.jsp">查询清算结果</a></li>
+	</ul>
+	</fieldset>
+
+</body>
+</html>

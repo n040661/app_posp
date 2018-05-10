@@ -1,0 +1,1052 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsAppTransInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsAppTransInfo">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="PAYMENTTYPE" property="paymenttype" jdbcType="VARCHAR" />
+		<result column="TRADETYPE" property="tradetype" jdbcType="VARCHAR" />
+		<result column="TRADETIME" property="tradetime" jdbcType="VARCHAR" />
+		<result column="ORDERID" property="orderid" jdbcType="VARCHAR" />
+		<result column="PHONENUMBERTYPE" property="phonenumbertype"
+			jdbcType="VARCHAR" />
+		<result column="PAYAMOUNT" property="payamount" jdbcType="VARCHAR" />
+		<result column="PREPAIDPHONENUMBER" property="prepaidphonenumber"
+			jdbcType="VARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="VARCHAR" />
+		<result column="BANKCARDNAME" property="bankcardname" jdbcType="VARCHAR" />
+		<result column="MERCNAME" property="mercname" jdbcType="VARCHAR" />
+		<result column="BANKNAME" property="bankname" jdbcType="VARCHAR" />
+		<result column="SHORTBANKCARDNUMBER" property="shortbankcardnumber"
+			jdbcType="VARCHAR" />
+		<result column="PAYEENAME" property="payeename" jdbcType="VARCHAR" />
+		<result column="REASONOFPAYMENT" property="reasonofpayment"
+			jdbcType="VARCHAR" />
+		<result column="PREPAIDCOMEONCARDCOMPANY" property="prepaidcomeoncardcompany"
+			jdbcType="VARCHAR" />
+		<result column="COMEONKAKA" property="comeonkaka" jdbcType="VARCHAR" />
+		<result column="MERCID" property="mercid" jdbcType="VARCHAR" />
+		<result column="POUNDAGE" property="poundage" jdbcType="VARCHAR" />
+		<result column="FACTAMOUNT" property="factamount" jdbcType="VARCHAR" />
+		<result column="URL" property="url" jdbcType="VARCHAR" />
+		<result column="RESPONSESTATE" property="responsestate"
+			jdbcType="VARCHAR" />
+		<result column="PAYMENTCODE" property="paymentcode" jdbcType="VARCHAR" />
+		<result column="TRADETYPECODE" property="tradetypecode"
+			jdbcType="VARCHAR" />
+		<result column="BANKNO" property="bankno" jdbcType="VARCHAR" />
+		<result column="CREDITCARDNUMBER" property="creditcardnumber"
+			jdbcType="VARCHAR" />
+		<result column="PORTORDERID" property="portorderid" jdbcType="VARCHAR" />
+		<result column="FINISHTIME" property="finishtime" jdbcType="VARCHAR" />
+		<result column="ORDERAMOUNT" property="orderamount" jdbcType="VARCHAR" />
+
+
+		<result column="RATE" property="rate" jdbcType="VARCHAR" />
+		<result column="RESULT_CODE" property="resultCode" jdbcType="VARCHAR" />
+		<result column="DRAW_MONEY_TYPE" property="drawMoneyType"
+			jdbcType="VARCHAR" />
+		<result column="THIRD_PART_RESULT_CODE" property="thirdPartResultCode"
+			jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="PERSONAL_PAY" property="personalPay" jdbcType="VARCHAR" />
+		<result column="BRUSHTYPE" property="brushType" jdbcType="VARCHAR" />
+		<result column="SNNO" property="snNO" jdbcType="VARCHAR" />
+		<result column="ACCOUNTINGFLAG" property="accountingFlag"
+			jdbcType="VARCHAR" />
+		<result column="SERIALNO" property="serialNo" jdbcType="VARCHAR" />
+		<result column="BUSINESSNUM" property="businessNum" jdbcType="VARCHAR" />
+		<result column="CHANNELNUM" property="channelNum" jdbcType="VARCHAR" />
+		<result column="SEARCHNUM" property="searchNum" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+		<result column="AUTHPATH" property="authPath" jdbcType="VARCHAR" />
+		<result column="ALTLAT" property="altLat" jdbcType="VARCHAR" />
+		<result column="GPSADDRESS" property="gpsAddress" jdbcType="VARCHAR" />
+		<result column="CERTNO" jdbcType="VARCHAR" property="certNo" />
+		<result column="TOKEN" jdbcType="VARCHAR" property="token" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PAYMENTTYPE, TRADETYPE, TRADETIME, ORDERID,
+		PHONENUMBERTYPE,
+		PAYAMOUNT, PREPAIDPHONENUMBER,
+		AMOUNT, BANKCARDNAME,
+		MERCNAME, BANKNAME, SHORTBANKCARDNUMBER, PAYEENAME,
+		REASONOFPAYMENT,
+		PREPAIDCOMEONCARDCOMPANY, COMEONKAKA, MERCID, POUNDAGE, FACTAMOUNT,
+		URL, RESPONSESTATE,
+		PAYMENTCODE, TRADETYPECODE, BANKNO,
+		CREDITCARDNUMBER, PORTORDERID,
+		FINISHTIME, ORDERAMOUNT, RATE,
+		RESULT_CODE, DRAW_MONEY_TYPE, THIRD_PART_RESULT_CODE, STATUS,
+		PERSONAL_PAY,
+		BRUSHTYPE, SNNO,
+		ACCOUNTINGFLAG,
+		SERIALNO,BUSINESSNUM,CHANNELNUM,SEARCHNUM,OAGENTNO,AUTHPATH,ALTLAT,GPSADDRESS,CERTNO,TOKEN
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_APP_TRANS_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from
+		PMS_APP_TRANS_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsAppTransInfo">
+		insert into PMS_APP_TRANS_INFO
+		(ID, PAYMENTTYPE, TRADETYPE,
+		TRADETIME, ORDERID, PHONENUMBERTYPE,
+		PAYAMOUNT, PREPAIDPHONENUMBER, AMOUNT,
+		BANKCARDNAME, MERCNAME,
+		BANKNAME,
+		SHORTBANKCARDNUMBER, PAYEENAME, REASONOFPAYMENT,
+		PREPAIDCOMEONCARDCOMPANY, COMEONKAKA, MERCID,
+		POUNDAGE, FACTAMOUNT,
+		URL,
+		RESPONSESTATE, PAYMENTCODE, TRADETYPECODE,
+		BANKNO,
+		CREDITCARDNUMBER, PORTORDERID,
+		FINISHTIME, ORDERAMOUNT,RATE,
+		RESULT_CODE, DRAW_MONEY_TYPE, THIRD_PART_RESULT_CODE, STATUS,
+		PERSONAL_PAY,
+		BRUSHTYPE, SNNO,
+		ACCOUNTINGFLAG,
+		SERIALNO,BUSINESSNUM,CHANNELNUM,SEARCHNUM,OAGENTNO,AUTHPATH,ALTLAT,GPSADDRESS,CERTNO,TOKEN
+		)
+		values (#{id,jdbcType=DECIMAL}, #{paymenttype,jdbcType=VARCHAR},
+		#{tradetype,jdbcType=VARCHAR},
+		#{tradetime,jdbcType=VARCHAR},
+		#{orderid,jdbcType=VARCHAR}, #{phonenumbertype,jdbcType=VARCHAR},
+		#{payamount,jdbcType=VARCHAR}, #{prepaidphonenumber,jdbcType=VARCHAR},
+		#{amount,jdbcType=VARCHAR},
+		#{bankcardname,jdbcType=VARCHAR},
+		#{mercname,jdbcType=VARCHAR}, #{bankname,jdbcType=VARCHAR},
+		#{shortbankcardnumber,jdbcType=VARCHAR},
+		#{payeename,jdbcType=VARCHAR}, #{reasonofpayment,jdbcType=VARCHAR},
+		#{prepaidcomeoncardcompany,jdbcType=VARCHAR},
+		#{comeonkaka,jdbcType=VARCHAR}, #{mercid,jdbcType=VARCHAR},
+		#{poundage,jdbcType=VARCHAR}, #{factamount,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR},
+		#{responsestate,jdbcType=VARCHAR},
+		#{paymentcode,jdbcType=VARCHAR}, #{tradetypecode,jdbcType=VARCHAR},
+		#{bankno,jdbcType=VARCHAR}, #{creditcardnumber,jdbcType=VARCHAR},
+		#{portorderid,jdbcType=VARCHAR},
+		#{finishtime,jdbcType=VARCHAR},
+		#{orderamount,jdbcType=VARCHAR}, #{rate,jdbcType=VARCHAR},
+		#{resultCode,jdbcType=VARCHAR}, #{drawMoneyType,jdbcType=VARCHAR},
+		#{thirdPartResultCode,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
+		#{personalPay,jdbcType=VARCHAR}, #{brushType,jdbcType=VARCHAR},
+		#{snNO,jdbcType=VARCHAR}, #{accountingFlag,jdbcType=VARCHAR},
+		#{serialNo,jdbcType=VARCHAR},
+		#{businessNum,jdbcType=VARCHAR},
+		#{channelNum,jdbcType=VARCHAR}, #{searchNum,jdbcType=VARCHAR},
+		#{oAgentNo,jdbcType=VARCHAR}, #{authPath,jdbcType=VARCHAR},
+		#{altLat,jdbcType=VARCHAR}, #{gpsAddress,jdbcType=VARCHAR},
+		#{certNo,jdbcType=VARCHAR},#{token,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsAppTransInfo">
+		insert into PMS_APP_TRANS_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="paymenttype != null">
+				PAYMENTTYPE,
+			</if>
+			<if test="tradetype != null">
+				TRADETYPE,
+			</if>
+			<if test="tradetime != null">
+				TRADETIME,
+			</if>
+			<if test="orderid != null">
+				ORDERID,
+			</if>
+			<if test="phonenumbertype != null">
+				PHONENUMBERTYPE,
+			</if>
+			<if test="payamount != null">
+				PAYAMOUNT,
+			</if>
+			<if test="prepaidphonenumber != null">
+				PREPAIDPHONENUMBER,
+			</if>
+			<if test="amount != null">
+				AMOUNT,
+			</if>
+			<if test="bankcardname != null">
+				BANKCARDNAME,
+			</if>
+			<if test="mercname != null">
+				MERCNAME,
+			</if>
+			<if test="bankname != null">
+				BANKNAME,
+			</if>
+			<if test="shortbankcardnumber != null">
+				SHORTBANKCARDNUMBER,
+			</if>
+			<if test="payeename != null">
+				PAYEENAME,
+			</if>
+			<if test="reasonofpayment != null">
+				REASONOFPAYMENT,
+			</if>
+			<if test="prepaidcomeoncardcompany != null">
+				PREPAIDCOMEONCARDCOMPANY,
+			</if>
+			<if test="comeonkaka != null">
+				COMEONKAKA,
+			</if>
+			<if test="mercid != null">
+				MERCID,
+			</if>
+			<if test="poundage != null">
+				POUNDAGE,
+			</if>
+			<if test="factamount != null">
+				FACTAMOUNT,
+			</if>
+			<if test="url != null">
+				URL,
+			</if>
+			<if test="responsestate != null">
+				RESPONSESTATE,
+			</if>
+			<if test="paymentcode != null">
+				PAYMENTCODE,
+			</if>
+			<if test="tradetypecode != null">
+				TRADETYPECODE,
+			</if>
+			<if test="bankno != null">
+				BANKNO,
+			</if>
+			<if test="creditcardnumber != null">
+				CREDITCARDNUMBER,
+			</if>
+			<if test="portorderid != null">
+				PORTORDERID,
+			</if>
+			<if test="finishtime != null">
+				FINISHTIME,
+			</if>
+			<if test="orderamount != null">
+				ORDERAMOUNT,
+			</if>
+			<if test="rate != null">
+				RATE,
+			</if>
+			<if test="resultCode != null">
+				RESULT_CODE,
+			</if>
+			<if test="drawMoneyType != null">
+				DRAW_MONEY_TYPE,
+			</if>
+			<if test="thirdPartResultCode != null">
+				THIRD_PART_RESULT_CODE,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="personalPay != null">
+				PERSONAL_PAY,
+			</if>
+			<if test="brushType != null">
+				BRUSHTYPE,
+			</if>
+			<if test="snNO != null">
+				SNNO,
+			</if>
+			<if test="accountingFlag != null">
+				ACCOUNTINGFLAG,
+			</if>
+			<if test="serialNo != null">
+				SERIALNO,
+			</if>
+			<if test="businessNum != null">
+				BUSINESSNUM,
+			</if>
+			<if test="channelNum != null">
+				CHANNELNUM,
+			</if>
+			<if test="searchNum != null">
+				SEARCHNUM,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+			<if test="authPath != null">
+				AUTHPATH,
+			</if>
+			<if test="altLat != null">
+				ALTLAT,
+			</if>
+			<if test="SettlementState != null">
+				SETTLEMENTSTATE,
+			</if>
+			<if test="SettlementPeriod != null">
+				SETTLEMENTPERIOD,
+			</if>
+			<if test="gpsAddress != null">
+				gpsAddress,
+			</if>
+			<if test="certNo != null">
+				CERTNO,
+			</if>
+			<if test="token != null">
+				TOKEN,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="paymenttype != null">
+				#{paymenttype,jdbcType=VARCHAR},
+			</if>
+			<if test="tradetype != null">
+				#{tradetype,jdbcType=VARCHAR},
+			</if>
+			<if test="tradetime != null">
+				#{tradetime,jdbcType=VARCHAR},
+			</if>
+			<if test="orderid != null">
+				#{orderid,jdbcType=VARCHAR},
+			</if>
+			<if test="phonenumbertype != null">
+				#{phonenumbertype,jdbcType=VARCHAR},
+			</if>
+			<if test="payamount != null">
+				#{payamount,jdbcType=VARCHAR},
+			</if>
+			<if test="prepaidphonenumber != null">
+				#{prepaidphonenumber,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcardname != null">
+				#{bankcardname,jdbcType=VARCHAR},
+			</if>
+			<if test="mercname != null">
+				#{mercname,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				#{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardnumber != null">
+				#{shortbankcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="payeename != null">
+				#{payeename,jdbcType=VARCHAR},
+			</if>
+			<if test="reasonofpayment != null">
+				#{reasonofpayment,jdbcType=VARCHAR},
+			</if>
+			<if test="prepaidcomeoncardcompany != null">
+				#{prepaidcomeoncardcompany,jdbcType=VARCHAR},
+			</if>
+			<if test="comeonkaka != null">
+				#{comeonkaka,jdbcType=VARCHAR},
+			</if>
+			<if test="mercid != null">
+				#{mercid,jdbcType=VARCHAR},
+			</if>
+			<if test="poundage != null">
+				#{poundage,jdbcType=VARCHAR},
+			</if>
+			<if test="factamount != null">
+				#{factamount,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="responsestate != null">
+				#{responsestate,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentcode != null">
+				#{paymentcode,jdbcType=VARCHAR},
+			</if>
+			<if test="tradetypecode != null">
+				#{tradetypecode,jdbcType=VARCHAR},
+			</if>
+			<if test="bankno != null">
+				#{bankno,jdbcType=VARCHAR},
+			</if>
+			<if test="creditcardnumber != null">
+				#{creditcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="portorderid != null">
+				#{portorderid,jdbcType=VARCHAR},
+			</if>
+			<if test="finishtime != null">
+				#{finishtime,jdbcType=VARCHAR},
+			</if>
+			<if test="orderamount != null">
+				#{orderamount,jdbcType=VARCHAR},
+			</if>
+			<if test="rate != null">
+				#{rate,jdbcType=VARCHAR},
+			</if>
+			<if test="resultCode != null">
+				#{resultCode,jdbcType=VARCHAR},
+			</if>
+			<if test="drawMoneyType != null">
+				#{drawMoneyType,jdbcType=VARCHAR},
+			</if>
+			<if test="thirdPartResultCode != null">
+				#{thirdPartResultCode,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="personalPay != null">
+				#{personalPay,jdbcType=VARCHAR},
+			</if>
+			<if test="brushType != null">
+				#{brushType,jdbcType=VARCHAR},
+			</if>
+			<if test="snNO != null">
+				#{snNO,jdbcType=VARCHAR},
+			</if>
+			<if test="accountingFlag != null">
+				#{accountingFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="serialNo != null">
+				#{serialNo,jdbcType=VARCHAR},
+			</if>
+			<if test="businessNum != null">
+				#{businessNum,jdbcType=VARCHAR},
+			</if>
+			<if test="channelNum != null">
+				#{channelNum,jdbcType=VARCHAR},
+			</if>
+			<if test="searchNum != null">
+				#{searchNum,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="authPath != null">
+				#{authPath,jdbcType=VARCHAR},
+			</if>
+			<if test="altLat != null">
+				#{altLat,jdbcType=VARCHAR},
+			</if>
+			<if test="SettlementState != null">
+				#{SettlementState,jdbcType=VARCHAR},
+			</if>
+			<if test="SettlementPeriod != null">
+				#{SettlementPeriod,jdbcType=VARCHAR},
+			</if>
+			<if test="gpsAddress != null">
+				#{gpsAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="certNo != null">
+				#{certNo,jdbcType=VARCHAR},
+			</if>
+			<if test="token != null">
+				#{token,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsAppTransInfo">
+		update PMS_APP_TRANS_INFO
+		<set>
+			<if test="paymenttype != null">
+				PAYMENTTYPE = #{paymenttype,jdbcType=VARCHAR},
+			</if>
+			<if test="tradetype != null">
+				TRADETYPE = #{tradetype,jdbcType=VARCHAR},
+			</if>
+			<if test="tradetime != null">
+				TRADETIME = #{tradetime,jdbcType=VARCHAR},
+			</if>
+			<if test="orderid != null">
+				ORDERID = #{orderid,jdbcType=VARCHAR},
+			</if>
+			<if test="phonenumbertype != null">
+				PHONENUMBERTYPE = #{phonenumbertype,jdbcType=VARCHAR},
+			</if>
+			<if test="payamount != null">
+				PAYAMOUNT = #{payamount,jdbcType=VARCHAR},
+			</if>
+			<if test="prepaidphonenumber != null">
+				PREPAIDPHONENUMBER =
+				#{prepaidphonenumber,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				AMOUNT = #{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcardname != null">
+				BANKCARDNAME = #{bankcardname,jdbcType=VARCHAR},
+			</if>
+			<if test="mercname != null">
+				MERCNAME = #{mercname,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				BANKNAME = #{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardnumber != null">
+				SHORTBANKCARDNUMBER =
+				#{shortbankcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="payeename != null">
+				PAYEENAME = #{payeename,jdbcType=VARCHAR},
+			</if>
+			<if test="reasonofpayment != null">
+				REASONOFPAYMENT = #{reasonofpayment,jdbcType=VARCHAR},
+			</if>
+			<if test="prepaidcomeoncardcompany != null">
+				PREPAIDCOMEONCARDCOMPANY =
+				#{prepaidcomeoncardcompany,jdbcType=VARCHAR},
+			</if>
+			<if test="comeonkaka != null">
+				COMEONKAKA = #{comeonkaka,jdbcType=VARCHAR},
+			</if>
+			<if test="mercid != null">
+				MERCID = #{mercid,jdbcType=VARCHAR},
+			</if>
+			<if test="poundage != null">
+				POUNDAGE = #{poundage,jdbcType=VARCHAR},
+			</if>
+			<if test="factamount != null">
+				FACTAMOUNT = #{factamount,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				URL = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="responsestate != null">
+				RESPONSESTATE = #{responsestate,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentcode != null">
+				PAYMENTCODE = #{paymentcode,jdbcType=VARCHAR},
+			</if>
+			<if test="tradetypecode != null">
+				TRADETYPECODE = #{tradetypecode,jdbcType=VARCHAR},
+			</if>
+			<if test="bankno != null">
+				BANKNO = #{bankno,jdbcType=VARCHAR},
+			</if>
+			<if test="creditcardnumber != null">
+				CREDITCARDNUMBER = #{creditcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="portorderid != null">
+				PORTORDERID = #{portorderid,jdbcType=VARCHAR},
+			</if>
+			<if test="finishtime != null">
+				FINISHTIME = #{finishtime,jdbcType=VARCHAR},
+			</if>
+			<if test="orderamount != null">
+				ORDERAMOUNT = #{orderamount,jdbcType=VARCHAR},
+			</if>
+			<if test="rate != null">
+				RATE = #{rate,jdbcType=VARCHAR},
+			</if>
+			<if test="resultCode != null">
+				RESULT_CODE = #{resultCode,jdbcType=VARCHAR},
+			</if>
+			<if test="drawMoneyType != null">
+				DRAW_MONEY_TYPE = #{drawMoneyType,jdbcType=VARCHAR},
+			</if>
+			<if test="thirdPartResultCode != null">
+				THIRD_PART_RESULT_CODE =
+				#{thirdPartResultCode,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="personalPay != null">
+				PERSONAL_PAY = #{personalPay,jdbcType=VARCHAR},
+			</if>
+			<if test="brushType != null">
+				BRUSHTYPE = #{brushType,jdbcType=VARCHAR},
+			</if>
+			<if test="snNO != null">
+				SNNO = #{snNO,jdbcType=VARCHAR},
+			</if>
+			<if test="accountingFlag != null">
+				ACCOUNTINGFLAG = #{accountingFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="serialNo != null">
+				SERIALNO = #{serialNo,jdbcType=VARCHAR},
+			</if>
+			<if test="businessNum != null">
+				BUSINESSNUM = #{businessNum,jdbcType=VARCHAR},
+			</if>
+			<if test="channelNum != null">
+				CHANNELNUM = #{channelNum,jdbcType=VARCHAR},
+			</if>
+			<if test="searchNum != null">
+				SEARCHNUM = #{searchNum,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="authPath != null">
+				AUTHPATH = #{authPath,jdbcType=VARCHAR},
+			</if>
+			<if test="altLat != null">
+				ALTLAT = #{altLat,jdbcType=VARCHAR},
+			</if>
+			<if test="gpsAddress != null">
+				gpsAddress = #{gpsAddress,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsAppTransInfo">
+		update
+		PMS_APP_TRANS_INFO
+		set PAYMENTTYPE = #{paymenttype,jdbcType=VARCHAR},
+		TRADETYPE = #{tradetype,jdbcType=VARCHAR},
+		TRADETIME =
+		#{tradetime,jdbcType=VARCHAR},
+		ORDERID = #{orderid,jdbcType=VARCHAR},
+		PHONENUMBERTYPE = #{phonenumbertype,jdbcType=VARCHAR},
+		PAYAMOUNT =
+		#{payamount,jdbcType=VARCHAR},
+		PREPAIDPHONENUMBER =
+		#{prepaidphonenumber,jdbcType=VARCHAR},
+		AMOUNT =
+		#{amount,jdbcType=VARCHAR},
+		BANKCARDNAME =
+		#{bankcardname,jdbcType=VARCHAR},
+		MERCNAME =
+		#{mercname,jdbcType=VARCHAR},
+		BANKNAME = #{bankname,jdbcType=VARCHAR},
+		SHORTBANKCARDNUMBER = #{shortbankcardnumber,jdbcType=VARCHAR},
+		PAYEENAME = #{payeename,jdbcType=VARCHAR},
+		REASONOFPAYMENT =
+		#{reasonofpayment,jdbcType=VARCHAR},
+		PREPAIDCOMEONCARDCOMPANY =
+		#{prepaidcomeoncardcompany,jdbcType=VARCHAR},
+		COMEONKAKA =
+		#{comeonkaka,jdbcType=VARCHAR},
+		MERCID = #{mercid,jdbcType=VARCHAR},
+		POUNDAGE = #{poundage,jdbcType=VARCHAR},
+		FACTAMOUNT =
+		#{factamount,jdbcType=VARCHAR},
+		URL = #{url,jdbcType=VARCHAR},
+		RESPONSESTATE = #{responsestate,jdbcType=VARCHAR},
+		PAYMENTCODE =
+		#{paymentcode,jdbcType=VARCHAR},
+		TRADETYPECODE =
+		#{tradetypecode,jdbcType=VARCHAR},
+		BANKNO = #{bankno,jdbcType=VARCHAR},
+		CREDITCARDNUMBER = #{creditcardnumber,jdbcType=VARCHAR},
+		PORTORDERID =
+		#{portorderid,jdbcType=VARCHAR},
+		FINISHTIME =
+		#{finishtime,jdbcType=VARCHAR},
+		ORDERAMOUNT =
+		#{orderamount,jdbcType=VARCHAR},
+		RATE = #{rate,jdbcType=VARCHAR},
+		RESULT_CODE = #{resultCode,jdbcType=VARCHAR},
+		DRAW_MONEY_TYPE =
+		#{drawMoneyType,jdbcType=VARCHAR},
+		THIRD_PART_RESULT_CODE =
+		#{thirdPartResultCode,jdbcType=VARCHAR},
+		STATUS =
+		#{status,jdbcType=VARCHAR},
+		PERSONAL_PAY =
+		#{personalPay,jdbcType=VARCHAR},
+		BRUSHTYPE =
+		#{brushType,jdbcType=VARCHAR},
+		SNNO = #{snNO,jdbcType=VARCHAR},
+		ACCOUNTINGFLAG = #{accountingFlag,jdbcType=VARCHAR},
+		SERIALNO =
+		#{serialNo,jdbcType=VARCHAR},
+		BUSINESSNUM =
+		#{businessNum,jdbcType=VARCHAR},
+		CHANNELNUM =
+		#{channelNum,jdbcType=VARCHAR},
+		SEARCHNUM =
+		#{searchNum,jdbcType=VARCHAR},
+		OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}
+		AUTHPATH = #{authPath,jdbcType=VARCHAR,
+		ALTLAT =
+		#{altLat,jdbcType=VARCHAR},
+		gpsAddress = #{gpsAddress,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 根据交易号查询交易信息 -->
+	<select id="selectByOrderId" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_APP_TRANS_INFO t where t.ORDERID =
+		#{orderId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 更新第三方响应码的值 -->
+	<select id="updateResponseCode" parameterType="java.util.HashMap">
+		update
+		PMS_APP_TRANS_INFO t set t.RESPONSESTATE =
+		#{responseStatus,jdbcType=VARCHAR}
+		where t.ORDERID =
+		#{orderid,jdbcType=VARCHAR}
+	</select>
+
+
+	<!-- 更新讯联响应码和批次号的值 -->
+	<select id="updateXLResponseCode" parameterType="java.util.HashMap">
+		update PMS_APP_TRANS_INFO t set t.RESPONSESTATE =
+		#{responseStatus,jdbcType=VARCHAR},t.SERIALNO =
+		#{serialNo,jdbcType=VARCHAR},
+		t.SEARCHNUM =
+		#{searchNum,jdbcType=VARCHAR}
+
+		<if test="tradeTime != null and tradeTime != ''">
+			,t.TRADETIME = #{tradeTime,jdbcType=VARCHAR}
+		</if>
+
+		where t.ORDERID = #{orderid,jdbcType=VARCHAR}
+	</select>
+
+
+	<!-- 我的账单列表 -->
+	<select id="selectMyBillList" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_APP_TRANS_INFO t where t.MERCID = #{mercId}
+		<if test="startTime != null and endTime != null">
+			and t.tradetime between #{startTime} and #{endTime}
+		</if>
+		<if test="paymentType != null">
+			AND PAYMENTTYPE = #{paymentType,jdbcType=VARCHAR}
+		</if>
+		<if test="tradeType != null">
+			AND TRADETYPECODE = #{tradeType,jdbcType=VARCHAR}
+		</if>
+		order by t.id desc
+
+	</select>
+
+	<!-- 根据银行卡及日期查询交易记录 -->
+	<select id="selectByDate" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_APP_TRANS_INFO t where t.MERCID = #{mercId} and
+		t.TRADETYPECODE = #{businessCode} and t.bankno = #{bankCardNumber} and
+		t.tradetime between #{startTime} and #{endTime} and t.STATUS!=3 order
+		by t.id desc
+	</select>
+
+	<!-- 查询当天状态为 null/200（初始），2（平台支付中（百度，支付宝....），4（平台支付完成，等待调用通道支付），5（通道等待支付（欧飞...））） 
+		并且非5分钟之内产生的数据 @author Jeff -->
+	<select id="selecNeedCallBack" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_APP_TRANS_INFO t where
+		to_char(to_date(t.tradetime,'yyyy-mm-dd
+		hh24:mi:ss'),'yyyy-mm-dd')=to_char(sysdate,'yyyy-mm-dd')
+		and
+		TO_NUMBER(sysdate - to_date(t.tradetime,'yyyy-mm-dd hh24:mi:ss'))* 24
+		* 60 &gt; 5
+		and t.status in (200,2,4,5)
+	</select>
+
+
+	<!-- 根据订单号查询订单状态和是否已经修改过余额 wumeng 20150528 -->
+	<select id="selectAccountingFlagAndStatus" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select ACCOUNTINGFLAG , STATUS from PMS_APP_TRANS_INFO
+		where ORDERID =
+		#{orderid,jdbcType=VARCHAR}
+	</select>
+
+
+	<!-- 修改订单是否已经修改过余额标记 -->
+	<select id="updateOrderAccountingFlag" parameterType="java.lang.String">
+		update
+		PMS_APP_TRANS_INFO set ACCOUNTINGFLAG = '1'
+		where ORDERID =
+		#{orderid,jdbcType=VARCHAR}
+	</select>
+
+
+	<resultMap id="transLatestData" type="xdt.model.TransLatestData">
+		<result column="TIMESTR" jdbcType="VARCHAR" property="dateStr" />
+		<result column="TIMESTRTRADE" jdbcType="VARCHAR" property="dateStrTrade" />
+		<result column="AMOUNTSUM" jdbcType="VARCHAR" property="amountSum" />
+		<result column="POUNDAGESUM" jdbcType="DOUBLE" property="poundageSum" />
+	</resultMap>
+	<!--查找最近处理的三十天的数据 -->
+	<select id="selectLatestDayData" resultMap="transLatestData"
+		parameterType="java.util.HashMap">
+
+		select *
+		from (select *
+		from (select substr(t.tradetime, 0, 10) as
+		timestr,
+		sum(t.factamount) as amountsum,
+		sum(t.poundage) as poundagesum
+		from pms_app_trans_info t where
+		t.status = '0' and t.tradetypecode !=
+		'7'
+		<if test="mercid != null">
+			and t.mercid = #{mercid,jdbcType=VARCHAR}
+		</if>
+		<if test="paymentcode != null">
+			and t.paymentcode= #{paymentcode,jdbcType=VARCHAR}
+		</if>
+		<if test="tradetypecode != null">
+			and t.tradetypecode= #{tradetypecode,jdbcType=VARCHAR}
+		</if>
+
+		group by substr(t.tradetime, 0, 10))
+		order by timestr desc)
+		where rownum
+		&lt;= #{dates,jdbcType=INTEGER}
+
+	</select>
+
+
+	<select id="selectLatestData" resultMap="BaseResultMap"
+		parameterType="java.util.HashMap">
+		SELECT * FROM (SELECT A.*, ROWNUM RN FROM (
+		select * from
+		(select * from
+		PMS_APP_TRANS_INFO t where
+		t.tradetypecode != '7'
+		<if test="mercid != null">
+			and t.mercid = #{mercid,jdbcType=VARCHAR}
+		</if>
+		<if test="paymentcode != null">
+			and t.paymentcode= #{paymentcode,jdbcType=VARCHAR}
+		</if>
+		<if test="tradetypecode != null">
+			and t.tradetypecode= #{tradetypecode,jdbcType=VARCHAR}
+		</if>
+
+		and substr(tradetime,0,10)
+		between #{beginDate,jdbcType=VARCHAR} and
+		#{endDate,jdbcType=VARCHAR} order
+		by t.tradetime desc)
+		)A WHERE ROWNUM
+		&lt;= 1* (#{pageNum}*#{pageSize}))
+		WHERE RN &gt;=
+		(#{pageNum}-1)*#{pageSize}+1
+	</select>
+
+	<select id="selectLatestCountData" resultType="java.lang.Integer"
+		parameterType="java.util.HashMap">
+		SELECT count(*) FROM PMS_APP_TRANS_INFO t
+		WHERE
+		t.tradetypecode != '7'
+		<if test="mercid != null">
+			and t.mercid = #{mercid,jdbcType=VARCHAR}
+		</if>
+		<if test="paymentcode != null">
+			and t.paymentcode= #{paymentcode,jdbcType=VARCHAR}
+		</if>
+		<if test="tradetypecode != null">
+			and t.tradetypecode= #{tradetypecode,jdbcType=VARCHAR}
+		</if>
+
+		and substr(t.tradetime,0,10) between #{beginDate,jdbcType=VARCHAR} and
+		#{endDate,jdbcType=VARCHAR}
+	</select>
+
+	<!--近N天的数据统计分页 -->
+	<select id="selectLatestDayDataPage" resultMap="transLatestData"
+		parameterType="java.util.HashMap">
+
+		SELECT * FROM (SELECT A.*, ROWNUM RN FROM (
+		select * from
+		(select *
+		from
+		(select *
+		from (select substr(t.finishtime, 0, 10) as
+		timestr,substr(t.tradetime, 0,
+		10) as timestrtrade,
+		sum(t.factamount) as
+		amountsum,
+		sum(t.poundage) as poundagesum
+		from pms_app_trans_info t
+		where
+		t.status = '0' and t.tradetypecode = '7'
+		and t.mercid =
+		#{mercid,jdbcType=VARCHAR}
+		<if test="beginMonth != null and endMonth != null">
+			and substr(t.finishtime, 0, 7) between
+			#{beginMonth,jdbcType=VARCHAR}
+			and #{endMonth,jdbcType=VARCHAR}
+		</if>
+		group by substr(t.finishtime, 0, 10), substr(t.tradetime, 0, 10))
+		order by timestr desc
+		)
+		)
+		)A WHERE ROWNUM &lt;= 1*
+		(#{pageNum}*#{pageSize}))
+		WHERE RN &gt;= (#{pageNum}-1)*#{pageSize}+1
+
+	</select>
+
+	<!--近n天的数据统计分页 条数 -->
+	<select id="selectLatestDayDataPageCount" resultType="java.lang.Integer"
+		parameterType="java.util.HashMap">
+		select count(*)
+		from (select *
+		from (select substr(t.finishtime, 0, 10)
+		as timestr,substr(t.tradetime, 0,
+		10) as timestrtrade,
+		sum(t.factamount) as amountsum,
+		sum(t.poundage) as poundagesum
+		from
+		pms_app_trans_info t where
+		t.status = '0' and t.tradetypecode='7'
+
+		and
+		t.mercid = #{mercid,jdbcType=VARCHAR}
+		<if test="paymentcode != null">
+			and t.paymentcode= #{paymentcode,jdbcType=VARCHAR}
+		</if>
+		<if test="beginMonth != null and endMonth != null">
+			and substr(t.finishtime, 0, 7) between
+			#{beginMonth,jdbcType=VARCHAR}
+			and #{endMonth,jdbcType=VARCHAR}
+		</if>
+		group by substr(t.finishtime, 0, 10), substr(t.tradetime, 0, 10))
+		order by timestr desc)
+
+	</select>
+
+	<!--按月份的数据统计,默认获取一年的数据 -->
+	<select id="selectLatestMonth" resultMap="transLatestData"
+		parameterType="java.util.HashMap">
+		select * from
+		(select *
+		from (select substr(t.finishtime,
+		0, 7) as timestr,substr(t.tradetime,
+		0,7) as timestrtrade,
+		sum(t.factamount) as amountsum,
+		sum(t.poundage) as poundagesum
+		from
+		pms_app_trans_info t where
+		t.status = '0' and t.tradetypecode='7'
+		and
+		t.mercid = #{mercid,jdbcType=VARCHAR}
+		group by substr(t.finishtime, 0,
+		7), substr(t.tradetime, 0,7))
+		order by timestr desc)
+		where rownum &lt;=
+		12
+	</select>
+
+
+	<!--按月份的数据统计,默认获取一年的数据,获取全部账单数据 -->
+	<select id="selectLatestMonthAll" resultMap="transLatestData"
+		parameterType="java.util.HashMap">
+
+		select *
+		from (select *
+		from (select substr(t.tradetime, 0, 10) as
+		timestr,
+		sum(t.factamount) as amountsum,
+		sum(t.poundage) as poundagesum
+		from pms_app_trans_info t where
+		t.tradetypecode != '7'
+		<if test="mercid != null">
+			and t.mercid = #{mercid,jdbcType=VARCHAR}
+		</if>
+		<if test="paymentcode != null">
+			and t.paymentcode= #{paymentcode,jdbcType=VARCHAR}
+		</if>
+		<if test="tradetypecode != null">
+			and t.tradetypecode= #{tradetypecode,jdbcType=VARCHAR}
+		</if>
+
+		group by substr(t.tradetime, 0, 10))
+		order by timestr desc)
+		where rownum
+		&lt;= #{dates,jdbcType=INTEGER}
+	</select>
+
+	<!-- 修改订单表中的订单状态为 0 订单已经完成 -->
+	<update id="updateOrderStatus" parameterType="java.lang.String">
+
+		update
+		PMS_APP_TRANS_INFO set STATUS =
+		'0',FINISHTIME=#{finishTime,jdbcType=VARCHAR}
+		where ORDERID =
+		#{orderid,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 修改订单状态为6等待清算系统结算 -->
+	<update id="updateOrderStatusForSettle" parameterType="java.lang.String">
+		update
+		PMS_APP_TRANS_INFO set STATUS = '6'
+		where ORDERID =
+		#{orderid,jdbcType=VARCHAR}
+	</update>
+
+
+	<select id="countByDate" resultType="java.lang.Integer"
+		parameterType="java.util.HashMap">
+		select count(*) from pms_app_trans_info t where t.mercid
+		=
+		#{mercId,jdbcType=VARCHAR} and substr(t.tradetime, 0, 10) =
+		#{tradeDate,jdbcType=VARCHAR}
+	</select>
+
+	<!--查询当前id的项在当天的所有项的行数是多少，用于账单分页判断 -->
+	<select id="getRowNumByDate" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select h.rn
+		from (select s.orderid, rownum rn
+		from (select *
+		from pms_app_trans_info t
+		where substr(t.tradetime, 0, 10) =
+		#{tradeDate,jdbcType=VARCHAR}
+		and t.tradetypecode=
+		#{trandType,jdbcType=VARCHAR}
+		and t.mercid= #{mercId,jdbcType=VARCHAR}
+		order by t.tradetime desc) s) h
+		where h.orderid
+		=#{orderId,jdbcType=VARCHAR}
+	</select>
+	<update id="updateChanNum" parameterType="xdt.model.PmsAppTransInfo">
+		update
+		PMS_APP_TRANS_INFO set CHANNELNUM = #{channelNum,jdbcType=VARCHAR}
+		where ORDERID = #{orderid,jdbcType=VARCHAR}
+	</update>
+	<select id="selectorder" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		    from PMS_APP_TRANS_INFO p  where p.mercid in
+    (select obj.merc_id
+    from POSP_ROUTE_INFO m
+    join PMS_BUSINESS_INFO t
+    on t.id = m.merchant_id
+    join PMS_MERCHANT_INFO obj
+    on obj.id = m.owner_id
+    where t.business_num in ('928000000017051') and m.status='1')  and p.status in('200','2')
+   and p.tradetime between  TO_CHAR(sysdate-100/1440, 'yyyy-mm-dd hh24:mi:ss') and TO_CHAR(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+ order by p.tradetime asc
+	</select>
+	
+	<select id="selectorder1" resultMap="BaseResultMap">
+		select
+		p.*
+		 ,o.userid settlepoundage,o.verifyid totalpoundage   from PMS_APP_TRANS_INFO p join ORIGINAL_ORDER_INFO o on o.order_id=p.orderid  where p.mercid in
+    (select obj.merc_id
+    from POSP_ROUTE_INFO m
+    join PMS_BUSINESS_INFO t
+    on t.id = m.merchant_id
+    join PMS_MERCHANT_INFO obj
+    on obj.id = m.owner_id
+    where t.business_num in ('10000173') and m.status='1')  and p.status in('200','2')
+   and p.tradetime between  TO_CHAR(sysdate-100/1440, 'yyyy-mm-dd hh24:mi:ss') and TO_CHAR(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+ order by p.tradetime asc
+	</select>
+</mapper>

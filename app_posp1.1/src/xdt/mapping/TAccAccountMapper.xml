@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.TAccAccountMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.TAccAccount">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="ACC_NUM" jdbcType="VARCHAR" property="accNum" />
+		<result column="BALANCE" jdbcType="DECIMAL" property="balance" />
+		<result column="LAST_BALANCE" jdbcType="DECIMAL" property="lastBalance" />
+		<result column="ACCOUNT_TIME" jdbcType="TIMESTAMP" property="accountTime" />
+		<result column="STATUS" jdbcType="VARCHAR" property="status" />
+		<result column="IS_CREDIT" jdbcType="DECIMAL" property="isCredit" />
+		<result column="CREDIT_LIMIT" jdbcType="DECIMAL" property="creditLimit" />
+		<result column="FREEZE_BALANCE" jdbcType="DECIMAL" property="freezeBalance" />
+		<result column="LAST_FREEZE_BALANCE" jdbcType="DECIMAL"
+			property="lastFreezeBalance" />
+		<result column="ACC_LEVEL" jdbcType="DECIMAL" property="accLevel" />
+		<result column="MODIFIED_TIME" jdbcType="TIMESTAMP" property="modifiedTime" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="ACC_TYPE" jdbcType="VARCHAR" property="accType" />
+		<result column="CLEAR_RESULT" jdbcType="VARCHAR" property="clearResult" />
+		<result column="ERR_MSG" jdbcType="VARCHAR" property="errMsg" />
+		<result column="OAGENTNO" jdbcType="VARCHAR" property="oAgentNo" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID, ACC_NUM, BALANCE, LAST_BALANCE, ACCOUNT_TIME, STATUS, IS_CREDIT,
+		CREDIT_LIMIT,
+		FREEZE_BALANCE, LAST_FREEZE_BALANCE, ACC_LEVEL, MODIFIED_TIME, REMARK, NAME,
+		ACC_TYPE,
+		CLEAR_RESULT, ERR_MSG,OAGENTNO
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from T_ACC_ACCOUNT
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from T_ACC_ACCOUNT
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.TAccAccount">
+		insert into T_ACC_ACCOUNT (ID, ACC_NUM, BALANCE,
+		LAST_BALANCE, ACCOUNT_TIME, STATUS,
+		IS_CREDIT, CREDIT_LIMIT, FREEZE_BALANCE,
+		LAST_FREEZE_BALANCE, ACC_LEVEL, MODIFIED_TIME,
+		REMARK, NAME, ACC_TYPE,
+		CLEAR_RESULT, ERR_MSG,OAGENTNO)
+		values (#{id,jdbcType=DECIMAL}, #{accNum,jdbcType=VARCHAR},
+		#{balance,jdbcType=DECIMAL},
+		#{lastBalance,jdbcType=DECIMAL}, #{accountTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
+		#{isCredit,jdbcType=DECIMAL}, #{creditLimit,jdbcType=DECIMAL},
+		#{freezeBalance,jdbcType=DECIMAL},
+		#{lastFreezeBalance,jdbcType=DECIMAL}, #{accLevel,jdbcType=DECIMAL},
+		#{modifiedTime,jdbcType=TIMESTAMP},
+		#{remark,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{accType,jdbcType=VARCHAR},
+		#{clearResult,jdbcType=VARCHAR}, #{errMsg,jdbcType=VARCHAR},
+		#{oAgentNo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.TAccAccount">
+		insert into T_ACC_ACCOUNT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="accNum != null">
+				ACC_NUM,
+			</if>
+			<if test="balance != null">
+				BALANCE,
+			</if>
+			<if test="lastBalance != null">
+				LAST_BALANCE,
+			</if>
+			<if test="accountTime != null">
+				ACCOUNT_TIME,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="isCredit != null">
+				IS_CREDIT,
+			</if>
+			<if test="creditLimit != null">
+				CREDIT_LIMIT,
+			</if>
+			<if test="freezeBalance != null">
+				FREEZE_BALANCE,
+			</if>
+			<if test="lastFreezeBalance != null">
+				LAST_FREEZE_BALANCE,
+			</if>
+			<if test="accLevel != null">
+				ACC_LEVEL,
+			</if>
+			<if test="modifiedTime != null">
+				MODIFIED_TIME,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+			<if test="accType != null">
+				ACC_TYPE,
+			</if>
+			<if test="clearResult != null">
+				CLEAR_RESULT,
+			</if>
+			<if test="errMsg != null">
+				ERR_MSG,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="accNum != null">
+				#{accNum,jdbcType=VARCHAR},
+			</if>
+			<if test="balance != null">
+				#{balance,jdbcType=DECIMAL},
+			</if>
+			<if test="lastBalance != null">
+				#{lastBalance,jdbcType=DECIMAL},
+			</if>
+			<if test="accountTime != null">
+				#{accountTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="isCredit != null">
+				#{isCredit,jdbcType=DECIMAL},
+			</if>
+			<if test="creditLimit != null">
+				#{creditLimit,jdbcType=DECIMAL},
+			</if>
+			<if test="freezeBalance != null">
+				#{freezeBalance,jdbcType=DECIMAL},
+			</if>
+			<if test="lastFreezeBalance != null">
+				#{lastFreezeBalance,jdbcType=DECIMAL},
+			</if>
+			<if test="accLevel != null">
+				#{accLevel,jdbcType=DECIMAL},
+			</if>
+			<if test="modifiedTime != null">
+				#{modifiedTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="accType != null">
+				#{accType,jdbcType=VARCHAR},
+			</if>
+			<if test="clearResult != null">
+				#{clearResult,jdbcType=VARCHAR},
+			</if>
+			<if test="errMsg != null">
+				#{errMsg,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.TAccAccount">
+		update T_ACC_ACCOUNT
+		<set>
+			<if test="accNum != null">
+				ACC_NUM = #{accNum,jdbcType=VARCHAR},
+			</if>
+			<if test="balance != null">
+				BALANCE = #{balance,jdbcType=DECIMAL},
+			</if>
+			<if test="lastBalance != null">
+				LAST_BALANCE = #{lastBalance,jdbcType=DECIMAL},
+			</if>
+			<if test="accountTime != null">
+				ACCOUNT_TIME = #{accountTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="isCredit != null">
+				IS_CREDIT = #{isCredit,jdbcType=DECIMAL},
+			</if>
+			<if test="creditLimit != null">
+				CREDIT_LIMIT = #{creditLimit,jdbcType=DECIMAL},
+			</if>
+			<if test="freezeBalance != null">
+				FREEZE_BALANCE = #{freezeBalance,jdbcType=DECIMAL},
+			</if>
+			<if test="lastFreezeBalance != null">
+				LAST_FREEZE_BALANCE = #{lastFreezeBalance,jdbcType=DECIMAL},
+			</if>
+			<if test="accLevel != null">
+				ACC_LEVEL = #{accLevel,jdbcType=DECIMAL},
+			</if>
+			<if test="modifiedTime != null">
+				MODIFIED_TIME = #{modifiedTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="accType != null">
+				ACC_TYPE = #{accType,jdbcType=VARCHAR},
+			</if>
+			<if test="clearResult != null">
+				CLEAR_RESULT = #{clearResult,jdbcType=VARCHAR},
+			</if>
+			<if test="errMsg != null">
+				ERR_MSG = #{errMsg,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ACC_NUM = #{accNum,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.TAccAccount">
+		update T_ACC_ACCOUNT
+		set ACC_NUM = #{accNum,jdbcType=VARCHAR},
+		BALANCE = #{balance,jdbcType=DECIMAL},
+		LAST_BALANCE = #{lastBalance,jdbcType=DECIMAL},
+		ACCOUNT_TIME = #{accountTime,jdbcType=TIMESTAMP},
+		STATUS = #{status,jdbcType=VARCHAR},
+		IS_CREDIT = #{isCredit,jdbcType=DECIMAL},
+		CREDIT_LIMIT = #{creditLimit,jdbcType=DECIMAL},
+		FREEZE_BALANCE = #{freezeBalance,jdbcType=DECIMAL},
+		LAST_FREEZE_BALANCE = #{lastFreezeBalance,jdbcType=DECIMAL},
+		ACC_LEVEL = #{accLevel,jdbcType=DECIMAL},
+		MODIFIED_TIME = #{modifiedTime,jdbcType=TIMESTAMP},
+		REMARK = #{remark,jdbcType=VARCHAR},
+		NAME = #{name,jdbcType=VARCHAR},
+		ACC_TYPE = #{accType,jdbcType=VARCHAR},
+		CLEAR_RESULT = #{clearResult,jdbcType=VARCHAR},
+		ERR_MSG = #{errMsg,jdbcType=VARCHAR},
+		OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 检索账户信息 -->
+	<select id="selectByTAccNum" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from T_ACC_ACCOUNT t where t.ACC_NUM = #{accNum}
+	</select>
+
+	<!-- 查询商户账户余额 wumeng 20150522 -->
+	<select id="selectMerchantBalance" parameterType="java.lang.String"
+		resultType="java.math.BigDecimal">
+		select BALANCE from T_ACC_ACCOUNT t where t.ACC_NUM = (select KYACCOUNT from
+		PMS_MERCHANT_INFO where MERC_ID = #{mercid,jdbcType=VARCHAR})
+	</select>
+
+	<!-- 更新商户账户余额 wumeng 20150522 -->
+	<update id="updateMerchantBalance" parameterType="xdt.model.TAccAccount">
+		update T_ACC_ACCOUNT
+		set BALANCE = #{balance,jdbcType=DECIMAL},LAST_BALANCE =
+		#{lastBalance,jdbcType=DECIMAL},MODIFIED_TIME =
+		#{modifiedTime,jdbcType=TIMESTAMP}
+		where ACC_NUM = (select KYACCOUNT from PMS_MERCHANT_INFO where MERC_ID =
+		#{accNum,jdbcType=VARCHAR})
+	</update>
+	<!-- 更新商户账户余额记录 -->
+	<insert id="insertAccountHistory" parameterType="java.util.Map">
+		insert into T_ACC_ACCOUNT_TRANS (MERC_ID,
+		AMOUNT,CREAETETIME,TRADETYPE,TRADETYPECODE,PAYMENTTYPE,PAYMENTCODE,ORDERID,ORDERAMOUNT,POUNDAGE,OAGENTNO)
+		values
+		(#{mercid,jdbcType=DECIMAL},#{amount,jdbcType=DECIMAL},#{creaetetime,jdbcType=DECIMAL},
+		#{tradetype,jdbcType=DECIMAL},
+		#{tradetypecode,jdbcType=DECIMAL},#{paymenttype,jdbcType=DECIMAL},
+		#{paymentcode,jdbcType=DECIMAL},#{orderid,jdbcType=DECIMAL},#{orderamount,jdbcType=DECIMAL},
+		#{poundage,jdbcType=DECIMAL},#{oAgentNo,jdbcType=DECIMAL})
+	</insert>
+
+
+</mapper>

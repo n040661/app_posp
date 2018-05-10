@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.TAppSettleAccountTempMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.TAppSettleAccountTemp">
+		<id column="MERC_ID" property="mercId" jdbcType="VARCHAR" />
+		<id column="ACCOUNTDATE" property="accountdate" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="ACCOUNTAMOUT" property="accountamout" jdbcType="VARCHAR" />
+		<result column="ORDERAMOUNT" property="orderamount" jdbcType="VARCHAR" />
+		<result column="POUNDAGE" property="poundage" jdbcType="VARCHAR" />
+		<result column="BANKNAME" property="bankname" jdbcType="VARCHAR" />
+		<result column="SETTLEMENTNAME" property="settlementname"
+			jdbcType="VARCHAR" />
+		<result column="CLR_MERC" property="clrMerc" jdbcType="VARCHAR" />
+		<result column="BANKSYSNUMBER" property="banksysnumber"
+			jdbcType="VARCHAR" />
+		<result column="MOBILEPHONE" property="mobilephone" jdbcType="VARCHAR" />
+		<result column="COLLECTMONEYRATE" property="collectmoneyrate"
+			jdbcType="VARCHAR" />
+		<result column="DRAWMONEY" property="drawmoney" jdbcType="VARCHAR" />
+		<result column="THIRDRATE" property="thirdrate" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+		<result column="FINISHTIME" property="finishtime" jdbcType="VARCHAR" />
+		<result column="RESERVE1" property="reserve1" jdbcType="VARCHAR" />
+		<result column="RESERVE2" property="reserve2" jdbcType="VARCHAR" />
+		<result column="MERC_NAME" property="mercName" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+
+	<resultMap id="transLatestData" type="xdt.model.TransLatestData">
+		<result column="TIMESTR" jdbcType="VARCHAR" property="dateStr" />
+		<result column="TIMESTRTRADE" jdbcType="VARCHAR" property="dateStrTrade" />
+		<result column="AMOUNTSUM" jdbcType="VARCHAR" property="amountSum" />
+		<result column="POUNDAGESUM" jdbcType="DOUBLE" property="poundageSum" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		MERC_ID, ACCOUNTDATE, STATUS, ACCOUNTAMOUT, ORDERAMOUNT, POUNDAGE, BANKNAME,
+		SETTLEMENTNAME,
+		CLR_MERC, BANKSYSNUMBER, MOBILEPHONE, COLLECTMONEYRATE, DRAWMONEY, THIRDRATE,
+		CREATETIME,
+		FINISHTIME, RESERVE1, RESERVE2, MERC_NAME
+	</sql>
+	<insert id="insert" parameterType="xdt.model.TAppSettleAccountTemp">
+		insert into T_APP_SETTLE_ACCOUNT_TEMP (MERC_ID, ACCOUNTDATE, STATUS,
+		ACCOUNTAMOUT, ORDERAMOUNT, POUNDAGE,
+		BANKNAME, SETTLEMENTNAME, CLR_MERC,
+		BANKSYSNUMBER, MOBILEPHONE, COLLECTMONEYRATE,
+		DRAWMONEY, THIRDRATE, CREATETIME,
+		FINISHTIME, RESERVE1, RESERVE2,
+		MERC_NAME)
+		values (#{mercId,jdbcType=VARCHAR}, #{accountdate,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
+		#{accountamout,jdbcType=VARCHAR}, #{orderamount,jdbcType=VARCHAR}, #{poundage,jdbcType=VARCHAR},
+		#{bankname,jdbcType=VARCHAR}, #{settlementname,jdbcType=VARCHAR},
+		#{clrMerc,jdbcType=VARCHAR},
+		#{banksysnumber,jdbcType=VARCHAR}, #{mobilephone,jdbcType=VARCHAR},
+		#{collectmoneyrate,jdbcType=VARCHAR},
+		#{drawmoney,jdbcType=VARCHAR}, #{thirdrate,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR},
+		#{finishtime,jdbcType=VARCHAR}, #{reserve1,jdbcType=VARCHAR},
+		#{reserve2,jdbcType=VARCHAR},
+		#{mercName,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.TAppSettleAccountTemp">
+		insert into T_APP_SETTLE_ACCOUNT_TEMP
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="accountdate != null">
+				ACCOUNTDATE,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="accountamout != null">
+				ACCOUNTAMOUT,
+			</if>
+			<if test="orderamount != null">
+				ORDERAMOUNT,
+			</if>
+			<if test="poundage != null">
+				POUNDAGE,
+			</if>
+			<if test="bankname != null">
+				BANKNAME,
+			</if>
+			<if test="settlementname != null">
+				SETTLEMENTNAME,
+			</if>
+			<if test="clrMerc != null">
+				CLR_MERC,
+			</if>
+			<if test="banksysnumber != null">
+				BANKSYSNUMBER,
+			</if>
+			<if test="mobilephone != null">
+				MOBILEPHONE,
+			</if>
+			<if test="collectmoneyrate != null">
+				COLLECTMONEYRATE,
+			</if>
+			<if test="drawmoney != null">
+				DRAWMONEY,
+			</if>
+			<if test="thirdrate != null">
+				THIRDRATE,
+			</if>
+			<if test="createtime != null">
+				CREATETIME,
+			</if>
+			<if test="finishtime != null">
+				FINISHTIME,
+			</if>
+			<if test="reserve1 != null">
+				RESERVE1,
+			</if>
+			<if test="reserve2 != null">
+				RESERVE2,
+			</if>
+			<if test="mercName != null">
+				MERC_NAME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="accountdate != null">
+				#{accountdate,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="accountamout != null">
+				#{accountamout,jdbcType=VARCHAR},
+			</if>
+			<if test="orderamount != null">
+				#{orderamount,jdbcType=VARCHAR},
+			</if>
+			<if test="poundage != null">
+				#{poundage,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				#{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementname != null">
+				#{settlementname,jdbcType=VARCHAR},
+			</if>
+			<if test="clrMerc != null">
+				#{clrMerc,jdbcType=VARCHAR},
+			</if>
+			<if test="banksysnumber != null">
+				#{banksysnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="mobilephone != null">
+				#{mobilephone,jdbcType=VARCHAR},
+			</if>
+			<if test="collectmoneyrate != null">
+				#{collectmoneyrate,jdbcType=VARCHAR},
+			</if>
+			<if test="drawmoney != null">
+				#{drawmoney,jdbcType=VARCHAR},
+			</if>
+			<if test="thirdrate != null">
+				#{thirdrate,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="finishtime != null">
+				#{finishtime,jdbcType=VARCHAR},
+			</if>
+			<if test="reserve1 != null">
+				#{reserve1,jdbcType=VARCHAR},
+			</if>
+			<if test="reserve2 != null">
+				#{reserve2,jdbcType=VARCHAR},
+			</if>
+			<if test="mercName != null">
+				#{mercName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.TAppSettleAccountTemp">
+		update T_APP_SETTLE_ACCOUNT_TEMP
+		<set>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="accountamout != null">
+				ACCOUNTAMOUT = #{accountamout,jdbcType=VARCHAR},
+			</if>
+			<if test="orderamount != null">
+				ORDERAMOUNT = #{orderamount,jdbcType=VARCHAR},
+			</if>
+			<if test="poundage != null">
+				POUNDAGE = #{poundage,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				BANKNAME = #{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementname != null">
+				SETTLEMENTNAME = #{settlementname,jdbcType=VARCHAR},
+			</if>
+			<if test="clrMerc != null">
+				CLR_MERC = #{clrMerc,jdbcType=VARCHAR},
+			</if>
+			<if test="banksysnumber != null">
+				BANKSYSNUMBER = #{banksysnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="mobilephone != null">
+				MOBILEPHONE = #{mobilephone,jdbcType=VARCHAR},
+			</if>
+			<if test="collectmoneyrate != null">
+				COLLECTMONEYRATE = #{collectmoneyrate,jdbcType=VARCHAR},
+			</if>
+			<if test="drawmoney != null">
+				DRAWMONEY = #{drawmoney,jdbcType=VARCHAR},
+			</if>
+			<if test="thirdrate != null">
+				THIRDRATE = #{thirdrate,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				CREATETIME = #{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="finishtime != null">
+				FINISHTIME = #{finishtime,jdbcType=VARCHAR},
+			</if>
+			<if test="reserve1 != null">
+				RESERVE1 = #{reserve1,jdbcType=VARCHAR},
+			</if>
+			<if test="reserve2 != null">
+				RESERVE2 = #{reserve2,jdbcType=VARCHAR},
+			</if>
+			<if test="mercName != null">
+				MERC_NAME = #{mercName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+		and ACCOUNTDATE = #{accountdate,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.TAppSettleAccountTemp">
+		update T_APP_SETTLE_ACCOUNT_TEMP
+		set STATUS = #{status,jdbcType=VARCHAR},
+		ACCOUNTAMOUT = #{accountamout,jdbcType=VARCHAR},
+		ORDERAMOUNT = #{orderamount,jdbcType=VARCHAR},
+		POUNDAGE = #{poundage,jdbcType=VARCHAR},
+		BANKNAME = #{bankname,jdbcType=VARCHAR},
+		SETTLEMENTNAME = #{settlementname,jdbcType=VARCHAR},
+		CLR_MERC = #{clrMerc,jdbcType=VARCHAR},
+		BANKSYSNUMBER = #{banksysnumber,jdbcType=VARCHAR},
+		MOBILEPHONE = #{mobilephone,jdbcType=VARCHAR},
+		COLLECTMONEYRATE = #{collectmoneyrate,jdbcType=VARCHAR},
+		DRAWMONEY = #{drawmoney,jdbcType=VARCHAR},
+		THIRDRATE = #{thirdrate,jdbcType=VARCHAR},
+		CREATETIME = #{createtime,jdbcType=VARCHAR},
+		FINISHTIME = #{finishtime,jdbcType=VARCHAR},
+		RESERVE1 = #{reserve1,jdbcType=VARCHAR},
+		RESERVE2 = #{reserve2,jdbcType=VARCHAR},
+		MERC_NAME = #{mercName,jdbcType=VARCHAR}
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+		and ACCOUNTDATE = #{accountdate,jdbcType=VARCHAR}
+	</update>
+
+
+
+
+	<!--按月份的数据统计,默认获取一年的数据 -->
+	<select id="selectLatestMonth" resultMap="transLatestData"
+		parameterType="java.util.HashMap">
+		select * from
+		(select *
+		from (select
+		substr(to_char(to_date(substr(t.finishtime,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 7) as timestr,substr(t.accountdate, 0,7) as timestrtrade,
+		sum(t.accountamout*100) as amountsum,
+		sum(t.poundage*100) as poundagesum
+		from t_app_settle_account_temp t where
+		t.status = '0'
+		and t.merc_id = #{mercid,jdbcType=VARCHAR}
+		group by
+		substr(to_char(to_date(substr(t.finishtime,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 7), substr(t.accountdate, 0,7))
+		order by timestr desc)
+		where rownum &lt;= 12
+	</select>
+
+
+
+	<!--近N天的数据统计分页 -->
+	<select id="selectLatestDayDataPage" resultMap="transLatestData"
+		parameterType="java.util.HashMap">
+
+		SELECT * FROM (SELECT A.*, ROWNUM RN FROM (
+		select * from
+		(select *
+		from (select *
+		from (select
+		substr(to_char(to_date(substr(t.finishtime,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10) as timestr,substr(t.accountdate, 0, 10) as timestrtrade,
+		sum(t.accountamout*100) as amountsum,
+		sum(t.poundage*100) as poundagesum
+		from t_app_settle_account_temp t where
+		t.status = '0'
+		and t.merc_id = #{mercid,jdbcType=VARCHAR}
+		<if test="beginMonth != null and endMonth != null">
+			and
+			substr(to_char(to_date(substr(t.finishtime,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+			0, 7) between #{beginMonth,jdbcType=VARCHAR} and
+			#{endMonth,jdbcType=VARCHAR}
+		</if>
+		group by
+		substr(to_char(to_date(substr(t.finishtime,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10), substr(t.accountdate, 0, 10))
+		order by timestr desc
+		)
+		)
+		)A WHERE ROWNUM &lt;= 1* (#{pageNum}*#{pageSize}))
+		WHERE RN &gt;= (#{pageNum}-1)*#{pageSize}+1
+
+	</select>
+
+	<!--近n天的数据统计分页 条数 -->
+	<select id="selectLatestDayDataPageCount" resultType="java.lang.Integer"
+		parameterType="java.util.HashMap">
+		select count(*)
+		from (select *
+		from (select
+		substr(to_char(to_date(substr(t.finishtime,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10) as timestr,substr(t.accountdate, 0, 10) as timestrtrade,
+		sum(t.accountamout) as amountsum,
+		sum(t.poundage) as poundagesum
+		from t_app_settle_account_temp t where
+		t.status = '0'
+		and t.MERC_ID = #{mercid,jdbcType=VARCHAR}
+		<if test="beginMonth != null and endMonth != null">
+			and
+			substr(to_char(to_date(substr(t.finishtime,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+			0, 7) between #{beginMonth,jdbcType=VARCHAR} and
+			#{endMonth,jdbcType=VARCHAR}
+		</if>
+		group by
+		substr(to_char(to_date(substr(t.finishtime,0,14),'yyyymmddhh24miss'),'yyyy-mm-dd,hh24:mi:ss'),
+		0, 10), substr(t.accountdate, 0, 10))
+		order by timestr desc)
+
+	</select>
+
+</mapper>

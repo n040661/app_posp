@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.MerchantNewsInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.MerchantNewsInfo">
+		<id column="MERCHANT_NUM" property="merchantNum" jdbcType="VARCHAR" />
+		<result column="HAVE_READ_NEWS" property="haveReadNews"
+			jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oagentno" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		MERCHANT_NUM, HAVE_READ_NEWS, OAGENTNO
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from MERCHANT_NEWS_INFO
+		where MERCHANT_NUM = #{merchantNum,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from MERCHANT_NEWS_INFO
+		where MERCHANT_NUM = #{merchantNum,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.MerchantNewsInfo">
+		insert into MERCHANT_NEWS_INFO (MERCHANT_NUM, HAVE_READ_NEWS, OAGENTNO
+		)
+		values (#{merchantNum,jdbcType=VARCHAR}, #{haveReadNews,jdbcType=VARCHAR},
+		#{oagentno,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.MerchantNewsInfo">
+		insert into MERCHANT_NEWS_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="merchantNum != null">
+				MERCHANT_NUM,
+			</if>
+			<if test="haveReadNews != null">
+				HAVE_READ_NEWS,
+			</if>
+			<if test="oagentno != null">
+				OAGENTNO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="merchantNum != null">
+				#{merchantNum,jdbcType=VARCHAR},
+			</if>
+			<if test="haveReadNews != null">
+				#{haveReadNews,jdbcType=VARCHAR},
+			</if>
+			<if test="oagentno != null">
+				#{oagentno,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.MerchantNewsInfo">
+		update MERCHANT_NEWS_INFO
+		<set>
+			<if test="haveReadNews != null">
+				HAVE_READ_NEWS = #{haveReadNews,jdbcType=VARCHAR},
+			</if>
+			<if test="oagentno != null">
+				OAGENTNO = #{oagentno,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where MERCHANT_NUM = #{merchantNum,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.MerchantNewsInfo">
+		update MERCHANT_NEWS_INFO
+		set HAVE_READ_NEWS = #{haveReadNews,jdbcType=VARCHAR},
+		OAGENTNO = #{oagentno,jdbcType=VARCHAR}
+		where MERCHANT_NUM = #{merchantNum,jdbcType=VARCHAR}
+	</update>
+
+
+
+
+
+</mapper>

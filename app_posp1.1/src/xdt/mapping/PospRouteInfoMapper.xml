@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PospRouteInfoMapper">
+
+
+	<resultMap id="BaseResultMap" type="xdt.model.PospRouteInfo">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="CHANNEL_CODE" property="channelCode" jdbcType="VARCHAR" />
+		<result column="MERCHANT_ID" property="merchantId" jdbcType="DECIMAL" />
+		<result column="POS_ID" property="posId" jdbcType="DECIMAL" />
+		<result column="STATUS" property="status" jdbcType="DECIMAL" />
+		<result column="EFFECT_FROM" property="effectFrom" jdbcType="VARCHAR" />
+		<result column="EFFECT_TO" property="effectTo" jdbcType="VARCHAR" />
+		<result column="PRIORITY" property="priority" jdbcType="DECIMAL" />
+		<result column="OWNER_ID" property="ownerId" jdbcType="DECIMAL" />
+		<result column="PRIORITY_MER" property="priorityMer" jdbcType="VARCHAR" />
+		<result column="ROUNTTYPE" property="rounttype" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID, CHANNEL_CODE, MERCHANT_ID, POS_ID, STATUS, EFFECT_FROM, EFFECT_TO,
+		PRIORITY,
+		OWNER_ID, PRIORITY_MER, ROUNTTYPE
+	</sql>
+    <insert id="insertPospRouteInfo" parameterType="xdt.model.PospRouteInfo">
+		insert into POSP_ROUTE_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="channelCode != null">
+				CHANNEL_CODE,
+			</if>
+			<if test="merchantId != null">
+				MERCHANT_ID,
+			</if>
+			<if test="posId != null">
+				POS_ID,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="effectFrom != null">
+				EFFECT_FROM,
+			</if>
+			<if test="effectTo != null">
+				EFFECT_TO,
+			</if>
+			<if test="priority != null">
+				PRIORITY,
+			</if>
+			<if test="ownerId != null">
+				OWNER_ID,
+			</if>
+			<if test="priorityMer != null">
+				PRIORITY_MER,
+			</if>
+			<if test="rounttype != null">
+				ROUNTTYPE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="channelCode != null">
+				#{channelCode,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantId != null">
+				#{merchantId,jdbcType=DECIMAL},
+			</if>
+			<if test="posId != null">
+				#{posId,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="effectFrom != null">
+				#{effectFrom,jdbcType=VARCHAR},
+			</if>
+			<if test="effectTo != null">
+				#{effectTo,jdbcType=VARCHAR},
+			</if>
+			<if test="priority != null">
+				#{priority,jdbcType=VARCHAR},
+			</if>
+			<if test="ownerId != null">
+				#{ownerId,jdbcType=VARCHAR},
+			</if>
+			<if test="priorityMer != null">
+				#{priorityMer,jdbcType=DECIMAL},
+			</if>
+			<if test="rounttype != null">
+				#{rounttype,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 根据商户ID 查询终端有效路由 -->
+	<select id="queryMyAllRoutes" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from posp_route_info t
+		where t.OWNER_ID = #{ownerId,jdbcType=DECIMAL}
+		and t.status=1 order by t.priority
+	</select>
+
+<!-- 根据上游商户号查询路由 -->
+	<select id="queryMyAllRoutesMer" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from posp_route_info t
+		where t.POS_ID = #{posId,jdbcType=DECIMAL}
+		and t.status=1 order by t.priority
+	</select>
+
+	<!-- 商户路由 -->
+	<!-- <select id="queryMyAllRoutesByMer" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" 
+		> select t.*,t.priority*1000+nvl(t.priority_mer,1) as complex_priority from 
+		posp_route_info t,pms_merchant_info i where t.owner_id=i.id and i.merc_id=? 
+		and t.status=1 order by complex_priority where OWNER_ID = #{ownerId,jdbcType=DECIMAL} 
+		</select> -->
+
+	<!--根据商户号 商户路由(含机构商户单笔限额信息) -->
+	<select id="queryMyAllRoutesExtra" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select t.*,t.priority*1000+nvl(t.priority_mer,1) as complex_priority from
+		posp_route_info t,pms_merchant_info i where t.owner_id=i.id and
+		i.merc_id=? and t.status=1 order by complex_priority
+
+		where OWNER_ID = #{ownerId,jdbcType=DECIMAL}
+	</select>
+
+
+	<!-- 商户带统计信息 路由 -->
+	<select id="queryMyAllSubRoutes" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select t.*,t.priority*1000+nvl(t.priority_mer,1) as complex_priority from
+		posp_route_info t,pms_merchant_info i where t.owner_id=i.id and
+		i.merc_id=? and t.status=1 order by complex_priority
+
+		where OWNER_ID = #{ownerId,jdbcType=DECIMAL}
+	</select>
+    <select id="selectByAll" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from POSP_ROUTE_INFO
+    where OWNER_ID = #{ownerId,jdbcType=DECIMAL}
+         </select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from POSP_ROUTE_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+
+	<!-- <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" 
+		> delete from POSP_ROUTE_INFO where ID = #{id,jdbcType=DECIMAL} </delete> 
+		<insert id="insert" parameterType="xdt.model.PospRouteInfo" > insert into 
+		POSP_ROUTE_INFO (ID, CHANNEL_CODE, MERCHANT_ID, POS_ID, STATUS, EFFECT_FROM, 
+		EFFECT_TO, PRIORITY, OWNER_ID, PRIORITY_MER, ROUNTTYPE) values (#{id,jdbcType=DECIMAL}, 
+		#{channelCode,jdbcType=VARCHAR}, #{merchantId,jdbcType=DECIMAL}, #{posId,jdbcType=DECIMAL}, 
+		#{status,jdbcType=DECIMAL}, #{effectFrom,jdbcType=VARCHAR}, #{effectTo,jdbcType=VARCHAR}, 
+		#{priority,jdbcType=DECIMAL}, #{ownerId,jdbcType=DECIMAL}, #{priorityMer,jdbcType=VARCHAR}, 
+		#{rounttype,jdbcType=VARCHAR}) </insert> <insert id="insertSelective" parameterType="xdt.model.PospRouteInfo" 
+		> insert into POSP_ROUTE_INFO <trim prefix="(" suffix=")" suffixOverrides="," 
+		> <if test="id != null" > ID, </if> <if test="channelCode != null" > CHANNEL_CODE, 
+		</if> <if test="merchantId != null" > MERCHANT_ID, </if> <if test="posId 
+		!= null" > POS_ID, </if> <if test="status != null" > STATUS, </if> <if test="effectFrom 
+		!= null" > EFFECT_FROM, </if> <if test="effectTo != null" > EFFECT_TO, </if> 
+		<if test="priority != null" > PRIORITY, </if> <if test="ownerId != null" 
+		> OWNER_ID, </if> <if test="priorityMer != null" > PRIORITY_MER, </if> <if 
+		test="rounttype != null" > ROUNTTYPE, </if> </trim> <trim prefix="values 
+		(" suffix=")" suffixOverrides="," > <if test="id != null" > #{id,jdbcType=DECIMAL}, 
+		</if> <if test="channelCode != null" > #{channelCode,jdbcType=VARCHAR}, </if> 
+		<if test="merchantId != null" > #{merchantId,jdbcType=DECIMAL}, </if> <if 
+		test="posId != null" > #{posId,jdbcType=DECIMAL}, </if> <if test="status 
+		!= null" > #{status,jdbcType=DECIMAL}, </if> <if test="effectFrom != null" 
+		> #{effectFrom,jdbcType=VARCHAR}, </if> <if test="effectTo != null" > #{effectTo,jdbcType=VARCHAR}, 
+		</if> <if test="priority != null" > #{priority,jdbcType=DECIMAL}, </if> <if 
+		test="ownerId != null" > #{ownerId,jdbcType=DECIMAL}, </if> <if test="priorityMer 
+		!= null" > #{priorityMer,jdbcType=VARCHAR}, </if> <if test="rounttype != 
+		null" > #{rounttype,jdbcType=VARCHAR}, </if> </trim> </insert> <update id="updateByPrimaryKeySelective" 
+		parameterType="xdt.model.PospRouteInfo" > update POSP_ROUTE_INFO <set > <if 
+		test="channelCode != null" > CHANNEL_CODE = #{channelCode,jdbcType=VARCHAR}, 
+		</if> <if test="merchantId != null" > MERCHANT_ID = #{merchantId,jdbcType=DECIMAL}, 
+		</if> <if test="posId != null" > POS_ID = #{posId,jdbcType=DECIMAL}, </if> 
+		<if test="status != null" > STATUS = #{status,jdbcType=DECIMAL}, </if> <if 
+		test="effectFrom != null" > EFFECT_FROM = #{effectFrom,jdbcType=VARCHAR}, 
+		</if> <if test="effectTo != null" > EFFECT_TO = #{effectTo,jdbcType=VARCHAR}, 
+		</if> <if test="priority != null" > PRIORITY = #{priority,jdbcType=DECIMAL}, 
+		</if> <if test="ownerId != null" > OWNER_ID = #{ownerId,jdbcType=DECIMAL}, 
+		</if> <if test="priorityMer != null" > PRIORITY_MER = #{priorityMer,jdbcType=VARCHAR}, 
+		</if> <if test="rounttype != null" > ROUNTTYPE = #{rounttype,jdbcType=VARCHAR}, 
+		</if> </set> where ID = #{id,jdbcType=DECIMAL} </update> <update id="updateByPrimaryKey" 
+		parameterType="xdt.model.PospRouteInfo" > update POSP_ROUTE_INFO set CHANNEL_CODE 
+		= #{channelCode,jdbcType=VARCHAR}, MERCHANT_ID = #{merchantId,jdbcType=DECIMAL}, 
+		POS_ID = #{posId,jdbcType=DECIMAL}, STATUS = #{status,jdbcType=DECIMAL}, 
+		EFFECT_FROM = #{effectFrom,jdbcType=VARCHAR}, EFFECT_TO = #{effectTo,jdbcType=VARCHAR}, 
+		PRIORITY = #{priority,jdbcType=DECIMAL}, OWNER_ID = #{ownerId,jdbcType=DECIMAL}, 
+		PRIORITY_MER = #{priorityMer,jdbcType=VARCHAR}, ROUNTTYPE = #{rounttype,jdbcType=VARCHAR} 
+		where ID = #{id,jdbcType=DECIMAL} </update> -->
+</mapper>

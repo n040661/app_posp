@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsAppAmountAndRateConfigMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsAppAmountAndRateConfig">
+		<id column="MERC_ID" property="mercId" jdbcType="VARCHAR" />
+		<id column="BUSINESSCODE" property="businesscode" jdbcType="VARCHAR" />
+		<result column="MIN_AMOUNT" property="minAmount" jdbcType="VARCHAR" />
+		<result column="MAX_AMOUNT" property="maxAmount" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="ACCOUNT_TIME" property="accountTime" jdbcType="VARCHAR" />
+		<result column="ACCOUNT_TYPE" property="accountType" jdbcType="VARCHAR" />
+		<result column="NUMBEROFTIMES" property="numberoftimes"
+			jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="RATETYPE" property="ratetype" jdbcType="VARCHAR" />
+
+		<result column="CREATETIME" property="createTime" jdbcType="VARCHAR" />
+		<result column="MODIFYTIME" property="modifyTime" jdbcType="VARCHAR" />
+		<result column="MODIFYUSER" property="modifyUser" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+		<result column="MESSAGE" property="message" jdbcType="VARCHAR" />
+		<result column="quickRateType" property="quickRateType" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		MERC_ID, BUSINESSCODE, MIN_AMOUNT, MAX_AMOUNT, STATUS, ACCOUNT_TIME,
+		ACCOUNT_TYPE,
+		NUMBEROFTIMES, DESCRIPTION,
+		RATETYPE,CREATETIME,MODIFYTIME,MODIFYUSER,OAGENTNO,MESSAGE
+	</sql>
+
+	<insert id="insert" parameterType="xdt.model.PmsAppAmountAndRateConfig">
+		insert into PMS_APP_AMOUNT_AND_RATE_CONFIG (MERC_ID, BUSINESSCODE,
+		MIN_AMOUNT,
+		MAX_AMOUNT, STATUS, ACCOUNT_TIME,
+		ACCOUNT_TYPE, NUMBEROFTIMES, DESCRIPTION,
+		RATETYPE,CREATETIME,MODIFYTIME,MODIFYUSER,OAGENTNO,MESSAGE,quickRateType)
+		values (#{mercId,jdbcType=VARCHAR}, #{businesscode,jdbcType=VARCHAR},
+		#{minAmount,jdbcType=VARCHAR},
+		#{maxAmount,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{accountTime,jdbcType=VARCHAR},
+		#{accountType,jdbcType=VARCHAR}, #{numberoftimes,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{ratetype,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{modifyTime,jdbcType=VARCHAR},#{modifyUser,jdbcType=VARCHAR},#{oAgentNo,jdbcType=VARCHAR},#{message,jdbcType=VARCHAR},#{quickRateType,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsAppAmountAndRateConfig">
+		insert into PMS_APP_AMOUNT_AND_RATE_CONFIG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="businesscode != null">
+				BUSINESSCODE,
+			</if>
+			<if test="minAmount != null">
+				MIN_AMOUNT,
+			</if>
+			<if test="maxAmount != null">
+				MAX_AMOUNT,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="accountTime != null">
+				ACCOUNT_TIME,
+			</if>
+			<if test="accountType != null">
+				ACCOUNT_TYPE,
+			</if>
+			<if test="numberoftimes != null">
+				NUMBEROFTIMES,
+			</if>
+			<if test="description != null">
+				DESCRIPTION,
+			</if>
+			<if test="ratetype != null">
+				RATETYPE,
+			</if>
+			<if test="createTime != null">
+				CREATETIME,
+			</if>
+			<if test="modifyTime != null">
+				MODIFYTIME,
+			</if>
+			<if test="modifyUser != null">
+				MODIFYUSER,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+			<if test="message != null">
+				MESSAGE,
+			</if>
+			<if test="quickRateType != null">
+				quickRateType,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="businesscode != null">
+				#{businesscode,jdbcType=VARCHAR},
+			</if>
+			<if test="minAmount != null">
+				#{minAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="maxAmount != null">
+				#{maxAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="accountTime != null">
+				#{accountTime,jdbcType=VARCHAR},
+			</if>
+			<if test="accountType != null">
+				#{accountType,jdbcType=VARCHAR},
+			</if>
+			<if test="numberoftimes != null">
+				#{numberoftimes,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="ratetype != null">
+				#{ratetype,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyUser != null">
+				#{modifyUser,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="message != null">
+				#{message,jdbcType=VARCHAR},
+			</if>
+			<if test="quickRateType != null">
+				#{quickRateType,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsAppAmountAndRateConfig">
+		update PMS_APP_AMOUNT_AND_RATE_CONFIG
+		<set>
+			<if test="minAmount != null">
+				MIN_AMOUNT = #{minAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="maxAmount != null">
+				MAX_AMOUNT = #{maxAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="accountTime != null">
+				ACCOUNT_TIME = #{accountTime,jdbcType=VARCHAR},
+			</if>
+			<if test="accountType != null">
+				ACCOUNT_TYPE = #{accountType,jdbcType=VARCHAR},
+			</if>
+			<if test="numberoftimes != null">
+				NUMBEROFTIMES = #{numberoftimes,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				DESCRIPTION = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="ratetype != null">
+				RATETYPE = #{ratetype,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATETIME = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyTime != null">
+				MODIFYTIME = #{modifyTime,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyUser != null">
+				MODIFYUSER = #{modifyUser,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="message != null">
+				MESSAGE = #{message,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+		and BUSINESSCODE = #{businesscode,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsAppAmountAndRateConfig">
+		update PMS_APP_AMOUNT_AND_RATE_CONFIG
+		set MIN_AMOUNT = #{minAmount,jdbcType=VARCHAR},
+		MAX_AMOUNT = #{maxAmount,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=VARCHAR},
+		ACCOUNT_TIME = #{accountTime,jdbcType=VARCHAR},
+		ACCOUNT_TYPE = #{accountType,jdbcType=VARCHAR},
+		NUMBEROFTIMES = #{numberoftimes,jdbcType=VARCHAR},
+		DESCRIPTION = #{description,jdbcType=VARCHAR},
+		RATETYPE = #{ratetype,jdbcType=VARCHAR},
+		CREATETIME = #{createTime,jdbcType=VARCHAR},
+		MODIFYTIME = #{modifyTime,jdbcType=VARCHAR},
+		MODIFYUSER = #{modifyUser,jdbcType=VARCHAR}
+		OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+		MESSAGE = #{message,jdbcType=VARCHAR},
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+		and BUSINESSCODE = #{businesscode,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByMercId" parameterType="xdt.model.PmsAppAmountAndRateConfig">
+		update PMS_APP_AMOUNT_AND_RATE_CONFIG
+		<set>
+			<if test="minAmount != null">
+				MIN_AMOUNT = #{minAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="maxAmount != null">
+				MAX_AMOUNT = #{maxAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="accountTime != null">
+				ACCOUNT_TIME = #{accountTime,jdbcType=VARCHAR},
+			</if>
+			<if test="accountType != null">
+				ACCOUNT_TYPE = #{accountType,jdbcType=VARCHAR},
+			</if>
+			<if test="numberoftimes != null">
+				NUMBEROFTIMES = #{numberoftimes,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				DESCRIPTION = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="ratetype != null">
+				RATETYPE = #{ratetype,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATETIME = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyTime != null">
+				MODIFYTIME = #{modifyTime,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyUser != null">
+				MODIFYUSER = #{modifyUser,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="message != null">
+				MESSAGE = #{message,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+		<if test="businesscode != null">
+			and BUSINESSCODE != #{businesscode,jdbcType=VARCHAR}
+		</if>
+	</update>
+
+	<!-- 查询商户刷卡费率 和 最低收款金额 费率 是否是封顶费率标记 封顶金额 wumeng 20150529 -->
+	<select id="queryAmountAndRateInfoForShuaka" parameterType="java.util.Map"
+		resultType="xdt.model.AppRateTypeAndAmount">
+
+		select t.MERCID, t.BUSINESSCODE, t.MINAMOUNT , t.MAXAMOUNT ,t.STATUS ,
+		t.MESSAGE ,arc.RATE, arc.TOP_POUNDAGE TOPPOUNDAGE, arc.IS_TOP ISTOP ,
+		arc.BOTTOM_POUNDAGE BOTTOMPOUNDAGE
+		from
+		(select paarac.MERC_ID MERCID, paarac.BUSINESSCODE, paarac.MIN_AMOUNT
+		MINAMOUNT, paarac.MAX_AMOUNT MAXAMOUNT ,paarac.STATUS
+		,paarac.MESSAGE,paarac.RATETYPE
+		from PMS_APP_AMOUNT_AND_RATE_CONFIG paarac
+		where paarac.MERC_ID=#{mercid,jdbcType=VARCHAR} and paarac.BUSINESSCODE
+		=#{businesscode,jdbcType=VARCHAR})t,APP_RATE_CONFIG arc
+
+		where t.RATETYPE=arc.RATE_TYPE and
+		arc.OAGENTNO=#{oAgentNo,jdbcType=VARCHAR}
+
+
+	</select>
+
+	<!-- 查询 最低、最高收款金额 ，支付方式是否开通 ， 业务是否开通 wumeng 20150827 -->
+	<select id="queryAmountAndStatus" parameterType="java.util.Map"
+		resultType="xdt.model.AppRateTypeAndAmount">
+
+		select t.MERCID, t.BUSINESSCODE, t.MINAMOUNT , t.MAXAMOUNT
+		,t.STATUS,t.MESSAGE , pampc.STATUS PAYSTATUS,pampc.PAYMENTCODE
+		from
+		(select paarac.MERC_ID MERCID, paarac.BUSINESSCODE, paarac.MIN_AMOUNT
+		MINAMOUNT, paarac.MAX_AMOUNT MAXAMOUNT ,paarac.STATUS ,paarac.MESSAGE
+		from PMS_APP_AMOUNT_AND_RATE_CONFIG paarac
+		where paarac.MERC_ID=#{mercid,jdbcType=VARCHAR} and paarac.BUSINESSCODE
+		=#{businesscode,jdbcType=VARCHAR})t,PMS_APP_MERCHANT_PAY_CHANNEL pampc
+		where t.MERCID=pampc.MERC_ID and
+		pampc.PAYMENTCODE=#{paymentcode,jdbcType=VARCHAR}
+
+
+	</select>
+
+
+	<select id="selectList" parameterType="xdt.model.PmsAppAmountAndRateConfig"
+		resultMap="BaseResultMap">
+		select * from PMS_APP_AMOUNT_AND_RATE_CONFIG
+		<where>
+			<if test="mercId != null">
+				AND MERC_ID = #{mercId,jdbcType=VARCHAR}
+			</if>
+			<if test="businesscode != null">
+				AND businesscode = #{businesscode,jdbcType=VARCHAR}
+			</if>
+			<if test="oAgentNo != null">
+				AND OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+
+</mapper>

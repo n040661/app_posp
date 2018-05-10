@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<!-- 定时器配置 -->
+	<!--<bean id="startWorkJob" class="ky.controller.PrepaidPhoneAction"></bean> -->
+	<!--<bean id="startWorkTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> -->
+	<!--<property name="targetObject" ref="startWorkJob"></property> -->
+	<!--<property name="targetMethod" value="productQuery"></property> -->
+	<!--<property name="concurrent" value="false"></property> -->
+	<!--</bean> -->
+	<!--<bean id="startWorkTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> -->
+	<!--<property name="jobDetail" ref="startWorkTask"></property> -->
+	<!--<property name="cronExpression" value="0 58 23 * * ?"></property> -->
+	<!--</bean> -->
+	<!--<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> -->
+	<!--<property name="triggers"><list><ref bean="startWorkTrigger"/></list></property> -->
+	<!--</bean> -->
+<!-- 	<bean id="timeDitail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="baseService"></property>指定任务类
+		<property name="targetMethod" value="parsXml"></property>指定任务方法
+	</bean> -->
+
+<!-- 	<bean id="timeTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="timeDitail"></property>
+		<property name="cronExpression">
+			每10分钟调用一次
+			<value>0 0/10 * * * ?</value>
+		</property>
+	</bean>定义时间间隔触发器
+
+	<bean id="startJob"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="timeTigger" />
+			</list>
+		</property>
+	</bean> -->
+</beans>

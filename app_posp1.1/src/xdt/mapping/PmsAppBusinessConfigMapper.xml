@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsAppBusinessConfigMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsAppBusinessConfig">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="businesscode" property="businesscode" jdbcType="VARCHAR" />
+		<result column="businessname" property="businessname" jdbcType="VARCHAR" />
+		<result column="imageurl" property="imageurl" jdbcType="VARCHAR" />
+		<result column="externalurl" property="externalurl" jdbcType="VARCHAR" />
+		<result column="accno" property="accno" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="extends1" property="extends1" jdbcType="VARCHAR" />
+		<result column="extends2" property="extends2" jdbcType="VARCHAR" />
+		<result column="extends3" property="extends3" jdbcType="VARCHAR" />
+		<result column="status1" property="status1" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="oagentno" property="oAgentNo" jdbcType="VARCHAR" />
+		<result column="modulecode" property="modulecode" jdbcType="VARCHAR" />
+		<result column="message" property="message" jdbcType="VARCHAR" />
+		<result column="message1" property="message1" jdbcType="VARCHAR" />
+		<result column="handle_type" property="handleType" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, businesscode, businessname, imageurl, externalurl, accno, status,
+		extends1, extends2, extends3, type, modulecode, message, handle_type
+	</sql>
+	<sql id="Base_Column_List1">
+		c.ID, c.businesscode, c.businessname, c.imageurl,c.externalurl,c.accno,
+		c.status, c.extends1, c.extends2, c.extends3, c.message, c.type,
+		c.modulecode,
+		b.status as status1, b.message as message1, c.handle_type
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_APP_BUSINESS_CONFIG
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_APP_BUSINESS_CONFIG
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsAppBusinessConfig">
+		insert into PMS_APP_BUSINESS_CONFIG (ID, businesscode, businessname,
+		imageurl, status, extends1,
+		extends2, extends3,externalurl,accno,type,oagentno)
+		values (#{id,jdbcType=DECIMAL}, #{businesscode,jdbcType=VARCHAR},
+		#{businessname,jdbcType=VARCHAR},
+		#{imageurl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{extends1,jdbcType=VARCHAR},
+		#{extends2,jdbcType=VARCHAR}, #{extends3,jdbcType=VARCHAR},
+		#{externalurl,jdbcType=VARCHAR}, #{accno,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR}, #{oAgentNo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsAppBusinessConfig">
+		insert into PMS_APP_BUSINESS_CONFIG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="businesscode != null">
+				businesscode,
+			</if>
+			<if test="businessname != null">
+				businessname,
+			</if>
+			<if test="imageurl != null">
+				imageurl,
+			</if>
+			<if test="externalurl != null">
+				externalurl,
+			</if>
+			<if test="accno != null">
+				accno,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="extends1 != null">
+				extends1,
+			</if>
+			<if test="extends2 != null">
+				extends2,
+			</if>
+			<if test="extends3 != null">
+				extends3,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="oAgentNo != null">
+				oagentno,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="businesscode != null">
+				#{businesscode,jdbcType=VARCHAR},
+			</if>
+			<if test="businessname != null">
+				#{businessname,jdbcType=VARCHAR},
+			</if>
+			<if test="imageurl != null">
+				#{imageurl,jdbcType=VARCHAR},
+			</if>
+			<if test="externalurl != null">
+				#{externalurl,jdbcType=VARCHAR},
+			</if>
+			<if test="accno != null">
+				#{accno,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="extends1 != null">
+				#{extends1,jdbcType=VARCHAR},
+			</if>
+			<if test="extends2 != null">
+				#{extends2,jdbcType=VARCHAR},
+			</if>
+			<if test="extends3 != null">
+				#{extends3,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oagentno,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsAppBusinessConfig">
+		update PMS_APP_BUSINESS_CONFIG
+		<set>
+			<if test="businesscode != null">
+				businesscode = #{businesscode,jdbcType=VARCHAR},
+			</if>
+			<if test="businessname != null">
+				businessname = #{businessname,jdbcType=VARCHAR},
+			</if>
+			<if test="imageurl != null">
+				imageurl = #{imageurl,jdbcType=VARCHAR},
+			</if>
+			<if test="externalurl != null">
+				imageurl = #{externalurl,jdbcType=VARCHAR},
+			</if>
+			<if test="accno != null">
+				accno = #{accno,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="extends1 != null">
+				extends1 = #{extends1,jdbcType=VARCHAR},
+			</if>
+			<if test="extends2 != null">
+				extends2 = #{extends2,jdbcType=VARCHAR},
+			</if>
+			<if test="extends3 != null">
+				extends3 = #{extends3,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				oagentno = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsAppBusinessConfig">
+		update PMS_APP_BUSINESS_CONFIG
+		set businesscode = #{businesscode,jdbcType=VARCHAR},
+		businessname = #{businessname,jdbcType=VARCHAR},
+		imageurl = #{imageurl,jdbcType=VARCHAR},
+		externalurl = #{externalurl,jdbcType=VARCHAR},
+		accno = #{accno,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		extends1 = #{extends1,jdbcType=VARCHAR},
+		extends2 = #{extends2,jdbcType=VARCHAR},
+		extends3 = #{extends3,jdbcType=VARCHAR},
+		type = #{type,jdbcType=VARCHAR},
+		oagentno = #{oAgentNo,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<!-- 根据业务实体查询记录 -->
+	<select id="selectList" parameterType="xdt.model.PmsAppBusinessConfig"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_APP_BUSINESS_CONFIG
+		<where>
+			<if test="businesscode!=null and businesscode!=''"> and businesscode = #{businesscode,jdbcType=VARCHAR}</if>
+			<if test="businessname!=null and businessname!=''"> and businessname = #{businessname,jdbcType=VARCHAR}</if>
+			<if test="imageurl!=null and imageurl!=''"> and imageurl = #{imageurl,jdbcType=VARCHAR}</if>
+			<if test="externalurl!=null and externalurl!=''"> and externalurl = #{externalurl,jdbcType=VARCHAR}</if>
+			<if test="accno!=null and accno!=''"> and accno = #{accno,jdbcType=VARCHAR}</if>
+			<if test="status!=null and status!=''"> and status = #{status,jdbcType=VARCHAR}</if>
+			<if test="extends1!=null and extends1!=''"> and extends1= #{extends1,jdbcType=VARCHAR}</if>
+			<if test="extends2!=null and extends2!=''"> and extends2= #{extends2,jdbcType=VARCHAR}</if>
+			<if test="extends3!=null and extends3!=''"> and extends3= #{extends3,jdbcType=VARCHAR}</if>
+			<if test="type!=null and type!=''"> and type = #{type,jdbcType=VARCHAR}</if>
+			<if test="oAgentNo!=null and oAgentNo!=''"> and oagentno= #{oAgentNo,jdbcType=VARCHAR}</if>
+			<if test="modulecode!=null and modulecode!=''"> and MODULECODE= #{modulecode,jdbcType=VARCHAR}</if>
+		</where>
+		order by id
+	</select>
+	<!-- 查询可用业务(老版本) -->
+	<select id="selectBusinessInfo" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List1" />
+		from PMS_APP_BUSINESS_CONFIG c
+		left join PMS_APP_AMOUNT_AND_RATE_CONFIG b
+		on b.BUSINESSCODE = c.MODULECODE and b.OAGENTNO = c.OAGENTNO
+		where b.merc_id = #{mercId}
+		order by c.LEVEL_SORT
+	</select>
+
+	<!-- 查询可用业务(新版本) -->
+	<select id="selectBusinessInfo1" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from (select
+		<include refid="Base_Column_List1" />
+		from PMS_APP_BUSINESS_CONFIG c
+		left join PMS_APP_AMOUNT_AND_RATE_CONFIG b
+		on b.BUSINESSCODE = c.MODULECODE and b.OAGENTNO = c.OAGENTNO
+		where b.merc_id = #{mercId}
+		order by c.ID) where rownum &lt; 14
+	</select>
+</mapper>

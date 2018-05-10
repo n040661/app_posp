@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsDictionaryMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsDictionary">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="TYPE" jdbcType="VARCHAR" property="type" />
+		<result column="KEY" jdbcType="VARCHAR" property="key" />
+		<result column="VALUE" jdbcType="VARCHAR" property="value" />
+		<result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, TYPE, KEY, VALUE, DESCRIPTION
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_DICTIONARY
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_DICTIONARY
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsDictionary">
+		insert into PMS_DICTIONARY (ID, TYPE, KEY,
+		VALUE, DESCRIPTION)
+		values (#{id,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR},
+		#{key,jdbcType=VARCHAR},
+		#{value,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsDictionary">
+		insert into PMS_DICTIONARY
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="key != null">
+				KEY,
+			</if>
+			<if test="value != null">
+				VALUE,
+			</if>
+			<if test="description != null">
+				DESCRIPTION,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="key != null">
+				#{key,jdbcType=VARCHAR},
+			</if>
+			<if test="value != null">
+				#{value,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsDictionary">
+		update PMS_DICTIONARY
+		<set>
+			<if test="type != null">
+				TYPE = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="key != null">
+				KEY = #{key,jdbcType=VARCHAR},
+			</if>
+			<if test="value != null">
+				VALUE = #{value,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				DESCRIPTION = #{description,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsDictionary">
+		update PMS_DICTIONARY
+		set TYPE = #{type,jdbcType=VARCHAR},
+		KEY = #{key,jdbcType=VARCHAR},
+		VALUE = #{value,jdbcType=VARCHAR},
+		DESCRIPTION = #{description,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<!-- 根据证件类型查询记录 -->
+	<select id="selectList" parameterType="xdt.model.PmsDictionary"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_DICTIONARY
+		<where>
+			<if test="type!=null and type!=''"> and TYPE = #{type,jdbcType=VARCHAR}</if>
+			<if test="key!=null and key!=''"> and KEY = #{key,jdbcType=VARCHAR}</if>
+			<if test="value!=null and value!=''"> and VALUE = #{value,jdbcType=VARCHAR}</if>
+		</where>
+	</select>
+</mapper>

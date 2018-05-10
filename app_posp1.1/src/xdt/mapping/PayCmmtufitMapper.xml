@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PayCmmtufitMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PayCmmtufit">
+		<result column="FIT_TRK" jdbcType="VARCHAR" property="fitTrk" />
+		<result column="FIT_OFS" jdbcType="VARCHAR" property="fitOfs" />
+		<result column="FIT_CTT" jdbcType="VARCHAR" property="fitCtt" />
+		<result column="FIT_LEN" jdbcType="VARCHAR" property="fitLen" />
+		<result column="CRD_TRK" jdbcType="VARCHAR" property="crdTrk" />
+		<result column="CRD_OFS" jdbcType="VARCHAR" property="crdOfs" />
+		<result column="CRD_LEN" jdbcType="VARCHAR" property="crdLen" />
+		<result column="CRD_FLG" jdbcType="VARCHAR" property="crdFlg" />
+		<result column="EXP_DT_FLG" jdbcType="VARCHAR" property="expDtFlg" />
+		<result column="CRD_NM" jdbcType="VARCHAR" property="crdNm" />
+		<result column="INT_MOD" jdbcType="VARCHAR" property="intMod" />
+		<result column="BNK_TYP" jdbcType="VARCHAR" property="bnkTyp" />
+		<result column="FIT_NO" jdbcType="VARCHAR" property="fitNo" />
+		<result column="TM_SMP" jdbcType="VARCHAR" property="tmSmp" />
+		<result column="BNKID_FK" jdbcType="VARCHAR" property="bnkidFk" />
+		<result column="FIT_CON" jdbcType="VARCHAR" property="fitCon" />
+		<result column="BNK_CODE" jdbcType="VARCHAR" property="bnkCode" />
+		<result column="BNK_NAME" jdbcType="VARCHAR" property="bnkName" />
+	</resultMap>
+	<insert id="insert" parameterType="xdt.model.PayCmmtufit">
+		insert into PAY_CMMTUFIT (FIT_TRK, FIT_OFS, FIT_CTT,
+		FIT_LEN, CRD_TRK, CRD_OFS,
+		CRD_LEN, CRD_FLG, EXP_DT_FLG,
+		CRD_NM, INT_MOD, BNK_TYP,
+		FIT_NO, TM_SMP, BNKID_FK,
+		FIT_CON, BNK_CODE, BNK_NAME
+		)
+		values (#{fitTrk,jdbcType=VARCHAR}, #{fitOfs,jdbcType=VARCHAR},
+		#{fitCtt,jdbcType=VARCHAR},
+		#{fitLen,jdbcType=VARCHAR}, #{crdTrk,jdbcType=VARCHAR}, #{crdOfs,jdbcType=VARCHAR},
+		#{crdLen,jdbcType=VARCHAR}, #{crdFlg,jdbcType=VARCHAR},
+		#{expDtFlg,jdbcType=VARCHAR},
+		#{crdNm,jdbcType=VARCHAR}, #{intMod,jdbcType=VARCHAR}, #{bnkTyp,jdbcType=VARCHAR},
+		#{fitNo,jdbcType=VARCHAR}, #{tmSmp,jdbcType=VARCHAR},
+		#{bnkidFk,jdbcType=VARCHAR},
+		#{fitCon,jdbcType=VARCHAR}, #{bnkCode,jdbcType=VARCHAR}, #{bnkName,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PayCmmtufit">
+		insert into PAY_CMMTUFIT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="fitTrk != null">
+				FIT_TRK,
+			</if>
+			<if test="fitOfs != null">
+				FIT_OFS,
+			</if>
+			<if test="fitCtt != null">
+				FIT_CTT,
+			</if>
+			<if test="fitLen != null">
+				FIT_LEN,
+			</if>
+			<if test="crdTrk != null">
+				CRD_TRK,
+			</if>
+			<if test="crdOfs != null">
+				CRD_OFS,
+			</if>
+			<if test="crdLen != null">
+				CRD_LEN,
+			</if>
+			<if test="crdFlg != null">
+				CRD_FLG,
+			</if>
+			<if test="expDtFlg != null">
+				EXP_DT_FLG,
+			</if>
+			<if test="crdNm != null">
+				CRD_NM,
+			</if>
+			<if test="intMod != null">
+				INT_MOD,
+			</if>
+			<if test="bnkTyp != null">
+				BNK_TYP,
+			</if>
+			<if test="fitNo != null">
+				FIT_NO,
+			</if>
+			<if test="tmSmp != null">
+				TM_SMP,
+			</if>
+			<if test="bnkidFk != null">
+				BNKID_FK,
+			</if>
+			<if test="fitCon != null">
+				FIT_CON,
+			</if>
+			<if test="bnkCode != null">
+				BNK_CODE,
+			</if>
+			<if test="bnkName != null">
+				BNK_NAME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="fitTrk != null">
+				#{fitTrk,jdbcType=VARCHAR},
+			</if>
+			<if test="fitOfs != null">
+				#{fitOfs,jdbcType=VARCHAR},
+			</if>
+			<if test="fitCtt != null">
+				#{fitCtt,jdbcType=VARCHAR},
+			</if>
+			<if test="fitLen != null">
+				#{fitLen,jdbcType=VARCHAR},
+			</if>
+			<if test="crdTrk != null">
+				#{crdTrk,jdbcType=VARCHAR},
+			</if>
+			<if test="crdOfs != null">
+				#{crdOfs,jdbcType=VARCHAR},
+			</if>
+			<if test="crdLen != null">
+				#{crdLen,jdbcType=VARCHAR},
+			</if>
+			<if test="crdFlg != null">
+				#{crdFlg,jdbcType=VARCHAR},
+			</if>
+			<if test="expDtFlg != null">
+				#{expDtFlg,jdbcType=VARCHAR},
+			</if>
+			<if test="crdNm != null">
+				#{crdNm,jdbcType=VARCHAR},
+			</if>
+			<if test="intMod != null">
+				#{intMod,jdbcType=VARCHAR},
+			</if>
+			<if test="bnkTyp != null">
+				#{bnkTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="fitNo != null">
+				#{fitNo,jdbcType=VARCHAR},
+			</if>
+			<if test="tmSmp != null">
+				#{tmSmp,jdbcType=VARCHAR},
+			</if>
+			<if test="bnkidFk != null">
+				#{bnkidFk,jdbcType=VARCHAR},
+			</if>
+			<if test="fitCon != null">
+				#{fitCon,jdbcType=VARCHAR},
+			</if>
+			<if test="bnkCode != null">
+				#{bnkCode,jdbcType=VARCHAR},
+			</if>
+			<if test="bnkName != null">
+				#{bnkName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<!-- 根据银行卡前6位查询银行卡列表信息 -->
+	<select id="selectCardInfoByBeforeSix" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select FIT_TRK, FIT_OFS, FIT_CTT,FIT_LEN, CRD_TRK, CRD_OFS,CRD_LEN, CRD_FLG,
+		EXP_DT_FLG, CRD_NM, INT_MOD, BNK_TYP,FIT_NO, TM_SMP, BNKID_FK,FIT_CON,
+		BNK_CODE, BNK_NAME
+		from PAY_CMMTUFIT where FIT_CON like
+		#{beforeSixCardNumber,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据银行卡号查询当前银行卡卡兵 -->
+	<select id="selectByBankNum" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from pay_cmmtufit t where
+		substr(#{cardNum,jdbcType=VARCHAR},0,t.fit_len) = t.fit_con
+	</select>
+
+
+</mapper>

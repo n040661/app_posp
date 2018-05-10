@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsImageMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsImage">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="PATH" jdbcType="VARCHAR" property="path" />
+		<result column="MERCHANT_NUM" jdbcType="VARCHAR" property="merchantNum" />
+		<result column="CREATION_NAME" jdbcType="VARCHAR" property="creationName" />
+		<result column="CREATIONDATE" jdbcType="VARCHAR" property="creationdate" />
+		<result column="REMOVETAG" jdbcType="DECIMAL" property="removetag" />
+		<result column="STATE" jdbcType="DECIMAL" property="state" />
+		<result column="FLAG" jdbcType="DECIMAL" property="flag" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PATH, MERCHANT_NUM, CREATION_NAME, CREATIONDATE, REMOVETAG, STATE,
+		FLAG
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_IMAGE
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from PMS_IMAGE
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsImage">
+		insert into PMS_IMAGE (ID, PATH, MERCHANT_NUM,
+		CREATION_NAME, CREATIONDATE, REMOVETAG,
+		STATE, FLAG)
+		values (#{id,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
+		#{merchantNum,jdbcType=VARCHAR},
+		#{creationName,jdbcType=VARCHAR}, #{creationdate,jdbcType=VARCHAR}, #{removetag,jdbcType=DECIMAL},
+		#{state,jdbcType=DECIMAL}, #{flag,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsImage">
+		insert into PMS_IMAGE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="path != null">
+				PATH,
+			</if>
+			<if test="merchantNum != null">
+				MERCHANT_NUM,
+			</if>
+			<if test="creationName != null">
+				CREATION_NAME,
+			</if>
+			<if test="creationdate != null">
+				CREATIONDATE,
+			</if>
+			<if test="removetag != null">
+				REMOVETAG,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="flag != null">
+				FLAG,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="path != null">
+				#{path,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantNum != null">
+				#{merchantNum,jdbcType=VARCHAR},
+			</if>
+			<if test="creationName != null">
+				#{creationName,jdbcType=VARCHAR},
+			</if>
+			<if test="creationdate != null">
+				#{creationdate,jdbcType=VARCHAR},
+			</if>
+			<if test="removetag != null">
+				#{removetag,jdbcType=DECIMAL},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=DECIMAL},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsImage">
+		update PMS_IMAGE
+		<set>
+			<if test="path != null">
+				PATH = #{path,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantNum != null">
+				MERCHANT_NUM = #{merchantNum,jdbcType=VARCHAR},
+			</if>
+			<if test="creationName != null">
+				CREATION_NAME = #{creationName,jdbcType=VARCHAR},
+			</if>
+			<if test="creationdate != null">
+				CREATIONDATE = #{creationdate,jdbcType=VARCHAR},
+			</if>
+			<if test="removetag != null">
+				REMOVETAG = #{removetag,jdbcType=DECIMAL},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=DECIMAL},
+			</if>
+			<if test="flag != null">
+				FLAG = #{flag,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsImage">
+		update PMS_IMAGE
+		set PATH = #{path,jdbcType=VARCHAR},
+		MERCHANT_NUM = #{merchantNum,jdbcType=VARCHAR},
+		CREATION_NAME = #{creationName,jdbcType=VARCHAR},
+		CREATIONDATE = #{creationdate,jdbcType=VARCHAR},
+		REMOVETAG = #{removetag,jdbcType=DECIMAL},
+		STATE = #{state,jdbcType=DECIMAL},
+		FLAG = #{flag,jdbcType=DECIMAL}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<!-- 根据商户ID判断是否上传过实名认证信息 -->
+	<select id="searchImageList" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_IMAGE t where t.MERCHANT_NUM = #{mercId} and t.REMOVETAG = 0
+		order by t.id asc
+	</select>
+</mapper>

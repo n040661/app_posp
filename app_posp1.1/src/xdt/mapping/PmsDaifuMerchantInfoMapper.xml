@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsDaifuMerchantInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsDaifuMerchantInfo">
+		<result column="MERC_ID" property="mercId" jdbcType="VARCHAR" />
+		<result column="COUNT" property="count" jdbcType="VARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="VARCHAR" />
+		<result column="BATCH_NO" property="batchNo" jdbcType="VARCHAR" />
+		<result column="CARDNO" property="cardno" jdbcType="VARCHAR" />
+		<result column="REALNAME" property="realname" jdbcType="VARCHAR" />
+		<result column="PROVINCE" property="province" jdbcType="VARCHAR" />
+		<result column="CITY" property="city" jdbcType="VARCHAR" />
+		<result column="PAYAMOUNT" property="payamount" jdbcType="VARCHAR" />
+		<result column="IDENTITY" property="identity" jdbcType="VARCHAR" />
+		<result column="PMSBANKNO" property="pmsbankno" jdbcType="VARCHAR" />
+		<result column="RESPONSECODE" property="responsecode" jdbcType="VARCHAR" />
+		<result column="CREATIONDATE" property="creationdate" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oagentno" jdbcType="VARCHAR" />
+		<result column="PAYCOUNTER" property="payCounter" jdbcType="VARCHAR" />
+		<result column="agentnumber" property="agentnumber" jdbcType="VARCHAR" />
+		<result column="agentname" property="agentname" jdbcType="VARCHAR" />
+
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+		<result column="recordDescription" property="recordDescription"
+			jdbcType="VARCHAR" />
+		<result column="transactionType" property="transactionType"
+			jdbcType="VARCHAR" />
+
+		<result column="POSITION" property="position" jdbcType="VARCHAR" />
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		MERC_ID, COUNT,AMOUNT, BATCH_NO,
+		CARDNO, REALNAME,
+		PROVINCE,
+		CITY, PAYAMOUNT,
+		IDENTITY,PMSBANKNO,CREATIONDATE,RESPONSECODE,RESPONSECODE,CREATIONDATE,OAGENTNO,PAYCOUNTER,POSITION,transactionType,recordDescription
+	</sql>
+	<insert id="insert" parameterType="xdt.model.PmsDaifuMerchantInfo">
+		insert into
+		PMS_DAIFU_MERCHANT_INFO (MERC_ID, COUNT,
+		AMOUNT, BATCH_NO, CARDNO,
+		REALNAME, PROVINCE, CITY,
+		PAYAMOUNT, IDENTITY,
+		PMSBANKNO,RESPONSECODE,CREATIONDATE,OAGENTNO,PAYCOUNTER,POSITION
+		)
+		values
+		(#{mercId,jdbcType=VARCHAR},
+		#{count,jdbcType=VARCHAR},
+		#{amount,jdbcType=VARCHAR},
+		#{batchNo,jdbcType=VARCHAR},
+		#{cardno,jdbcType=VARCHAR},
+		#{realname,jdbcType=VARCHAR},
+		#{province,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR},
+		#{payamount,jdbcType=VARCHAR},
+		#{identity,jdbcType=VARCHAR},
+		#{pmsbankno,jdbcType=VARCHAR},
+		#{responsecode,jdbcType=VARCHAR},
+		to_char(sysdate,'yyyy-mm-dd HH24:mi:ss'),
+		#{oagentno,jdbcType=VARCHAR},
+		#{payCounter,jdbcType=VARCHAR},
+		#{position,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsDaifuMerchantInfo">
+		insert into PMS_DAIFU_MERCHANT_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="count != null">
+				COUNT,
+			</if>
+			<if test="amount != null">
+				AMOUNT,
+			</if>
+			<if test="batchNo != null">
+				BATCH_NO,
+			</if>
+			<if test="cardno != null">
+				CARDNO,
+			</if>
+			<if test="realname != null">
+				REALNAME,
+			</if>
+			<if test="province != null">
+				PROVINCE,
+			</if>
+			<if test="city != null">
+				CITY,
+			</if>
+			<if test="payamount != null">
+				PAYAMOUNT,
+			</if>
+			<if test="identity != null">
+				IDENTITY,
+			</if>
+			<if test="pmsbankno != null">
+				PMSBANKNO,
+			</if>
+			<if test="responsecode != null">
+				RESPONSECODE,
+			</if>
+			<if test="oagentno != null">
+				oagentno,
+			</if>
+			<if test="payCounter != null">
+				payCounter,
+			</if>
+
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="recordDescription != null">
+				recordDescription,
+			</if>
+			<if test="transactionType != null">
+				transactionType,
+			</if>
+			<if test="position != null">
+				POSITION,
+			</if>
+			CREATIONDATE,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				#{count,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="batchNo != null">
+				#{batchNo,jdbcType=VARCHAR},
+			</if>
+			<if test="cardno != null">
+				#{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="realname != null">
+				#{realname,jdbcType=VARCHAR},
+			</if>
+			<if test="province != null">
+				#{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				#{city,jdbcType=VARCHAR},
+			</if>
+			<if test="payamount != null">
+				#{payamount,jdbcType=VARCHAR},
+			</if>
+			<if test="identity != null">
+				#{identity,jdbcType=VARCHAR},
+			</if>
+			<if test="pmsbankno != null">
+				#{pmsbankno,jdbcType=VARCHAR},
+			</if>
+			<if test="responsecode != null">
+				#{responsecode,jdbcType=VARCHAR},
+			</if>
+			<if test="oagentno != null">
+				#{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="payCounter != null">
+				#{payCounter,jdbcType=VARCHAR},
+			</if>
+			<if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="recordDescription != null">
+				#{recordDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="transactionType != null">
+				#{transactionType,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				#{position,jdbcType=VARCHAR},
+			</if>
+			to_char(systimestamp,'yyyy-mm-dd hh24:mi:ss.ff3'),
+		</trim>
+	</insert>
+	<insert id="insertSelectives" parameterType="xdt.model.PmsDaifuMerchantInfo">
+		insert into PMS_DAIFU_MERCHANT_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="count != null">
+				COUNT,
+			</if>
+			<if test="amount != null">
+				AMOUNT,
+			</if>
+			<if test="batchNo != null">
+				BATCH_NO,
+			</if>
+			<if test="cardno != null">
+				CARDNO,
+			</if>
+			<if test="realname != null">
+				REALNAME,
+			</if>
+			<if test="province != null">
+				PROVINCE,
+			</if>
+			<if test="city != null">
+				CITY,
+			</if>
+			<if test="payamount != null">
+				PAYAMOUNT,
+			</if>
+			<if test="identity != null">
+				IDENTITY,
+			</if>
+			<if test="pmsbankno != null">
+				PMSBANKNO,
+			</if>
+			<if test="responsecode != null">
+				RESPONSECODE,
+			</if>
+			<if test="oagentno != null">
+				oagentno,
+			</if>
+			<if test="payCounter != null">
+				payCounter,
+			</if>
+
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="recordDescription != null">
+				recordDescription,
+			</if>
+			<if test="transactionType != null">
+				transactionType,
+			</if>
+			<if test="position != null">
+				POSITION,
+			</if>
+			CREATIONDATE,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				#{count,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="batchNo != null">
+				#{batchNo,jdbcType=VARCHAR},
+			</if>
+			<if test="cardno != null">
+				#{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="realname != null">
+				#{realname,jdbcType=VARCHAR},
+			</if>
+			<if test="province != null">
+				#{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				#{city,jdbcType=VARCHAR},
+			</if>
+			<if test="payamount != null">
+				#{payamount,jdbcType=VARCHAR},
+			</if>
+			<if test="identity != null">
+				#{identity,jdbcType=VARCHAR},
+			</if>
+			<if test="pmsbankno != null">
+				#{pmsbankno,jdbcType=VARCHAR},
+			</if>
+			<if test="responsecode != null">
+				#{responsecode,jdbcType=VARCHAR},
+			</if>
+			<if test="oagentno != null">
+				#{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="payCounter != null">
+				#{payCounter,jdbcType=VARCHAR},
+			</if>
+			<if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="recordDescription != null">
+				#{recordDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="transactionType != null">
+				#{transactionType,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				#{position,jdbcType=VARCHAR},
+			</if>
+			<if test="creationdate != null">
+				#{creationdate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="selectByDaifuMerchantInfo" parameterType="xdt.model.PmsDaifuMerchantInfo"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_DAIFU_MERCHANT_INFO
+		<where>
+			<if test="mercId !=null">
+				and MERC_ID =#{mercId,jdbcType=VARCHAR}
+			</if>
+			<if test="batchNo !=null">
+				and BATCH_NO =#{batchNo,jdbcType=VARCHAR}
+			</if>
+			<if test="identity !=null">
+				and IDENTITY =#{identity,jdbcType=VARCHAR}
+			</if>
+		</where>
+
+	</select>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsDaifuMerchantInfo">
+		update PMS_DAIFU_MERCHANT_INFO
+		<set>
+
+			<if test="count != null">
+				COUNT=#{count,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				AMOUNT=#{amount,jdbcType=VARCHAR},
+			</if>
+
+			<if test="cardno != null">
+				CARDNO=#{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="realname != null">
+				REALNAME=#{realname,jdbcType=VARCHAR},
+			</if>
+			<if test="province != null">
+				PROVINCE=#{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				CITY=#{city,jdbcType=VARCHAR},
+			</if>
+			<if test="payamount != null">
+				PAYAMOUNT=#{payamount,jdbcType=VARCHAR},
+			</if>
+
+			<if test="pmsbankno != null">
+				PMSBANKNO=#{pmsbankno,jdbcType=VARCHAR},
+			</if>
+			<if test="responsecode != null">
+				RESPONSECODE=#{responsecode,jdbcType=VARCHAR},
+			</if>
+			<if test="oagentno != null">
+				OAGENTNO=#{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="payCounter != null">
+				PAYCOUNTER=#{payCounter,jdbcType=VARCHAR},
+			</if>
+			<if test="remarks != null">
+				remarks=#{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="recordDescription != null">
+				recordDescription=#{recordDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="transactionType != null">
+				transactionType=#{transactionType,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				POSITION=#{position,jdbcType=VARCHAR},
+			</if>
+
+		</set>
+		<where>
+			<if test="batchNo!=null">
+				and BATCH_NO = #{batchNo,jdbcType=DECIMAL}
+			</if>
+			<if test="mercId != null">
+				and MERC_ID=#{mercId,jdbcType=VARCHAR}
+			</if>
+			<if test="identity != null">
+				and IDENTITY=#{identity,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</update>
+
+
+	<select id="selectPay" resultMap="BaseResultMap">
+		select p.* from PMS_DAIFU_MERCHANT_INFO p where p.responsecode='200'and
+		p.merc_id in(select obj.merc_id from POSP_ROUTE_INFO m join
+		PMS_BUSINESS_INFO t on t.id=m.merchant_id join PMS_MERCHANT_INFO obj
+		on obj.id=m.owner_id where t.business_num
+		in('928000000012394','928000000010449') and m.status='1')
+	</select>
+	<select id="selectDaifu" resultMap="BaseResultMap">
+		select p.* from PMS_DAIFU_MERCHANT_INFO p where p.responsecode = '200' and
+		p.merc_id in(select obj.merc_id from POSP_ROUTE_INFO m join
+		PMS_BUSINESS_INFO t on t.id = m.merchant_id join PMS_MERCHANT_INFO obj
+		on obj.id = m.owner_id where t.business_num in
+		('12906','13240','12916','12913','12927') and m.status='1')
+		and p.creationdate&gt;'2017-08-11 11:00:00' order by p.creationdate desc
+	</select>
+	<select id="selectDaifu1" resultMap="BaseResultMap">
+		select p.* from PMS_DAIFU_MERCHANT_INFO p where p.responsecode='200'and
+		p.merc_id in(select obj.merc_id from POSP_ROUTE_INFO m join
+		PMS_BUSINESS_INFO t on t.id=m.merchant_id join PMS_MERCHANT_INFO obj
+		on obj.id=m.owner_id where t.business_num
+		in('928000000017051') and m.status='1')
+		and p.creationdate between  TO_CHAR(sysdate-1000/1440, 'yyyy-mm-dd hh24:mi:ss') and TO_CHAR(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+		order by p.creationdate desc
+	</select>
+	<select id="selectDaifu2" resultMap="BaseResultMap">
+		select p.* from PMS_DAIFU_MERCHANT_INFO p where p.responsecode = '200' and
+		p.merc_id in(select obj.merc_id from POSP_ROUTE_INFO m join
+		PMS_BUSINESS_INFO t on t.id = m.merchant_id join PMS_MERCHANT_INFO obj
+		on obj.id = m.owner_id where t.business_num in
+		('12906','13240','12916','12913') and m.status='1')
+		and p.creationdate&gt;'2017-07-12 00:00:00' order by p.creationdate desc
+	</select>
+	<select id="selectDaifu3" resultMap="BaseResultMap">
+		select p.MERC_ID,p.COUNT,p.AMOUNT,p.BATCH_NO,p.CARDNO,p.REALNAME,p.PROVINCE,p.CITY,p.PAYAMOUNT,p.IDENTITY,p.PMSBANKNO,p.CREATIONDATE,p.SELLERNO,p.OAGENTNO,p.RESPONSECODE,p.PAYCOUNTER,
+		p.REMARKS,p.RECORDDESCRIPTION,p.TRANSACTIONTYPE,p.POSITION,p.EXCELURL,o.userid agentnumber,o.verifyid agentname from PMS_DAIFU_MERCHANT_INFO p  join ORIGINAL_ORDER_INFO o on o.order_id=p.batch_no where p.responsecode='200'and
+	    p.merc_id in(select obj.merc_id from POSP_ROUTE_INFO m join
+	    PMS_BUSINESS_INFO t on t.id=m.merchant_id join PMS_MERCHANT_INFO obj
+	    on obj.id=m.owner_id where t.business_num
+	    in('10000173') and m.status='1') 
+	    <!--  and p.creationdate between  TO_CHAR(sysdate-1000/1440, 'yyyy-mm-dd hh24:mi:ss') and TO_CHAR(sysdate, 'yyyy-mm-dd hh24:mi:ss')  -->
+	    order by p.creationdate desc
+	</select>
+	<select id="selectYLDaifu" resultMap="BaseResultMap">
+		select p.* from PMS_DAIFU_MERCHANT_INFO p where p.responsecode = '200' and
+		p.merc_id in(select obj.merc_id from POSP_ROUTE_INFO m join
+		PMS_BUSINESS_INFO t on t.id = m.merchant_id join PMS_MERCHANT_INFO obj
+		on obj.id = m.owner_id where t.business_num in ('502050002552') and m.status='1')
+        and p.creationdate>'2017-08-11 00:00:00' 
+	</select>
+	<select id="selectMerchantDaifu" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_DAIFU_MERCHANT_INFO p
+		where p.responsecode = '200'
+		and p.merc_id =#{mercId,jdbcType=VARCHAR}
+	</select>
+</mapper>

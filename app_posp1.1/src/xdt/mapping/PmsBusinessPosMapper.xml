@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsBusinessPosMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsBusinessPos">
+		<id column="id" property="id" />
+		<result column="indate" property="indate" />
+		<result column="batchoutno" property="batchoutno" />
+		<result column="posnum" property="posnum" />
+		<result column="batchinno" property="batchinno" />
+		<result column="departmentnum" property="departmentnum" />
+		<result column="status" property="status" />
+		<result column="businessnum" property="businessnum" />
+		<result column="channelnum" property="channelnum" />
+		<result column="outdate" property="outdate" />
+		<result column="personnum" property="personnum" />
+		<result column="posstatus" property="posstatus"/>
+		<result column="kek" property="kek"/>
+		<result column="posopenstatus" property="posopenstatus"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID,POSNUM,BUSINESSNUM,CHANNELNUM,DEPARTMENTNUM,PERSONNUM,INDATE,OUTDATE,BATCHINNO,BATCHOUTNO,STATUS,POSSTATUS,KEK,POSOPENSTATUS
+	</sql>
+		<insert id="insertSelective" parameterType="xdt.model.PmsBusinessPos">
+		insert into PMS_BUSINESS_POS
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="indate != null">
+				indate,
+			</if>
+			<if test="batchoutno != null">
+				batchoutno,
+			</if>
+			<if test="posnum != null">
+				posnum,
+			</if>
+			<if test="batchinno != null">
+				batchinno,
+			</if>
+			<if test="departmentnum != null">
+				departmentnum,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="businessnum != null">
+				businessnum,
+			</if>
+			<if test="channelnum != null">
+				channelnum,
+			</if>
+			<if test="outdate != null">
+				outdate,
+			</if>
+			<if test="personnum != null">
+				personnum,
+			</if>
+			<if test="posstatus != null">
+				posstatus,
+			</if>
+			<if test="kek != null">
+				kek,
+			</if>
+			<if test="posopenstatus != null">
+				posopenstatus,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="indate != null">
+				#{indate,jdbcType=VARCHAR},
+			</if>
+			<if test="batchoutno != null">
+				#{batchoutno,jdbcType=DECIMAL},
+			</if>
+			<if test="posnum != null">
+				#{posnum,jdbcType=VARCHAR},
+			</if>
+			<if test="batchinno != null">
+				#{batchinno,jdbcType=VARCHAR},
+			</if>
+			<if test="departmentnum != null">
+				#{departmentnum,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="businessnum != null">
+				#{businessnum,jdbcType=VARCHAR},
+			</if>
+			<if test="channelnum != null">
+				#{channelnum,jdbcType=VARCHAR},
+			</if>
+			<if test="outdate != null">
+				#{outdate,jdbcType=DECIMAL},
+			</if>
+			<if test="personnum != null">
+				#{personnum,jdbcType=DECIMAL},
+			</if>
+			<if test="posstatus != null">
+				#{posstatus,jdbcType=DECIMAL},
+			</if>
+			<if test="kek != null">
+				#{kek,jdbcType=DECIMAL},
+			</if>
+			<if test="posopenstatus != null">
+				#{posopenstatus,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_BUSINESS_POS
+		where BUSINESSNUM = #{id,jdbcType=DECIMAL}
+	</select>
+</mapper>

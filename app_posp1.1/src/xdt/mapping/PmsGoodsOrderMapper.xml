@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsGoodsOrderMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsGoodsOrder">
+		<id column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+		<id column="GOODS_ID" property="goodsId" jdbcType="VARCHAR" />
+		<result column="GOODS_IMAGE_URL" property="goodsImageUrl"
+			jdbcType="VARCHAR" />
+		<result column="GOODS_PRICE" property="goodsPrice" jdbcType="VARCHAR" />
+		<result column="GOODS_NUM" property="goodsNum" jdbcType="VARCHAR" />
+		<result column="TOTAL_AMT" property="totalAmt" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ORDER_NO, GOODS_ID, GOODS_IMAGE_URL, GOODS_PRICE, GOODS_NUM, TOTAL_AMT
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.util.HashMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_GOODS_ORDER
+		where ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+		and GOODS_ID = #{goodsId,jdbcType=VARCHAR}
+	</select>
+	<insert id="insert" parameterType="xdt.model.PmsGoodsOrder">
+		insert into PMS_GOODS_ORDER (ORDER_NO, GOODS_ID, GOODS_IMAGE_URL,
+		GOODS_PRICE, GOODS_NUM, TOTAL_AMT
+		)
+		values (#{orderNo,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR},
+		#{goodsImageUrl,jdbcType=VARCHAR},
+		#{goodsPrice,jdbcType=VARCHAR}, #{goodsNum,jdbcType=VARCHAR}, #{totalAmt,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsGoodsOrder">
+		insert into PMS_GOODS_ORDER
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderNo != null">
+				ORDER_NO,
+			</if>
+			<if test="goodsId != null">
+				GOODS_ID,
+			</if>
+			<if test="goodsImageUrl != null">
+				GOODS_IMAGE_URL,
+			</if>
+			<if test="goodsPrice != null">
+				GOODS_PRICE,
+			</if>
+			<if test="goodsNum != null">
+				GOODS_NUM,
+			</if>
+			<if test="totalAmt != null">
+				TOTAL_AMT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsId != null">
+				#{goodsId,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsImageUrl != null">
+				#{goodsImageUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsPrice != null">
+				#{goodsPrice,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsNum != null">
+				#{goodsNum,jdbcType=VARCHAR},
+			</if>
+			<if test="totalAmt != null">
+				#{totalAmt,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="java.util.HashMap">
+		update PMS_GOODS_ORDER
+		<set>
+			<if test="goodsImageUrl != null">
+				GOODS_IMAGE_URL = #{goodsImageUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsPrice != null">
+				GOODS_PRICE = #{goodsPrice,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsNum != null">
+				GOODS_NUM = #{goodsNum,jdbcType=VARCHAR},
+			</if>
+			<if test="totalAmt != null">
+				TOTAL_AMT = #{totalAmt,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+		and GOODS_ID = #{goodsId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsGoodsOrder">
+		update PMS_GOODS_ORDER
+		set GOODS_IMAGE_URL = #{goodsImageUrl,jdbcType=VARCHAR},
+		GOODS_PRICE = #{goodsPrice,jdbcType=VARCHAR},
+		GOODS_NUM = #{goodsNum,jdbcType=VARCHAR},
+		TOTAL_AMT = #{totalAmt,jdbcType=VARCHAR}
+		where ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+		and GOODS_ID = #{goodsId,jdbcType=VARCHAR}
+	</update>
+
+	<insert id="insertBatch" parameterType="java.util.HashMap">
+		insert into PMS_GOODS_ORDER (ORDER_NO, GOODS_ID, GOODS_IMAGE_URL,
+		GOODS_PRICE, GOODS_NUM, TOTAL_AMT
+		)
+		<foreach collection="pmsGoodsOrderList" item="item" index="index"
+			separator="union">
+			select #{item.orderNo,jdbcType=VARCHAR},#{item.goodsId,jdbcType=VARCHAR},
+			#{item.goodsImageUrl,jdbcType=VARCHAR},#{item.goodsPrice,jdbcType=VARCHAR},#{item.goodsNum,jdbcType=VARCHAR},#{item.totalAmt,jdbcType=VARCHAR}
+			from dual
+		</foreach>
+	</insert>
+</mapper>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsMerchantBindingcardInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsMerchantBindingcardInfo">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="MERC_ID" property="mercId" jdbcType="VARCHAR" />
+		<result column="BANKNAME" property="bankname" jdbcType="VARCHAR" />
+		<result column="SETTLEMENTNAME" property="settlementname"
+			jdbcType="VARCHAR" />
+		<result column="CLR_MERC" property="clrMerc" jdbcType="VARCHAR" />
+		<result column="BANK_PROVINCE" property="bankProvince"
+			jdbcType="VARCHAR" />
+		<result column="BANK_CITY" property="bankCity" jdbcType="VARCHAR" />
+		<result column="BANKSYSNUMBER" property="banksysnumber"
+			jdbcType="VARCHAR" />
+		<result column="HEADQUARTERSBANK" property="headquartersbank"
+			jdbcType="VARCHAR" />
+		<result column="CARDNAME" property="cardname" jdbcType="VARCHAR" />
+		<result column="SHORTBANKCARDNUMBER" property="shortbankcardnumber"
+			jdbcType="VARCHAR" />
+		<result column="SHORTBANKCARDNAME" property="shortbankcardname"
+			jdbcType="VARCHAR" />
+		<result column="PROVINCEID" property="provinceid" jdbcType="VARCHAR" />
+		<result column="CITYID" property="cityid" jdbcType="VARCHAR" />
+		<result column="BANKCODE" property="bankcode" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, MERC_ID, BANKNAME, SETTLEMENTNAME, CLR_MERC, BANK_PROVINCE,
+		BANK_CITY, BANKSYSNUMBER,
+		HEADQUARTERSBANK, CARDNAME, SHORTBANKCARDNUMBER, SHORTBANKCARDNAME, PROVINCEID, CITYID,
+		BANKCODE
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_BINDINGCARD_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_MERCHANT_BINDINGCARD_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsMerchantBindingcardInfo">
+		insert into PMS_MERCHANT_BINDINGCARD_INFO (ID, MERC_ID, BANKNAME,
+		SETTLEMENTNAME, CLR_MERC, BANK_PROVINCE,
+		BANK_CITY, BANKSYSNUMBER, HEADQUARTERSBANK,
+		CARDNAME, SHORTBANKCARDNUMBER, SHORTBANKCARDNAME,
+		PROVINCEID, CITYID, BANKCODE
+		)
+		values (#{id,jdbcType=DECIMAL}, #{mercId,jdbcType=VARCHAR},
+		#{bankname,jdbcType=VARCHAR},
+		#{settlementname,jdbcType=VARCHAR}, #{clrMerc,jdbcType=VARCHAR}, #{bankProvince,jdbcType=VARCHAR},
+		#{bankCity,jdbcType=VARCHAR}, #{banksysnumber,jdbcType=VARCHAR},
+		#{headquartersbank,jdbcType=VARCHAR},
+		#{cardname,jdbcType=VARCHAR}, #{shortbankcardnumber,jdbcType=VARCHAR},
+		#{shortbankcardname,jdbcType=VARCHAR},
+		#{provinceid,jdbcType=VARCHAR}, #{cityid,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsMerchantBindingcardInfo">
+		insert into PMS_MERCHANT_BINDINGCARD_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="bankname != null">
+				BANKNAME,
+			</if>
+			<if test="settlementname != null">
+				SETTLEMENTNAME,
+			</if>
+			<if test="clrMerc != null">
+				CLR_MERC,
+			</if>
+			<if test="bankProvince != null">
+				BANK_PROVINCE,
+			</if>
+			<if test="bankCity != null">
+				BANK_CITY,
+			</if>
+			<if test="banksysnumber != null">
+				BANKSYSNUMBER,
+			</if>
+			<if test="headquartersbank != null">
+				HEADQUARTERSBANK,
+			</if>
+			<if test="cardname != null">
+				CARDNAME,
+			</if>
+			<if test="shortbankcardnumber != null">
+				SHORTBANKCARDNUMBER,
+			</if>
+			<if test="shortbankcardname != null">
+				SHORTBANKCARDNAME,
+			</if>
+			<if test="provinceid != null">
+				PROVINCEID,
+			</if>
+			<if test="cityid != null">
+				CITYID,
+			</if>
+			<if test="bankcode != null">
+				BANKCODE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				#{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementname != null">
+				#{settlementname,jdbcType=VARCHAR},
+			</if>
+			<if test="clrMerc != null">
+				#{clrMerc,jdbcType=VARCHAR},
+			</if>
+			<if test="bankProvince != null">
+				#{bankProvince,jdbcType=VARCHAR},
+			</if>
+			<if test="bankCity != null">
+				#{bankCity,jdbcType=VARCHAR},
+			</if>
+			<if test="banksysnumber != null">
+				#{banksysnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="headquartersbank != null">
+				#{headquartersbank,jdbcType=VARCHAR},
+			</if>
+			<if test="cardname != null">
+				#{cardname,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardnumber != null">
+				#{shortbankcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardname != null">
+				#{shortbankcardname,jdbcType=VARCHAR},
+			</if>
+			<if test="provinceid != null">
+				#{provinceid,jdbcType=VARCHAR},
+			</if>
+			<if test="cityid != null">
+				#{cityid,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcode != null">
+				#{bankcode,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsMerchantBindingcardInfo">
+		update PMS_MERCHANT_BINDINGCARD_INFO
+		<set>
+			<if test="mercId != null">
+				MERC_ID = #{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				BANKNAME = #{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementname != null">
+				SETTLEMENTNAME = #{settlementname,jdbcType=VARCHAR},
+			</if>
+			<if test="clrMerc != null">
+				CLR_MERC = #{clrMerc,jdbcType=VARCHAR},
+			</if>
+			<if test="bankProvince != null">
+				BANK_PROVINCE = #{bankProvince,jdbcType=VARCHAR},
+			</if>
+			<if test="bankCity != null">
+				BANK_CITY = #{bankCity,jdbcType=VARCHAR},
+			</if>
+			<if test="banksysnumber != null">
+				BANKSYSNUMBER = #{banksysnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="headquartersbank != null">
+				HEADQUARTERSBANK = #{headquartersbank,jdbcType=VARCHAR},
+			</if>
+			<if test="cardname != null">
+				CARDNAME = #{cardname,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardnumber != null">
+				SHORTBANKCARDNUMBER = #{shortbankcardnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="shortbankcardname != null">
+				SHORTBANKCARDNAME = #{shortbankcardname,jdbcType=VARCHAR},
+			</if>
+			<if test="provinceid != null">
+				PROVINCEID = #{provinceid,jdbcType=VARCHAR},
+			</if>
+			<if test="cityid != null">
+				CITYID = #{cityid,jdbcType=VARCHAR},
+			</if>
+			<if test="bankcode != null">
+				BANKCODE = #{bankcode,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where MERC_ID = #{mercId,jdbcType=VARCHAR} and CLR_MERC =
+		#{clrMerc,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsMerchantBindingcardInfo">
+		update PMS_MERCHANT_BINDINGCARD_INFO
+		set MERC_ID = #{mercId,jdbcType=VARCHAR},
+		BANKNAME = #{bankname,jdbcType=VARCHAR},
+		SETTLEMENTNAME = #{settlementname,jdbcType=VARCHAR},
+		CLR_MERC = #{clrMerc,jdbcType=VARCHAR},
+		BANK_PROVINCE = #{bankProvince,jdbcType=VARCHAR},
+		BANK_CITY = #{bankCity,jdbcType=VARCHAR},
+		BANKSYSNUMBER = #{banksysnumber,jdbcType=VARCHAR},
+		HEADQUARTERSBANK = #{headquartersbank,jdbcType=VARCHAR},
+		CARDNAME = #{cardname,jdbcType=VARCHAR},
+		SHORTBANKCARDNUMBER = #{shortbankcardnumber,jdbcType=VARCHAR},
+		SHORTBANKCARDNAME = #{shortbankcardname,jdbcType=VARCHAR},
+		PROVINCEID = #{provinceid,jdbcType=VARCHAR},
+		CITYID = #{cityid,jdbcType=VARCHAR},
+		BANKCODE = #{bankcode,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<!-- 根据商户ID查询层绑定过的卡列表信息 -->
+	<select id="selectCardListByMercId" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		SELECT * FROM (SELECT A.*, ROWNUM RN FROM ( select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_BINDINGCARD_INFO where MERC_ID = #{mercId}
+		)A WHERE ROWNUM &lt;= 1* (#{pageNum}*#{pageSize})) WHERE RN &gt;=
+		(#{pageNum}-1)*#{pageSize}+1
+	</select>
+
+	<!-- 根据商户ID与银行卡号判断是否已绑定此银行卡 -->
+	<select id="selectCardInfo" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM PMS_MERCHANT_BINDINGCARD_INFO t where
+		t.MERC_ID=#{mercId,jdbcType=VARCHAR} and t.CLR_MERC =
+		#{clrMerc,jdbcType=VARCHAR}
+	</select>
+</mapper>

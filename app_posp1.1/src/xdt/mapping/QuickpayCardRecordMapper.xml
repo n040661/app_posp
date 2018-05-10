@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.QuickpayCardRecordMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.QuickpayCardRecord">
+		<id column="CARD_NUMBER" property="cardNumber" jdbcType="VARCHAR" />
+		<result column="BANK_NAME" property="bankName" jdbcType="VARCHAR" />
+		<result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR" />
+		<result column="CER_TYPE" property="cerType" jdbcType="VARCHAR" />
+		<result column="CER_NUMBER" property="cerNumber" jdbcType="VARCHAR" />
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+		<result column="MERC_ID" property="mercId" jdbcType="VARCHAR" />
+		<result column="CARD_BY_NAME" property="cardByName" jdbcType="VARCHAR" />
+		<result column="CVV" property="cvv" jdbcType="VARCHAR" />
+		<result column="EXPIRE_DATE" property="expireDate" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		CARD_NUMBER, BANK_NAME, CARD_TYPE, CER_TYPE, CER_NUMBER, MOBILE, CREATE_TIME,
+		MERC_ID,
+		CARD_BY_NAME, CVV, EXPIRE_DATE
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from QUICKPAY_CARD_RECORD
+		where CARD_NUMBER = #{cardNumber,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from QUICKPAY_CARD_RECORD
+		where CARD_NUMBER = #{cardNumber,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.QuickpayCardRecord">
+		insert into QUICKPAY_CARD_RECORD (CARD_NUMBER, BANK_NAME, CARD_TYPE,
+		CER_TYPE, CER_NUMBER, MOBILE,
+		CREATE_TIME, MERC_ID, CARD_BY_NAME,
+		CVV, EXPIRE_DATE)
+		values (#{cardNumber,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR},
+		#{cardType,jdbcType=VARCHAR},
+		#{cerType,jdbcType=VARCHAR}, #{cerNumber,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+		#{createTime,jdbcType=VARCHAR}, #{mercId,jdbcType=VARCHAR},
+		#{cardByName,jdbcType=VARCHAR},
+		#{cvv,jdbcType=VARCHAR}, #{expireDate,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.QuickpayCardRecord">
+		insert into QUICKPAY_CARD_RECORD
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="cardNumber != null">
+				CARD_NUMBER,
+			</if>
+			<if test="bankName != null">
+				BANK_NAME,
+			</if>
+			<if test="cardType != null">
+				CARD_TYPE,
+			</if>
+			<if test="cerType != null">
+				CER_TYPE,
+			</if>
+			<if test="cerNumber != null">
+				CER_NUMBER,
+			</if>
+			<if test="mobile != null">
+				MOBILE,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="cardByName != null">
+				CARD_BY_NAME,
+			</if>
+			<if test="cvv != null">
+				CVV,
+			</if>
+			<if test="expireDate != null">
+				EXPIRE_DATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="cardNumber != null">
+				#{cardNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="bankName != null">
+				#{bankName,jdbcType=VARCHAR},
+			</if>
+			<if test="cardType != null">
+				#{cardType,jdbcType=VARCHAR},
+			</if>
+			<if test="cerType != null">
+				#{cerType,jdbcType=VARCHAR},
+			</if>
+			<if test="cerNumber != null">
+				#{cerNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="cardByName != null">
+				#{cardByName,jdbcType=VARCHAR},
+			</if>
+			<if test="cvv != null">
+				#{cvv,jdbcType=VARCHAR},
+			</if>
+			<if test="expireDate != null">
+				#{expireDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.QuickpayCardRecord">
+		update QUICKPAY_CARD_RECORD
+		<set>
+			<if test="bankName != null">
+				BANK_NAME = #{bankName,jdbcType=VARCHAR},
+			</if>
+			<if test="cardType != null">
+				CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+			</if>
+			<if test="cerType != null">
+				CER_TYPE = #{cerType,jdbcType=VARCHAR},
+			</if>
+			<if test="cerNumber != null">
+				CER_NUMBER = #{cerNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				MOBILE = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="mercId != null">
+				MERC_ID = #{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="cardByName != null">
+				CARD_BY_NAME = #{cardByName,jdbcType=VARCHAR},
+			</if>
+			<if test="cvv != null">
+				CVV = #{cvv,jdbcType=VARCHAR},
+			</if>
+			<if test="expireDate != null">
+				EXPIRE_DATE = #{expireDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where CARD_NUMBER = #{cardNumber,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.QuickpayCardRecord">
+		update QUICKPAY_CARD_RECORD
+		set BANK_NAME = #{bankName,jdbcType=VARCHAR},
+		CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+		CER_TYPE = #{cerType,jdbcType=VARCHAR},
+		CER_NUMBER = #{cerNumber,jdbcType=VARCHAR},
+		MOBILE = #{mobile,jdbcType=VARCHAR},
+		CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+		MERC_ID = #{mercId,jdbcType=VARCHAR},
+		CARD_BY_NAME = #{cardByName,jdbcType=VARCHAR},
+		CVV = #{cvv,jdbcType=VARCHAR},
+		EXPIRE_DATE = #{expireDate,jdbcType=VARCHAR}
+		where CARD_NUMBER = #{cardNumber,jdbcType=VARCHAR}
+	</update>
+</mapper>

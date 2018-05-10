@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.MerchantsFeedbackMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.MerchantsFeedback">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+		<result column="OPINON" jdbcType="VARCHAR" property="opinon" />
+		<result column="CREATION_TIME" jdbcType="VARCHAR" property="creationTime" />
+		<result column="REVERT_TIME" jdbcType="VARCHAR" property="revertTime" />
+		<result column="REVERT_OPINION" jdbcType="VARCHAR" property="revertOpinion" />
+		<result column="APPVAISE" jdbcType="VARCHAR" property="appvaise" />
+		<result column="REPLY" jdbcType="VARCHAR" property="reply" />
+		<result column="USER_TYPE" jdbcType="DECIMAL" property="userType" />
+		<result column="REMARKS" jdbcType="VARCHAR" property="remarks" />
+		<result column="REVERT_MAN" jdbcType="VARCHAR" property="revertMan" />
+		<result column="REVERT_MAN_ID" jdbcType="VARCHAR" property="revertManId" />
+		<result column="OAGENTNO" jdbcType="VARCHAR" property="oAgentNo" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, USER_ID, OPINON, CREATION_TIME, REVERT_TIME, REVERT_OPINION,
+		APPVAISE, REPLY,
+		USER_TYPE, REMARKS, REVERT_MAN, REVERT_MAN_ID,OAGENTNO
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_MESSAGE
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_MERCHANT_MESSAGE
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.MerchantsFeedback">
+		insert into PMS_MERCHANT_MESSAGE (ID, USER_ID, OPINON,
+		CREATION_TIME, REVERT_TIME, REVERT_OPINION,
+		APPVAISE, REPLY, USER_TYPE,
+		REMARKS, REVERT_MAN, REVERT_MAN_ID
+		)
+		values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=VARCHAR},
+		#{opinon,jdbcType=VARCHAR},
+		#{creationTime,jdbcType=VARCHAR}, #{revertTime,jdbcType=VARCHAR}, #{revertOpinion,jdbcType=VARCHAR},
+		#{appvaise,jdbcType=VARCHAR}, #{reply,jdbcType=VARCHAR},
+		#{userType,jdbcType=VARCHAR},
+		#{remarks,jdbcType=VARCHAR}, #{revertMan,jdbcType=VARCHAR}, #{revertManId,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.MerchantsFeedback">
+		insert into PMS_MERCHANT_MESSAGE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="userId != null">
+				USER_ID,
+			</if>
+			<if test="opinon != null">
+				OPINON,
+			</if>
+			<if test="creationTime != null">
+				CREATION_TIME,
+			</if>
+			<if test="revertTime != null">
+				REVERT_TIME,
+			</if>
+			<if test="revertOpinion != null">
+				REVERT_OPINION,
+			</if>
+			<if test="appvaise != null">
+				APPVAISE,
+			</if>
+			<if test="reply != null">
+				REPLY,
+			</if>
+			<if test="userType != null">
+				USER_TYPE,
+			</if>
+			<if test="remarks != null">
+				REMARKS,
+			</if>
+			<if test="revertMan != null">
+				REVERT_MAN,
+			</if>
+			<if test="revertManId != null">
+				REVERT_MAN_ID,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="opinon != null">
+				#{opinon,jdbcType=VARCHAR},
+			</if>
+			<if test="creationTime != null">
+				#{creationTime,jdbcType=VARCHAR},
+			</if>
+			<if test="revertTime != null">
+				#{revertTime,jdbcType=VARCHAR},
+			</if>
+			<if test="revertOpinion != null">
+				#{revertOpinion,jdbcType=VARCHAR},
+			</if>
+			<if test="appvaise != null">
+				#{appvaise,jdbcType=VARCHAR},
+			</if>
+			<if test="reply != null">
+				#{reply,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				#{userType,jdbcType=VARCHAR},
+			</if>
+			<if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="revertMan != null">
+				#{revertMan,jdbcType=VARCHAR},
+			</if>
+			<if test="revertManId != null">
+				#{revertManId,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.MerchantsFeedback">
+		update PMS_MERCHANT_MESSAGE
+		<set>
+			<if test="userId != null">
+				USER_ID = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="opinon != null">
+				OPINON = #{opinon,jdbcType=VARCHAR},
+			</if>
+			<if test="creationTime != null">
+				CREATION_TIME = #{creationTime,jdbcType=VARCHAR},
+			</if>
+			<if test="revertTime != null">
+				REVERT_TIME = #{revertTime,jdbcType=VARCHAR},
+			</if>
+			<if test="revertOpinion != null">
+				REVERT_OPINION = #{revertOpinion,jdbcType=VARCHAR},
+			</if>
+			<if test="appvaise != null">
+				APPVAISE = #{appvaise,jdbcType=VARCHAR},
+			</if>
+			<if test="reply != null">
+				REPLY = #{reply,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				USER_TYPE = #{userType,jdbcType=VARCHAR},
+			</if>
+			<if test="remarks != null">
+				REMARKS = #{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="revertMan != null">
+				REVERT_MAN = #{revertMan,jdbcType=VARCHAR},
+			</if>
+			<if test="revertManId != null">
+				REVERT_MAN_ID = #{revertManId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.MerchantsFeedback">
+		update PMS_MERCHANT_MESSAGE
+		set USER_ID = #{userId,jdbcType=VARCHAR},
+		OPINON = #{opinon,jdbcType=VARCHAR},
+		CREATION_TIME = #{creationTime,jdbcType=VARCHAR},
+		REVERT_TIME = #{revertTime,jdbcType=VARCHAR},
+		REVERT_OPINION = #{revertOpinion,jdbcType=VARCHAR},
+		APPVAISE = #{appvaise,jdbcType=VARCHAR},
+		REPLY = #{reply,jdbcType=VARCHAR},
+		USER_TYPE = #{userType,jdbcType=VARCHAR},
+		REMARKS = #{remarks,jdbcType=VARCHAR},
+		REVERT_MAN = #{revertMan,jdbcType=VARCHAR},
+		REVERT_MAN_ID = #{revertManId,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+</mapper>

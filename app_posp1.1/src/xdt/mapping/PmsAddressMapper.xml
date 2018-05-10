@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsAddressMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsAddress">
+		<id column="ADDRESS_ID" property="addressId" jdbcType="VARCHAR" />
+		<result column="MERCHANT_NO" property="merchantNo" jdbcType="VARCHAR" />
+		<result column="PHONE_NO" property="phoneNo" jdbcType="VARCHAR" />
+		<result column="PEOPLE_NAME" property="peopleName" jdbcType="VARCHAR" />
+		<result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+		<result column="ZIP_CODE" property="zipCode" jdbcType="VARCHAR" />
+		<result column="DEFAULT_FLAG" property="defaultFlag" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="CREATE_PEOPLE" property="createPeople"
+			jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="UPDATE_PEOPLE" property="updatePeople"
+			jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ADDRESS_ID, MERCHANT_NO, PHONE_NO, PEOPLE_NAME, ADDRESS, ZIP_CODE, DEFAULT_FLAG,
+		STATUS, CREATE_PEOPLE, CREATE_TIME, UPDATE_PEOPLE, UPDATE_TIME
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_ADDRESS
+		where ADDRESS_ID = #{addressId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from PMS_ADDRESS
+		where ADDRESS_ID = #{addressId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsAddress">
+		insert into PMS_ADDRESS (ADDRESS_ID, MERCHANT_NO, PHONE_NO,
+		PEOPLE_NAME, ADDRESS, ZIP_CODE,
+		DEFAULT_FLAG, STATUS, CREATE_PEOPLE,
+		CREATE_TIME, UPDATE_PEOPLE, UPDATE_TIME
+		)
+		values (#{addressId,jdbcType=VARCHAR}, #{merchantNo,jdbcType=VARCHAR},
+		#{phoneNo,jdbcType=VARCHAR},
+		#{peopleName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR},
+		#{defaultFlag,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+		#{createPeople,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{updatePeople,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsAddress">
+		insert into PMS_ADDRESS
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="addressId != null">
+				ADDRESS_ID,
+			</if>
+			<if test="merchantNo != null">
+				MERCHANT_NO,
+			</if>
+			<if test="phoneNo != null">
+				PHONE_NO,
+			</if>
+			<if test="peopleName != null">
+				PEOPLE_NAME,
+			</if>
+			<if test="address != null">
+				ADDRESS,
+			</if>
+			<if test="zipCode != null">
+				ZIP_CODE,
+			</if>
+			<if test="defaultFlag != null">
+				DEFAULT_FLAG,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="createPeople != null">
+				CREATE_PEOPLE,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="updatePeople != null">
+				UPDATE_PEOPLE,
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="addressId != null">
+				#{addressId,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantNo != null">
+				#{merchantNo,jdbcType=VARCHAR},
+			</if>
+			<if test="phoneNo != null">
+				#{phoneNo,jdbcType=VARCHAR},
+			</if>
+			<if test="peopleName != null">
+				#{peopleName,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				#{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="defaultFlag != null">
+				#{defaultFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createPeople != null">
+				#{createPeople,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatePeople != null">
+				#{updatePeople,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsAddress">
+		update PMS_ADDRESS
+		<set>
+			<if test="phoneNo != null">
+				PHONE_NO = #{phoneNo,jdbcType=VARCHAR},
+			</if>
+			<if test="peopleName != null">
+				PEOPLE_NAME = #{peopleName,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				ADDRESS = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="defaultFlag != null">
+				DEFAULT_FLAG = #{defaultFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createPeople != null">
+				CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatePeople != null">
+				UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where MERCHANT_NO = #{merchantNo,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsAddress">
+		update PMS_ADDRESS
+		set MERCHANT_NO = #{merchantNo,jdbcType=VARCHAR},
+		PHONE_NO = #{phoneNo,jdbcType=VARCHAR},
+		PEOPLE_NAME = #{peopleName,jdbcType=VARCHAR},
+		ADDRESS = #{address,jdbcType=VARCHAR},
+		ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
+		DEFAULT_FLAG = #{defaultFlag,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=VARCHAR},
+		CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR},
+		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+		UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR},
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		where ADDRESS_ID = #{addressId,jdbcType=VARCHAR}
+	</update>
+	<!-- 根据商户号查询收货地址 -->
+	<select id="selectList" parameterType="xdt.model.PmsGoods"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_ADDRESS
+		where MERCHANT_NO = #{merchantNo,jdbcType=VARCHAR}
+		and STATUS = 0
+		ORDER BY DEFAULT_FLAG
+	</select>
+</mapper>

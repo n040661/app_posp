@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<applications>
+	<app name="privateKey">
+	    <enccert-filepath>厦门聚佰宝商贸有限公司.cer</enccert-filepath>
+	    <enccert-password>11111111</enccert-password>
+	    <signcert-filepath>CA20171129111100厦门聚佰宝商贸有限公司.pfx</signcert-filepath>
+	    <signcert-password>11111111</signcert-password>
+	</app>
+</applications>

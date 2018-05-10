@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.AppErrorLogMapper">
+	<resultMap id="BaseResultMap" type="xdt.dto.AppErrorLog">
+		<result column="EQUIPMENTMODEL" property="equipmentmodel"
+			jdbcType="VARCHAR" />
+		<result column="SYSTEMVERSION" property="systemversion"
+			jdbcType="VARCHAR" />
+		<result column="APPVERSION" property="appversion" jdbcType="VARCHAR" />
+		<result column="APPIDENTIFIER" property="appidentifier"
+			jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+		<result column="MERCID" property="mercid" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="xdt.dto.AppErrorLog"
+		extends="BaseResultMap">
+		<result column="LOGS" property="logs" jdbcType="CLOB" />
+	</resultMap>
+	<sql id="Blob_Column_List">
+		LOGS
+	</sql>
+	<insert id="insert" parameterType="xdt.dto.AppErrorLog">
+		insert into APP_ERROR_LOG (EQUIPMENTMODEL, SYSTEMVERSION, APPVERSION,
+		APPIDENTIFIER, CREATETIME, MERCID,
+		LOGS)
+		values (#{equipmentmodel,jdbcType=VARCHAR},
+		#{systemversion,jdbcType=VARCHAR}, #{appversion,jdbcType=VARCHAR},
+		#{appidentifier,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR},
+		#{mercid,jdbcType=VARCHAR},
+		#{logs,jdbcType=CLOB})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.dto.AppErrorLog">
+		insert into APP_ERROR_LOG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="equipmentmodel != null">
+				EQUIPMENTMODEL,
+			</if>
+			<if test="systemversion != null">
+				SYSTEMVERSION,
+			</if>
+			<if test="appversion != null">
+				APPVERSION,
+			</if>
+			<if test="appidentifier != null">
+				APPIDENTIFIER,
+			</if>
+			<if test="createtime != null">
+				CREATETIME,
+			</if>
+			<if test="mercid != null">
+				MERCID,
+			</if>
+			<if test="logs != null">
+				LOGS,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="equipmentmodel != null">
+				#{equipmentmodel,jdbcType=VARCHAR},
+			</if>
+			<if test="systemversion != null">
+				#{systemversion,jdbcType=VARCHAR},
+			</if>
+			<if test="appversion != null">
+				#{appversion,jdbcType=VARCHAR},
+			</if>
+			<if test="appidentifier != null">
+				#{appidentifier,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="mercid != null">
+				#{mercid,jdbcType=VARCHAR},
+			</if>
+			<if test="logs != null">
+				#{logs,jdbcType=CLOB},
+			</if>
+		</trim>
+	</insert>
+</mapper>

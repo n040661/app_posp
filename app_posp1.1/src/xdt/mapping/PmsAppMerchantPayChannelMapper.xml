@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsAppMerchantPayChannelMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsAppMerchantPayChannel">
+		<id column="MERC_ID" property="mercId" jdbcType="VARCHAR" />
+		<id column="BUSINESSCODE" property="businesscode" jdbcType="VARCHAR" />
+		<id column="PAYMENTCODE" property="paymentcode" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+		<result column="MODIFYTIME" property="modifytime" jdbcType="VARCHAR" />
+		<result column="MODIFYUSER" property="modifyuser" jdbcType="VARCHAR" />
+		<result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+		<result column="REASON" property="reason" jdbcType="VARCHAR" />
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		MERC_ID, BUSINESSCODE, PAYMENTCODE, STATUS, CREATETIME, MODIFYTIME,
+		MODIFYUSER,DESCRIBE,OAGENTNO,REASON
+	</sql>
+
+	<insert id="insert" parameterType="xdt.model.PmsAppMerchantPayChannel">
+		insert into PMS_APP_MERCHANT_PAY_CHANNEL (MERC_ID, BUSINESSCODE,
+		PAYMENTCODE,
+		STATUS, CREATETIME, MODIFYTIME,
+		MODIFYUSER,DESCRIBE,OAGENTNO)
+		values (#{mercId,jdbcType=VARCHAR}, #{businesscode,jdbcType=VARCHAR},
+		#{paymentcode,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{modifytime,jdbcType=VARCHAR},
+		#{modifyuser,jdbcType=VARCHAR},#{describe,jdbcType=VARCHAR},#{oAgentNo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsAppMerchantPayChannel">
+		insert into PMS_APP_MERCHANT_PAY_CHANNEL
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="businesscode != null">
+				BUSINESSCODE,
+			</if>
+			<if test="paymentcode != null">
+				PAYMENTCODE,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="createtime != null">
+				CREATETIME,
+			</if>
+			<if test="modifytime != null">
+				MODIFYTIME,
+			</if>
+			<if test="modifyuser != null">
+				MODIFYUSER,
+			</if>
+			<if test="describe != null">
+				DESCRIBE,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="businesscode != null">
+				#{businesscode,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentcode != null">
+				#{paymentcode,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="modifytime != null">
+				#{modifytime,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyuser != null">
+				#{modifyuser,jdbcType=VARCHAR},
+			</if>
+			<if test="describe != null">
+				#{describe,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsAppMerchantPayChannel">
+		update PMS_APP_MERCHANT_PAY_CHANNEL
+		<set>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="modifytime != null">
+				MODIFYTIME = #{modifytime,jdbcType=VARCHAR},
+			</if>
+			<if test="modifyuser != null">
+				MODIFYUSER = #{modifyuser,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+		and PAYMENTCODE = #{paymentcode,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsAppMerchantPayChannel">
+		update PMS_APP_MERCHANT_PAY_CHANNEL
+		set STATUS = #{status,jdbcType=VARCHAR},
+		MODIFYTIME = #{modifytime,jdbcType=VARCHAR},
+		MODIFYUSER = #{modifyuser,jdbcType=VARCHAR}
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+		and PAYMENTCODE = #{paymentcode,jdbcType=VARCHAR}
+	</update>
+	<select id="selectList" parameterType="xdt.model.PmsAppMerchantPayChannel"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_APP_MERCHANT_PAY_CHANNEL
+		<where>
+			<if test="mercId!=null and mercId!=''"> and MERC_ID = #{mercId,jdbcType=VARCHAR}</if>
+			<if test="paymentcode!=null and paymentcode!=''"> and PAYMENTCODE = #{paymentcode,jdbcType=VARCHAR}</if>
+		</where>
+	</select>
+</mapper>

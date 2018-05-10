@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PrimarykeyTableMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PrimarykeyTable">
+		<id column="TABLE_NAME" property="tableName" jdbcType="VARCHAR" />
+		<result column="MAX_VALUE" property="maxValue" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		TABLE_NAME, MAX_VALUE, REMARK
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from PRIMARYKEY_TABLE
+		where TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from PRIMARYKEY_TABLE
+		where TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PrimarykeyTable">
+		insert into PRIMARYKEY_TABLE (TABLE_NAME, MAX_VALUE, REMARK
+		)
+		values (#{tableName,jdbcType=VARCHAR}, #{maxValue,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PrimarykeyTable">
+		insert into PRIMARYKEY_TABLE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="tableName != null">
+				TABLE_NAME,
+			</if>
+			<if test="maxValue != null">
+				MAX_VALUE,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="tableName != null">
+				#{tableName,jdbcType=VARCHAR},
+			</if>
+			<if test="maxValue != null">
+				#{maxValue,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PrimarykeyTable">
+		update PRIMARYKEY_TABLE
+		<set>
+			<if test="maxValue != null">
+				MAX_VALUE = #{maxValue,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PrimarykeyTable">
+		update PRIMARYKEY_TABLE
+		set MAX_VALUE = #{maxValue,jdbcType=VARCHAR},
+		REMARK = #{remark,jdbcType=VARCHAR}
+		where TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+	</update>
+</mapper>

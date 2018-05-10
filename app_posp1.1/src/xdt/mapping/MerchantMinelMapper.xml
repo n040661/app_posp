@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.MerchantMinelMapper">
+
+
+	<resultMap type="xdt.model.MerchantMinel" id="resultMap">
+		<result column="ORDERID" property="orderid" jdbcType="VARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="VARCHAR" />
+		<result column="POUNDAGE" property="poundage" jdbcType="VARCHAR" />
+		<result column="ORDER_AMOUNT" property="orderamount" jdbcType="VARCHAR" />
+		<result column="RATE" property="rate" jdbcType="VARCHAR" />
+		<result column="BANKSYSNUMBER" property="banksysnumber"
+			jdbcType="VARCHAR" />
+		<result column="BANKNAME" property="bankname" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="MERC_ID" property="mercId" jdbcType="VARCHAR" />
+		<result column="BUSINESSCODE" property="businesscode" jdbcType="VARCHAR" />
+		<result column="FINISH_TIME" property="finishTime" jdbcType="VARCHAR" />
+		<result column="CLR_MERC" property="clrMerc" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+		<result column="SETTLEMENTNAME" property="settlementname"
+			jdbcType="VARCHAR" />
+		<result column="RESERVE2" property="reserve2" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+
+	<!-- 商户在客户端查看绑定的卡信息 提现页面显示使用 -->
+	<select id="queryDrawMoneyAcc" parameterType="java.util.Map"
+		resultType="java.util.Map">
+
+
+		select pmi.BANKNAME,pmi.CLR_MERC,pmi.SETTLEMENTNAME,pmi.BANKSYSNUMBER,
+
+		TO_CHAR((select sum(taat.AMOUNT) from T_ACC_ACCOUNT_TRANS taat where
+		subStr(taat.CREAETETIME,0,19)&gt;=
+		to_char(TO_DATE(#{taatransDate,jdbcType=VARCHAR},
+		'yyyy-MM-dd')-1,'yyyy-MM-dd')||' 23:00:00'
+		and subStr(taat.CREAETETIME,0,19)&lt; #{taatransDate,jdbcType=VARCHAR}||'
+		23:00:00'
+
+		and taat.MERC_ID=#{mercid,jdbcType=VARCHAR} and taat.TRADETYPECODE
+		!='14')) BALANCE ,
+
+
+		TO_CHAR((select count(1) from PMS_MERCHANT_COLLECT_MANAGER pmcm where
+		pmcm.MERC_ID=#{mercid,jdbcType=VARCHAR}
+		and pmcm.BUSINESSCODE= #{businesscode,jdbcType=VARCHAR}
+
+		and subStr(pmcm.CREATE_TIME,0,12)&gt;=
+		to_char(TO_DATE(#{date,jdbcType=VARCHAR},
+		'yyyyMMdd')-1,'yyyyMMdd')||'230000'
+		and subStr(pmcm.CREATE_TIME,0,12)&lt; #{date,jdbcType=VARCHAR}||'230000'
+		)) ALREADYTIMES ,
+
+		paarac.MIN_AMOUNT,paarac.MAX_AMOUNT,paarac.ACCOUNT_TIME,paarac.NUMBEROFTIMES,paarac.RATETYPE,paarac.STATUS,paarac.MESSAGE,
+		arc.RATE,arc.IS_TOP,arc.TOP_POUNDAGE,arc.BOTTOM_POUNDAGE,arc.IS_BOTTOM
+
+		from PMS_MERCHANT_INFO pmi ,PMS_APP_AMOUNT_AND_RATE_CONFIG paarac ,
+		APP_RATE_CONFIG arc
+
+
+		where pmi.MERC_ID=#{mercid,jdbcType=VARCHAR}
+		and pmi.MERC_ID = paarac.MERC_ID and
+		paarac.BUSINESSCODE=#{businesscode,jdbcType=VARCHAR}
+
+		and paarac.RATETYPE=arc.RATE_TYPE and
+		arc.OAGENTNO=#{oAgentNo,jdbcType=VARCHAR}
+
+	</select>
+
+
+	<!-- 获取业务信息 最大值、最小值、费率 -->
+	<select id="queryBusinessInfo" parameterType="java.util.Map"
+		resultType="java.util.Map">
+
+
+		select paarac.MIN_AMOUNT,paarac.MAX_AMOUNT,QUICKRATETYPE,(select VALUE from
+		PMS_DICTIONARY where TYPE='minAccount') MINSETTLE
+		,arc.RATE,arc.IS_TOP,arc.TOP_POUNDAGE,arc.BOTTOM_POUNDAGE,arc.IS_BOTTOM
+
+		from PMS_APP_AMOUNT_AND_RATE_CONFIG paarac , APP_RATE_CONFIG arc
+
+		where
+		paarac.MERC_ID=#{mercid,jdbcType=VARCHAR} and paarac.BUSINESSCODE=
+		#{businesscode,jdbcType=VARCHAR}
+		and paarac.RATETYPE=arc.RATE_TYPE and
+		arc.OAGENTNO=#{oAgentNo,jdbcType=VARCHAR}
+
+	</select>
+
+
+
+
+	<insert id="insertDrawMoneyAcc" parameterType="xdt.model.MerchantMinel">
+		insert into
+		PMS_MERCHANT_COLLECT_MANAGER
+		( ORDERID,MERC_ID,BUSINESSCODE,AMOUNT,
+		POUNDAGE, ORDER_AMOUNT,RATE,BANKNAME,
+		SETTLEMENTNAME,CLR_MERC,BANKSYSNUMBER,STATUS,CREATE_TIME,
+		FINISH_TIME,OAGENTNO,RESERVE2)
+		values(#{orderid,jdbcType=VARCHAR},#{mercId,jdbcType=VARCHAR},#{businesscode,jdbcType=VARCHAR},#{amount,jdbcType=VARCHAR},
+		#{poundage,jdbcType=VARCHAR},#{orderamount,jdbcType=VARCHAR},#{rate,jdbcType=VARCHAR},#{bankname,jdbcType=VARCHAR},
+		#{settlementname,jdbcType=VARCHAR},#{clrMerc,jdbcType=VARCHAR},#{banksysnumber,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},
+		#{finishTime,jdbcType=VARCHAR},#{oAgentNo,jdbcType=VARCHAR},#{reserve2,jdbcType=VARCHAR})
+	</insert>
+	<!-- 查询交易日期是否是节假日 （是否是可提款转账日期） -->
+	<select id="queryFestival" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(1) from PMS_APP_FESTIVAL_CONFIG where
+		FESTIVAL_TIME=#{date,jdbcType=VARCHAR} and STATUS='0'
+	</select>
+
+
+
+	<!-- 查询提现时间段 wm 2015-10-25 -->
+	<select id="queryTiXianTime" parameterType="java.util.Map"
+		resultType="java.util.Map">
+
+		select VALUE from PMS_DICTIONARY where TYPE='tixianTime'
+
+	</select>
+
+	<!-- 查询刷卡交易时间段判断 wm 2015-10-25 -->
+	<select id="queryShuaKaAgent0Time" parameterType="java.util.Map"
+		resultType="java.util.Map">
+
+		select VALUE from PMS_DICTIONARY where TYPE='shuakaTime'
+
+	</select>
+
+
+
+
+
+</mapper>

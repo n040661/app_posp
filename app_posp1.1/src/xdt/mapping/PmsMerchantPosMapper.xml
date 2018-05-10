@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsMerchantPosMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsMerchantPos">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="MERCHANTID" jdbcType="DECIMAL" property="merchantid" />
+		<result column="POSID" jdbcType="DECIMAL" property="posid" />
+		<result column="POSBUSINESSNO" jdbcType="VARCHAR" property="posbusinessno" />
+		<result column="RATE" jdbcType="DECIMAL" property="rate" />
+		<result column="RATETYPE" jdbcType="DECIMAL" property="ratetype" />
+		<result column="RATEFLAG" jdbcType="DECIMAL" property="rateflag" />
+		<result column="USESTATUS" jdbcType="DECIMAL" property="usestatus" />
+		<result column="PARAMVERSION" jdbcType="VARCHAR" property="paramversion" />
+		<result column="SETUPDATE" jdbcType="VARCHAR" property="setupdate" />
+		<result column="STARTUSEDATE" jdbcType="VARCHAR" property="startusedate" />
+		<result column="EXPIREDATE" jdbcType="VARCHAR" property="expiredate" />
+		<result column="AUTHORITY" jdbcType="VARCHAR" property="authority" />
+		<result column="CURSOFTVERSION" jdbcType="VARCHAR" property="cursoftversion" />
+		<result column="UPDATESOFTVERSION" jdbcType="VARCHAR" property="updatesoftversion" />
+		<result column="KEK" jdbcType="VARCHAR" property="kek" />
+		<result column="MINAMT" jdbcType="DECIMAL" property="minamt" />
+		<result column="MAXAMT" jdbcType="DECIMAL" property="maxamt" />
+		<result column="DEPARTMENTID" jdbcType="DECIMAL" property="departmentid" />
+		<result column="BATNO" jdbcType="VARCHAR" property="batno" />
+		<result column="RESERVEDPRIVATE" jdbcType="VARCHAR" property="reservedprivate" />
+		<result column="ZHUKEK" jdbcType="VARCHAR" property="zhukek" />
+		<result column="POSNAME" jdbcType="VARCHAR" property="posname" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, MERCHANTID, POSID, POSBUSINESSNO, RATE, RATETYPE, RATEFLAG,
+		USESTATUS, PARAMVERSION,
+		SETUPDATE, STARTUSEDATE, EXPIREDATE, AUTHORITY, CURSOFTVERSION,
+		UPDATESOFTVERSION,
+		KEK, MINAMT, MAXAMT, DEPARTMENTID, BATNO, RESERVEDPRIVATE, ZHUKEK, POSNAME
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_POS
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_MERCHANT_POS
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsMerchantPos">
+		insert into PMS_MERCHANT_POS (ID, MERCHANTID, POSID,
+		POSBUSINESSNO, RATE, RATETYPE,
+		RATEFLAG, USESTATUS, PARAMVERSION,
+		SETUPDATE, STARTUSEDATE, EXPIREDATE,
+		AUTHORITY, CURSOFTVERSION, UPDATESOFTVERSION,
+		KEK, MINAMT, MAXAMT,
+		DEPARTMENTID, BATNO, RESERVEDPRIVATE,
+		ZHUKEK, POSNAME)
+		values (#{id,jdbcType=DECIMAL}, #{merchantid,jdbcType=DECIMAL},
+		#{posid,jdbcType=DECIMAL},
+		#{posbusinessno,jdbcType=VARCHAR}, #{rate,jdbcType=DECIMAL}, #{ratetype,jdbcType=DECIMAL},
+		#{rateflag,jdbcType=DECIMAL}, #{usestatus,jdbcType=DECIMAL},
+		#{paramversion,jdbcType=VARCHAR},
+		#{setupdate,jdbcType=VARCHAR}, #{startusedate,jdbcType=VARCHAR}, #{expiredate,jdbcType=VARCHAR},
+		#{authority,jdbcType=VARCHAR}, #{cursoftversion,jdbcType=VARCHAR},
+		#{updatesoftversion,jdbcType=VARCHAR},
+		#{kek,jdbcType=VARCHAR}, #{minamt,jdbcType=DECIMAL}, #{maxamt,jdbcType=DECIMAL},
+		#{departmentid,jdbcType=DECIMAL}, #{batno,jdbcType=VARCHAR},
+		#{reservedprivate,jdbcType=VARCHAR},
+		#{zhukek,jdbcType=VARCHAR}), #{posname,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsMerchantPos">
+		insert into PMS_MERCHANT_POS
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="merchantid != null">
+				MERCHANTID,
+			</if>
+			<if test="posid != null">
+				POSID,
+			</if>
+			<if test="posbusinessno != null">
+				POSBUSINESSNO,
+			</if>
+			<if test="rate != null">
+				RATE,
+			</if>
+			<if test="ratetype != null">
+				RATETYPE,
+			</if>
+			<if test="rateflag != null">
+				RATEFLAG,
+			</if>
+			<if test="usestatus != null">
+				USESTATUS,
+			</if>
+			<if test="paramversion != null">
+				PARAMVERSION,
+			</if>
+			<if test="setupdate != null">
+				SETUPDATE,
+			</if>
+			<if test="startusedate != null">
+				STARTUSEDATE,
+			</if>
+			<if test="expiredate != null">
+				EXPIREDATE,
+			</if>
+			<if test="authority != null">
+				AUTHORITY,
+			</if>
+			<if test="cursoftversion != null">
+				CURSOFTVERSION,
+			</if>
+			<if test="updatesoftversion != null">
+				UPDATESOFTVERSION,
+			</if>
+			<if test="kek != null">
+				KEK,
+			</if>
+			<if test="minamt != null">
+				MINAMT,
+			</if>
+			<if test="maxamt != null">
+				MAXAMT,
+			</if>
+			<if test="departmentid != null">
+				DEPARTMENTID,
+			</if>
+			<if test="batno != null">
+				BATNO,
+			</if>
+			<if test="reservedprivate != null">
+				RESERVEDPRIVATE,
+			</if>
+			<if test="zhukek != null">
+				ZHUKEK,
+			</if>
+			<if test="posname != null">
+				POSNAME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="merchantid != null">
+				#{merchantid,jdbcType=DECIMAL},
+			</if>
+			<if test="posid != null">
+				#{posid,jdbcType=DECIMAL},
+			</if>
+			<if test="posbusinessno != null">
+				#{posbusinessno,jdbcType=VARCHAR},
+			</if>
+			<if test="rate != null">
+				#{rate,jdbcType=DECIMAL},
+			</if>
+			<if test="ratetype != null">
+				#{ratetype,jdbcType=DECIMAL},
+			</if>
+			<if test="rateflag != null">
+				#{rateflag,jdbcType=DECIMAL},
+			</if>
+			<if test="usestatus != null">
+				#{usestatus,jdbcType=DECIMAL},
+			</if>
+			<if test="paramversion != null">
+				#{paramversion,jdbcType=VARCHAR},
+			</if>
+			<if test="setupdate != null">
+				#{setupdate,jdbcType=VARCHAR},
+			</if>
+			<if test="startusedate != null">
+				#{startusedate,jdbcType=VARCHAR},
+			</if>
+			<if test="expiredate != null">
+				#{expiredate,jdbcType=VARCHAR},
+			</if>
+			<if test="authority != null">
+				#{authority,jdbcType=VARCHAR},
+			</if>
+			<if test="cursoftversion != null">
+				#{cursoftversion,jdbcType=VARCHAR},
+			</if>
+			<if test="updatesoftversion != null">
+				#{updatesoftversion,jdbcType=VARCHAR},
+			</if>
+			<if test="kek != null">
+				#{kek,jdbcType=VARCHAR},
+			</if>
+			<if test="minamt != null">
+				#{minamt,jdbcType=DECIMAL},
+			</if>
+			<if test="maxamt != null">
+				#{maxamt,jdbcType=DECIMAL},
+			</if>
+			<if test="departmentid != null">
+				#{departmentid,jdbcType=DECIMAL},
+			</if>
+			<if test="batno != null">
+				#{batno,jdbcType=VARCHAR},
+			</if>
+			<if test="reservedprivate != null">
+				#{reservedprivate,jdbcType=VARCHAR},
+			</if>
+			<if test="zhukek != null">
+				#{zhukek,jdbcType=VARCHAR},
+			</if>
+			<if test="posname != null">
+				#{posname,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsMerchantPos">
+		update PMS_MERCHANT_POS
+		<set>
+			<if test="merchantid != null">
+				MERCHANTID = #{merchantid,jdbcType=DECIMAL},
+			</if>
+			<if test="posid != null">
+				POSID = #{posid,jdbcType=DECIMAL},
+			</if>
+			<if test="posbusinessno != null">
+				POSBUSINESSNO = #{posbusinessno,jdbcType=VARCHAR},
+			</if>
+			<if test="rate != null">
+				RATE = #{rate,jdbcType=DECIMAL},
+			</if>
+			<if test="ratetype != null">
+				RATETYPE = #{ratetype,jdbcType=DECIMAL},
+			</if>
+			<if test="rateflag != null">
+				RATEFLAG = #{rateflag,jdbcType=DECIMAL},
+			</if>
+			<if test="usestatus != null">
+				USESTATUS = #{usestatus,jdbcType=DECIMAL},
+			</if>
+			<if test="paramversion != null">
+				PARAMVERSION = #{paramversion,jdbcType=VARCHAR},
+			</if>
+			<if test="setupdate != null">
+				SETUPDATE = #{setupdate,jdbcType=VARCHAR},
+			</if>
+			<if test="startusedate != null">
+				STARTUSEDATE = #{startusedate,jdbcType=VARCHAR},
+			</if>
+			<if test="expiredate != null">
+				EXPIREDATE = #{expiredate,jdbcType=VARCHAR},
+			</if>
+			<if test="authority != null">
+				AUTHORITY = #{authority,jdbcType=VARCHAR},
+			</if>
+			<if test="cursoftversion != null">
+				CURSOFTVERSION = #{cursoftversion,jdbcType=VARCHAR},
+			</if>
+			<if test="updatesoftversion != null">
+				UPDATESOFTVERSION = #{updatesoftversion,jdbcType=VARCHAR},
+			</if>
+			<if test="kek != null">
+				KEK = #{kek,jdbcType=VARCHAR},
+			</if>
+			<if test="minamt != null">
+				MINAMT = #{minamt,jdbcType=DECIMAL},
+			</if>
+			<if test="maxamt != null">
+				MAXAMT = #{maxamt,jdbcType=DECIMAL},
+			</if>
+			<if test="departmentid != null">
+				DEPARTMENTID = #{departmentid,jdbcType=DECIMAL},
+			</if>
+			<if test="batno != null">
+				BATNO = #{batno,jdbcType=VARCHAR},
+			</if>
+			<if test="reservedprivate != null">
+				RESERVEDPRIVATE = #{reservedprivate,jdbcType=VARCHAR},
+			</if>
+			<if test="zhukek != null">
+				ZHUKEK = #{zhukek,jdbcType=VARCHAR},
+			</if>
+			<if test="posname != null">
+				POSNAME = #{posname,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsMerchantPos">
+		update PMS_MERCHANT_POS
+		set MERCHANTID = #{merchantid,jdbcType=DECIMAL},
+		POSID = #{posid,jdbcType=DECIMAL},
+		POSBUSINESSNO = #{posbusinessno,jdbcType=VARCHAR},
+		RATE = #{rate,jdbcType=DECIMAL},
+		RATETYPE = #{ratetype,jdbcType=DECIMAL},
+		RATEFLAG = #{rateflag,jdbcType=DECIMAL},
+		USESTATUS = #{usestatus,jdbcType=DECIMAL},
+		PARAMVERSION = #{paramversion,jdbcType=VARCHAR},
+		SETUPDATE = #{setupdate,jdbcType=VARCHAR},
+		STARTUSEDATE = #{startusedate,jdbcType=VARCHAR},
+		EXPIREDATE = #{expiredate,jdbcType=VARCHAR},
+		AUTHORITY = #{authority,jdbcType=VARCHAR},
+		CURSOFTVERSION = #{cursoftversion,jdbcType=VARCHAR},
+		UPDATESOFTVERSION = #{updatesoftversion,jdbcType=VARCHAR},
+		KEK = #{kek,jdbcType=VARCHAR},
+		MINAMT = #{minamt,jdbcType=DECIMAL},
+		MAXAMT = #{maxamt,jdbcType=DECIMAL},
+		DEPARTMENTID = #{departmentid,jdbcType=DECIMAL},
+		BATNO = #{batno,jdbcType=VARCHAR},
+		RESERVEDPRIVATE = #{reservedprivate,jdbcType=VARCHAR},
+		ZHUKEK = #{zhukek,jdbcType=VARCHAR},
+		POSNAME = #{posname,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<!-- 通过商户id -->
+	<select id="selectMerchantid" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_POS where MERCHANTID =
+		#{merchantid,jdbcType=VARCHAR} and POSID = #{posId,jdbcType=VARCHAR}
+		and (USESTATUS=1 or USESTATUS=5 )
+	</select>
+
+	<!-- 通过pos终端业务编号进行查询 -->
+	<select id="selectPosid" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_POS where POSID = #{posid,jdbcType=DECIMAL} and
+		(USESTATUS=1 or USESTATUS=5)
+	</select>
+
+	<!-- 通过sn号查询pos信息 -->
+	<select id="selectPosInfoBySN" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from pms_merchant_pos p where p.USESTATUS=1 and p.posid = (select i.id
+		from pms_pos_info i where p.posid = i.id and i.serialno=#{serialno})
+	</select>
+
+	<!-- 通过Pos虚终端业务编号查询 -->
+	<select id="selectSn" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from pms_merchant_pos p where
+		p.posbusinessno=#{posbusinessno,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据posId解绑设备 -->
+	<update id="updateByPosId" parameterType="xdt.model.PmsMerchantPos">
+		update PMS_MERCHANT_POS
+		<set>
+			<if test="usestatus != null">
+				USESTATUS = #{usestatus,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<where>
+			<if test="posid!=null and posid!=''"> and POSID = #{posid,jdbcType=VARCHAR}</if>
+			and USESTATUS!=0 and USESTATUS!=4
+		</where>
+	</update>
+	<!-- 根据实体查询记录 -->
+	<select id="selectList" parameterType="xdt.model.PmsMerchantPos"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_POS
+		<where>
+			<if test="merchantid!=null and merchantid!=''"> and MERCHANTID = #{merchantid,jdbcType=DECIMAL}</if>
+			<if test="posid!=null and posid!=''"> and POSID = #{posid,jdbcType=VARCHAR}</if>
+			and USESTATUS!=0 and USESTATUS!=4
+		</where>
+	</select>
+</mapper>

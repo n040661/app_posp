@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.PmsSupportBankInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsSupportBankInfo">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="BANKID" property="bankid" jdbcType="VARCHAR" />
+		<result column="BANKNAME" property="bankname" jdbcType="VARCHAR" />
+		<result column="IMAGE" property="image" jdbcType="VARCHAR" />
+		<result column="FIELD1" property="field1" jdbcType="VARCHAR" />
+		<result column="FIELD2" property="field2" jdbcType="VARCHAR" />
+		<result column="FIELD3" property="field3" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, BANKID, BANKNAME, IMAGE, FIELD1, FIELD2, FIELD3
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_SUPPORT_BANK_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_SUPPORT_BANK_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsSupportBankInfo">
+		insert into PMS_SUPPORT_BANK_INFO (ID, BANKID, BANKNAME,
+		IMAGE, FIELD1, FIELD2,
+		FIELD3)
+		values (#{id,jdbcType=DECIMAL}, #{bankid,jdbcType=VARCHAR},
+		#{bankname,jdbcType=VARCHAR},
+		#{image,jdbcType=VARCHAR}, #{field1,jdbcType=VARCHAR}, #{field2,jdbcType=VARCHAR},
+		#{field3,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsSupportBankInfo">
+		insert into PMS_SUPPORT_BANK_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="bankid != null">
+				BANKID,
+			</if>
+			<if test="bankname != null">
+				BANKNAME,
+			</if>
+			<if test="image != null">
+				IMAGE,
+			</if>
+			<if test="field1 != null">
+				FIELD1,
+			</if>
+			<if test="field2 != null">
+				FIELD2,
+			</if>
+			<if test="field3 != null">
+				FIELD3,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="bankid != null">
+				#{bankid,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				#{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="image != null">
+				#{image,jdbcType=VARCHAR},
+			</if>
+			<if test="field1 != null">
+				#{field1,jdbcType=VARCHAR},
+			</if>
+			<if test="field2 != null">
+				#{field2,jdbcType=VARCHAR},
+			</if>
+			<if test="field3 != null">
+				#{field3,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsSupportBankInfo">
+		update PMS_SUPPORT_BANK_INFO
+		<set>
+			<if test="bankid != null">
+				BANKID = #{bankid,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				BANKNAME = #{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="image != null">
+				IMAGE = #{image,jdbcType=VARCHAR},
+			</if>
+			<if test="field1 != null">
+				FIELD1 = #{field1,jdbcType=VARCHAR},
+			</if>
+			<if test="field2 != null">
+				FIELD2 = #{field2,jdbcType=VARCHAR},
+			</if>
+			<if test="field3 != null">
+				FIELD3 = #{field3,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsSupportBankInfo">
+		update PMS_SUPPORT_BANK_INFO
+		set BANKID = #{bankid,jdbcType=VARCHAR},
+		BANKNAME = #{bankname,jdbcType=VARCHAR},
+		IMAGE = #{image,jdbcType=VARCHAR},
+		FIELD1 = #{field1,jdbcType=VARCHAR},
+		FIELD2 = #{field2,jdbcType=VARCHAR},
+		FIELD3 = #{field3,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<!-- 查询银行列表信息 -->
+	<select id="selectBankList" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		SELECT * FROM (SELECT A.*, ROWNUM RN FROM ( select
+		<include refid="Base_Column_List" />
+		from PMS_SUPPORT_BANK_INFO
+		)A WHERE ROWNUM &lt;= 1* (#{pageNum}*#{pageSize})) WHERE RN &gt;=
+		(#{pageNum}-1)*#{pageSize}+1
+	</select>
+</mapper>

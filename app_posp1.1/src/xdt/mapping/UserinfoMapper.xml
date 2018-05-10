@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.UserinfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.Userinfo">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+		<result column="LOGIN_PWD" property="loginPwd" jdbcType="VARCHAR" />
+		<result column="TRUE_NAME" property="trueName" jdbcType="OTHER" />
+		<result column="ROLE_ID" property="roleId" jdbcType="DECIMAL" />
+		<result column="MOBILENO" property="mobileno" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="OTHER" />
+		<result column="PWD_DATE" property="pwdDate" jdbcType="TIMESTAMP" />
+		<result column="USER_STATUS" property="userStatus" jdbcType="DECIMAL" />
+		<result column="MERCHANT_ID" property="merchantId" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, LOGIN_NAME, LOGIN_PWD, TRUE_NAME, ROLE_ID, MOBILENO,
+		EMAIL, PWD_DATE,
+		USER_STATUS,
+		MERCHANT_ID,
+		OAGENTNO
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from USERINFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<!-- 根据账号实体查询记录 -->
+	<select id="selectList" parameterType="xdt.model.Userinfo"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from USERINFO
+		<where>
+			<if test="loginName!=null and loginName!=''"> and LOGIN_NAME = #{loginName,jdbcType=VARCHAR}</if>
+			<if test="loginPwd!=null and loginPwd!=''"> and LOGIN_PWD = #{loginPwd,jdbcType=VARCHAR}</if>
+			<if test="merchantId!=null and merchantId!=''"> and MERCHANT_ID = #{merchantId,jdbcType=VARCHAR}</if>
+			<if test="userStatus != null"> and USER_STATUS = #{userStatus,jdbcType=DECIMAL}</if>
+			<if test="oAgentNo != null"> and OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}</if>
+			order by LOGIN_NAME
+		</where>
+	</select>
+	<select id="selectByModel" resultMap="BaseResultMap"
+		parameterType="xdt.model.Userinfo">
+		select
+		<include refid="Base_Column_List" />
+		from USERINFO
+		where LOGIN_NAME = (select max(LOGIN_NAME) from USERINFO
+		where MERCHANT_ID =
+		#{merchantId,jdbcType=VARCHAR}) and OAGENTNO =
+		#{oAgentNo,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByMobile" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from USERINFO s where s.mobileno= #{mobile,jdbcType=VARCHAR} and
+		s.oagentno=#{oAgentNo,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		USERINFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.Userinfo">
+		insert into USERINFO (ID,
+		LOGIN_NAME, LOGIN_PWD,
+		TRUE_NAME, ROLE_ID, MOBILENO,
+		EMAIL, PWD_DATE,
+		USER_STATUS,
+		MERCHANT_ID,OAGENTNO)
+		values (#{id,jdbcType=DECIMAL},
+		#{loginName,jdbcType=VARCHAR},
+		#{loginPwd,jdbcType=VARCHAR},
+		#{trueName,jdbcType=OTHER}, #{roleId,jdbcType=DECIMAL},
+		#{mobileno,jdbcType=VARCHAR},
+		#{email,jdbcType=OTHER},
+		#{pwdDate,jdbcType=TIMESTAMP},
+		#{userStatus,jdbcType=DECIMAL},
+		#{merchantId,jdbcType=VARCHAR},
+		#{oAgentNo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.Userinfo">
+		insert into USERINFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="loginName != null">
+				LOGIN_NAME,
+			</if>
+			<if test="loginPwd != null">
+				LOGIN_PWD,
+			</if>
+			<if test="trueName != null">
+				TRUE_NAME,
+			</if>
+			<if test="roleId != null">
+				ROLE_ID,
+			</if>
+			<if test="mobileno != null">
+				MOBILENO,
+			</if>
+			<if test="email != null">
+				EMAIL,
+			</if>
+			<if test="pwdDate != null">
+				PWD_DATE,
+			</if>
+			<if test="userStatus != null">
+				USER_STATUS,
+			</if>
+			<if test="merchantId != null">
+				MERCHANT_ID,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="loginName != null">
+				#{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="loginPwd != null">
+				#{loginPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="trueName != null">
+				#{trueName,jdbcType=OTHER},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=DECIMAL},
+			</if>
+			<if test="mobileno != null">
+				#{mobileno,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=OTHER},
+			</if>
+			<if test="pwdDate != null">
+				#{pwdDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userStatus != null">
+				#{userStatus,jdbcType=DECIMAL},
+			</if>
+			<if test="merchantId != null">
+				#{merchantId,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.Userinfo">
+		update USERINFO
+		<set>
+			<if test="loginPwd != null">
+				LOGIN_PWD = #{loginPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="trueName != null">
+				TRUE_NAME = #{trueName,jdbcType=OTHER},
+			</if>
+			<if test="roleId != null">
+				ROLE_ID = #{roleId,jdbcType=DECIMAL},
+			</if>
+			<if test="mobileno != null">
+				MOBILENO = #{mobileno,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				EMAIL = #{email,jdbcType=OTHER},
+			</if>
+			<if test="pwdDate != null">
+				PWD_DATE = #{pwdDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userStatus != null">
+				USER_STATUS = #{userStatus,jdbcType=DECIMAL},
+			</if>
+			<if test="merchantId != null">
+				MERCHANT_ID = #{merchantId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where LOGIN_NAME = #{loginName,jdbcType=DECIMAL}
+		and OAGENTNO =
+		#{oAgentNo,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.Userinfo">
+		update USERINFO
+		set LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+		LOGIN_PWD =
+		#{loginPwd,jdbcType=VARCHAR},
+		TRUE_NAME = #{trueName,jdbcType=OTHER},
+		ROLE_ID = #{roleId,jdbcType=DECIMAL},
+		MOBILENO =
+		#{mobileno,jdbcType=VARCHAR},
+		EMAIL = #{email,jdbcType=OTHER},
+		PWD_DATE
+		= #{pwdDate,jdbcType=TIMESTAMP},
+		USER_STATUS =
+		#{userStatus,jdbcType=DECIMAL},
+		MERCHANT_ID =
+		#{merchantId,jdbcType=VARCHAR},
+		OAGENTNO =
+		#{oAgentNo,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+</mapper>

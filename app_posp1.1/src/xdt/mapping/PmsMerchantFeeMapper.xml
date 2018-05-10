@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsMerchantFeeMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsMerchantFee">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="MERC_ID" jdbcType="VARCHAR" property="mercId" />
+		<result column="FEE_TYP" jdbcType="VARCHAR" property="feeTyp" />
+		<result column="FEE_RAT1" jdbcType="DECIMAL" property="feeRat1" />
+		<result column="FEE_RAT2" jdbcType="DECIMAL" property="feeRat2" />
+		<result column="MAX_FEE_AMT1" jdbcType="DECIMAL" property="maxFeeAmt1" />
+		<result column="MAX_FEE_AMT2" jdbcType="DECIMAL" property="maxFeeAmt2" />
+		<result column="FIXED_FEE_AMT" jdbcType="DECIMAL" property="fixedFeeAmt" />
+		<result column="UP_FEE_TYP" jdbcType="VARCHAR" property="upFeeTyp" />
+		<result column="UP_FEE_RAT" jdbcType="DECIMAL" property="upFeeRat" />
+		<result column="UP_MAX_FEE_AMT" jdbcType="DECIMAL" property="upMaxFeeAmt" />
+		<result column="UP_FIXED_FEE_AMT" jdbcType="DECIMAL" property="upFixedFeeAmt" />
+		<result column="TYP" jdbcType="VARCHAR" property="typ" />
+		<result column="MAX_AMT" jdbcType="DECIMAL" property="maxAmt" />
+		<result column="FIXED_AMT" jdbcType="DECIMAL" property="fixedAmt" />
+		<result column="RAT" jdbcType="DECIMAL" property="rat" />
+		<result column="UP_FEE_RAT1" jdbcType="DECIMAL" property="upFeeRat1" />
+		<result column="UP_MAX_FEE_AMT1" jdbcType="DECIMAL" property="upMaxFeeAmt1" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, MERC_ID, FEE_TYP, FEE_RAT1, FEE_RAT2, MAX_FEE_AMT1, MAX_FEE_AMT2,
+		FIXED_FEE_AMT,
+		UP_FEE_TYP, UP_FEE_RAT, UP_MAX_FEE_AMT, UP_FIXED_FEE_AMT, TYP, MAX_AMT,
+		FIXED_AMT,
+		RAT, UP_FEE_RAT1, UP_MAX_FEE_AMT1
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_FEE
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from PMS_MERCHANT_FEE
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsMerchantFee">
+		insert into PMS_MERCHANT_FEE (ID, MERC_ID, FEE_TYP,
+		FEE_RAT1, FEE_RAT2, MAX_FEE_AMT1,
+		MAX_FEE_AMT2, FIXED_FEE_AMT, UP_FEE_TYP,
+		UP_FEE_RAT, UP_MAX_FEE_AMT, UP_FIXED_FEE_AMT,
+		TYP, MAX_AMT, FIXED_AMT,
+		RAT, UP_FEE_RAT1, UP_MAX_FEE_AMT1
+		)
+		values (#{id,jdbcType=DECIMAL}, #{mercId,jdbcType=VARCHAR},
+		#{feeTyp,jdbcType=VARCHAR},
+		#{feeRat1,jdbcType=DECIMAL}, #{feeRat2,jdbcType=DECIMAL}, #{maxFeeAmt1,jdbcType=DECIMAL},
+		#{maxFeeAmt2,jdbcType=DECIMAL}, #{fixedFeeAmt,jdbcType=DECIMAL},
+		#{upFeeTyp,jdbcType=VARCHAR},
+		#{upFeeRat,jdbcType=DECIMAL}, #{upMaxFeeAmt,jdbcType=DECIMAL}, #{upFixedFeeAmt,jdbcType=DECIMAL},
+		#{typ,jdbcType=VARCHAR}, #{maxAmt,jdbcType=DECIMAL},
+		#{fixedAmt,jdbcType=DECIMAL},
+		#{rat,jdbcType=DECIMAL}, #{upFeeRat1,jdbcType=DECIMAL}, #{upMaxFeeAmt1,jdbcType=DECIMAL}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsMerchantFee">
+		insert into PMS_MERCHANT_FEE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="feeTyp != null">
+				FEE_TYP,
+			</if>
+			<if test="feeRat1 != null">
+				FEE_RAT1,
+			</if>
+			<if test="feeRat2 != null">
+				FEE_RAT2,
+			</if>
+			<if test="maxFeeAmt1 != null">
+				MAX_FEE_AMT1,
+			</if>
+			<if test="maxFeeAmt2 != null">
+				MAX_FEE_AMT2,
+			</if>
+			<if test="fixedFeeAmt != null">
+				FIXED_FEE_AMT,
+			</if>
+			<if test="upFeeTyp != null">
+				UP_FEE_TYP,
+			</if>
+			<if test="upFeeRat != null">
+				UP_FEE_RAT,
+			</if>
+			<if test="upMaxFeeAmt != null">
+				UP_MAX_FEE_AMT,
+			</if>
+			<if test="upFixedFeeAmt != null">
+				UP_FIXED_FEE_AMT,
+			</if>
+			<if test="typ != null">
+				TYP,
+			</if>
+			<if test="maxAmt != null">
+				MAX_AMT,
+			</if>
+			<if test="fixedAmt != null">
+				FIXED_AMT,
+			</if>
+			<if test="rat != null">
+				RAT,
+			</if>
+			<if test="upFeeRat1 != null">
+				UP_FEE_RAT1,
+			</if>
+			<if test="upMaxFeeAmt1 != null">
+				UP_MAX_FEE_AMT1,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="feeTyp != null">
+				#{feeTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="feeRat1 != null">
+				#{feeRat1,jdbcType=DECIMAL},
+			</if>
+			<if test="feeRat2 != null">
+				#{feeRat2,jdbcType=DECIMAL},
+			</if>
+			<if test="maxFeeAmt1 != null">
+				#{maxFeeAmt1,jdbcType=DECIMAL},
+			</if>
+			<if test="maxFeeAmt2 != null">
+				#{maxFeeAmt2,jdbcType=DECIMAL},
+			</if>
+			<if test="fixedFeeAmt != null">
+				#{fixedFeeAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="upFeeTyp != null">
+				#{upFeeTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="upFeeRat != null">
+				#{upFeeRat,jdbcType=DECIMAL},
+			</if>
+			<if test="upMaxFeeAmt != null">
+				#{upMaxFeeAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="upFixedFeeAmt != null">
+				#{upFixedFeeAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="typ != null">
+				#{typ,jdbcType=VARCHAR},
+			</if>
+			<if test="maxAmt != null">
+				#{maxAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="fixedAmt != null">
+				#{fixedAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="rat != null">
+				#{rat,jdbcType=DECIMAL},
+			</if>
+			<if test="upFeeRat1 != null">
+				#{upFeeRat1,jdbcType=DECIMAL},
+			</if>
+			<if test="upMaxFeeAmt1 != null">
+				#{upMaxFeeAmt1,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsMerchantFee">
+		update PMS_MERCHANT_FEE
+		<set>
+			<if test="mercId != null">
+				MERC_ID = #{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="feeTyp != null">
+				FEE_TYP = #{feeTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="feeRat1 != null">
+				FEE_RAT1 = #{feeRat1,jdbcType=DECIMAL},
+			</if>
+			<if test="feeRat2 != null">
+				FEE_RAT2 = #{feeRat2,jdbcType=DECIMAL},
+			</if>
+			<if test="maxFeeAmt1 != null">
+				MAX_FEE_AMT1 = #{maxFeeAmt1,jdbcType=DECIMAL},
+			</if>
+			<if test="maxFeeAmt2 != null">
+				MAX_FEE_AMT2 = #{maxFeeAmt2,jdbcType=DECIMAL},
+			</if>
+			<if test="fixedFeeAmt != null">
+				FIXED_FEE_AMT = #{fixedFeeAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="upFeeTyp != null">
+				UP_FEE_TYP = #{upFeeTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="upFeeRat != null">
+				UP_FEE_RAT = #{upFeeRat,jdbcType=DECIMAL},
+			</if>
+			<if test="upMaxFeeAmt != null">
+				UP_MAX_FEE_AMT = #{upMaxFeeAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="upFixedFeeAmt != null">
+				UP_FIXED_FEE_AMT = #{upFixedFeeAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="typ != null">
+				TYP = #{typ,jdbcType=VARCHAR},
+			</if>
+			<if test="maxAmt != null">
+				MAX_AMT = #{maxAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="fixedAmt != null">
+				FIXED_AMT = #{fixedAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="rat != null">
+				RAT = #{rat,jdbcType=DECIMAL},
+			</if>
+			<if test="upFeeRat1 != null">
+				UP_FEE_RAT1 = #{upFeeRat1,jdbcType=DECIMAL},
+			</if>
+			<if test="upMaxFeeAmt1 != null">
+				UP_MAX_FEE_AMT1 = #{upMaxFeeAmt1,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsMerchantFee">
+		update PMS_MERCHANT_FEE
+		set MERC_ID = #{mercId,jdbcType=VARCHAR},
+		FEE_TYP = #{feeTyp,jdbcType=VARCHAR},
+		FEE_RAT1 = #{feeRat1,jdbcType=DECIMAL},
+		FEE_RAT2 = #{feeRat2,jdbcType=DECIMAL},
+		MAX_FEE_AMT1 = #{maxFeeAmt1,jdbcType=DECIMAL},
+		MAX_FEE_AMT2 = #{maxFeeAmt2,jdbcType=DECIMAL},
+		FIXED_FEE_AMT = #{fixedFeeAmt,jdbcType=DECIMAL},
+		UP_FEE_TYP = #{upFeeTyp,jdbcType=VARCHAR},
+		UP_FEE_RAT = #{upFeeRat,jdbcType=DECIMAL},
+		UP_MAX_FEE_AMT = #{upMaxFeeAmt,jdbcType=DECIMAL},
+		UP_FIXED_FEE_AMT = #{upFixedFeeAmt,jdbcType=DECIMAL},
+		TYP = #{typ,jdbcType=VARCHAR},
+		MAX_AMT = #{maxAmt,jdbcType=DECIMAL},
+		FIXED_AMT = #{fixedAmt,jdbcType=DECIMAL},
+		RAT = #{rat,jdbcType=DECIMAL},
+		UP_FEE_RAT1 = #{upFeeRat1,jdbcType=DECIMAL},
+		UP_MAX_FEE_AMT1 = #{upMaxFeeAmt1,jdbcType=DECIMAL}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<select id="getByMercId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_FEE
+		where MERC_ID = #{mercId,jdbcType=VARCHAR}
+	</select>
+</mapper>

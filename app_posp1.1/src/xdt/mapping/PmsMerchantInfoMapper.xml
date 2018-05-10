@@ -1,0 +1,1380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsMerchantInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsMerchantInfo">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="MERC_ID" jdbcType="VARCHAR" property="mercId" />
+		<result column="SELLER_NO" jdbcType="VARCHAR" property="sellerNo" />
+		<result column="MERC_NAME" jdbcType="VARCHAR" property="mercName" />
+		<result column="SHORTNAME" jdbcType="VARCHAR" property="shortname" />
+		<result column="BUSINESSNAME" jdbcType="VARCHAR" property="businessname" />
+		<result column="MCC_CD" jdbcType="VARCHAR" property="mccCd" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+		<result column="MAINBUSINESS" jdbcType="VARCHAR" property="mainbusiness" />
+		<result column="TAX_CERT_ID" jdbcType="VARCHAR" property="taxCertId" />
+		<result column="LICENSEISSUINGDATE" jdbcType="VARCHAR"
+			property="licenseissuingdate" />
+		<result column="LICENSEDUEDATE" jdbcType="VARCHAR" property="licenseduedate" />
+		<result column="REGISTEREDCAPITAL" jdbcType="DECIMAL" property="registeredcapital" />
+		<result column="REGISTRATIONDEADLINE" jdbcType="VARCHAR"
+			property="registrationdeadline" />
+		<result column="CUSTOMERTYPE" jdbcType="VARCHAR" property="customertype" />
+		<result column="NATUREBUSINESS" jdbcType="VARCHAR" property="naturebusiness" />
+		<result column="BUSINESSCHANNELS" jdbcType="VARCHAR" property="businesschannels" />
+		<result column="BUSINESSLOCATION" jdbcType="VARCHAR" property="businesslocation" />
+		<result column="BUSINESSAREA" jdbcType="VARCHAR" property="businessarea" />
+		<result column="BUSINESSAREAOF" jdbcType="VARCHAR" property="businessareaof" />
+		<result column="SALESWAY" jdbcType="VARCHAR" property="salesway" />
+		<result column="REGISTEREDADDRESS" jdbcType="VARCHAR" property="registeredaddress" />
+		<result column="BUS_ADDR" jdbcType="VARCHAR" property="busAddr" />
+		<result column="STARTBUSINESSDATE" jdbcType="VARCHAR" property="startbusinessdate" />
+		<result column="NORMALBUSINESSDATE" jdbcType="VARCHAR"
+			property="normalbusinessdate" />
+		<result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+		<result column="BANKNAME" jdbcType="VARCHAR" property="bankname" />
+		<result column="SETTLEMENTNAME" jdbcType="VARCHAR" property="settlementname" />
+		<result column="CLR_MERC" jdbcType="VARCHAR" property="clrMerc" />
+		<result column="BANKSYSNUMBER" jdbcType="VARCHAR" property="banksysnumber" />
+		<result column="CRP_NM" jdbcType="VARCHAR" property="crpNm" />
+		<result column="CRP_ID_NO" jdbcType="VARCHAR" property="crpIdNo" />
+		<result column="MOBILEPHONE" jdbcType="VARCHAR" property="mobilephone" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="HEADQUARTERSBANK" jdbcType="VARCHAR" property="headquartersbank" />
+		<result column="CREATION_NAME" jdbcType="VARCHAR" property="creationName" />
+		<result column="CREATIONDATE" jdbcType="VARCHAR" property="creationdate" />
+		<result column="REMOVETAG" jdbcType="DECIMAL" property="removetag" />
+		<result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
+		<result column="AGENT_NUMBER" jdbcType="VARCHAR" property="agentNumber" />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+		<result column="CRP_ID_TYP" jdbcType="VARCHAR" property="crpIdTyp" />
+		<result column="RET_MESSAGE" jdbcType="VARCHAR" property="retMessage" />
+		<result column="PREMIUMRATE" jdbcType="VARCHAR" property="premiumrate" />
+		<result column="MERC_CLEAR" jdbcType="DECIMAL" property="mercClear" />
+		<result column="MERC_STS" jdbcType="VARCHAR" property="mercSts" />
+		<result column="KYACCOUNT" jdbcType="VARCHAR" property="kyaccount" />
+		<result column="CLEAR_TYPE" jdbcType="DECIMAL" property="clearType" />
+		<result column="BUSINESS" jdbcType="DECIMAL" property="business" />
+		<result column="TRUEMERDATE" jdbcType="VARCHAR" property="truemerdate" />
+		<result column="CHECKMERDATE" jdbcType="VARCHAR" property="checkmerdate" />
+		<result column="COMPANY_ID" jdbcType="VARCHAR" property="companyId" />
+		<result column="APPLYDATE" jdbcType="VARCHAR" property="applydate" />
+		<result column="GENERAL_NAME" jdbcType="VARCHAR" property="generalName" />
+		<result column="ZIP_CODE" jdbcType="VARCHAR" property="zipCode" />
+		<result column="CARD_STARTDATE" jdbcType="VARCHAR" property="cardStartdate" />
+		<result column="CARD_ENDDATE" jdbcType="VARCHAR" property="cardEnddate" />
+		<result column="BANK_PROVINCE" jdbcType="VARCHAR" property="bankProvince" />
+		<result column="BANK_CITY" jdbcType="VARCHAR" property="bankCity" />
+		<result column="BUSINESSRANGE" jdbcType="VARCHAR" property="businessrange" />
+		<result column="TAXREGISTCARDENDDATE" jdbcType="VARCHAR"
+			property="taxregistcardenddate" />
+		<result column="TAXREGISTCARD" jdbcType="VARCHAR" property="taxregistcard" />
+		<result column="EMAIL" jdbcType="VARCHAR" property="email" />
+		<result column="STATUS" jdbcType="DECIMAL" property="status" />
+		<result column="EXTERNAL_ID" jdbcType="VARCHAR" property="externalId" />
+		<result column="OAGENTNO" jdbcType="VARCHAR" property="oAgentNo" />
+		<result column="ALTLAT" jdbcType="VARCHAR" property="altLat" />
+		<result column="GPSADDRESS" jdbcType="VARCHAR" property="gpsAddress" />
+		<result column="SETTLERATETYPE" jdbcType="VARCHAR" property="settleRateType" />
+		<result column="COUNTER" jdbcType="VARCHAR" property="counter" />
+		<result column="POSITION" jdbcType="VARCHAR" property="position" />
+		<result column="MAXDAIFU" jdbcType="VARCHAR" property="maxDaiFu" />
+		<result column="MINDAIFU" jdbcType="VARCHAR" property="minDaiFu" />
+		<result column="POUNDAGE" jdbcType="VARCHAR" property="poundage" />
+		<result column="openPay" jdbcType="VARCHAR" property="openPay" />
+		<result column="POSITIONT1" jdbcType="VARCHAR" property="positionT1" />
+		<result column="DAIKOU_MIN_POUNDAGE" jdbcType="VARCHAR" property="daikouMinPoundage" />
+		<result column="DAIKOU_MAX_POUNDAGE" jdbcType="VARCHAR" property="daikouMaxPoundage" />
+		<result column="quickRateType" property="quickRateType" />
+		<result column="authentication" property="authentication" />
+		<result column="poundageFree" property="poundageFree" />
+	</resultMap>
+
+
+
+	<sql id="Base_Column_List">
+		ID, MERC_ID, SELLER_NO, MERC_NAME, SHORTNAME, BUSINESSNAME,
+		MCC_CD,
+		ADDRESS, MAINBUSINESS,
+		TAX_CERT_ID, LICENSEISSUINGDATE,
+		LICENSEDUEDATE, REGISTEREDCAPITAL,
+		REGISTRATIONDEADLINE,
+		CUSTOMERTYPE,
+		NATUREBUSINESS, BUSINESSCHANNELS, BUSINESSLOCATION, BUSINESSAREA,
+		BUSINESSAREAOF,
+		SALESWAY, REGISTEREDADDRESS, BUS_ADDR,
+		STARTBUSINESSDATE, NORMALBUSINESSDATE,
+		ORG_ID,
+		BANKNAME, SETTLEMENTNAME,
+		CLR_MERC, BANKSYSNUMBER, CRP_NM, CRP_ID_NO,
+		MOBILEPHONE,
+		PHONE,
+		HEADQUARTERSBANK, CREATION_NAME, CREATIONDATE, REMOVETAG, LOGIN_NAME,
+		AGENT_NUMBER,
+		PASSWORD, CRP_ID_TYP, RET_MESSAGE, PREMIUMRATE,
+		MERC_CLEAR,
+		MERC_STS,KYACCOUNT,CLEAR_TYPE,
+		BUSINESS,TRUEMERDATE,CHECKMERDATE,COMPANY_ID,APPLYDATE,GENERAL_NAME,ZIP_CODE,CARD_STARTDATE,
+		CARD_ENDDATE,BANK_PROVINCE,BANK_CITY,BUSINESSRANGE,TAXREGISTCARDENDDATE,TAXREGISTCARD,EMAIL,STATUS,EXTERNAL_ID,OAGENTNO,ALTLAT,GPSADDRESS,SETTLERATETYPE,COUNTER,POSITION,
+		MAXDAIFU,MINDAIFU,POUNDAGE,openPay,POSITIONT1,DAIKOU_MIN_POUNDAGE,DAIKOU_MAX_POUNDAGE,authentication,poundageFree
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_INFO
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		PMS_MERCHANT_INFO
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsMerchantInfo">
+	insert into PMS_MERCHANT_INFO
+	(ID, MERC_ID, SELLER_NO,
+	MERC_NAME, SHORTNAME, BUSINESSNAME,
+	MCC_CD,
+	ADDRESS, MAINBUSINESS,
+	TAX_CERT_ID, LICENSEISSUINGDATE, LICENSEDUEDATE,
+	REGISTEREDCAPITAL, REGISTRATIONDEADLINE,
+	CUSTOMERTYPE, NATUREBUSINESS,
+	BUSINESSCHANNELS,
+	BUSINESSLOCATION, BUSINESSAREA, BUSINESSAREAOF,
+	SALESWAY, REGISTEREDADDRESS, BUS_ADDR,
+	STARTBUSINESSDATE,
+	NORMALBUSINESSDATE,
+	ORG_ID, BANKNAME, SETTLEMENTNAME,
+	CLR_MERC,
+	BANKSYSNUMBER, CRP_NM,
+	CRP_ID_NO, MOBILEPHONE, PHONE,
+	HEADQUARTERSBANK,
+	CREATION_NAME, CREATIONDATE,
+	REMOVETAG, LOGIN_NAME, AGENT_NUMBER,
+	PASSWORD, CRP_ID_TYP, RET_MESSAGE,
+	PREMIUMRATE, MERC_CLEAR,
+	MERC_STS,KYACCOUNT,CLEAR_TYPE,
+	BUSINESS,TRUEMERDATE,CHECKMERDATE,COMPANY_ID,APPLYDATE,
+	GENERAL_NAME,ZIP_CODE,CARD_STARTDATE,CARD_ENDDATE,BANK_PROVINCE,
+	BANK_CITY,BUSINESSRANGE,TAXREGISTCARDENDDATE,TAXREGISTCARD,EMAIL,STATUS,EXTERNAL_ID,OAGENTNO,ALTLAT,GPSADDRESS,SETTLERATETYPE,COUNTER,POSITION,MAXDAIFU,MINDAIFU,PUNNDAGE,POSITIONT1,DAIKOU_MIN_POUNDAGE,DAIKOU_MAX_POUNDAGE,quickRateType,authentication
+	)
+	values (#{id,jdbcType=VARCHAR}, #{mercId,jdbcType=VARCHAR},
+	#{sellerNo,jdbcType=VARCHAR},
+	#{mercName,jdbcType=VARCHAR},
+	#{shortname,jdbcType=VARCHAR}, #{businessname,jdbcType=VARCHAR},
+	#{mccCd,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+	#{mainbusiness,jdbcType=VARCHAR},
+	#{taxCertId,jdbcType=VARCHAR},
+	#{licenseissuingdate,jdbcType=VARCHAR},
+	#{licenseduedate,jdbcType=VARCHAR},
+	#{registeredcapital,jdbcType=DECIMAL},
+	#{registrationdeadline,jdbcType=VARCHAR},
+	#{customertype,jdbcType=VARCHAR}, #{naturebusiness,jdbcType=VARCHAR},
+	#{businesschannels,jdbcType=VARCHAR},
+	#{businesslocation,jdbcType=VARCHAR},
+	#{businessarea,jdbcType=VARCHAR}, #{businessareaof,jdbcType=VARCHAR},
+	#{salesway,jdbcType=VARCHAR}, #{registeredaddress,jdbcType=VARCHAR},
+	#{busAddr,jdbcType=VARCHAR},
+	#{startbusinessdate,jdbcType=VARCHAR},
+	#{normalbusinessdate,jdbcType=VARCHAR},
+	#{orgId,jdbcType=VARCHAR},
+	#{bankname,jdbcType=VARCHAR}, #{settlementname,jdbcType=VARCHAR},
+	#{clrMerc,jdbcType=VARCHAR}, #{banksysnumber,jdbcType=VARCHAR},
+	#{crpNm,jdbcType=VARCHAR},
+	#{crpIdNo,jdbcType=VARCHAR},
+	#{mobilephone,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+	#{headquartersbank,jdbcType=VARCHAR},
+	#{creationName,jdbcType=VARCHAR}, #{creationdate,jdbcType=VARCHAR},
+	#{removetag,jdbcType=DECIMAL}, #{loginName,jdbcType=VARCHAR},
+	#{agentNumber,jdbcType=VARCHAR},
+	#{password,jdbcType=VARCHAR},
+	#{crpIdTyp,jdbcType=VARCHAR}, #{retMessage,jdbcType=VARCHAR},
+	#{premiumrate,jdbcType=VARCHAR}, #{mercClear,jdbcType=DECIMAL},
+	#{mercSts,jdbcType=VARCHAR},
+	#{kyaccount,jdbcType=VARCHAR},#{clearType,jdbcType=DECIMAL},#{business,jdbcType=DECIMAL},
+	#{truemerdate,jdbcType=VARCHAR},#{checkmerdate,jdbcType=VARCHAR},#{companyId,jdbcType=VARCHAR},
+	#{applydate,jdbcType=VARCHAR},#{generalName,jdbcType=VARCHAR},#{zipCode,jdbcType=VARCHAR},
+	#{cardStartdate,jdbcType=VARCHAR},#{cardEnddate,jdbcType=VARCHAR},#{bankProvince,jdbcType=VARCHAR},
+	#{bankCity,jdbcType=VARCHAR},#{businessrange,jdbcType=VARCHAR},#{taxregistcardenddate,jdbcType=VARCHAR},
+	#{taxregistcard,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{status,jdbcType=DECIMAL},#{externalId,jdbcType=VARCHAR},
+	#{oAgentNo,jdbcType=VARCHAR},#{altLat,jdbcType=VARCHAR},#{gpsAddress,jdbcType=VARCHAR},#{settleRateType,jdbcType=VARCHAR},
+	#{counter,jdbcType=VARCHAR},#{position,jdbcType=VARCHAR},#{maxDaiFu,jdbcType=VARCHAR},#{minDaiFu,jdbcType=VARCHAR},
+	#{poundage,jdbcType=VARCHAR},#{positionT1,jdbcType=VARCHAR},#{daikouMinPoundage,jdbcType=VARCHAR},#{daikouMaxPoundage,jdbcType=VARCHAR},#{quickRateType,jdbcType=VARCHAR},#{authentication,jdbcType=VARCHAR}
+	)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsMerchantInfo">
+		insert into PMS_MERCHANT_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="mercId != null">
+				MERC_ID,
+			</if>
+			<if test="sellerNo != null">
+				SELLER_NO,
+			</if>
+			<if test="mercName != null">
+				MERC_NAME,
+			</if>
+			<if test="shortname != null">
+				SHORTNAME,
+			</if>
+			<if test="businessname != null">
+				BUSINESSNAME,
+			</if>
+			<if test="mccCd != null">
+				MCC_CD,
+			</if>
+			<if test="address != null">
+				ADDRESS,
+			</if>
+			<if test="mainbusiness != null">
+				MAINBUSINESS,
+			</if>
+			<if test="taxCertId != null">
+				TAX_CERT_ID,
+			</if>
+			<if test="licenseissuingdate != null">
+				LICENSEISSUINGDATE,
+			</if>
+			<if test="licenseduedate != null">
+				LICENSEDUEDATE,
+			</if>
+			<if test="registeredcapital != null">
+				REGISTEREDCAPITAL,
+			</if>
+			<if test="registrationdeadline != null">
+				REGISTRATIONDEADLINE,
+			</if>
+			<if test="customertype != null">
+				CUSTOMERTYPE,
+			</if>
+			<if test="naturebusiness != null">
+				NATUREBUSINESS,
+			</if>
+			<if test="businesschannels != null">
+				BUSINESSCHANNELS,
+			</if>
+			<if test="businesslocation != null">
+				BUSINESSLOCATION,
+			</if>
+			<if test="businessarea != null">
+				BUSINESSAREA,
+			</if>
+			<if test="businessareaof != null">
+				BUSINESSAREAOF,
+			</if>
+			<if test="salesway != null">
+				SALESWAY,
+			</if>
+			<if test="registeredaddress != null">
+				REGISTEREDADDRESS,
+			</if>
+			<if test="busAddr != null">
+				BUS_ADDR,
+			</if>
+			<if test="startbusinessdate != null">
+				STARTBUSINESSDATE,
+			</if>
+			<if test="normalbusinessdate != null">
+				NORMALBUSINESSDATE,
+			</if>
+			<if test="orgId != null">
+				ORG_ID,
+			</if>
+			<if test="bankname != null">
+				BANKNAME,
+			</if>
+			<if test="settlementname != null">
+				SETTLEMENTNAME,
+			</if>
+			<if test="clrMerc != null">
+				CLR_MERC,
+			</if>
+			<if test="banksysnumber != null">
+				BANKSYSNUMBER,
+			</if>
+			<if test="crpNm != null">
+				CRP_NM,
+			</if>
+			<if test="crpIdNo != null">
+				CRP_ID_NO,
+			</if>
+			<if test="mobilephone != null">
+				MOBILEPHONE,
+			</if>
+			<if test="phone != null">
+				PHONE,
+			</if>
+			<if test="headquartersbank != null">
+				HEADQUARTERSBANK,
+			</if>
+			<if test="creationName != null">
+				CREATION_NAME,
+			</if>
+			<if test="creationdate != null">
+				CREATIONDATE,
+			</if>
+			<if test="removetag != null">
+				REMOVETAG,
+			</if>
+			<if test="loginName != null">
+				LOGIN_NAME,
+			</if>
+			<if test="agentNumber != null">
+				AGENT_NUMBER,
+			</if>
+			<if test="password != null">
+				PASSWORD,
+			</if>
+			<if test="crpIdTyp != null">
+				CRP_ID_TYP,
+			</if>
+			<if test="retMessage != null">
+				RET_MESSAGE,
+			</if>
+			<if test="premiumrate != null">
+				PREMIUMRATE,
+			</if>
+			<if test="mercClear != null">
+				MERC_CLEAR,
+			</if>
+			<if test="mercSts != null">
+				MERC_STS,
+			</if>
+			<if test="kyaccount != null">
+				KYACCOUNT,
+			</if>
+			<if test="clearType != null">
+				CLEAR_TYPE,
+			</if>
+			<if test="business != null">
+				BUSINESS,
+			</if>
+			<if test="truemerdate != null">
+				TRUEMERDATE,
+			</if>
+			<if test="checkmerdate != null">
+				CHECKMERDATE,
+			</if>
+			<if test="companyId != null">
+				COMPANY_ID,
+			</if>
+			<if test="applydate != null">
+				APPLYDATE,
+			</if>
+			<if test="generalName != null">
+				GENERAL_NAME,
+			</if>
+			<if test="zipCode != null">
+				ZIP_CODE,
+			</if>
+			<if test="cardStartdate != null">
+				CARD_STARTDATE,
+			</if>
+			<if test="cardEnddate != null">
+				CARD_ENDDATE,
+			</if>
+			<if test="bankProvince != null">
+				BANK_PROVINCE,
+			</if>
+			<if test="bankCity != null">
+				BANK_CITY,
+			</if>
+			<if test="businessrange != null">
+				BUSINESSRANGE,
+			</if>
+			<if test="taxregistcardenddate != null">
+				TAXREGISTCARDENDDATE,
+			</if>
+			<if test="taxregistcard != null">
+				TAXREGISTCARD,
+			</if>
+			<if test="email != null">
+				EMAIL,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="externalId != null">
+				EXTERNAL_ID,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+			<if test="altLat != null">
+				ALTLAT,
+			</if>
+			<if test="gpsAddress != null">
+				GPSADDRESS,
+			</if>
+			<if test="settleRateType != null">
+				settleRateType,
+			</if>
+			<if test="counter != null">
+				COUNTER,
+			</if>
+			<if test="position != null">
+				POSITION,
+			</if>
+			<if test="maxDaiFu != null">
+				MAXDAIFU,
+			</if>
+			<if test="minDaiFu != null">
+				MINDAIFU,
+			</if>
+			<if test="poundage != null">
+				POUNDAGE,
+			</if>
+			<if test="positionT1 != null">
+				POSITIONT1,
+			</if>
+			<if test="daikouMinPoundage != null">
+				DAIKOU_MIN_POUNDAGE,
+			</if>
+			<if test="daikouMaxPoundage != null">
+				DAIKOU_MAX_POUNDAGE,
+			</if>
+            <if test="quickRateType != null">
+				quickRateType,
+			</if>
+			<if test="authentication != null">
+				authentication,
+			</if>
+			
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="mercId != null">
+				#{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="sellerNo != null">
+				#{sellerNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mercName != null">
+				#{mercName,jdbcType=VARCHAR},
+			</if>
+			<if test="shortname != null">
+				#{shortname,jdbcType=VARCHAR},
+			</if>
+			<if test="businessname != null">
+				#{businessname,jdbcType=VARCHAR},
+			</if>
+			<if test="mccCd != null">
+				#{mccCd,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="mainbusiness != null">
+				#{mainbusiness,jdbcType=VARCHAR},
+			</if>
+			<if test="taxCertId != null">
+				#{taxCertId,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseissuingdate != null">
+				#{licenseissuingdate,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseduedate != null">
+				#{licenseduedate,jdbcType=VARCHAR},
+			</if>
+			<if test="registeredcapital != null">
+				#{registeredcapital,jdbcType=DECIMAL},
+			</if>
+			<if test="registrationdeadline != null">
+				#{registrationdeadline,jdbcType=VARCHAR},
+			</if>
+			<if test="customertype != null">
+				#{customertype,jdbcType=VARCHAR},
+			</if>
+			<if test="naturebusiness != null">
+				#{naturebusiness,jdbcType=VARCHAR},
+			</if>
+			<if test="businesschannels != null">
+				#{businesschannels,jdbcType=VARCHAR},
+			</if>
+			<if test="businesslocation != null">
+				#{businesslocation,jdbcType=VARCHAR},
+			</if>
+			<if test="businessarea != null">
+				#{businessarea,jdbcType=VARCHAR},
+			</if>
+			<if test="businessareaof != null">
+				#{businessareaof,jdbcType=VARCHAR},
+			</if>
+			<if test="salesway != null">
+				#{salesway,jdbcType=VARCHAR},
+			</if>
+			<if test="registeredaddress != null">
+				#{registeredaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="busAddr != null">
+				#{busAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="startbusinessdate != null">
+				#{startbusinessdate,jdbcType=VARCHAR},
+			</if>
+			<if test="normalbusinessdate != null">
+				#{normalbusinessdate,jdbcType=VARCHAR},
+			</if>
+			<if test="orgId != null">
+				#{orgId,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				#{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementname != null">
+				#{settlementname,jdbcType=VARCHAR},
+			</if>
+			<if test="clrMerc != null">
+				#{clrMerc,jdbcType=VARCHAR},
+			</if>
+			<if test="banksysnumber != null">
+				#{banksysnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="crpNm != null">
+				#{crpNm,jdbcType=VARCHAR},
+			</if>
+			<if test="crpIdNo != null">
+				#{crpIdNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mobilephone != null">
+				#{mobilephone,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="headquartersbank != null">
+				#{headquartersbank,jdbcType=VARCHAR},
+			</if>
+			<if test="creationName != null">
+				#{creationName,jdbcType=VARCHAR},
+			</if>
+			<if test="creationdate != null">
+				#{creationdate,jdbcType=VARCHAR},
+			</if>
+			<if test="removetag != null">
+				#{removetag,jdbcType=DECIMAL},
+			</if>
+			<if test="loginName != null">
+				#{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="agentNumber != null">
+				#{agentNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="crpIdTyp != null">
+				#{crpIdTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="retMessage != null">
+				#{retMessage,jdbcType=VARCHAR},
+			</if>
+			<if test="premiumrate != null">
+				#{premiumrate,jdbcType=VARCHAR},
+			</if>
+			<if test="mercClear != null">
+				#{mercClear,jdbcType=DECIMAL},
+			</if>
+			<if test="mercSts != null">
+				#{mercSts,jdbcType=VARCHAR},
+			</if>
+			<if test="kyaccount != null">
+				#{kyaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="clearType != null">
+				#{clearType,jdbcType=DECIMAL},
+			</if>
+			<if test="business != null">
+				#{business,jdbcType=DECIMAL},
+			</if>
+			<if test="truemerdate != null">
+				#{truemerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="checkmerdate != null">
+				#{checkmerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="companyId != null">
+				#{companyId,jdbcType=VARCHAR},
+			</if>
+			<if test="applydate != null">
+				#{applydate,jdbcType=VARCHAR},
+			</if>
+			<if test="generalName != null">
+				#{generalName,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				#{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="cardStartdate != null">
+				#{cardStartdate,jdbcType=VARCHAR},
+			</if>
+			<if test="cardEnddate != null">
+				#{cardEnddate,jdbcType=VARCHAR},
+			</if>
+			<if test="bankProvince != null">
+				#{bankProvince,jdbcType=VARCHAR},
+			</if>
+			<if test="bankCity != null">
+				#{bankCity,jdbcType=VARCHAR},
+			</if>
+			<if test="businessrange != null">
+				#{businessrange,jdbcType=VARCHAR},
+			</if>
+			<if test="taxregistcardenddate != null">
+				#{taxregistcardenddate,jdbcType=VARCHAR},
+			</if>
+			<if test="taxregistcard != null">
+				#{taxregistcard,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=DECIMAL},
+			</if>
+			<if test="externalId != null">
+				#{externalId,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="altLat != null">
+				#{altLat,jdbcType=VARCHAR},
+			</if>
+			<if test="gpsAddress != null">
+				#{gpsAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="settleRateType != null">
+				#{settleRateType,jdbcType=VARCHAR},
+			</if>
+			<if test="counter != null">
+				#{counter,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				#{position,jdbcType=VARCHAR},
+			</if>
+			<if test="maxDaiFu != null">
+				#{maxDaiFu,jdbcType=VARCHAR},
+			</if>
+			<if test="minDaiFu != null">
+				#{minDaiFu,jdbcType=VARCHAR},
+			</if>
+			<if test="poundage != null">
+				#{poundage,jdbcType=VARCHAR},
+			</if>
+			<if test="positionT1!=null">
+			    #{positionT1,jdbcType=VARCHAR},
+			</if>
+			<if test="daikouMinPoundage!=null">
+			    #{daikouMinPoundage,jdbcType=VARCHAR},
+			</if>
+	         <if test="daikouMaxPoundage!=null">
+			    #{daikouMaxPoundage,jdbcType=VARCHAR},
+			</if>
+		     <if test="quickRateType!=null">
+			    #{quickRateType,jdbcType=VARCHAR},
+			</if>
+			<if test="authentication !=null">
+			    #{authentication,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsMerchantInfo">
+		update PMS_MERCHANT_INFO
+		<set>
+			<if test="mercId != null">
+				MERC_ID = #{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="sellerNo != null">
+				SELLER_NO = #{sellerNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mercName != null">
+				MERC_NAME = #{mercName,jdbcType=VARCHAR},
+			</if>
+			<if test="shortname != null">
+				SHORTNAME = #{shortname,jdbcType=VARCHAR},
+			</if>
+			<if test="businessname != null">
+				BUSINESSNAME = #{businessname,jdbcType=VARCHAR},
+			</if>
+			<if test="mccCd != null">
+				MCC_CD = #{mccCd,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				ADDRESS = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="mainbusiness != null">
+				MAINBUSINESS = #{mainbusiness,jdbcType=VARCHAR},
+			</if>
+			<if test="taxCertId != null">
+				TAX_CERT_ID = #{taxCertId,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseissuingdate != null">
+				LICENSEISSUINGDATE =
+				#{licenseissuingdate,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseduedate != null">
+				LICENSEDUEDATE = #{licenseduedate,jdbcType=VARCHAR},
+			</if>
+			<if test="registeredcapital != null">
+				REGISTEREDCAPITAL =
+				#{registeredcapital,jdbcType=DECIMAL},
+			</if>
+			<if test="registrationdeadline != null">
+				REGISTRATIONDEADLINE =
+				#{registrationdeadline,jdbcType=VARCHAR},
+			</if>
+			<if test="customertype != null">
+				CUSTOMERTYPE = #{customertype,jdbcType=VARCHAR},
+			</if>
+			<if test="naturebusiness != null">
+				NATUREBUSINESS = #{naturebusiness,jdbcType=VARCHAR},
+			</if>
+			<if test="businesschannels != null">
+				BUSINESSCHANNELS = #{businesschannels,jdbcType=VARCHAR},
+			</if>
+			<if test="businesslocation != null">
+				BUSINESSLOCATION = #{businesslocation,jdbcType=VARCHAR},
+			</if>
+			<if test="businessarea != null">
+				BUSINESSAREA = #{businessarea,jdbcType=VARCHAR},
+			</if>
+			<if test="businessareaof != null">
+				BUSINESSAREAOF = #{businessareaof,jdbcType=VARCHAR},
+			</if>
+			<if test="salesway != null">
+				SALESWAY = #{salesway,jdbcType=VARCHAR},
+			</if>
+			<if test="registeredaddress != null">
+				REGISTEREDADDRESS =
+				#{registeredaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="busAddr != null">
+				BUS_ADDR = #{busAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="startbusinessdate != null">
+				STARTBUSINESSDATE =
+				#{startbusinessdate,jdbcType=VARCHAR},
+			</if>
+			<if test="normalbusinessdate != null">
+				NORMALBUSINESSDATE =
+				#{normalbusinessdate,jdbcType=VARCHAR},
+			</if>
+			<if test="orgId != null">
+				ORG_ID = #{orgId,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				BANKNAME = #{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementname != null">
+				SETTLEMENTNAME = #{settlementname,jdbcType=VARCHAR},
+			</if>
+			<if test="clrMerc != null">
+				CLR_MERC = #{clrMerc,jdbcType=VARCHAR},
+			</if>
+			<if test="banksysnumber != null">
+				BANKSYSNUMBER = #{banksysnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="crpNm != null">
+				CRP_NM = #{crpNm,jdbcType=VARCHAR},
+			</if>
+			<if test="crpIdNo != null">
+				CRP_ID_NO = #{crpIdNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mobilephone != null">
+				MOBILEPHONE = #{mobilephone,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				PHONE = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="headquartersbank != null">
+				HEADQUARTERSBANK = #{headquartersbank,jdbcType=VARCHAR},
+			</if>
+			<if test="creationName != null">
+				CREATION_NAME = #{creationName,jdbcType=VARCHAR},
+			</if>
+			<if test="creationdate != null">
+				CREATIONDATE = #{creationdate,jdbcType=VARCHAR},
+			</if>
+			<if test="removetag != null">
+				REMOVETAG = #{removetag,jdbcType=DECIMAL},
+			</if>
+			<if test="loginName != null">
+				LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="agentNumber != null">
+				AGENT_NUMBER = #{agentNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				PASSWORD = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="crpIdTyp != null">
+				CRP_ID_TYP = #{crpIdTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="retMessage != null">
+				RET_MESSAGE = #{retMessage,jdbcType=VARCHAR},
+			</if>
+			<if test="premiumrate != null">
+				PREMIUMRATE = #{premiumrate,jdbcType=VARCHAR},
+			</if>
+			<if test="mercClear != null">
+				MERC_CLEAR = #{mercClear,jdbcType=DECIMAL},
+			</if>
+			<if test="mercSts != null">
+				MERC_STS = #{mercSts,jdbcType=VARCHAR},
+			</if>
+			<if test="kyaccount != null">
+				KYACCOUNT = #{kyaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="clearType != null">
+				CLEAR_TYPE = #{clearType,jdbcType=DECIMAL},
+			</if>
+			<if test="business != null">
+				BUSINESS = #{business,jdbcType=DECIMAL},
+			</if>
+			<if test="truemerdate != null">
+				TRUEMERDATE = #{truemerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="checkmerdate != null">
+				CHECKMERDATE = #{checkmerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="companyId != null">
+				COMPANY_ID = #{companyId,jdbcType=VARCHAR},
+			</if>
+			<if test="applydate != null">
+				APPLYDATE = #{applydate,jdbcType=VARCHAR},
+			</if>
+			<if test="generalName != null">
+				GENERAL_NAME = #{generalName,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="cardStartdate != null">
+				CARD_STARTDATE = #{cardStartdate,jdbcType=VARCHAR},
+			</if>
+			<if test="cardEnddate != null">
+				CARD_ENDDATE = #{cardEnddate,jdbcType=VARCHAR},
+			</if>
+			<if test="bankProvince != null">
+				BANK_PROVINCE = #{bankProvince,jdbcType=VARCHAR},
+			</if>
+			<if test="bankCity != null">
+				BANK_CITY = #{bankCity,jdbcType=VARCHAR},
+			</if>
+			<if test="businessrange != null">
+				BUSINESSRANGE = #{businessrange,jdbcType=VARCHAR},
+			</if>
+			<if test="taxregistcardenddate != null">
+				TAXREGISTCARDENDDATE =
+				#{taxregistcardenddate,jdbcType=VARCHAR},
+			</if>
+			<if test="taxregistcard != null">
+				TAXREGISTCARD = #{taxregistcard,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				EMAIL = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=DECIMAL},
+			</if>
+			<if test="externalId != null">
+				EXTERNAL_ID = #{externalId,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="altLat != null">
+				ALTLAT = #{altLat,jdbcType=VARCHAR},
+			</if>
+			<if test="gpsAddress != null">
+				GPSADDRESS = #{gpsAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="settleRateType != null">
+				settleRateType = #{settleRateType,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsMerchantInfo">
+		update
+		PMS_MERCHANT_INFO
+		set MERC_ID = #{mercId,jdbcType=VARCHAR},
+		SELLER_NO =
+		#{sellerNo,jdbcType=VARCHAR},
+		MERC_NAME = #{mercName,jdbcType=VARCHAR},
+		SHORTNAME = #{shortname,jdbcType=VARCHAR},
+		BUSINESSNAME =
+		#{businessname,jdbcType=VARCHAR},
+		MCC_CD = #{mccCd,jdbcType=VARCHAR},
+		ADDRESS = #{address,jdbcType=VARCHAR},
+		MAINBUSINESS =
+		#{mainbusiness,jdbcType=VARCHAR},
+		TAX_CERT_ID =
+		#{taxCertId,jdbcType=VARCHAR},
+		LICENSEISSUINGDATE =
+		#{licenseissuingdate,jdbcType=VARCHAR},
+		LICENSEDUEDATE =
+		#{licenseduedate,jdbcType=VARCHAR},
+		REGISTEREDCAPITAL =
+		#{registeredcapital,jdbcType=DECIMAL},
+		REGISTRATIONDEADLINE =
+		#{registrationdeadline,jdbcType=VARCHAR},
+		CUSTOMERTYPE =
+		#{customertype,jdbcType=VARCHAR},
+		NATUREBUSINESS =
+		#{naturebusiness,jdbcType=VARCHAR},
+		BUSINESSCHANNELS =
+		#{businesschannels,jdbcType=VARCHAR},
+		BUSINESSLOCATION =
+		#{businesslocation,jdbcType=VARCHAR},
+		BUSINESSAREA =
+		#{businessarea,jdbcType=VARCHAR},
+		BUSINESSAREAOF =
+		#{businessareaof,jdbcType=VARCHAR},
+		SALESWAY =
+		#{salesway,jdbcType=VARCHAR},
+		REGISTEREDADDRESS =
+		#{registeredaddress,jdbcType=VARCHAR},
+		BUS_ADDR =
+		#{busAddr,jdbcType=VARCHAR},
+		STARTBUSINESSDATE =
+		#{startbusinessdate,jdbcType=VARCHAR},
+		NORMALBUSINESSDATE =
+		#{normalbusinessdate,jdbcType=VARCHAR},
+		ORG_ID =
+		#{orgId,jdbcType=VARCHAR},
+		BANKNAME = #{bankname,jdbcType=VARCHAR},
+		SETTLEMENTNAME = #{settlementname,jdbcType=VARCHAR},
+		CLR_MERC =
+		#{clrMerc,jdbcType=VARCHAR},
+		BANKSYSNUMBER =
+		#{banksysnumber,jdbcType=VARCHAR},
+		CRP_NM = #{crpNm,jdbcType=VARCHAR},
+		CRP_ID_NO = #{crpIdNo,jdbcType=VARCHAR},
+		MOBILEPHONE =
+		#{mobilephone,jdbcType=VARCHAR},
+		PHONE = #{phone,jdbcType=VARCHAR},
+		HEADQUARTERSBANK = #{headquartersbank,jdbcType=VARCHAR},
+		CREATION_NAME
+		= #{creationName,jdbcType=VARCHAR},
+		CREATIONDATE =
+		#{creationdate,jdbcType=VARCHAR},
+		REMOVETAG =
+		#{removetag,jdbcType=DECIMAL},
+		LOGIN_NAME =
+		#{loginName,jdbcType=VARCHAR},
+		AGENT_NUMBER =
+		#{agentNumber,jdbcType=VARCHAR},
+		PASSWORD =
+		#{password,jdbcType=VARCHAR},
+		CRP_ID_TYP =
+		#{crpIdTyp,jdbcType=VARCHAR},
+		RET_MESSAGE =
+		#{retMessage,jdbcType=VARCHAR},
+		PREMIUMRATE =
+		#{premiumrate,jdbcType=VARCHAR},
+		MERC_CLEAR =
+		#{mercClear,jdbcType=DECIMAL},
+		MERC_STS = #{mercSts,jdbcType=VARCHAR},
+		KYACCOUNT = #{kyaccount,jdbcType=VARCHAR},
+		CLEAR_TYPE =
+		#{clearType,jdbcType=DECIMAL},
+		BUSINESS = #{business,jdbcType=DECIMAL},
+		TRUEMERDATE = #{truemerdate,jdbcType=VARCHAR},
+		CHECKMERDATE =
+		#{checkmerdate,jdbcType=VARCHAR},
+		COMPANY_ID =
+		#{companyId,jdbcType=VARCHAR},
+		APPLYDATE =
+		#{applydate,jdbcType=VARCHAR},
+		GENERAL_NAME =
+		#{generalName,jdbcType=VARCHAR},
+		ZIP_CODE =
+		#{zipCode,jdbcType=VARCHAR},
+		CARD_STARTDATE =
+		#{cardStartdate,jdbcType=VARCHAR},
+		CARD_ENDDATE =
+		#{cardEnddate,jdbcType=VARCHAR},
+		BANK_PROVINCE =
+		#{bankProvince,jdbcType=VARCHAR},
+		BANK_CITY =
+		#{bankCity,jdbcType=VARCHAR},
+		BUSINESSRANGE =
+		#{businessrange,jdbcType=VARCHAR},
+		TAXREGISTCARDENDDATE =
+		#{taxregistcardenddate,jdbcType=VARCHAR},
+		TAXREGISTCARD =
+		#{taxregistcard,jdbcType=VARCHAR},
+		EMAIL = #{email,jdbcType=VARCHAR},
+		STATUS = #{status,jdbcType=DECIMAL},
+		EXTERNAL_ID =
+		#{externalId,jdbcType=VARCHAR},
+		OAGENTNO =
+		#{oAgentNo,jdbcType=VARCHAR},
+		ALTLAT = #{altLat,jdbcType=VARCHAR},
+		GPSADDRESS = #{gpsAddress,jdbcType=VARCHAR},
+		settleRateType =
+		#{settleRateType,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<!-- 根据商户实体查询记录 -->
+	<select id="selectList" parameterType="xdt.model.PmsMerchantInfo"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_INFO
+		<where>
+			<if test="mobilephone!=null and mobilephone!=''"> and MOBILEPHONE = #{mobilephone,jdbcType=VARCHAR}</if>
+			<if test="password!=null and password!=''"> and PASSWORD = #{password,jdbcType=VARCHAR}</if>
+			<if test="mercId!=null and mercId!=''"> and MERC_ID = #{mercId,jdbcType=VARCHAR}</if>
+			<if test="creationName!=null and creationName!=''"> and CREATION_NAME = #{creationName,jdbcType=VARCHAR}
+			</if>
+			<if test="customertype!=null and customertype!=''"> and CUSTOMERTYPE = #{customertype,jdbcType=VARCHAR}</if>
+			<if test="crpIdNo!=null and crpIdNo!=''"> and CRP_ID_NO = #{crpIdNo,jdbcType=VARCHAR}</if>
+			<if test="email!=null and email!=''"> and EMAIL= #{email,jdbcType=VARCHAR}</if>
+			<if test="externalId!=null and externalId!=''"> and EXTERNALID= #{externalId,jdbcType=VARCHAR}</if>
+			<if test="oAgentNo!=null and oAgentNo!=''"> and OAGENTNO= #{oAgentNo,jdbcType=VARCHAR}</if>
+			<if test="mercSts!=null and mercSts!=''"> and MERC_STS = #{mercSts,jdbcType=VARCHAR}</if>
+		</where>
+	</select>
+	<!-- 根据商户实体更新记录 -->
+	<update id="updateByPmsMerchantInfo" parameterType="xdt.model.PmsMerchantInfo">
+		update PMS_MERCHANT_INFO
+		<set>
+			<if test="mercId != null">
+				MERC_ID = #{mercId,jdbcType=VARCHAR},
+			</if>
+			<if test="sellerNo != null">
+				SELLER_NO = #{sellerNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mercName != null">
+				MERC_NAME = #{mercName,jdbcType=VARCHAR},
+			</if>
+			<if test="shortname != null">
+				SHORTNAME = #{shortname,jdbcType=VARCHAR},
+			</if>
+			<if test="businessname != null">
+				BUSINESSNAME = #{businessname,jdbcType=VARCHAR},
+			</if>
+			<if test="mccCd != null">
+				MCC_CD = #{mccCd,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				ADDRESS = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="mainbusiness != null">
+				MAINBUSINESS = #{mainbusiness,jdbcType=VARCHAR},
+			</if>
+			<if test="taxCertId != null">
+				TAX_CERT_ID = #{taxCertId,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseissuingdate != null">
+				LICENSEISSUINGDATE =
+				#{licenseissuingdate,jdbcType=VARCHAR},
+			</if>
+			<if test="licenseduedate != null">
+				LICENSEDUEDATE = #{licenseduedate,jdbcType=VARCHAR},
+			</if>
+			<if test="registeredcapital != null">
+				REGISTEREDCAPITAL =
+				#{registeredcapital,jdbcType=DECIMAL},
+			</if>
+			<if test="registrationdeadline != null">
+				REGISTRATIONDEADLINE =
+				#{registrationdeadline,jdbcType=VARCHAR},
+			</if>
+			<if test="customertype != null">
+				CUSTOMERTYPE = #{customertype,jdbcType=VARCHAR},
+			</if>
+			<if test="naturebusiness != null">
+				NATUREBUSINESS = #{naturebusiness,jdbcType=VARCHAR},
+			</if>
+			<if test="businesschannels != null">
+				BUSINESSCHANNELS = #{businesschannels,jdbcType=VARCHAR},
+			</if>
+			<if test="businesslocation != null">
+				BUSINESSLOCATION = #{businesslocation,jdbcType=VARCHAR},
+			</if>
+			<if test="businessarea != null">
+				BUSINESSAREA = #{businessarea,jdbcType=VARCHAR},
+			</if>
+			<if test="businessareaof != null">
+				BUSINESSAREAOF = #{businessareaof,jdbcType=VARCHAR},
+			</if>
+			<if test="salesway != null">
+				SALESWAY = #{salesway,jdbcType=VARCHAR},
+			</if>
+			<if test="registeredaddress != null">
+				REGISTEREDADDRESS =
+				#{registeredaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="busAddr != null">
+				BUS_ADDR = #{busAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="startbusinessdate != null">
+				STARTBUSINESSDATE =
+				#{startbusinessdate,jdbcType=VARCHAR},
+			</if>
+			<if test="normalbusinessdate != null">
+				NORMALBUSINESSDATE =
+				#{normalbusinessdate,jdbcType=VARCHAR},
+			</if>
+			<if test="orgId != null">
+				ORG_ID = #{orgId,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				BANKNAME = #{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementname != null">
+				SETTLEMENTNAME = #{settlementname,jdbcType=VARCHAR},
+			</if>
+			<if test="clrMerc != null">
+				CLR_MERC = #{clrMerc,jdbcType=VARCHAR},
+			</if>
+			<if test="banksysnumber != null">
+				BANKSYSNUMBER = #{banksysnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="crpNm != null">
+				CRP_NM = #{crpNm,jdbcType=VARCHAR},
+			</if>
+			<if test="crpIdNo != null">
+				CRP_ID_NO = #{crpIdNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mobilephone != null">
+				MOBILEPHONE = #{mobilephone,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				PHONE = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="headquartersbank != null">
+				HEADQUARTERSBANK = #{headquartersbank,jdbcType=VARCHAR},
+			</if>
+			<if test="creationName != null">
+				CREATION_NAME = #{creationName,jdbcType=VARCHAR},
+			</if>
+			<if test="creationdate != null">
+				CREATIONDATE = #{creationdate,jdbcType=VARCHAR},
+			</if>
+			<if test="removetag != null">
+				REMOVETAG = #{removetag,jdbcType=DECIMAL},
+			</if>
+			<if test="loginName != null">
+				LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="agentNumber != null">
+				AGENT_NUMBER = #{agentNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				PASSWORD = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="crpIdTyp != null">
+				CRP_ID_TYP = #{crpIdTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="retMessage != null">
+				RET_MESSAGE = #{retMessage,jdbcType=VARCHAR},
+			</if>
+			<if test="premiumrate != null">
+				PREMIUMRATE = #{premiumrate,jdbcType=VARCHAR},
+			</if>
+			<if test="mercClear != null">
+				MERC_CLEAR = #{mercClear,jdbcType=DECIMAL},
+			</if>
+			<if test="mercSts != null">
+				MERC_STS = #{mercSts,jdbcType=VARCHAR},
+			</if>
+			<if test="kyaccount != null">
+				KYACCOUNT = #{kyaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="clearType != null">
+				CLEAR_TYPE = #{clearType,jdbcType=DECIMAL},
+			</if>
+			<if test="business != null">
+				BUSINESS = #{business,jdbcType=DECIMAL},
+			</if>
+			<if test="truemerdate != null">
+				TRUEMERDATE = #{truemerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="checkmerdate != null">
+				CHECKMERDATE = #{checkmerdate,jdbcType=VARCHAR},
+			</if>
+			<if test="companyId != null">
+				COMPANY_ID = #{companyId,jdbcType=VARCHAR},
+			</if>
+			<if test="applydate != null">
+				APPLYDATE = #{applydate,jdbcType=VARCHAR},
+			</if>
+			<if test="generalName != null">
+				GENERAL_NAME = #{generalName,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="cardStartdate != null">
+				CARD_STARTDATE = #{cardStartdate,jdbcType=VARCHAR},
+			</if>
+			<if test="cardEnddate != null">
+				CARD_ENDDATE = #{cardEnddate,jdbcType=VARCHAR},
+			</if>
+			<if test="bankProvince != null">
+				BANK_PROVINCE = #{bankProvince,jdbcType=VARCHAR},
+			</if>
+			<if test="bankCity != null">
+				BANK_CITY = #{bankCity,jdbcType=VARCHAR},
+			</if>
+			<if test="businessrange != null">
+				BUSINESSRANGE = #{businessrange,jdbcType=VARCHAR},
+			</if>
+			<if test="taxregistcardenddate != null">
+				TAXREGISTCARDENDDATE =
+				#{taxregistcardenddate,jdbcType=VARCHAR},
+			</if>
+			<if test="taxregistcard != null">
+				TAXREGISTCARD = #{taxregistcard,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				EMAIL = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=DECIMAL},
+			</if>
+			<if test="altLat != null">
+				ALTLAT = #{altLat,jdbcType=DECIMAL},
+			</if>
+			<if test="gpsAddress != null">
+				GPSADDRESS = #{gpsAddress,jdbcType=DECIMAL},
+			</if>
+			<if test="settleRateType != null">
+				settleRateType = #{settleRateType,jdbcType=DECIMAL},
+			</if>
+		</set>
+		<where>
+			<if test="mobilephone!=null and mobilephone!=''"> and MOBILEPHONE = #{mobilephone,jdbcType=VARCHAR}</if>
+			<if test="customertype!=null and customertype!=''"> and CUSTOMERTYPE = #{customertype,jdbcType=VARCHAR}</if>
+			<if test="oAgentNo!=null and oAgentNo!=''"> and OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}</if>
+		</where>
+	</update>
+
+
+	<select id="selectByMercId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_INFO where MERC_ID= #{mercId,jdbcType=VARCHAR}
+	</select>
+
+
+	<!-- 根据商户编号查询商户信息 -->
+	<select id="queryMercuryInfo" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select
+		pmi.MERC_ID,pmi.MERC_NAME,pmi.MOBILEPHONE,TO_CHAR(pmi.STATUS)
+		STATUS,pmi.IMAGE_URL, TO_CHAR(tcc.BALANCE) BALANCE ,pmi.EXTERNAL_ID
+		externalId
+		from PMS_MERCHANT_INFO pmi ,T_ACC_ACCOUNT tcc
+		where
+		pmi.KYACCOUNT = tcc.ACC_NUM and pmi.MERC_ID=
+		#{mercid,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据商户编号 查询商户是否正式商户 60 正式商户 -->
+	<select id="queryMercuryStatus" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select MERC_STS from PMS_MERCHANT_INFO where MERC_ID=
+		#{mercid,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 查询支付宝和微信是不是绑定了路由 -->
+	<select id="getChannelCount" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		select count(1) from posp_route_info where OWNER_ID=(select
+		ID from
+		PMS_MERCHANT_INFO where MERC_ID=#{mercid,jdbcType=VARCHAR}) and
+		CHANNEL_CODE=#{channelcode,jdbcType=VARCHAR} and STATUS='1'
+	</select>
+
+	<!-- 根据商户编号查询商户信息 wm 2016-02-22 -->
+	<select id="selectMerchantInfoByMercid" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_INFO
+		where MERC_ID= #{mercid,jdbcType=VARCHAR}
+	</select>
+	<!-- 根据手机号查询商户信息 wm 2016-12-02 -->
+	<select id="selectphone" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MERCHANT_INFO
+		where MOBILEPHONE= #{account,jdbcType=VARCHAR}
+	</select>
+
+
+
+	<!-- 查询商户清分费率 wm 2016-05-11 -->
+	<select id="queryMersettleRateType" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select arc.RATE SETTLERATE,arc.BOTTOM_POUNDAGE
+		MINSETTLEPOUNDAGE
+
+		from PMS_MERCHANT_INFO pmi ,APP_RATE_CONFIG arc
+
+
+		where
+		arc.OAGENTNO=pmi.OAGENTNO and arc.RATE_TYPE=pmi.SETTLERATETYPE and
+		pmi.MERC_ID= #{mercid,jdbcType=VARCHAR}
+	</select>
+
+
+	<!-- 查询商户当前所属代理，刷卡费率和清算费率 wm 2016-05-18 -->
+	<select id="queryAgentShuaKaRateAndSettleRate" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select pmi.OAGENTNO,pmi.MERC_ID,
+		pao.LOWESTSETTLERATE,pao.LOWESTRATE
+		,pao.AGENT_NUMBER
+
+		from
+		PMS_MERCHANT_INFO pmi ,PMS_AGENT_INFO pao
+
+		where
+		pmi.MERC_ID=#{mercid,jdbcType=VARCHAR} and pao.AGENT_NUMBER=
+		pmi.AGENT_NUMBER
+	</select>
+	<!-- 根据商户实体更新记录 -->
+	<update id="updatePmsMerchantInfo" parameterType="xdt.model.PmsMerchantInfo">
+		update PMS_MERCHANT_INFO
+		<set>
+			<if test="position != null">
+				POSITION = #{position,jdbcType=VARCHAR},
+			</if>
+			<if test="positionT1 != null">
+				POSITIONT1 = #{positionT1,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<where>
+			<if test="mercId!=null and mercId!=''">MERC_ID = #{mercId,jdbcType=VARCHAR}</if>
+		</where>
+	</update>
+	<!-- 代付补款D0 -->
+	<update id="updataPay"  parameterType="java.util.Map">
+		update PMS_MERCHANT_INFO t set t.position=(select to_number(m.position) from PMS_MERCHANT_INFO m where m.merc_id=#{machId,jdbcType=VARCHAR})+ to_number(#{payMoney,jdbcType=VARCHAR}) where t.merc_id=#{machId,jdbcType=VARCHAR}
+	</update>
+	<!-- 代付补款T1 -->
+   <update id="updataPayT1"  parameterType="java.util.Map">
+		update PMS_MERCHANT_INFO t set t.positionT1=(select to_number(m.positionT1) from PMS_MERCHANT_INFO m where m.merc_id=#{machId,jdbcType=VARCHAR})+ to_number(#{payMoney,jdbcType=VARCHAR}) where t.merc_id=#{machId,jdbcType=VARCHAR}
+	</update>
+	<!-- 代付扣款D0 -->
+	<update id="updataD0"  parameterType="java.util.Map">
+		update PMS_MERCHANT_INFO t set t.position=(select to_number(m.position) from PMS_MERCHANT_INFO m where m.merc_id=#{machId,jdbcType=VARCHAR})- to_number(#{payMoney,jdbcType=VARCHAR})-((select to_number(m.poundage) from PMS_MERCHANT_INFO m where m.merc_id=#{machId,jdbcType=VARCHAR})*100) where t.merc_id=#{machId,jdbcType=VARCHAR}
+	</update>
+	<!-- 代付扣款T1 -->
+	<update id="updateT1"  parameterType="java.util.Map">
+		update PMS_MERCHANT_INFO t set t.positionT1=(select to_number(m.positionT1) from PMS_MERCHANT_INFO m where m.merc_id=#{machId,jdbcType=VARCHAR})- to_number(#{payMoney,jdbcType=VARCHAR})-((select to_number(m.poundage) from PMS_MERCHANT_INFO m where m.merc_id=#{machId,jdbcType=VARCHAR})*100) where t.merc_id=#{machId,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

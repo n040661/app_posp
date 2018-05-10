@@ -1,0 +1,75 @@
+*{	margin: 0;
+    padding: 0;
+    font-family: "微软雅黑", "Microsoft YaHei", "glyphicons halflings";
+    text-decoration: none;
+    list-style-type: none;
+}
+.Withdrawals{
+	width: 100%;
+	margin-top: 10%;
+}
+.logo{
+	width: 18rem;
+	height: 4rem;
+	margin: 1rem auto;
+}
+.logo img{
+	width: 100%;
+	height: 100%;
+}
+.jie_g{
+	font-size: 1.2rem;
+	color:#333;
+	text-align: center;
+	letter-spacing:0.2rem;
+}
+.clear{ clear:both} 
+.Numbers{
+	width: 16rem;
+	margin: 1.5rem auto;
+    position: relative;
+}
+.dahai{
+	float: left;
+	font-size: 1rem;
+	text-align:center;
+	margin-left: 6%;
+}
+.mima{
+	width: 50%;
+    float: left;
+    font-size: 1rem;
+    text-align: center;
+    position: absolute;
+   left: 38%;top: 0;
+}
+.mima input{
+	border:none;
+	outline:medium;
+	font-size: 1.1rem;
+}
+.Success{
+	width: 21rem;
+	height: 1.1rem;
+	background-color: #8DB5E3;
+	margin: 0 auto;
+	font-size: 1rem;
+	line-height: 1.1rem;
+	text-align: center;
+}
+.rw-li{
+	font-size: 1rem;
+	line-height: 1.5rem;
+	text-align: center;
+	color:#444;
+	margin:4% auto;
+}
+.erwem{
+	width: 12rem;
+	height: 12rem;
+	margin: 0 auto;
+}
+.erwem img{
+	width: 100%;
+	height: 100%;
+}

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.AppRateConfigMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.AppRateConfig">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="RATE_TYPE" property="rateType" jdbcType="VARCHAR" />
+		<result column="RATE" property="rate" jdbcType="VARCHAR" />
+		<result column="TOP_POUNDAGE" property="topPoundage" jdbcType="VARCHAR" />
+		<result column="IS_TOP" property="isTop" jdbcType="VARCHAR" />
+		<result column="IS_THIRDPART" property="isThirdpart" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+
+		<result column="BOTTOM_POUNDAGE" property="bottomPoundage"
+			jdbcType="VARCHAR" />
+		<result column="IS_BOTTOM" property="isBottom" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, RATE_TYPE, RATE, TOP_POUNDAGE, IS_TOP, IS_THIRDPART,
+		REMARK,BOTTOM_POUNDAGE,IS_BOTTOM,OAGENTNO
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from APP_RATE_CONFIG
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<select id="selectByPrimaryRate" resultMap="BaseResultMap"
+		parameterType="xdt.model.AppRateConfig">
+		select
+		<include refid="Base_Column_List" />
+		from APP_RATE_CONFIG
+		where RATE = #{rate,jdbcType=DECIMAL} and REMARK
+		=#{remark,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from APP_RATE_CONFIG
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.AppRateConfig">
+		insert into APP_RATE_CONFIG (ID, RATE_TYPE, RATE,
+		TOP_POUNDAGE, IS_TOP, IS_THIRDPART,
+		REMARK,BOTTOM_POUNDAGE,IS_BOTTOM)
+		values (#{id,jdbcType=DECIMAL}, #{rateType,jdbcType=VARCHAR},
+		#{rate,jdbcType=VARCHAR},
+		#{topPoundage,jdbcType=VARCHAR}, #{isTop,jdbcType=VARCHAR}, #{isThirdpart,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}, #{bottomPoundage,jdbcType=VARCHAR},
+		#{isBottom,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.AppRateConfig">
+		insert into APP_RATE_CONFIG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="rateType != null">
+				RATE_TYPE,
+			</if>
+			<if test="rate != null">
+				RATE,
+			</if>
+			<if test="topPoundage != null">
+				TOP_POUNDAGE,
+			</if>
+			<if test="isTop != null">
+				IS_TOP,
+			</if>
+			<if test="isThirdpart != null">
+				IS_THIRDPART,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="bottomPoundage != null">
+				BOTTOM_POUNDAGE,
+			</if>
+			<if test="isBottom != null">
+				IS_BOTTOM,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="rateType != null">
+				#{rateType,jdbcType=VARCHAR},
+			</if>
+			<if test="rate != null">
+				#{rate,jdbcType=VARCHAR},
+			</if>
+			<if test="topPoundage != null">
+				#{topPoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="isTop != null">
+				#{isTop,jdbcType=VARCHAR},
+			</if>
+			<if test="isThirdpart != null">
+				#{isThirdpart,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="bottomPoundage != null">
+				#{bottomPoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="isBottom != null">
+				#{isBottom,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.AppRateConfig">
+		update APP_RATE_CONFIG
+		<set>
+			<if test="rateType != null">
+				RATE_TYPE = #{rateType,jdbcType=VARCHAR},
+			</if>
+			<if test="rate != null">
+				RATE = #{rate,jdbcType=VARCHAR},
+			</if>
+			<if test="topPoundage != null">
+				TOP_POUNDAGE = #{topPoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="isTop != null">
+				IS_TOP = #{isTop,jdbcType=VARCHAR},
+			</if>
+			<if test="isThirdpart != null">
+				IS_THIRDPART = #{isThirdpart,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="bottomPoundage != null">
+				BOTTOM_POUNDAGE = #{bottomPoundage,jdbcType=VARCHAR},
+			</if>
+			<if test="isBottom != null">
+				IS_BOTTOM = #{isBottom,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.AppRateConfig">
+		update APP_RATE_CONFIG
+		set RATE_TYPE = #{rateType,jdbcType=VARCHAR},
+		RATE = #{rate,jdbcType=VARCHAR},
+		TOP_POUNDAGE = #{topPoundage,jdbcType=VARCHAR},
+		IS_TOP = #{isTop,jdbcType=VARCHAR},
+		IS_THIRDPART = #{isThirdpart,jdbcType=VARCHAR},
+		REMARK = #{remark,jdbcType=VARCHAR},
+		BOTTOM_POUNDAGE = #{bottomPoundage,jdbcType=VARCHAR},
+		IS_BOTTOM = #{isBottom,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<select id="selectByRateTypeAndoAgentNo" resultMap="BaseResultMap"
+		parameterType="xdt.model.AppRateConfig">
+		select
+		<include refid="Base_Column_List" />
+		from app_rate_config
+		where RATE_TYPE = #{rateType,jdbcType=VARCHAR} and OAGENTNO
+		=#{oAgentNo,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据实体查询记录 -->
+	<select id="selectList" parameterType="xdt.model.AppRateConfig"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from APP_RATE_CONFIG
+		<where>
+			<if test="rateType!=null and rateType!=''"> and RATE_TYPE = #{rateType,jdbcType=VARCHAR}</if>
+			<if test="rate!=null and rate!=''"> and RATE = #{rate,jdbcType=VARCHAR}</if>
+			<if test="topPoundage!=null and topPoundage!=''"> and TOPPOUNDAGE = #{topPoundage,jdbcType=VARCHAR}</if>
+			<if test="isTop!=null and isTop!=''"> and ISTOP = #{isTop,jdbcType=VARCHAR}</if>
+			<if test="isThirdpart!=null and isThirdpart!=''"> and IS_THIRDPART = #{isThirdpart,jdbcType=VARCHAR}</if>
+			<if test="remark!=null and remark!=''"> and REMARK= #{remark,jdbcType=VARCHAR}</if>
+			<if test="oAgentNo!=null and oAgentNo!=''"> and OAGENTNO= #{oAgentNo,jdbcType=VARCHAR}</if>
+		</where>
+	</select>
+	<!-- 查询第三方费率 -->
+	<select id="getThirdpartRate" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from APP_RATE_CONFIG
+		where IS_THIRDPART='1' and OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}
+	</select>
+
+
+</mapper>

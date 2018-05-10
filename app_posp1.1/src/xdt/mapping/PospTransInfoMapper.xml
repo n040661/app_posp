@@ -1,0 +1,1651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PospTransInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PospTransInfo">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="CARDNO" jdbcType="VARCHAR" property="cardno" />
+		<result column="TRANSCODE" jdbcType="VARCHAR" property="transcode" />
+		<result column="POSPID" jdbcType="DECIMAL" property="pospid" />
+		<result column="TERMINALSN" jdbcType="VARCHAR" property="terminalsn" />
+		<result column="TRANSTIME" jdbcType="VARCHAR" property="transtime" />
+		<result column="TRANSDATE" jdbcType="VARCHAR" property="transdate" />
+		<result column="POSSN" jdbcType="VARCHAR" property="possn" />
+		<result column="POSTERMINALID" jdbcType="VARCHAR" property="posterminalid" />
+		<result column="CARDVALIDDATE" jdbcType="VARCHAR" property="cardvaliddate" />
+		<result column="SENDDATE" jdbcType="TIMESTAMP" property="senddate" />
+		<result column="BALANCEDATE" jdbcType="VARCHAR" property="balancedate" />
+		<result column="POSPSERVICECODE" jdbcType="VARCHAR" property="pospservicecode" />
+		<result column="SYSSEQNO" jdbcType="VARCHAR" property="sysseqno" />
+		<result column="MERCHANTCODE" jdbcType="VARCHAR" property="merchantcode" />
+		<result column="AUTHORITYCODE" jdbcType="VARCHAR" property="authoritycode" />
+		<result column="PSAMNO" jdbcType="VARCHAR" property="psamno" />
+		<result column="INPUTTYPE" jdbcType="DECIMAL" property="inputtype" />
+		<result column="CONUTERCONDITIONCODE" jdbcType="DECIMAL"
+			property="conuterconditioncode" />
+		<result column="COUNTERPIN" jdbcType="DECIMAL" property="counterpin" />
+		<result column="CHANNELNO" jdbcType="VARCHAR" property="channelno" />
+		<result column="CURRENCYCODE" jdbcType="VARCHAR" property="currencycode" />
+		<result column="PERSONALID" jdbcType="VARCHAR" property="personalid" />
+		<result column="TRANSAMT" jdbcType="DECIMAL" property="transamt" />
+		<result column="PREMIUMRATE" jdbcType="VARCHAR" property="premiumrate" />
+		<result column="TRANSFEE2" jdbcType="DECIMAL" property="transfee2" />
+		<result column="TRANSSECURITYCONTROL" jdbcType="DECIMAL"
+			property="transsecuritycontrol" />
+		<result column="TRANSSTATUS" jdbcType="VARCHAR" property="transstatus" />
+		<result column="RESPONSECODE" jdbcType="VARCHAR" property="responsecode" />
+		<result column="POSID" jdbcType="DECIMAL" property="posid" />
+		<result column="BATNO" jdbcType="VARCHAR" property="batno" />
+		<result column="TAC" jdbcType="VARCHAR" property="tac" />
+		<result column="SETTLEMENTID" jdbcType="DECIMAL" property="settlementid" />
+		<result column="SETTLEMENTFLAG" jdbcType="VARCHAR" property="settlementflag" />
+		<result column="CANCELFLAG" jdbcType="DECIMAL" property="cancelflag" />
+		<result column="CANCELID" jdbcType="DECIMAL" property="cancelid" />
+		<result column="MSGTYPE" jdbcType="VARCHAR" property="msgtype" />
+		<result column="PFMTID" jdbcType="DECIMAL" property="pfmtid" />
+		<result column="OPERID" jdbcType="VARCHAR" property="operid" />
+		<result column="SEARCH_TRANS_CODE" jdbcType="VARCHAR" property="searchTransCode" />
+		<result column="POSPSN" jdbcType="VARCHAR" property="pospsn" />
+		<result column="REASON" jdbcType="VARCHAR" property="reason" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="TRANSFEE3" jdbcType="DECIMAL" property="transfee3" />
+		<result column="ROUTEID" jdbcType="DECIMAL" property="routeid" />
+		<result column="SIM_ID" jdbcType="VARCHAR" property="simId" />
+		<result column="STATION_INFO" jdbcType="DECIMAL" property="stationInfo" />
+		<result column="INTER_VAL" jdbcType="VARCHAR" property="interVal" />
+		<result column="TRANSFEE4" jdbcType="DECIMAL" property="transfee4" />
+		<result column="IS_CLEAR_SELF" jdbcType="DECIMAL" property="isClearSelf" />
+		<result column="BNK_NM" jdbcType="VARCHAR" property="bnkNm" />
+		<result column="BNK_CD" jdbcType="VARCHAR" property="bnkCd" />
+		<result column="CRD_NM" jdbcType="VARCHAR" property="crdNm" />
+		<result column="CRD_TYP" jdbcType="VARCHAR" property="crdTyp" />
+		<result column="ADDFEE" jdbcType="DECIMAL" property="addfee" />
+		<result column="FREEZE_STATE" jdbcType="VARCHAR" property="freezeState" />
+		<result column="ISAPP" jdbcType="DECIMAL" property="isapp" />
+		<result column="BUSINFO" jdbcType="VARCHAR" property="businfo" />
+		<result column="BUSPOS" jdbcType="VARCHAR" property="buspos" />
+		<result column="TRANSFEE1" jdbcType="DECIMAL" property="transfee1" />
+		<result column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+		<result column="PAYMENT_TYPE" jdbcType="VARCHAR" property="paymentType" />
+		<result column="OAGENTNO" jdbcType="VARCHAR" property="oAgentNo" />
+		<result column="TRANS_ORDER_ID" jdbcType="VARCHAR" property="transOrderId" />
+		<result column="PAY_TIMES" jdbcType="DECIMAL" property="payTimes" />
+		<result column="UNIQUE_KEY" jdbcType="DECIMAL" property="uniqueKey" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, CARDNO, TRANSCODE, POSPID, TERMINALSN, TRANSTIME,
+		TRANSDATE, POSSN,
+		POSTERMINALID,
+		CARDVALIDDATE, SENDDATE, BALANCEDATE,
+		POSPSERVICECODE, SYSSEQNO, MERCHANTCODE,
+		AUTHORITYCODE,
+		PSAMNO,
+		INPUTTYPE, CONUTERCONDITIONCODE, COUNTERPIN, CHANNELNO, CURRENCYCODE,
+		PERSONALID,
+		TRANSAMT, PREMIUMRATE, TRANSFEE2, TRANSSECURITYCONTROL,
+		TRANSSTATUS,
+		RESPONSECODE,
+		POSID, BATNO, TAC, SETTLEMENTID,
+		SETTLEMENTFLAG, CANCELFLAG, CANCELID,
+		MSGTYPE, PFMTID,
+		OPERID,
+		SEARCH_TRANS_CODE, POSPSN, REASON, REMARK, TRANSFEE3, ROUTEID,
+		SIM_ID,
+		STATION_INFO,
+		INTER_VAL, TRANSFEE4, IS_CLEAR_SELF, BNK_NM, BNK_CD,
+		CRD_NM, CRD_TYP, ADDFEE,
+		FREEZE_STATE,
+		ISAPP, BUSINFO, BUSPOS,
+		TRANSFEE1, ORDER_ID,
+		PAYMENT_TYPE,OAGENTNO,TRANS_ORDER_ID,PAY_TIMES
+	</sql>
+
+
+
+	<select id="selectSrcJour" resultMap="BaseResultMap"
+		parameterType="xdt.model.PospTransInfo">
+		select
+		<include refid="Base_Column_List" />
+		from POSP_TRANS_INFO
+		<where>
+
+			<if test="sysseqno !=null  and  sysseqno!=''">
+				and SYSSEQNO=#{sysseqno}
+			</if>
+			<if test="orderId !=null  and  orderId!=''">
+				and ORDER_ID=#{orderId}
+			</if>
+			and TRANSCODE in ('1131', '7131') and ROWNUM =1
+
+
+		</where>
+	</select>
+
+	<select id="selectBySysseqno" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from POSP_TRANS_INFO
+		<where>
+			<if test="_parameter !=null  and  _parameter!=''">
+				and SYSSEQNO=#{_parameter}
+			</if>
+		</where>
+	</select>
+
+
+	<select id="selectByUniqueKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+
+		FROM POSP_TRANS_INFO WHERE
+		UNIQUE_KEY = #{uniqueKey,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectSrc" resultMap="BaseResultMap" parameterType="xdt.model.PospTransInfo">
+		select
+		<include refid="Base_Column_List" />
+		from POSP_TRANS_INFO
+		<where>
+
+			<if test="sysseqno !=null  and  sysseqno!=''">
+				and SYSSEQNO=#{sysseqno}
+			</if>
+			<if test="orderId !=null  and  orderId!=''">
+				and ORDER_ID=#{orderId}
+			</if>
+			<if test="searchTransCode !=null  and  searchTransCode!=''">
+				and SEARCH_TRANS_CODE=#{searchTransCode}
+			</if>
+			<if test="transcode !=null  and  transcode!=''">
+				and TRANSCODE=#{transcode}
+			</if>
+
+		</where>
+	</select>
+
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="xdt.model.PospTransInfo">
+		select
+		<include refid="Base_Column_List" />
+		from POSP_TRANS_INFO
+		<where>
+			<if test="sysseqno !=null  and  sysseqno!=''">
+				and SYSSEQNO=#{sysseqno}
+			</if>
+			<if test="orderId !=null  and  orderId!=''">
+				and ORDER_ID=#{orderId}
+			</if>
+
+		</where>
+	</select>
+
+
+
+
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from POSP_TRANS_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<select id="selectPay" resultMap="BaseResultMap">
+	  select p.* from POSP_TRANS_INFO p where p.responsecode is null and TO_CHAR(p.senddate, 'yyyy-mm-dd HH24:mi:ss')&lt;=TO_CHAR(sysdate,'yyyy-mm-dd HH24:mi:ss') and TO_CHAR(p.senddate, 'yyyy-mm-dd HH24:mi:ss') &gt;=TO_CHAR(sysdate -10/(24*60), 'yyyy-mm-dd HH24:mi:ss') and p.merchantcode in (select distinct(obj.merc_id) from POSP_ROUTE_INFO m join PMS_BUSINESS_INFO t on t.id = m.merchant_id join PMS_MERCHANT_INFO obj on obj.id = m.owner_id where t.business_num in ('12906','13240','12916','12913'))
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from
+		POSP_TRANS_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PospTransInfo">
+		insert into POSP_TRANS_INFO
+		(ID, UNIQUE_KEY,CARDNO, TRANSCODE,
+		POSPID, TERMINALSN, TRANSTIME,
+		TRANSDATE, POSSN, POSTERMINALID,
+		CARDVALIDDATE, SENDDATE, BALANCEDATE,
+		POSPSERVICECODE, SYSSEQNO, MERCHANTCODE,
+		AUTHORITYCODE, PSAMNO,
+		INPUTTYPE,
+		CONUTERCONDITIONCODE, COUNTERPIN, CHANNELNO,
+		CURRENCYCODE,
+		PERSONALID, TRANSAMT,
+		PREMIUMRATE, TRANSFEE2, TRANSSECURITYCONTROL,
+		TRANSSTATUS, RESPONSECODE, POSID,
+		BATNO, TAC, SETTLEMENTID,
+		SETTLEMENTFLAG, CANCELFLAG, CANCELID,
+		MSGTYPE, PFMTID, OPERID,
+		SEARCH_TRANS_CODE, POSPSN, REASON,
+		REMARK, TRANSFEE3, ROUTEID,
+		SIM_ID,
+		STATION_INFO, INTER_VAL,
+		TRANSFEE4, IS_CLEAR_SELF, BNK_NM,
+		BNK_CD,
+		CRD_NM, CRD_TYP,
+		ADDFEE, FREEZE_STATE, ISAPP,
+		BUSINFO, BUSPOS,
+		TRANSFEE1,
+		ORDER_ID, PAYMENT_TYPE,OAGENTNO,TRANS_ORDER_ID,PAY_TIMES)
+		values (#{id,jdbcType=DECIMAL},#{uniqueKey,jdbcType=VARCHAR},
+		#{cardno,jdbcType=VARCHAR}, #{transcode,jdbcType=VARCHAR},
+		#{pospid,jdbcType=DECIMAL}, #{terminalsn,jdbcType=VARCHAR},
+		#{transtime,jdbcType=VARCHAR},
+		#{transdate,jdbcType=VARCHAR},
+		#{possn,jdbcType=VARCHAR}, #{posterminalid,jdbcType=VARCHAR},
+		#{cardvaliddate,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP},
+		#{balancedate,jdbcType=VARCHAR},
+		#{pospservicecode,jdbcType=VARCHAR},
+		#{sysseqno,jdbcType=VARCHAR}, #{merchantcode,jdbcType=VARCHAR},
+		#{authoritycode,jdbcType=VARCHAR}, #{psamno,jdbcType=VARCHAR},
+		#{inputtype,jdbcType=DECIMAL},
+		#{conuterconditioncode,jdbcType=DECIMAL},
+		#{counterpin,jdbcType=DECIMAL}, #{channelno,jdbcType=VARCHAR},
+		#{currencycode,jdbcType=VARCHAR}, #{personalid,jdbcType=VARCHAR},
+		#{transamt,jdbcType=DECIMAL},
+		#{premiumrate,jdbcType=VARCHAR},
+		#{transfee2,jdbcType=DECIMAL},
+		#{transsecuritycontrol,jdbcType=DECIMAL},
+		#{transstatus,jdbcType=VARCHAR}, #{responsecode,jdbcType=VARCHAR},
+		#{posid,jdbcType=DECIMAL},
+		#{batno,jdbcType=VARCHAR},
+		#{tac,jdbcType=VARCHAR}, #{settlementid,jdbcType=DECIMAL},
+		#{settlementflag,jdbcType=VARCHAR}, #{cancelflag,jdbcType=DECIMAL},
+		#{cancelid,jdbcType=DECIMAL},
+		#{msgtype,jdbcType=VARCHAR},
+		#{pfmtid,jdbcType=DECIMAL}, #{operid,jdbcType=VARCHAR},
+		#{searchTransCode,jdbcType=VARCHAR}, #{pospsn,jdbcType=VARCHAR},
+		#{reason,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},
+		#{transfee3,jdbcType=DECIMAL}, #{routeid,jdbcType=DECIMAL},
+		#{simId,jdbcType=VARCHAR}, #{stationInfo,jdbcType=DECIMAL},
+		#{interVal,jdbcType=VARCHAR},
+		#{transfee4,jdbcType=DECIMAL},
+		#{isClearSelf,jdbcType=DECIMAL}, #{bnkNm,jdbcType=VARCHAR},
+		#{bnkCd,jdbcType=VARCHAR}, #{crdNm,jdbcType=VARCHAR},
+		#{crdTyp,jdbcType=VARCHAR},
+		#{addfee,jdbcType=DECIMAL},
+		#{freezeState,jdbcType=VARCHAR}, #{isapp,jdbcType=DECIMAL},
+		#{businfo,jdbcType=VARCHAR}, #{buspos,jdbcType=VARCHAR},
+		#{transfee1,jdbcType=DECIMAL},
+		#{orderId,jdbcType=VARCHAR},
+		#{paymentType,jdbcType=VARCHAR}, #{oAgentNo,jdbcType=VARCHAR},
+		#{transOrderId,jdbcType=VARCHAR}, #{payTimes,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PospTransInfo">
+		insert into POSP_TRANS_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="uniqueKey != null">
+				UNIQUE_KEY,
+			</if>
+			<if test="cardno != null">
+				CARDNO,
+			</if>
+			<if test="transcode != null">
+				TRANSCODE,
+			</if>
+			<if test="pospid != null">
+				POSPID,
+			</if>
+			<if test="terminalsn != null">
+				TERMINALSN,
+			</if>
+			<if test="transtime != null">
+				TRANSTIME,
+			</if>
+			<if test="transdate != null">
+				TRANSDATE,
+			</if>
+			<if test="possn != null">
+				POSSN,
+			</if>
+			<if test="posterminalid != null">
+				POSTERMINALID,
+			</if>
+			<if test="cardvaliddate != null">
+				CARDVALIDDATE,
+			</if>
+			<if test="senddate != null">
+				SENDDATE,
+			</if>
+			<if test="balancedate != null">
+				BALANCEDATE,
+			</if>
+			<if test="pospservicecode != null">
+				POSPSERVICECODE,
+			</if>
+			<if test="sysseqno != null">
+				SYSSEQNO,
+			</if>
+			<if test="merchantcode != null">
+				MERCHANTCODE,
+			</if>
+			<if test="authoritycode != null">
+				AUTHORITYCODE,
+			</if>
+			<if test="psamno != null">
+				PSAMNO,
+			</if>
+			<if test="inputtype != null">
+				INPUTTYPE,
+			</if>
+			<if test="conuterconditioncode != null">
+				CONUTERCONDITIONCODE,
+			</if>
+			<if test="counterpin != null">
+				COUNTERPIN,
+			</if>
+			<if test="channelno != null">
+				CHANNELNO,
+			</if>
+			<if test="currencycode != null">
+				CURRENCYCODE,
+			</if>
+			<if test="personalid != null">
+				PERSONALID,
+			</if>
+			<if test="transamt != null">
+				TRANSAMT,
+			</if>
+			<if test="premiumrate != null">
+				PREMIUMRATE,
+			</if>
+			<if test="transfee2 != null">
+				TRANSFEE2,
+			</if>
+			<if test="transsecuritycontrol != null">
+				TRANSSECURITYCONTROL,
+			</if>
+			<if test="transstatus != null">
+				TRANSSTATUS,
+			</if>
+			<if test="responsecode != null">
+				RESPONSECODE,
+			</if>
+			<if test="posid != null">
+				POSID,
+			</if>
+			<if test="batno != null">
+				BATNO,
+			</if>
+			<if test="tac != null">
+				TAC,
+			</if>
+			<if test="settlementid != null">
+				SETTLEMENTID,
+			</if>
+			<if test="settlementflag != null">
+				SETTLEMENTFLAG,
+			</if>
+			<if test="cancelflag != null">
+				CANCELFLAG,
+			</if>
+			<if test="cancelid != null">
+				CANCELID,
+			</if>
+			<if test="msgtype != null">
+				MSGTYPE,
+			</if>
+			<if test="pfmtid != null">
+				PFMTID,
+			</if>
+			<if test="operid != null">
+				OPERID,
+			</if>
+			<if test="searchTransCode != null">
+				SEARCH_TRANS_CODE,
+			</if>
+			<if test="pospsn != null">
+				POSPSN,
+			</if>
+			<if test="reason != null">
+				REASON,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="transfee3 != null">
+				TRANSFEE3,
+			</if>
+			<if test="routeid != null">
+				ROUTEID,
+			</if>
+			<if test="simId != null">
+				SIM_ID,
+			</if>
+			<if test="stationInfo != null">
+				STATION_INFO,
+			</if>
+			<if test="interVal != null">
+				INTER_VAL,
+			</if>
+			<if test="transfee4 != null">
+				TRANSFEE4,
+			</if>
+			<if test="isClearSelf != null">
+				IS_CLEAR_SELF,
+			</if>
+			<if test="bnkNm != null">
+				BNK_NM,
+			</if>
+			<if test="bnkCd != null">
+				BNK_CD,
+			</if>
+			<if test="crdNm != null">
+				CRD_NM,
+			</if>
+			<if test="crdTyp != null">
+				CRD_TYP,
+			</if>
+			<if test="addfee != null">
+				ADDFEE,
+			</if>
+			<if test="freezeState != null">
+				FREEZE_STATE,
+			</if>
+			<if test="isapp != null">
+				ISAPP,
+			</if>
+			<if test="businfo != null">
+				BUSINFO,
+			</if>
+			<if test="buspos != null">
+				BUSPOS,
+			</if>
+			<if test="transfee1 != null">
+				TRANSFEE1,
+			</if>
+			<if test="orderId != null">
+				ORDER_ID,
+			</if>
+			<if test="paymentType != null">
+				PAYMENT_TYPE,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+			<if test="transOrderId != null">
+				TRANS_ORDER_ID,
+			</if>
+			<if test="payTimes != null">
+				PAY_TIMES,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="uniqueKey != null">
+				#{uniqueKey,jdbcType=VARCHAR},
+			</if>
+			<if test="cardno != null">
+				#{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="transcode != null">
+				#{transcode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospid != null">
+				#{pospid,jdbcType=DECIMAL},
+			</if>
+			<if test="terminalsn != null">
+				#{terminalsn,jdbcType=VARCHAR},
+			</if>
+			<if test="transtime != null">
+				#{transtime,jdbcType=VARCHAR},
+			</if>
+			<if test="transdate != null">
+				#{transdate,jdbcType=VARCHAR},
+			</if>
+			<if test="possn != null">
+				#{possn,jdbcType=VARCHAR},
+			</if>
+			<if test="posterminalid != null">
+				#{posterminalid,jdbcType=VARCHAR},
+			</if>
+			<if test="cardvaliddate != null">
+				#{cardvaliddate,jdbcType=VARCHAR},
+			</if>
+			<if test="senddate != null">
+				#{senddate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="balancedate != null">
+				#{balancedate,jdbcType=VARCHAR},
+			</if>
+			<if test="pospservicecode != null">
+				#{pospservicecode,jdbcType=VARCHAR},
+			</if>
+			<if test="sysseqno != null">
+				#{sysseqno,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantcode != null">
+				#{merchantcode,jdbcType=VARCHAR},
+			</if>
+			<if test="authoritycode != null">
+				#{authoritycode,jdbcType=VARCHAR},
+			</if>
+			<if test="psamno != null">
+				#{psamno,jdbcType=VARCHAR},
+			</if>
+			<if test="inputtype != null">
+				#{inputtype,jdbcType=DECIMAL},
+			</if>
+			<if test="conuterconditioncode != null">
+				#{conuterconditioncode,jdbcType=DECIMAL},
+			</if>
+			<if test="counterpin != null">
+				#{counterpin,jdbcType=DECIMAL},
+			</if>
+			<if test="channelno != null">
+				#{channelno,jdbcType=VARCHAR},
+			</if>
+			<if test="currencycode != null">
+				#{currencycode,jdbcType=VARCHAR},
+			</if>
+			<if test="personalid != null">
+				#{personalid,jdbcType=VARCHAR},
+			</if>
+			<if test="transamt != null">
+				#{transamt,jdbcType=DECIMAL},
+			</if>
+			<if test="premiumrate != null">
+				#{premiumrate,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee2 != null">
+				#{transfee2,jdbcType=DECIMAL},
+			</if>
+			<if test="transsecuritycontrol != null">
+				#{transsecuritycontrol,jdbcType=DECIMAL},
+			</if>
+			<if test="transstatus != null">
+				#{transstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="responsecode != null">
+				#{responsecode,jdbcType=VARCHAR},
+			</if>
+			<if test="posid != null">
+				#{posid,jdbcType=DECIMAL},
+			</if>
+			<if test="batno != null">
+				#{batno,jdbcType=VARCHAR},
+			</if>
+			<if test="tac != null">
+				#{tac,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementid != null">
+				#{settlementid,jdbcType=DECIMAL},
+			</if>
+			<if test="settlementflag != null">
+				#{settlementflag,jdbcType=VARCHAR},
+			</if>
+			<if test="cancelflag != null">
+				#{cancelflag,jdbcType=DECIMAL},
+			</if>
+			<if test="cancelid != null">
+				#{cancelid,jdbcType=DECIMAL},
+			</if>
+			<if test="msgtype != null">
+				#{msgtype,jdbcType=VARCHAR},
+			</if>
+			<if test="pfmtid != null">
+				#{pfmtid,jdbcType=DECIMAL},
+			</if>
+			<if test="operid != null">
+				#{operid,jdbcType=VARCHAR},
+			</if>
+			<if test="searchTransCode != null">
+				#{searchTransCode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospsn != null">
+				#{pospsn,jdbcType=VARCHAR},
+			</if>
+			<if test="reason != null">
+				#{reason,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee3 != null">
+				#{transfee3,jdbcType=DECIMAL},
+			</if>
+			<if test="routeid != null">
+				#{routeid,jdbcType=DECIMAL},
+			</if>
+			<if test="simId != null">
+				#{simId,jdbcType=VARCHAR},
+			</if>
+			<if test="stationInfo != null">
+				#{stationInfo,jdbcType=DECIMAL},
+			</if>
+			<if test="interVal != null">
+				#{interVal,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee4 != null">
+				#{transfee4,jdbcType=DECIMAL},
+			</if>
+			<if test="isClearSelf != null">
+				#{isClearSelf,jdbcType=DECIMAL},
+			</if>
+			<if test="bnkNm != null">
+				#{bnkNm,jdbcType=VARCHAR},
+			</if>
+			<if test="bnkCd != null">
+				#{bnkCd,jdbcType=VARCHAR},
+			</if>
+			<if test="crdNm != null">
+				#{crdNm,jdbcType=VARCHAR},
+			</if>
+			<if test="crdTyp != null">
+				#{crdTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="addfee != null">
+				#{addfee,jdbcType=DECIMAL},
+			</if>
+			<if test="freezeState != null">
+				#{freezeState,jdbcType=VARCHAR},
+			</if>
+			<if test="isapp != null">
+				#{isapp,jdbcType=DECIMAL},
+			</if>
+			<if test="businfo != null">
+				#{businfo,jdbcType=VARCHAR},
+			</if>
+			<if test="buspos != null">
+				#{buspos,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee1 != null">
+				#{transfee1,jdbcType=DECIMAL},
+			</if>
+			<if test="orderId != null">
+				#{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentType != null">
+				#{paymentType,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="transOrderId != null">
+				#{transOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="payTimes != null">
+				#{payTimes,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PospTransInfo">
+		update POSP_TRANS_INFO
+		<set>
+			<if test="cardno != null">
+				CARDNO = #{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="transcode != null">
+				TRANSCODE = #{transcode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospid != null">
+				POSPID = #{pospid,jdbcType=DECIMAL},
+			</if>
+			<if test="terminalsn != null">
+				TERMINALSN = #{terminalsn,jdbcType=VARCHAR},
+			</if>
+			<if test="transtime != null">
+				TRANSTIME = #{transtime,jdbcType=VARCHAR},
+			</if>
+			<if test="transdate != null">
+				TRANSDATE = #{transdate,jdbcType=VARCHAR},
+			</if>
+			<if test="possn != null">
+				POSSN = #{possn,jdbcType=VARCHAR},
+			</if>
+			<if test="posterminalid != null">
+				POSTERMINALID = #{posterminalid,jdbcType=VARCHAR},
+			</if>
+			<if test="cardvaliddate != null">
+				CARDVALIDDATE = #{cardvaliddate,jdbcType=VARCHAR},
+			</if>
+			<if test="senddate != null">
+				SENDDATE = #{senddate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="balancedate != null">
+				BALANCEDATE = #{balancedate,jdbcType=VARCHAR},
+			</if>
+			<if test="pospservicecode != null">
+				POSPSERVICECODE = #{pospservicecode,jdbcType=VARCHAR},
+			</if>
+			<if test="sysseqno != null">
+				SYSSEQNO = #{sysseqno,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantcode != null">
+				MERCHANTCODE = #{merchantcode,jdbcType=VARCHAR},
+			</if>
+			<if test="authoritycode != null">
+				AUTHORITYCODE = #{authoritycode,jdbcType=VARCHAR},
+			</if>
+			<if test="psamno != null">
+				PSAMNO = #{psamno,jdbcType=VARCHAR},
+			</if>
+			<if test="inputtype != null">
+				INPUTTYPE = #{inputtype,jdbcType=DECIMAL},
+			</if>
+			<if test="conuterconditioncode != null">
+				CONUTERCONDITIONCODE =
+				#{conuterconditioncode,jdbcType=DECIMAL},
+			</if>
+			<if test="counterpin != null">
+				COUNTERPIN = #{counterpin,jdbcType=DECIMAL},
+			</if>
+			<if test="channelno != null">
+				CHANNELNO = #{channelno,jdbcType=VARCHAR},
+			</if>
+			<if test="currencycode != null">
+				CURRENCYCODE = #{currencycode,jdbcType=VARCHAR},
+			</if>
+			<if test="personalid != null">
+				PERSONALID = #{personalid,jdbcType=VARCHAR},
+			</if>
+			<if test="transamt != null">
+				TRANSAMT = #{transamt,jdbcType=DECIMAL},
+			</if>
+			<if test="premiumrate != null">
+				PREMIUMRATE = #{premiumrate,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee2 != null">
+				TRANSFEE2 = #{transfee2,jdbcType=DECIMAL},
+			</if>
+			<if test="transsecuritycontrol != null">
+				TRANSSECURITYCONTROL =
+				#{transsecuritycontrol,jdbcType=DECIMAL},
+			</if>
+			<if test="transstatus != null">
+				TRANSSTATUS = #{transstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="responsecode != null">
+				RESPONSECODE = #{responsecode,jdbcType=VARCHAR},
+			</if>
+			<if test="posid != null">
+				POSID = #{posid,jdbcType=DECIMAL},
+			</if>
+			<if test="batno != null">
+				BATNO = #{batno,jdbcType=VARCHAR},
+			</if>
+			<if test="tac != null">
+				TAC = #{tac,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementid != null">
+				SETTLEMENTID = #{settlementid,jdbcType=DECIMAL},
+			</if>
+			<if test="settlementflag != null">
+				SETTLEMENTFLAG = #{settlementflag,jdbcType=VARCHAR},
+			</if>
+			<if test="cancelflag != null">
+				CANCELFLAG = #{cancelflag,jdbcType=DECIMAL},
+			</if>
+			<if test="cancelid != null">
+				CANCELID = #{cancelid,jdbcType=DECIMAL},
+			</if>
+			<if test="msgtype != null">
+				MSGTYPE = #{msgtype,jdbcType=VARCHAR},
+			</if>
+			<if test="pfmtid != null">
+				PFMTID = #{pfmtid,jdbcType=DECIMAL},
+			</if>
+			<if test="operid != null">
+				OPERID = #{operid,jdbcType=VARCHAR},
+			</if>
+			<if test="searchTransCode != null">
+				SEARCH_TRANS_CODE = #{searchTransCode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospsn != null">
+				POSPSN = #{pospsn,jdbcType=VARCHAR},
+			</if>
+			<if test="reason != null">
+				REASON = #{reason,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee3 != null">
+				TRANSFEE3 = #{transfee3,jdbcType=DECIMAL},
+			</if>
+			<if test="routeid != null">
+				ROUTEID = #{routeid,jdbcType=DECIMAL},
+			</if>
+			<if test="simId != null">
+				SIM_ID = #{simId,jdbcType=VARCHAR},
+			</if>
+			<if test="stationInfo != null">
+				STATION_INFO = #{stationInfo,jdbcType=DECIMAL},
+			</if>
+			<if test="interVal != null">
+				INTER_VAL = #{interVal,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee4 != null">
+				TRANSFEE4 = #{transfee4,jdbcType=DECIMAL},
+			</if>
+			<if test="isClearSelf != null">
+				IS_CLEAR_SELF = #{isClearSelf,jdbcType=DECIMAL},
+			</if>
+			<if test="bnkNm != null">
+				BNK_NM = #{bnkNm,jdbcType=VARCHAR},
+			</if>
+			<if test="bnkCd != null">
+				BNK_CD = #{bnkCd,jdbcType=VARCHAR},
+			</if>
+			<if test="crdNm != null">
+				CRD_NM = #{crdNm,jdbcType=VARCHAR},
+			</if>
+			<if test="crdTyp != null">
+				CRD_TYP = #{crdTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="addfee != null">
+				ADDFEE = #{addfee,jdbcType=DECIMAL},
+			</if>
+			<if test="freezeState != null">
+				FREEZE_STATE = #{freezeState,jdbcType=VARCHAR},
+			</if>
+			<if test="isapp != null">
+				ISAPP = #{isapp,jdbcType=DECIMAL},
+			</if>
+			<if test="businfo != null">
+				BUSINFO = #{businfo,jdbcType=VARCHAR},
+			</if>
+			<if test="buspos != null">
+				BUSPOS = #{buspos,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee1 != null">
+				TRANSFEE1 = #{transfee1,jdbcType=DECIMAL},
+			</if>
+			<if test="orderId != null">
+				ORDER_ID = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentType != null">
+				PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="transOrderId != null">
+				TRANS_ORDER_ID = #{transOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="payTimes != null">
+				PAY_TIMES = #{payTimes,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<update id="updateByUniqueKey" parameterType="xdt.model.PospTransInfo">
+		update POSP_TRANS_INFO
+		<set>
+			<if test="cardno != null">
+				CARDNO = #{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="transcode != null">
+				TRANSCODE = #{transcode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospid != null">
+				POSPID = #{pospid,jdbcType=DECIMAL},
+			</if>
+			<if test="terminalsn != null">
+				TERMINALSN = #{terminalsn,jdbcType=VARCHAR},
+			</if>
+			<if test="transtime != null">
+				TRANSTIME = #{transtime,jdbcType=VARCHAR},
+			</if>
+			<if test="transdate != null">
+				TRANSDATE = #{transdate,jdbcType=VARCHAR},
+			</if>
+			<if test="possn != null">
+				POSSN = #{possn,jdbcType=VARCHAR},
+			</if>
+			<if test="posterminalid != null">
+				POSTERMINALID = #{posterminalid,jdbcType=VARCHAR},
+			</if>
+			<if test="cardvaliddate != null">
+				CARDVALIDDATE = #{cardvaliddate,jdbcType=VARCHAR},
+			</if>
+			<if test="senddate != null">
+				SENDDATE = #{senddate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="balancedate != null">
+				BALANCEDATE = #{balancedate,jdbcType=VARCHAR},
+			</if>
+			<if test="pospservicecode != null">
+				POSPSERVICECODE = #{pospservicecode,jdbcType=VARCHAR},
+			</if>
+			<if test="sysseqno != null">
+				SYSSEQNO = #{sysseqno,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantcode != null">
+				MERCHANTCODE = #{merchantcode,jdbcType=VARCHAR},
+			</if>
+			<if test="authoritycode != null">
+				AUTHORITYCODE = #{authoritycode,jdbcType=VARCHAR},
+			</if>
+			<if test="psamno != null">
+				PSAMNO = #{psamno,jdbcType=VARCHAR},
+			</if>
+			<if test="inputtype != null">
+				INPUTTYPE = #{inputtype,jdbcType=DECIMAL},
+			</if>
+			<if test="conuterconditioncode != null">
+				CONUTERCONDITIONCODE =
+				#{conuterconditioncode,jdbcType=DECIMAL},
+			</if>
+			<if test="counterpin != null">
+				COUNTERPIN = #{counterpin,jdbcType=DECIMAL},
+			</if>
+			<if test="channelno != null">
+				CHANNELNO = #{channelno,jdbcType=VARCHAR},
+			</if>
+			<if test="currencycode != null">
+				CURRENCYCODE = #{currencycode,jdbcType=VARCHAR},
+			</if>
+			<if test="personalid != null">
+				PERSONALID = #{personalid,jdbcType=VARCHAR},
+			</if>
+			<if test="transamt != null">
+				TRANSAMT = #{transamt,jdbcType=DECIMAL},
+			</if>
+			<if test="premiumrate != null">
+				PREMIUMRATE = #{premiumrate,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee2 != null">
+				TRANSFEE2 = #{transfee2,jdbcType=DECIMAL},
+			</if>
+			<if test="transsecuritycontrol != null">
+				TRANSSECURITYCONTROL =
+				#{transsecuritycontrol,jdbcType=DECIMAL},
+			</if>
+			<if test="transstatus != null">
+				TRANSSTATUS = #{transstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="responsecode != null">
+				RESPONSECODE = #{responsecode,jdbcType=VARCHAR},
+			</if>
+			<if test="posid != null">
+				POSID = #{posid,jdbcType=DECIMAL},
+			</if>
+			<if test="batno != null">
+				BATNO = #{batno,jdbcType=VARCHAR},
+			</if>
+			<if test="tac != null">
+				TAC = #{tac,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementid != null">
+				SETTLEMENTID = #{settlementid,jdbcType=DECIMAL},
+			</if>
+			<if test="settlementflag != null">
+				SETTLEMENTFLAG = #{settlementflag,jdbcType=VARCHAR},
+			</if>
+			<if test="cancelflag != null">
+				CANCELFLAG = #{cancelflag,jdbcType=DECIMAL},
+			</if>
+			<if test="cancelid != null">
+				CANCELID = #{cancelid,jdbcType=DECIMAL},
+			</if>
+			<if test="msgtype != null">
+				MSGTYPE = #{msgtype,jdbcType=VARCHAR},
+			</if>
+			<if test="pfmtid != null">
+				PFMTID = #{pfmtid,jdbcType=DECIMAL},
+			</if>
+			<if test="operid != null">
+				OPERID = #{operid,jdbcType=VARCHAR},
+			</if>
+			<if test="searchTransCode != null">
+				SEARCH_TRANS_CODE = #{searchTransCode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospsn != null">
+				POSPSN = #{pospsn,jdbcType=VARCHAR},
+			</if>
+			<if test="reason != null">
+				REASON = #{reason,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee3 != null">
+				TRANSFEE3 = #{transfee3,jdbcType=DECIMAL},
+			</if>
+			<if test="routeid != null">
+				ROUTEID = #{routeid,jdbcType=DECIMAL},
+			</if>
+			<if test="simId != null">
+				SIM_ID = #{simId,jdbcType=VARCHAR},
+			</if>
+			<if test="stationInfo != null">
+				STATION_INFO = #{stationInfo,jdbcType=DECIMAL},
+			</if>
+			<if test="interVal != null">
+				INTER_VAL = #{interVal,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee4 != null">
+				TRANSFEE4 = #{transfee4,jdbcType=DECIMAL},
+			</if>
+			<if test="isClearSelf != null">
+				IS_CLEAR_SELF = #{isClearSelf,jdbcType=DECIMAL},
+			</if>
+			<if test="bnkNm != null">
+				BNK_NM = #{bnkNm,jdbcType=VARCHAR},
+			</if>
+			<if test="bnkCd != null">
+				BNK_CD = #{bnkCd,jdbcType=VARCHAR},
+			</if>
+			<if test="crdNm != null">
+				CRD_NM = #{crdNm,jdbcType=VARCHAR},
+			</if>
+			<if test="crdTyp != null">
+				CRD_TYP = #{crdTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="addfee != null">
+				ADDFEE = #{addfee,jdbcType=DECIMAL},
+			</if>
+			<if test="freezeState != null">
+				FREEZE_STATE = #{freezeState,jdbcType=VARCHAR},
+			</if>
+			<if test="isapp != null">
+				ISAPP = #{isapp,jdbcType=DECIMAL},
+			</if>
+			<if test="businfo != null">
+				BUSINFO = #{businfo,jdbcType=VARCHAR},
+			</if>
+			<if test="buspos != null">
+				BUSPOS = #{buspos,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee1 != null">
+				TRANSFEE1 = #{transfee1,jdbcType=DECIMAL},
+			</if>
+			<if test="orderId != null">
+				ORDER_ID = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentType != null">
+				PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="transOrderId != null">
+				TRANS_ORDER_ID = #{transOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="payTimes != null">
+				PAY_TIMES = #{payTimes,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where UNIQUE_KEY = #{uniqueKey,jdbcType=VARCHAR}
+	</update>
+
+
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PospTransInfo">
+		update
+		POSP_TRANS_INFO
+		set CARDNO = #{cardno,jdbcType=VARCHAR},
+		TRANSCODE =
+		#{transcode,jdbcType=VARCHAR},
+		POSPID = #{pospid,jdbcType=DECIMAL},
+		TERMINALSN = #{terminalsn,jdbcType=VARCHAR},
+		TRANSTIME =
+		#{transtime,jdbcType=VARCHAR},
+		TRANSDATE =
+		#{transdate,jdbcType=VARCHAR},
+		POSSN = #{possn,jdbcType=VARCHAR},
+		POSTERMINALID = #{posterminalid,jdbcType=VARCHAR},
+		CARDVALIDDATE =
+		#{cardvaliddate,jdbcType=VARCHAR},
+		SENDDATE =
+		#{senddate,jdbcType=TIMESTAMP},
+		BALANCEDATE =
+		#{balancedate,jdbcType=VARCHAR},
+		POSPSERVICECODE =
+		#{pospservicecode,jdbcType=VARCHAR},
+		SYSSEQNO =
+		#{sysseqno,jdbcType=VARCHAR},
+		MERCHANTCODE =
+		#{merchantcode,jdbcType=VARCHAR},
+		AUTHORITYCODE =
+		#{authoritycode,jdbcType=VARCHAR},
+		PSAMNO = #{psamno,jdbcType=VARCHAR},
+		INPUTTYPE = #{inputtype,jdbcType=DECIMAL},
+		CONUTERCONDITIONCODE =
+		#{conuterconditioncode,jdbcType=DECIMAL},
+		COUNTERPIN =
+		#{counterpin,jdbcType=DECIMAL},
+		CHANNELNO =
+		#{channelno,jdbcType=VARCHAR},
+		CURRENCYCODE =
+		#{currencycode,jdbcType=VARCHAR},
+		PERSONALID =
+		#{personalid,jdbcType=VARCHAR},
+		TRANSAMT =
+		#{transamt,jdbcType=DECIMAL},
+		PREMIUMRATE =
+		#{premiumrate,jdbcType=VARCHAR},
+		TRANSFEE2 =
+		#{transfee2,jdbcType=DECIMAL},
+		TRANSSECURITYCONTROL =
+		#{transsecuritycontrol,jdbcType=DECIMAL},
+		TRANSSTATUS =
+		#{transstatus,jdbcType=VARCHAR},
+		RESPONSECODE =
+		#{responsecode,jdbcType=VARCHAR},
+		POSID = #{posid,jdbcType=DECIMAL},
+		BATNO = #{batno,jdbcType=VARCHAR},
+		TAC = #{tac,jdbcType=VARCHAR},
+		SETTLEMENTID = #{settlementid,jdbcType=DECIMAL},
+		SETTLEMENTFLAG =
+		#{settlementflag,jdbcType=VARCHAR},
+		CANCELFLAG =
+		#{cancelflag,jdbcType=DECIMAL},
+		CANCELID =
+		#{cancelid,jdbcType=DECIMAL},
+		MSGTYPE = #{msgtype,jdbcType=VARCHAR},
+		PFMTID = #{pfmtid,jdbcType=DECIMAL},
+		OPERID =
+		#{operid,jdbcType=VARCHAR},
+		SEARCH_TRANS_CODE =
+		#{searchTransCode,jdbcType=VARCHAR},
+		POSPSN =
+		#{pospsn,jdbcType=VARCHAR},
+		REASON = #{reason,jdbcType=VARCHAR},
+		REMARK
+		= #{remark,jdbcType=VARCHAR},
+		TRANSFEE3 =
+		#{transfee3,jdbcType=DECIMAL},
+		ROUTEID = #{routeid,jdbcType=DECIMAL},
+		SIM_ID = #{simId,jdbcType=VARCHAR},
+		STATION_INFO =
+		#{stationInfo,jdbcType=DECIMAL},
+		INTER_VAL =
+		#{interVal,jdbcType=VARCHAR},
+		TRANSFEE4 =
+		#{transfee4,jdbcType=DECIMAL},
+		IS_CLEAR_SELF =
+		#{isClearSelf,jdbcType=DECIMAL},
+		BNK_NM = #{bnkNm,jdbcType=VARCHAR},
+		BNK_CD = #{bnkCd,jdbcType=VARCHAR},
+		CRD_NM = #{crdNm,jdbcType=VARCHAR},
+		CRD_TYP = #{crdTyp,jdbcType=VARCHAR},
+		ADDFEE =
+		#{addfee,jdbcType=DECIMAL},
+		FREEZE_STATE =
+		#{freezeState,jdbcType=VARCHAR},
+		ISAPP = #{isapp,jdbcType=DECIMAL},
+		BUSINFO = #{businfo,jdbcType=VARCHAR},
+		BUSPOS =
+		#{buspos,jdbcType=VARCHAR},
+		TRANSFEE1 = #{transfee1,jdbcType=DECIMAL},
+		ORDER_ID = #{orderId,jdbcType=VARCHAR},
+		PAYMENT_TYPE =
+		#{paymentType,jdbcType=VARCHAR},
+		OAGENTNO =
+		#{oAgentNo,jdbcType=VARCHAR},
+		TRANS_ORDER_ID =
+		#{transOrderId,jdbcType=VARCHAR},
+		PAY_TIMES =
+		#{payTimes,jdbcType=DECIMAL}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<!-- 根据商户实体查询记录 -->
+	<select id="selectListDes" parameterType="xdt.model.PospTransInfo"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from POSP_TRANS_INFO
+		<where>
+			<if test="cardno != null">
+				AND CARDNO = #{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="transcode != null">
+				AND TRANSCODE = #{transcode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospid != null">
+				AND POSPID = #{pospid,jdbcType=DECIMAL},
+			</if>
+			<if test="terminalsn != null">
+				AND TERMINALSN = #{terminalsn,jdbcType=VARCHAR},
+			</if>
+			<if test="transtime != null">
+				AND TRANSTIME = #{transtime,jdbcType=VARCHAR},
+			</if>
+			<if test="transdate != null">
+				AND TRANSDATE = #{transdate,jdbcType=VARCHAR},
+			</if>
+			<if test="possn != null">
+				AND POSSN = #{possn,jdbcType=VARCHAR},
+			</if>
+			<if test="posterminalid != null">
+				AND POSTERMINALID = #{posterminalid,jdbcType=VARCHAR},
+			</if>
+			<if test="cardvaliddate != null">
+				AND CARDVALIDDATE = #{cardvaliddate,jdbcType=VARCHAR},
+			</if>
+			<if test="senddate != null">
+				AND SENDDATE = #{senddate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="balancedate != null">
+				AND BALANCEDATE = #{balancedate,jdbcType=VARCHAR},
+			</if>
+			<if test="pospservicecode != null">
+				AND POSPSERVICECODE =
+				#{pospservicecode,jdbcType=VARCHAR},
+			</if>
+			<if test="sysseqno != null">
+				AND SYSSEQNO = #{sysseqno,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantcode != null">
+				AND MERCHANTCODE = #{merchantcode,jdbcType=VARCHAR},
+			</if>
+			<if test="authoritycode != null">
+				AND AUTHORITYCODE = #{authoritycode,jdbcType=VARCHAR},
+			</if>
+			<if test="psamno != null">
+				AND PSAMNO = #{psamno,jdbcType=VARCHAR},
+			</if>
+			<if test="inputtype != null">
+				AND INPUTTYPE = #{inputtype,jdbcType=DECIMAL},
+			</if>
+			<if test="conuterconditioncode != null">
+				AND CONUTERCONDITIONCODE =
+				#{conuterconditioncode,jdbcType=DECIMAL},
+			</if>
+			<if test="counterpin != null">
+				AND COUNTERPIN = #{counterpin,jdbcType=DECIMAL},
+			</if>
+			<if test="channelno != null">
+				AND CHANNELNO = #{channelno,jdbcType=VARCHAR},
+			</if>
+			<if test="currencycode != null">
+				AND CURRENCYCODE = #{currencycode,jdbcType=VARCHAR},
+			</if>
+			<if test="personalid != null">
+				AND PERSONALID = #{personalid,jdbcType=VARCHAR},
+			</if>
+			<if test="transamt != null">
+				AND TRANSAMT = #{transamt,jdbcType=DECIMAL},
+			</if>
+			<if test="transfee1 != null">
+				AND TRANSFEE1 = #{transfee1,jdbcType=DECIMAL},
+			</if>
+			<if test="transfee2 != null">
+				AND TRANSFEE2 = #{transfee2,jdbcType=DECIMAL},
+			</if>
+			<if test="transsecuritycontrol != null">
+				AND TRANSSECURITYCONTROL =
+				#{transsecuritycontrol,jdbcType=DECIMAL},
+			</if>
+			<if test="transstatus != null">
+				AND TRANSSTATUS = #{transstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="responsecode != null">
+				AND RESPONSECODE = #{responsecode,jdbcType=VARCHAR},
+			</if>
+			<if test="posid != null">
+				AND POSID = #{posid,jdbcType=DECIMAL},
+			</if>
+			<if test="batno != null">
+				AND BATNO = #{batno,jdbcType=VARCHAR},
+			</if>
+			<if test="tac != null">
+				AND TAC = #{tac,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementid != null">
+				AND SETTLEMENTID = #{settlementid,jdbcType=DECIMAL},
+			</if>
+			<if test="settlementflag != null">
+				AND SETTLEMENTFLAG = #{settlementflag,jdbcType=VARCHAR},
+			</if>
+			<if test="cancelflag != null">
+				AND CANCELFLAG = #{cancelflag,jdbcType=DECIMAL},
+			</if>
+			<if test="cancelid != null">
+				AND CANCELID = #{cancelid,jdbcType=DECIMAL},
+			</if>
+			<if test="msgtype != null">
+				AND MSGTYPE = #{msgtype,jdbcType=VARCHAR},
+			</if>
+			<if test="pfmtid != null">
+				AND PFMTID = #{pfmtid,jdbcType=DECIMAL},
+			</if>
+			<if test="operid != null">
+				AND OPERID = #{operid,jdbcType=VARCHAR},
+			</if>
+			<if test="searchTransCode != null">
+				AND SEARCH_TRANS_CODE =
+				#{searchTransCode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospsn != null">
+				AND POSPSN = #{pospsn,jdbcType=VARCHAR},
+			</if>
+			<if test="reason != null">
+				AND REASON = #{reason,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				AND REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee3 != null">
+				AND TRANSFEE3 = #{transfee3,jdbcType=DECIMAL},
+			</if>
+			<if test="routeid != null">
+				AND ROUTEID = #{routeid,jdbcType=DECIMAL},
+			</if>
+			<if test="simId != null">
+				AND SIM_ID = #{simId,jdbcType=VARCHAR},
+			</if>
+			<if test="stationInfo != null">
+				AND STATION_INFO = #{stationInfo,jdbcType=DECIMAL},
+			</if>
+			<if test="interVal != null">
+				AND INTER_VAL = #{interVal,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee4 != null">
+				AND TRANSFEE4 = #{transfee4,jdbcType=DECIMAL},
+			</if>
+			<if test="isClearSelf != null">
+				AND IS_CLEAR_SELF = #{isClearSelf,jdbcType=DECIMAL},
+			</if>
+			<if test="bnkNm != null">
+				AND BNK_NM = #{bnkNm,jdbcType=VARCHAR},
+			</if>
+			<if test="bnkCd != null">
+				AND BNK_CD = #{bnkCd,jdbcType=VARCHAR},
+			</if>
+			<if test="crdNm != null">
+				AND CRD_NM = #{crdNm,jdbcType=VARCHAR},
+			</if>
+			<if test="crdTyp != null">
+				AND CRD_TYP = #{crdTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="addfee != null">
+				AND ADDFEE = #{addfee,jdbcType=DECIMAL},
+			</if>
+			<if test="freezeState != null">
+				AND FREEZE_STATE = #{freezeState,jdbcType=VARCHAR},
+			</if>
+			<if test="isapp != null">
+				AND ISAPP = #{isapp,jdbcType=DECIMAL},
+			</if>
+			<if test="businfo != null">
+				AND BUSINFO = #{businfo,jdbcType=VARCHAR},
+			</if>
+			<if test="buspos != null">
+				AND BUSPOS = #{buspos,jdbcType=VARCHAR},
+			</if>
+			<if test="orderId != null">
+				AND ORDER_ID = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentType != null">
+				AND PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				AND OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="transOrderId != null">
+				AND TRANS_ORDER_ID = #{transOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="payTimes != null">
+				AND PAY_TIMES = #{payTimes,jdbcType=DECIMAL},
+			</if>
+		</where>
+		ORDER BY ID DESC
+	</select>
+	<!--根据订单号查询 -->
+	<select id="selectByOrderId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM POSP_TRANS_INFO WHERE
+		ORDER_ID = #{orderId,jdbcType=VARCHAR}
+	</select>
+	<!--恒丰根据上送订单号查询 -->
+	<select id="searchBytransOrderId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM POSP_TRANS_INFO WHERE
+		TRANS_ORDER_ID = #{transOrderId,jdbcType=VARCHAR}
+	</select>
+	<!--畅捷根据上送订单号查询 -->
+	<select id="searchBycjtsOrderId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM POSP_TRANS_INFO WHERE
+		ORDER_ID = #{OrderId,jdbcType=VARCHAR}
+	</select>
+
+	<!--根据上送订单号查询 -->
+	<select id="searchByPospsn" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM POSP_TRANS_INFO WHERE
+		POSPSN = #{pospsn,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 更新流水表订单状态 wumeng 20150522 -->
+	<update id="updetePospTransInfo" parameterType="java.lang.String">
+		update
+		POSP_TRANS_INFO set RESPONSECODE = '0000' where
+		ORDER_ID=#{orderid,jdbcType=VARCHAR}
+	</update>
+
+	<select id="getNextTransid" resultType="java.lang.Integer">
+		SELECT
+		seq_posp_trans_info.nextval FROM dual
+	</select>
+
+	<select id="getJourno" resultType="java.lang.Integer">
+		SELECT JOURNO.nextval FROM
+		dual
+	</select>
+
+
+	<!-- 根据orderid更新流水表 Jeff 20150824 -->
+	<update id="updateByOrderId" parameterType="xdt.model.PospTransInfo">
+		update POSP_TRANS_INFO
+		<set>
+			<if test="cardno != null">
+				CARDNO = #{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="transcode != null">
+				TRANSCODE = #{transcode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospid != null">
+				POSPID = #{pospid,jdbcType=DECIMAL},
+			</if>
+			<if test="terminalsn != null">
+				TERMINALSN = #{terminalsn,jdbcType=VARCHAR},
+			</if>
+			<if test="transtime != null">
+				TRANSTIME = #{transtime,jdbcType=VARCHAR},
+			</if>
+			<if test="transdate != null">
+				TRANSDATE = #{transdate,jdbcType=VARCHAR},
+			</if>
+			<if test="possn != null">
+				POSSN = #{possn,jdbcType=VARCHAR},
+			</if>
+			<if test="posterminalid != null">
+				POSTERMINALID = #{posterminalid,jdbcType=VARCHAR},
+			</if>
+			<if test="cardvaliddate != null">
+				CARDVALIDDATE = #{cardvaliddate,jdbcType=VARCHAR},
+			</if>
+			<if test="senddate != null">
+				SENDDATE = #{senddate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="balancedate != null">
+				BALANCEDATE = #{balancedate,jdbcType=VARCHAR},
+			</if>
+			<if test="pospservicecode != null">
+				POSPSERVICECODE = #{pospservicecode,jdbcType=VARCHAR},
+			</if>
+			<if test="sysseqno != null">
+				SYSSEQNO = #{sysseqno,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantcode != null">
+				MERCHANTCODE = #{merchantcode,jdbcType=VARCHAR},
+			</if>
+			<if test="authoritycode != null">
+				AUTHORITYCODE = #{authoritycode,jdbcType=VARCHAR},
+			</if>
+			<if test="psamno != null">
+				PSAMNO = #{psamno,jdbcType=VARCHAR},
+			</if>
+			<if test="inputtype != null">
+				INPUTTYPE = #{inputtype,jdbcType=DECIMAL},
+			</if>
+			<if test="conuterconditioncode != null">
+				CONUTERCONDITIONCODE =
+				#{conuterconditioncode,jdbcType=DECIMAL},
+			</if>
+			<if test="counterpin != null">
+				COUNTERPIN = #{counterpin,jdbcType=DECIMAL},
+			</if>
+			<if test="channelno != null">
+				CHANNELNO = #{channelno,jdbcType=VARCHAR},
+			</if>
+			<if test="currencycode != null">
+				CURRENCYCODE = #{currencycode,jdbcType=VARCHAR},
+			</if>
+			<if test="personalid != null">
+				PERSONALID = #{personalid,jdbcType=VARCHAR},
+			</if>
+			<if test="transamt != null">
+				TRANSAMT = #{transamt,jdbcType=DECIMAL},
+			</if>
+			<if test="premiumrate != null">
+				PREMIUMRATE = #{premiumrate,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee2 != null">
+				TRANSFEE2 = #{transfee2,jdbcType=DECIMAL},
+			</if>
+			<if test="transsecuritycontrol != null">
+				TRANSSECURITYCONTROL =
+				#{transsecuritycontrol,jdbcType=DECIMAL},
+			</if>
+			<if test="transstatus != null">
+				TRANSSTATUS = #{transstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="responsecode != null">
+				RESPONSECODE = #{responsecode,jdbcType=VARCHAR},
+			</if>
+			<if test="posid != null">
+				POSID = #{posid,jdbcType=DECIMAL},
+			</if>
+			<if test="batno != null">
+				BATNO = #{batno,jdbcType=VARCHAR},
+			</if>
+			<if test="tac != null">
+				TAC = #{tac,jdbcType=VARCHAR},
+			</if>
+			<if test="settlementid != null">
+				SETTLEMENTID = #{settlementid,jdbcType=DECIMAL},
+			</if>
+			<if test="settlementflag != null">
+				SETTLEMENTFLAG = #{settlementflag,jdbcType=VARCHAR},
+			</if>
+			<if test="cancelflag != null">
+				CANCELFLAG = #{cancelflag,jdbcType=DECIMAL},
+			</if>
+			<if test="cancelid != null">
+				CANCELID = #{cancelid,jdbcType=DECIMAL},
+			</if>
+			<if test="msgtype != null">
+				MSGTYPE = #{msgtype,jdbcType=VARCHAR},
+			</if>
+			<if test="pfmtid != null">
+				PFMTID = #{pfmtid,jdbcType=DECIMAL},
+			</if>
+			<if test="operid != null">
+				OPERID = #{operid,jdbcType=VARCHAR},
+			</if>
+			<if test="searchTransCode != null">
+				SEARCH_TRANS_CODE = #{searchTransCode,jdbcType=VARCHAR},
+			</if>
+			<if test="pospsn != null">
+				POSPSN = #{pospsn,jdbcType=VARCHAR},
+			</if>
+			<if test="reason != null">
+				REASON = #{reason,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee3 != null">
+				TRANSFEE3 = #{transfee3,jdbcType=DECIMAL},
+			</if>
+			<if test="routeid != null">
+				ROUTEID = #{routeid,jdbcType=DECIMAL},
+			</if>
+			<if test="simId != null">
+				SIM_ID = #{simId,jdbcType=VARCHAR},
+			</if>
+			<if test="stationInfo != null">
+				STATION_INFO = #{stationInfo,jdbcType=DECIMAL},
+			</if>
+			<if test="interVal != null">
+				INTER_VAL = #{interVal,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee4 != null">
+				TRANSFEE4 = #{transfee4,jdbcType=DECIMAL},
+			</if>
+			<if test="isClearSelf != null">
+				IS_CLEAR_SELF = #{isClearSelf,jdbcType=DECIMAL},
+			</if>
+			<if test="bnkNm != null">
+				BNK_NM = #{bnkNm,jdbcType=VARCHAR},
+			</if>
+			<if test="bnkCd != null">
+				BNK_CD = #{bnkCd,jdbcType=VARCHAR},
+			</if>
+			<if test="crdNm != null">
+				CRD_NM = #{crdNm,jdbcType=VARCHAR},
+			</if>
+			<if test="crdTyp != null">
+				CRD_TYP = #{crdTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="addfee != null">
+				ADDFEE = #{addfee,jdbcType=DECIMAL},
+			</if>
+			<if test="freezeState != null">
+				FREEZE_STATE = #{freezeState,jdbcType=VARCHAR},
+			</if>
+			<if test="isapp != null">
+				ISAPP = #{isapp,jdbcType=DECIMAL},
+			</if>
+			<if test="businfo != null">
+				BUSINFO = #{businfo,jdbcType=VARCHAR},
+			</if>
+			<if test="buspos != null">
+				BUSPOS = #{buspos,jdbcType=VARCHAR},
+			</if>
+			<if test="transfee1 != null">
+				TRANSFEE1 = #{transfee1,jdbcType=DECIMAL},
+			</if>
+			<if test="orderId != null">
+				ORDER_ID = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentType != null">
+				PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="transOrderId != null">
+				TRANS_ORDER_ID = #{transOrderId,jdbcType=VARCHAR},
+			</if>
+			<if test="payTimes != null">
+				PAY_TIMES = #{payTimes,jdbcType=DECIMAL},
+			</if>
+			<if test="uniqueKey != null">
+				UNIQUE_KEY = #{uniqueKey,jdbcType=VARCHAR}
+			</if>
+			
+		</set>
+		where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+	</update>
+	
+</mapper>

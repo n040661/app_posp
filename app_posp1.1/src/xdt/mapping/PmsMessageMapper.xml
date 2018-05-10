@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsMessageMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsMessage">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="PHONE_NUMBER" jdbcType="VARCHAR" property="phoneNumber" />
+		<result column="CONTEXT" jdbcType="VARCHAR" property="context" />
+		<result column="INTERFACE_ID" jdbcType="DECIMAL" property="interfaceId" />
+		<result column="RESPONSE" jdbcType="VARCHAR" property="response" />
+		<result column="SPNUMBER" jdbcType="VARCHAR" property="spnumber" />
+		<result column="SENDTIME" jdbcType="VARCHAR" property="sendtime" />
+		<result column="STATE" jdbcType="VARCHAR" property="state" />
+		<result column="MESSAGEGB" jdbcType="VARCHAR" property="messagegb" />
+		<result column="OMESSAGE" jdbcType="VARCHAR" property="omessage" />
+		<result column="RECTIME" jdbcType="VARCHAR" property="rectime" />
+		<result column="SEARCH_ID" jdbcType="DECIMAL" property="searchId" />
+		<result column="REQUEST_NUMBER" jdbcType="VARCHAR" property="requestNumber" />
+		<result column="REQTIME" jdbcType="VARCHAR" property="reqtime" />
+		<result column="FAILURE" jdbcType="DECIMAL" property="failure" />
+		<result column="MSG_TYPE" jdbcType="INTEGER" property="msgType" />
+		<result column="OAGENTNO" jdbcType="VARCHAR" property="oAgentNo" />
+		<result column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PHONE_NUMBER, CONTEXT, INTERFACE_ID, RESPONSE, SPNUMBER, SENDTIME,
+		STATE, MESSAGEGB,
+		OMESSAGE, RECTIME,
+		SEARCH_ID,REQUEST_NUMBER,REQTIME,FAILURE,MSG_TYPE,OAGENTNO,ORDER_ID
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MESSAGE
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_MESSAGE
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsMessage">
+		insert into PMS_MESSAGE (ID, PHONE_NUMBER, CONTEXT,
+		INTERFACE_ID, RESPONSE, SPNUMBER,
+		SENDTIME, STATE, MESSAGEGB,
+		OMESSAGE, RECTIME,
+		SEARCH_ID,REQUEST_NUMBER,REQTIME,FAILURE,MSG_TYPE,OAGENTNO,ORDER_ID
+		)
+		values (#{id,jdbcType=DECIMAL}, #{phoneNumber,jdbcType=VARCHAR},
+		#{context,jdbcType=VARCHAR},
+		#{interfaceId,jdbcType=DECIMAL}, #{response,jdbcType=VARCHAR}, #{spnumber,jdbcType=VARCHAR},
+		#{sendtime,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR},
+		#{messagegb,jdbcType=VARCHAR},
+		#{omessage,jdbcType=VARCHAR}, #{rectime,jdbcType=VARCHAR}, #{searchId,jdbcType=DECIMAL},
+		#{requestNumber,jdbcType=VARCHAR},#{reqtime,jdbcType=VARCHAR},#{failure,jdbcType=DECIMAL}
+		,#{msgType,jdbcType=INTEGER},#{oAgentNo,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsMessage">
+		insert into PMS_MESSAGE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="phoneNumber != null">
+				PHONE_NUMBER,
+			</if>
+			<if test="context != null">
+				CONTEXT,
+			</if>
+			<if test="interfaceId != null">
+				INTERFACE_ID,
+			</if>
+			<if test="response != null">
+				RESPONSE,
+			</if>
+			<if test="spnumber != null">
+				SPNUMBER,
+			</if>
+			<if test="sendtime != null">
+				SENDTIME,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="messagegb != null">
+				MESSAGEGB,
+			</if>
+			<if test="omessage != null">
+				OMESSAGE,
+			</if>
+			<if test="rectime != null">
+				RECTIME,
+			</if>
+			<if test="searchId != null">
+				SEARCH_ID,
+			</if>
+			<if test="requestNumber != null">
+				REQUEST_NUMBER,
+			</if>
+			<if test="reqtime != null">
+				REQTIME,
+			</if>
+			<if test="failure != null">
+				FAILURE,
+			</if>
+			<if test="msgType != null">
+				MSG_TYPE,
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO,
+			</if>
+			<if test="orderId != null">
+				ORDER_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="phoneNumber != null">
+				#{phoneNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="context != null">
+				#{context,jdbcType=VARCHAR},
+			</if>
+			<if test="interfaceId != null">
+				#{interfaceId,jdbcType=DECIMAL},
+			</if>
+			<if test="response != null">
+				#{response,jdbcType=VARCHAR},
+			</if>
+			<if test="spnumber != null">
+				#{spnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="sendtime != null">
+				#{sendtime,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=VARCHAR},
+			</if>
+			<if test="messagegb != null">
+				#{messagegb,jdbcType=VARCHAR},
+			</if>
+			<if test="omessage != null">
+				#{omessage,jdbcType=VARCHAR},
+			</if>
+			<if test="rectime != null">
+				#{rectime,jdbcType=VARCHAR},
+			</if>
+			<if test="searchId != null">
+				#{searchId,jdbcType=DECIMAL},
+			</if>
+			<if test="requestNumber != null">
+				#{requestNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="reqtime != null">
+				#{reqtime,jdbcType=VARCHAR},
+			</if>
+			<if test="failure != null">
+				#{failure,jdbcType=VARCHAR},
+			</if>
+			<if test="msgType != null">
+				#{msgType,jdbcType=INTEGER},
+			</if>
+			<if test="oAgentNo != null">
+				#{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderId != null">
+				#{orderId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsMessage">
+		update PMS_MESSAGE
+		<set>
+			<if test="phoneNumber != null">
+				PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="context != null">
+				CONTEXT = #{context,jdbcType=VARCHAR},
+			</if>
+			<if test="interfaceId != null">
+				INTERFACE_ID = #{interfaceId,jdbcType=DECIMAL},
+			</if>
+			<if test="response != null">
+				RESPONSE = #{response,jdbcType=VARCHAR},
+			</if>
+			<if test="spnumber != null">
+				SPNUMBER = #{spnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="sendtime != null">
+				SENDTIME = #{sendtime,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="messagegb != null">
+				MESSAGEGB = #{messagegb,jdbcType=VARCHAR},
+			</if>
+			<if test="omessage != null">
+				OMESSAGE = #{omessage,jdbcType=VARCHAR},
+			</if>
+			<if test="rectime != null">
+				RECTIME = #{rectime,jdbcType=VARCHAR},
+			</if>
+			<if test="searchId != null">
+				SEARCH_ID = #{searchId,jdbcType=DECIMAL},
+			</if>
+			<if test="requestNumber != null">
+				REQUEST_NUMBER = #{requestNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="reqtime != null">
+				REQTIME = #{reqtime,jdbcType=VARCHAR},
+			</if>
+			<if test="failure != null">
+				FAILURE = #{failure,jdbcType=VARCHAR},
+			</if>
+			<if test="msgType != null">
+				MSG_TYPE = #{msgType,jdbcType=INTEGER},
+			</if>
+			<if test="oAgentNo != null">
+				OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderId != null">
+				ORDER_ID = #{orderId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsMessage">
+		update PMS_MESSAGE
+		set PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+		CONTEXT = #{context,jdbcType=VARCHAR},
+		INTERFACE_ID = #{interfaceId,jdbcType=DECIMAL},
+		RESPONSE = #{response,jdbcType=VARCHAR},
+		SPNUMBER = #{spnumber,jdbcType=VARCHAR},
+		SENDTIME = #{sendtime,jdbcType=VARCHAR},
+		STATE = #{state,jdbcType=VARCHAR},
+		MESSAGEGB = #{messagegb,jdbcType=VARCHAR},
+		OMESSAGE = #{omessage,jdbcType=VARCHAR},
+		RECTIME = #{rectime,jdbcType=VARCHAR},
+		SEARCH_ID = #{searchId,jdbcType=DECIMAL},
+		REQUEST_NUMBER = #{requestNumber,jdbcType=VARCHAR},
+		REQTIME = #{reqtime,jdbcType=VARCHAR},
+		FAILURE = #{failure,jdbcType=VARCHAR},
+		MSG_TYPE = #{msgType,jdbcType=INTEGER},
+		OAGENTNO = #{oAgentNo,jdbcType=VARCHAR},
+		ORDER_ID = #{orderId,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPmsMessage" parameterType="xdt.model.PmsMessage">
+		update PMS_MESSAGE
+		<set>
+			<if test="phoneNumber != null">
+				PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="context != null">
+				CONTEXT = #{context,jdbcType=VARCHAR},
+			</if>
+			<if test="interfaceId != null">
+				INTERFACE_ID = #{interfaceId,jdbcType=DECIMAL},
+			</if>
+			<if test="response != null">
+				RESPONSE = #{response,jdbcType=VARCHAR},
+			</if>
+			<if test="spnumber != null">
+				SPNUMBER = #{spnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="sendtime != null">
+				SENDTIME = #{sendtime,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="messagegb != null">
+				MESSAGEGB = #{messagegb,jdbcType=VARCHAR},
+			</if>
+			<if test="omessage != null">
+				OMESSAGE = #{omessage,jdbcType=VARCHAR},
+			</if>
+			<if test="rectime != null">
+				RECTIME = #{rectime,jdbcType=VARCHAR},
+			</if>
+			<if test="searchId != null">
+				SEARCH_ID = #{searchId,jdbcType=DECIMAL},
+			</if>
+			<if test="requestNumber != null">
+				REQUEST_NUMBER = #{requestNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="reqtime != null">
+				REQTIME = #{reqtime,jdbcType=VARCHAR},
+			</if>
+			<if test="failure != null">
+				FAILURE = #{failure,jdbcType=VARCHAR},
+			</if>
+			<if test="msgType != null">
+				MSG_TYPE = #{msgType,jdbcType=INTEGER},
+			</if>
+			<if test="msgType != null">
+				ORDER_ID = #{orderId,jdbcType=INTEGER},
+			</if>
+		</set>
+		<where>
+			<if test="requestNumber!=null and requestNumber!=''"> and REQUEST_NUMBER = #{requestNumber,jdbcType=VARCHAR}
+			</if>
+			<if test="requestNumber==null"> and SEARCH_ID = #{searchId,jdbcType=DECIMAL}</if>
+			<if test="phoneNumber!=null and phoneNumber!=''"> and PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR}</if>
+			<if test="oAgentNo!=null and oAgentNo!=''"> and OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}</if>
+		</where>
+	</update>
+	<!-- 根据消息实体查询记录 -->
+	<select id="selectList" parameterType="xdt.model.PmsMessage"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MESSAGE
+		<where>
+			<if test="phoneNumber!=null and phoneNumber!=''"> and PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR}</if>
+			<if test="response!=null and response!=''"> and RESPONSE = #{response,jdbcType=VARCHAR}</if>
+			<if test="failure!=null and failure!=''"> and FAILURE = #{failure,jdbcType=VARCHAR}</if>
+			<if test="oAgentNo!=null and oAgentNo!=''"> and OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}</if>
+			<if test="orderId!=null and orderId!=''"> and order_id = #{orderId,jdbcType=VARCHAR}</if>
+		</where>
+		order by id desc
+	</select>
+
+	<!-- 根据消息实体查询前20条记录 -->
+	<select id="selectLists20" parameterType="xdt.model.PmsMessage"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_MESSAGE
+		<where>
+			<if test="phoneNumber!=null and phoneNumber!=''"> and PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR}</if>
+			<if test="response!=null and response!=''"> and RESPONSE = #{response,jdbcType=VARCHAR}</if>
+			<if test="failure!=null and failure!=''"> and FAILURE = #{failure,jdbcType=VARCHAR}</if>
+			<if test="oAgentNo!=null and oAgentNo!=''"> and OAGENTNO = #{oAgentNo,jdbcType=VARCHAR}</if>
+			and rownum &lt; 20
+		</where>
+		order by id desc
+	</select>
+</mapper>

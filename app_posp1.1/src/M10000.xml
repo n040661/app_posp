@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="AbstractCommHandler" class="xdt.backend.comm.tcp.mina.handler.AbstractCommHandler"
+		abstract="true">
+		<property name="id" value="M10001_Comm"></property>
+		<property name="recvTimeOut" value="60000"></property>
+		<property name="sendCache" value="50"></property>
+	</bean>
+
+	<bean id="MerchantAbstract" class="xdt.backend.comm.channel.biz.MerchantAbstract"
+		abstract="true">
+
+	</bean>
+
+	<!-- 通讯客户端 -->
+	<bean id="M10001_Comm"
+		class="xdt.backend.comm.tcp.mina.handler.CommHandleAsyncLongClient"
+		init-method="init" destroy-method="destroy" parent="AbstractCommHandler">
+
+		<property name="addresses" value="140.207.50.238:7855"></property>
+		<!-- <property name="concurrents" value="15"></property> -->
+		<!-- <property name="msgCounter" ref="M10001_Counter"></property> <property 
+			name="connectorLength" value="1"></property> <property name="ioProcessorLength" 
+			value="2"></property> <property name="charsetName" value="ISO-8859-1"></property> -->
+	</bean>
+
+
+	<!-- 数据连接的实现 -->
+	<bean id="M10001_Conn"
+		class="xdt.backend.comm.channel.backend.impl.DataConnectionImpl">
+		<property name="handler" ref="M10001_Comm"></property>
+	</bean>
+
+	<!-- 迅联通道 业务处理代码 -->
+	<bean id="M10001" class="xdt.backend.comm.channel.biz.BizMerchantPufa"
+		init-method="init" parent="MerchantAbstract">
+
+		<constructor-arg index="0" value="10000" />
+		<constructor-arg index="1" ref="M10001_Conn" />
+
+		<property name="formater" ref="M10001_dataFormat"></property>
+	</bean>
+
+	<!-- 数据格式化 -->
+	<bean id="M10001_dataFormat" class="xdt.backend.comm.channel.message.Format">
+		<property name="charset" value="UTF-8"></property>
+	</bean>
+
+
+
+
+
+
+	<!-- <bean id="M10001_Counter" class="com.chinamobile.posp.comm.impl.PosMsgLengthCounter"> 
+		<property name="headLength" value="2"></property> <property name="isIncluding" 
+		value="false"></property> <property name="mode" value="Big_Endian"></property> 
+		</bean> -->
+
+</beans>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.AmountLimitControlMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.AmountLimitControl">
+		<result column="TRADETYPE" property="tradetype" jdbcType="VARCHAR" />
+		<result column="MINAMOUNT" property="minamount" jdbcType="DECIMAL" />
+		<result column="MAXAMOUNT" property="maxamount" jdbcType="DECIMAL" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oagentno" jdbcType="VARCHAR" />
+		<result column="TRADECODE" property="tradecode" jdbcType="VARCHAR" />
+		<result column="UPDATETIME" property="updatetime" jdbcType="VARCHAR" />
+		<result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="insert" parameterType="xdt.model.AmountLimitControl">
+		insert into AMOUNT_LIMIT_CONTROL (TRADETYPE, MINAMOUNT, MAXAMOUNT,
+		STATUS, OAGENTNO, TRADECODE,
+		UPDATETIME, OPERATOR)
+		values (#{tradetype,jdbcType=VARCHAR}, #{minamount,jdbcType=DECIMAL},
+		#{maxamount,jdbcType=DECIMAL},
+		#{status,jdbcType=VARCHAR}, #{oagentno,jdbcType=VARCHAR}, #{tradecode,jdbcType=VARCHAR},
+		#{updatetime,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.AmountLimitControl">
+		insert into AMOUNT_LIMIT_CONTROL
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="tradetype != null">
+				TRADETYPE,
+			</if>
+			<if test="minamount != null">
+				MINAMOUNT,
+			</if>
+			<if test="maxamount != null">
+				MAXAMOUNT,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="oagentno != null">
+				OAGENTNO,
+			</if>
+			<if test="tradecode != null">
+				TRADECODE,
+			</if>
+			<if test="updatetime != null">
+				UPDATETIME,
+			</if>
+			<if test="operator != null">
+				OPERATOR,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="tradetype != null">
+				#{tradetype,jdbcType=VARCHAR},
+			</if>
+			<if test="minamount != null">
+				#{minamount,jdbcType=DECIMAL},
+			</if>
+			<if test="maxamount != null">
+				#{maxamount,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="oagentno != null">
+				#{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="tradecode != null">
+				#{tradecode,jdbcType=VARCHAR},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime,jdbcType=VARCHAR},
+			</if>
+			<if test="operator != null">
+				#{operator,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="selectByOagentTransType" resultType="xdt.model.AmountLimitControl"
+		parameterType="xdt.model.AmountLimitControl">
+		select * from AMOUNT_LIMIT_CONTROL
+		where OAGENTNO = #{oagentno,jdbcType=VARCHAR} and TRADETYPE =
+		#{tradetype,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByOagentNo" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select * from AMOUNT_LIMIT_CONTROL
+		where OAGENTNO = #{oagentno,jdbcType=VARCHAR}
+	</select>
+</mapper>

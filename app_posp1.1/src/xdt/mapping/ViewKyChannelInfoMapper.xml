@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.ViewKyChannelInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.ViewKyChannelInfo">
+		<result column="CHANNEL_NUM" property="channelNum" jdbcType="VARCHAR" />
+		<result column="URL" property="url" jdbcType="VARCHAR" />
+		<result column="PRIORITY" property="priority" jdbcType="DECIMAL" />
+		<result column="BUSINESSNUM" property="businessnum" jdbcType="VARCHAR" />
+		<result column="ISUSED" property="isused" jdbcType="DECIMAL" />
+		<result column="CALLBACKURL" property="callbackurl" jdbcType="VARCHAR" />
+		<result column="CHANNELNO" property="channelNO" jdbcType="VARCHAR" />
+		<result column="CHANNELPWD" property="channelPwd" jdbcType="VARCHAR" />
+		<result column="VERSION" property="version" jdbcType="VARCHAR" />
+		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="insert" parameterType="xdt.model.ViewKyChannelInfo">
+		insert into VIEW_KY_CHANNEL_INFO (CHANNEL_NUM, URL, PRIORITY,
+		BUSINESSNUM, ISUSED,CALLBACKURL)
+		values (#{channelNum,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+		#{priority,jdbcType=DECIMAL},
+		#{businessnum,jdbcType=VARCHAR}, #{isused,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.ViewKyChannelInfo">
+		insert into VIEW_KY_CHANNEL_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="channelNum != null">
+				CHANNEL_NUM,
+			</if>
+			<if test="url != null">
+				URL,
+			</if>
+			<if test="priority != null">
+				PRIORITY,
+			</if>
+			<if test="businessnum != null">
+				BUSINESSNUM,
+			</if>
+			<if test="isused != null">
+				ISUSED,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="channelNum != null">
+				#{channelNum,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="priority != null">
+				#{priority,jdbcType=DECIMAL},
+			</if>
+			<if test="businessnum != null">
+				#{businessnum,jdbcType=VARCHAR},
+			</if>
+			<if test="isused != null">
+				#{isused,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<!-- 根据业务编号查询通道信息 -->
+	<select id="selectByBusinessnum" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select CHANNEL_NUM, URL, PRIORITY,
+		BUSINESSNUM,ISUSED,CALLBACKURL,CHANNELNO,CHANNELPWD,VERSION,OAGENTNO
+		from VIEW_KY_CHANNEL_INFO t where rownum = 1 and ISUSED = 1 and
+		BUSINESSNUM = #{businessnum,jdbcType=VARCHAR} order by t.PRIORITY desc
+	</select>
+
+
+	<!-- 查询所有通道信息 -->
+	<select id="selectAllChannelInfo" resultMap="BaseResultMap">
+		select CHANNEL_NUM, URL, PRIORITY,
+		BUSINESSNUM,ISUSED,CALLBACKURL,CHANNELNO,CHANNELPWD,VERSION,OAGENTNO
+		from VIEW_KY_CHANNEL_INFO t
+	</select>
+
+
+</mapper>

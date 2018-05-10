@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xdt.mapping.PmsPosInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.PmsPosInfo">
+		<id column="ID" jdbcType="DECIMAL" property="id" />
+		<result column="SERIALNO" jdbcType="VARCHAR" property="serialno" />
+		<result column="STORAGESTATUS" jdbcType="VARCHAR" property="storagestatus" />
+		<result column="MANUNO" jdbcType="VARCHAR" property="manuno" />
+		<result column="POSMODEL" jdbcType="DECIMAL" property="posmodel" />
+		<result column="OUTDATE" jdbcType="VARCHAR" property="outdate" />
+		<result column="POSSTATUS" jdbcType="VARCHAR" property="posstatus" />
+		<result column="BATCHINNO" jdbcType="VARCHAR" property="batchinno" />
+		<result column="BATCHOUTNO" jdbcType="VARCHAR" property="batchoutno" />
+		<result column="POSTYPE" jdbcType="VARCHAR" property="postype" />
+		<result column="USEPERSION" jdbcType="VARCHAR" property="usepersion" />
+		<result column="USEDEPARTMENT" jdbcType="VARCHAR" property="usedepartment" />
+		<result column="OUTMERCODE" jdbcType="VARCHAR" property="outmercode" />
+		<result column="POSMOLD" jdbcType="VARCHAR" property="posmold" />
+		<result column="OUTINDATE" jdbcType="VARCHAR" property="outindate" />
+		<result column="BATCHOUTINNO" jdbcType="VARCHAR" property="batchoutinno" />
+		<result column="OUTINPERSION" jdbcType="VARCHAR" property="outinpersion" />
+		<result column="OUTPERSION" jdbcType="VARCHAR" property="outpersion" />
+		<result column="OUTINDEPARTMENT" jdbcType="VARCHAR" property="outindepartment" />
+		<result column="OUTDEPARTMENT" jdbcType="VARCHAR" property="outdepartment" />
+		<result column="AGENT_NUMBER" jdbcType="VARCHAR" property="agentNumber" />
+		<result column="USESTATUS" jdbcType="DECIMAL" property="usestatus" />
+		<result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
+		<result column="AGENTBATCHINNO" jdbcType="VARCHAR" property="agentbatchinno" />
+		<result column="AGENTINDATE" jdbcType="VARCHAR" property="agentindate" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, SERIALNO, STORAGESTATUS, MANUNO, POSMODEL, OUTDATE, POSSTATUS,
+		BATCHINNO, BATCHOUTNO,
+		POSTYPE, USEPERSION, USEDEPARTMENT, OUTMERCODE, POSMOLD, OUTINDATE,
+		BATCHOUTINNO,
+		OUTINPERSION, OUTPERSION, OUTINDEPARTMENT, OUTDEPARTMENT, AGENT_NUMBER, USESTATUS,
+		COMPANY_ID, AGENTBATCHINNO, AGENTINDATE
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_POS_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from PMS_POS_INFO
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="xdt.model.PmsPosInfo">
+		insert into PMS_POS_INFO (ID, SERIALNO, STORAGESTATUS,
+		MANUNO, POSMODEL, OUTDATE,
+		POSSTATUS, BATCHINNO, BATCHOUTNO,
+		POSTYPE, USEPERSION, USEDEPARTMENT,
+		OUTMERCODE, POSMOLD, OUTINDATE,
+		BATCHOUTINNO, OUTINPERSION, OUTPERSION,
+		OUTINDEPARTMENT, OUTDEPARTMENT, AGENT_NUMBER,
+		USESTATUS, COMPANY_ID, AGENTBATCHINNO,
+		AGENTINDATE)
+		values (#{id,jdbcType=DECIMAL}, #{serialno,jdbcType=VARCHAR},
+		#{storagestatus,jdbcType=VARCHAR},
+		#{manuno,jdbcType=VARCHAR}, #{posmodel,jdbcType=DECIMAL}, #{outdate,jdbcType=VARCHAR},
+		#{posstatus,jdbcType=VARCHAR}, #{batchinno,jdbcType=VARCHAR},
+		#{batchoutno,jdbcType=VARCHAR},
+		#{postype,jdbcType=VARCHAR}, #{usepersion,jdbcType=VARCHAR}, #{usedepartment,jdbcType=VARCHAR},
+		#{outmercode,jdbcType=VARCHAR}, #{posmold,jdbcType=VARCHAR},
+		#{outindate,jdbcType=VARCHAR},
+		#{batchoutinno,jdbcType=VARCHAR}, #{outinpersion,jdbcType=VARCHAR}, #{outpersion,jdbcType=VARCHAR},
+		#{outindepartment,jdbcType=VARCHAR},
+		#{outdepartment,jdbcType=VARCHAR}, #{agentNumber,jdbcType=VARCHAR},
+		#{usestatus,jdbcType=DECIMAL}, #{companyId,jdbcType=DECIMAL},
+		#{agentbatchinno,jdbcType=VARCHAR},
+		#{agentindate,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.PmsPosInfo">
+		insert into PMS_POS_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="serialno != null">
+				SERIALNO,
+			</if>
+			<if test="storagestatus != null">
+				STORAGESTATUS,
+			</if>
+			<if test="manuno != null">
+				MANUNO,
+			</if>
+			<if test="posmodel != null">
+				POSMODEL,
+			</if>
+			<if test="outdate != null">
+				OUTDATE,
+			</if>
+			<if test="posstatus != null">
+				POSSTATUS,
+			</if>
+			<if test="batchinno != null">
+				BATCHINNO,
+			</if>
+			<if test="batchoutno != null">
+				BATCHOUTNO,
+			</if>
+			<if test="postype != null">
+				POSTYPE,
+			</if>
+			<if test="usepersion != null">
+				USEPERSION,
+			</if>
+			<if test="usedepartment != null">
+				USEDEPARTMENT,
+			</if>
+			<if test="outmercode != null">
+				OUTMERCODE,
+			</if>
+			<if test="posmold != null">
+				POSMOLD,
+			</if>
+			<if test="outindate != null">
+				OUTINDATE,
+			</if>
+			<if test="batchoutinno != null">
+				BATCHOUTINNO,
+			</if>
+			<if test="outinpersion != null">
+				OUTINPERSION,
+			</if>
+			<if test="outpersion != null">
+				OUTPERSION,
+			</if>
+			<if test="outindepartment != null">
+				OUTINDEPARTMENT,
+			</if>
+			<if test="outdepartment != null">
+				OUTDEPARTMENT,
+			</if>
+			<if test="agentNumber != null">
+				AGENT_NUMBER,
+			</if>
+			<if test="usestatus != null">
+				USESTATUS,
+			</if>
+			<if test="companyId != null">
+				COMPANY_ID,
+			</if>
+			<if test="agentbatchinno != null">
+				AGENTBATCHINNO,
+			</if>
+			<if test="agentindate != null">
+				AGENTINDATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=DECIMAL},
+			</if>
+			<if test="serialno != null">
+				#{serialno,jdbcType=VARCHAR},
+			</if>
+			<if test="storagestatus != null">
+				#{storagestatus,jdbcType=VARCHAR},
+			</if>
+			<if test="manuno != null">
+				#{manuno,jdbcType=VARCHAR},
+			</if>
+			<if test="posmodel != null">
+				#{posmodel,jdbcType=DECIMAL},
+			</if>
+			<if test="outdate != null">
+				#{outdate,jdbcType=VARCHAR},
+			</if>
+			<if test="posstatus != null">
+				#{posstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="batchinno != null">
+				#{batchinno,jdbcType=VARCHAR},
+			</if>
+			<if test="batchoutno != null">
+				#{batchoutno,jdbcType=VARCHAR},
+			</if>
+			<if test="postype != null">
+				#{postype,jdbcType=VARCHAR},
+			</if>
+			<if test="usepersion != null">
+				#{usepersion,jdbcType=VARCHAR},
+			</if>
+			<if test="usedepartment != null">
+				#{usedepartment,jdbcType=VARCHAR},
+			</if>
+			<if test="outmercode != null">
+				#{outmercode,jdbcType=VARCHAR},
+			</if>
+			<if test="posmold != null">
+				#{posmold,jdbcType=VARCHAR},
+			</if>
+			<if test="outindate != null">
+				#{outindate,jdbcType=VARCHAR},
+			</if>
+			<if test="batchoutinno != null">
+				#{batchoutinno,jdbcType=VARCHAR},
+			</if>
+			<if test="outinpersion != null">
+				#{outinpersion,jdbcType=VARCHAR},
+			</if>
+			<if test="outpersion != null">
+				#{outpersion,jdbcType=VARCHAR},
+			</if>
+			<if test="outindepartment != null">
+				#{outindepartment,jdbcType=VARCHAR},
+			</if>
+			<if test="outdepartment != null">
+				#{outdepartment,jdbcType=VARCHAR},
+			</if>
+			<if test="agentNumber != null">
+				#{agentNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="usestatus != null">
+				#{usestatus,jdbcType=DECIMAL},
+			</if>
+			<if test="companyId != null">
+				#{companyId,jdbcType=DECIMAL},
+			</if>
+			<if test="agentbatchinno != null">
+				#{agentbatchinno,jdbcType=VARCHAR},
+			</if>
+			<if test="agentindate != null">
+				#{agentindate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsPosInfo">
+		update PMS_POS_INFO
+		<set>
+			<if test="serialno != null">
+				SERIALNO = #{serialno,jdbcType=VARCHAR},
+			</if>
+			<if test="storagestatus != null">
+				STORAGESTATUS = #{storagestatus,jdbcType=VARCHAR},
+			</if>
+			<if test="manuno != null">
+				MANUNO = #{manuno,jdbcType=VARCHAR},
+			</if>
+			<if test="posmodel != null">
+				POSMODEL = #{posmodel,jdbcType=DECIMAL},
+			</if>
+			<if test="outdate != null">
+				OUTDATE = #{outdate,jdbcType=VARCHAR},
+			</if>
+			<if test="posstatus != null">
+				POSSTATUS = #{posstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="batchinno != null">
+				BATCHINNO = #{batchinno,jdbcType=VARCHAR},
+			</if>
+			<if test="batchoutno != null">
+				BATCHOUTNO = #{batchoutno,jdbcType=VARCHAR},
+			</if>
+			<if test="postype != null">
+				POSTYPE = #{postype,jdbcType=VARCHAR},
+			</if>
+			<if test="usepersion != null">
+				USEPERSION = #{usepersion,jdbcType=VARCHAR},
+			</if>
+			<if test="usedepartment != null">
+				USEDEPARTMENT = #{usedepartment,jdbcType=VARCHAR},
+			</if>
+			<if test="outmercode != null">
+				OUTMERCODE = #{outmercode,jdbcType=VARCHAR},
+			</if>
+			<if test="posmold != null">
+				POSMOLD = #{posmold,jdbcType=VARCHAR},
+			</if>
+			<if test="outindate != null">
+				OUTINDATE = #{outindate,jdbcType=VARCHAR},
+			</if>
+			<if test="batchoutinno != null">
+				BATCHOUTINNO = #{batchoutinno,jdbcType=VARCHAR},
+			</if>
+			<if test="outinpersion != null">
+				OUTINPERSION = #{outinpersion,jdbcType=VARCHAR},
+			</if>
+			<if test="outpersion != null">
+				OUTPERSION = #{outpersion,jdbcType=VARCHAR},
+			</if>
+			<if test="outindepartment != null">
+				OUTINDEPARTMENT = #{outindepartment,jdbcType=VARCHAR},
+			</if>
+			<if test="outdepartment != null">
+				OUTDEPARTMENT = #{outdepartment,jdbcType=VARCHAR},
+			</if>
+			<if test="agentNumber != null">
+				AGENT_NUMBER = #{agentNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="usestatus != null">
+				USESTATUS = #{usestatus,jdbcType=DECIMAL},
+			</if>
+			<if test="companyId != null">
+				COMPANY_ID = #{companyId,jdbcType=DECIMAL},
+			</if>
+			<if test="agentbatchinno != null">
+				AGENTBATCHINNO = #{agentbatchinno,jdbcType=VARCHAR},
+			</if>
+			<if test="agentindate != null">
+				AGENTINDATE = #{agentindate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="xdt.model.PmsPosInfo">
+		update PMS_POS_INFO
+		set SERIALNO = #{serialno,jdbcType=VARCHAR},
+		STORAGESTATUS = #{storagestatus,jdbcType=VARCHAR},
+		MANUNO = #{manuno,jdbcType=VARCHAR},
+		POSMODEL = #{posmodel,jdbcType=DECIMAL},
+		OUTDATE = #{outdate,jdbcType=VARCHAR},
+		POSSTATUS = #{posstatus,jdbcType=VARCHAR},
+		BATCHINNO = #{batchinno,jdbcType=VARCHAR},
+		BATCHOUTNO = #{batchoutno,jdbcType=VARCHAR},
+		POSTYPE = #{postype,jdbcType=VARCHAR},
+		USEPERSION = #{usepersion,jdbcType=VARCHAR},
+		USEDEPARTMENT = #{usedepartment,jdbcType=VARCHAR},
+		OUTMERCODE = #{outmercode,jdbcType=VARCHAR},
+		POSMOLD = #{posmold,jdbcType=VARCHAR},
+		OUTINDATE = #{outindate,jdbcType=VARCHAR},
+		BATCHOUTINNO = #{batchoutinno,jdbcType=VARCHAR},
+		OUTINPERSION = #{outinpersion,jdbcType=VARCHAR},
+		OUTPERSION = #{outpersion,jdbcType=VARCHAR},
+		OUTINDEPARTMENT = #{outindepartment,jdbcType=VARCHAR},
+		OUTDEPARTMENT = #{outdepartment,jdbcType=VARCHAR},
+		AGENT_NUMBER = #{agentNumber,jdbcType=VARCHAR},
+		USESTATUS = #{usestatus,jdbcType=DECIMAL},
+		COMPANY_ID = #{companyId,jdbcType=DECIMAL},
+		AGENTBATCHINNO = #{agentbatchinno,jdbcType=VARCHAR},
+		AGENTINDATE = #{agentindate,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+	<select id="selectSero" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_POS_INFO where POSSTATUS=1 and
+		STORAGESTATUS=2 AND SERIALNO = #{sero,jdbcType=VARCHAR}
+	</select>
+	<select id="selectPosId" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PMS_POS_INFO where POSSTATUS=1 and
+		STORAGESTATUS=2 AND ID = #{posId,jdbcType=VARCHAR}
+	</select>
+</mapper>

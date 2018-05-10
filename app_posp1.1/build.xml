@@ -1,0 +1,46 @@
+<project name="app_posp" default="web" basedir=".">
+	<!-- set global properties for this build -->
+	<property name="version" value="1.0.0" />
+
+	<property environment="env" />
+	<property name="build_id" value="${env.BUILD_NUMBER}" />
+	<property name="build_time" value="${env.BUILD_ID}" />
+	<property name="lib.dir" location="WebRoot/WEB-INF/lib" />
+	<property name="deploy" location="deploy" />
+
+	<path id="ant.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<!-- 准备web目录 -->
+	<target name="web">
+		<delete dir="${deploy}" />
+		<copy todir="${deploy}" includeEmptyDirs="true">
+			<fileset dir="WebRoot">
+				<exclude name="**/WEB-INF/classes/**" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="${deploy}/WEB-INF/classes" />
+		<javac srcdir="src" destdir="${deploy}/WEB-INF/classes" encoding="UTF-8" executable="D:/Program Files/Java/jdk1.7.0_65/bin/javac" fork="true" includeantruntime="false" nowarn="true" debug="on">
+			<classpath>
+				<fileset dir="${lib.dir}" includes="**/*.jar" />
+			</classpath>
+			<compilerarg value="-Xlint:deprecation" />
+			<compilerarg line="-XDignore.symbol.file"/>
+		</javac>
+		<copy todir="${deploy}/WEB-INF/classes" overwrite="true">
+			<fileset dir="src" >
+				<include name="**/**" /> 
+                <exclude name="**/*.svn"/> 
+                <exclude name="**/*.java"/> 
+			</fileset>
+		</copy>
+		<echo file="${deploy}/WEB-INF/version.txt">${version}.${build_id}.${build_time}</echo>
+		<war destfile="app_posp.war" basedir="${deploy}"></war>
+		<delete dir="${deploy}"/>
+	</target>
+
+</project>

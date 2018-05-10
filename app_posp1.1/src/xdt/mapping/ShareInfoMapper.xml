@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xdt.mapping.ShareInfoMapper">
+	<resultMap id="BaseResultMap" type="xdt.model.ShareInfo">
+		<result column="OAGENTNO" property="oagentno" jdbcType="VARCHAR" />
+		<result column="SHARE_TITLE" property="shareTitle" jdbcType="VARCHAR" />
+		<result column="SHARE_CONTENT" property="shareContent"
+			jdbcType="VARCHAR" />
+		<result column="SHARE_URL" property="shareUrl" jdbcType="VARCHAR" />
+		<result column="SHARE_IMAGES" property="shareImages" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="insert" parameterType="xdt.model.ShareInfo">
+		insert into SHARE_INFO (OAGENTNO, SHARE_TITLE, SHARE_CONTENT,
+		SHARE_URL, SHARE_IMAGES, CREATE_TIME
+		)
+		values (#{oagentno,jdbcType=VARCHAR}, #{shareTitle,jdbcType=VARCHAR},
+		#{shareContent,jdbcType=VARCHAR},
+		#{shareUrl,jdbcType=VARCHAR}, #{shareImages,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="xdt.model.ShareInfo">
+		insert into SHARE_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="oagentno != null">
+				OAGENTNO,
+			</if>
+			<if test="shareTitle != null">
+				SHARE_TITLE,
+			</if>
+			<if test="shareContent != null">
+				SHARE_CONTENT,
+			</if>
+			<if test="shareUrl != null">
+				SHARE_URL,
+			</if>
+			<if test="shareImages != null">
+				SHARE_IMAGES,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="oagentno != null">
+				#{oagentno,jdbcType=VARCHAR},
+			</if>
+			<if test="shareTitle != null">
+				#{shareTitle,jdbcType=VARCHAR},
+			</if>
+			<if test="shareContent != null">
+				#{shareContent,jdbcType=VARCHAR},
+			</if>
+			<if test="shareUrl != null">
+				#{shareUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="shareImages != null">
+				#{shareImages,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectByOagentNo" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from share_info where oagentNo=#{oagentNo,jdbcType=VARCHAR}
+	</select>
+</mapper>
