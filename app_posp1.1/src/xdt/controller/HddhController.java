@@ -252,9 +252,9 @@ public class HddhController extends BaseAction {
 			result.put("v_code", "01");
 			result.put("v_msg", "上送交易参数空");
 		}
-		logger.info("返回结果:{}"+result);
+		logger.info("上海漪雷代还返回结果:{}"+JSON.toJSON(result));
 		try {
-			outString(response, result);
+			outString(response,JSON.toJSON(result));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

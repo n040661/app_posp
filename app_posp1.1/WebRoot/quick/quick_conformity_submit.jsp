@@ -10,33 +10,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>商户订单数据(模拟)</title>
 </head>
 <body onload="sharingPay()">
-	<form id="pay_form" action="${pageContext.request.contextPath }/quickPayAction/message.action" method="post">
+	<form id="pay_form" action="${pageContext.request.contextPath }/conformity/quickPay/wap/submit.action" method="post">
 	    <input type="hidden" name="v_version" value="${temp.v_version}"> <br>
 	    <input type="hidden" name="v_mid" value="${temp.v_mid}"><br>
 	    <input type="hidden" name="v_oid" value="${temp.v_oid}"><br>
 	    <input type="hidden" name="v_txnAmt" value="${temp.v_txnAmt}"><br>
 		<input type="hidden" name="v_time" value="${temp.v_time}"><br>
 		<input type="hidden" name="v_productDesc" value="${temp.v_productDesc}"><br>
-		<input type="hidden" name="v_cardNo" value="${temp.v_cardNo}"><br>
-		<input type="hidden" name="v_realName" value="${temp.v_realName}"><br>
-		<input type="hidden" name="v_accountType" value="${temp.v_accountType}"><br>		 
-		<input type="hidden" name="v_cert_no" value="${temp.v_cert_no}"><br>
-		<input type="hidden" name="v_phone" value="${temp.v_phone}"><br>
+		<input type="hidden" name="v_cardType" value="${temp.v_cardType}"><br>		 
 		<input type="hidden" name="v_type" value="${temp.v_type}"><br>
-		<input type="hidden" name="v_cvn2" value="${temp.v_cvn2}"><br>
-		<input type="hidden" name="v_expired" value="${temp.v_expired}"><br>
 		<input type="hidden" name="v_attach" value="${temp.v_attach}"><br>
 	    <input type="hidden" name="v_notify_url" value="${temp.v_notify_url}"><br>
 		<input type="hidden" name="v_url" value="${temp.v_url}"><br>
 		<input type="hidden" name="v_sign" value="${temp.v_sign}"><br>
-		<input type="hidden" name="v_userFee" value="${temp.v_userFee}"><br>
-		<input type="hidden" name="v_pmsBankNo" value="${temp.v_pmsBankNo}"><br>
-		<input type="hidden" name="v_settleCardNo" value="${temp.v_settleCardNo}"><br>
-		<input type="hidden" name="v_settleName" value="${temp.v_settleName}"><br>
-		<input type="hidden" name="v_settleUserFee" value="${temp.v_settleUserFee}"><br>
-		<input type="hidden" name="v_settlePmsBankNo" value="${temp.v_settlePmsBankNo}"><br>	
-		<input type="hidden" name="v_userId" value="${temp.v_userId}"><br>
-		<input type="hidden" name="v_verifyId" value="${temp.v_verifyId}"><br>
 	</form>
 </body>
 <script type="text/javascript">
