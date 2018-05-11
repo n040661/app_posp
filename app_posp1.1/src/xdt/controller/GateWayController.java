@@ -178,6 +178,7 @@ public class GateWayController extends BaseAction {
 		log.info("下游商户密钥:" + keyinfo);
 		String sign = SignatureUtil.getSign(beanToMap(entity), merchantKey, log);
 		entity.setV_sign(sign);
+		
 		// 返回页面参数
 		request.setCharacterEncoding("UTF-8");
 		request.setAttribute("temp", entity);
