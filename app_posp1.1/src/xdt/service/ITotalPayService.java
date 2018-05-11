@@ -101,4 +101,6 @@ public interface ITotalPayService {
 	 * @param path
 	 */
 	public Map<String, String> DownExcel(DaifuRequestEntity payRequest,String path);
+	
+	public Map<String, String> jhjQuick(String mer,String orderId);
 }

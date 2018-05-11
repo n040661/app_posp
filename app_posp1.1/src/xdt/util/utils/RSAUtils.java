@@ -8,6 +8,8 @@ import java.security.Key;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.Signature;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -61,6 +63,48 @@ public class RSAUtils {
         return Base64.encode(encryptData);
     }
 
+    /**
+     * 用私钥对信息生成数字签名
+     *
+     * @param data       加密数据
+     * @param privateKey 私钥
+     * @return
+     * @throws Exception
+     */
+    public static String sign(byte[] data, String privateKey, String signatureAlgorithm) throws Exception {
+        return RSAHelper.encryptBASE64(sign2byte(data, privateKey, signatureAlgorithm));
+    }
+
+	
+	/**
+     * 用私钥对信息生成数字签名
+     *
+     * @param data       加密数据
+     * @param privateKey 私钥
+     * @return
+     * @throws Exception
+     */
+    public static byte[] sign2byte(byte[] data, String privateKey, String signatureAlgorithm) throws Exception {
+// 解密由base64编码的私钥
+        byte[] keyBytes =RSAHelper.decryptBASE64(privateKey);
+
+        // 构造PKCS8EncodedKeySpec对象
+        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
+
+        // KEY_ALGORITHM 指定的加密算法
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+
+        // 取私钥匙对象
+        PrivateKey priKey = keyFactory.generatePrivate(pkcs8KeySpec);
+
+        // 用私钥对信息生成数字签名
+        Signature signature = Signature.getInstance(signatureAlgorithm);
+        signature.initSign(priKey);
+        signature.update(data);
+
+        return signature.sign();
+    }
+    
     /**
      * RSA验签
      * 
@@ -293,6 +337,9 @@ public class RSAUtils {
         out.close();
         return encryptedData;
     }
+    
+    
+    
     /**
 	 * <p>
 	 * 从文件中加载私钥
