@@ -644,7 +644,7 @@ public class HddhController extends BaseAction {
 			String url="";
 			if("10036046733".equals(originalInfo.getPid()))
 			{
-				url="http://101.200.38.184:8008/gateway/notify/async/upin/UPIN20180423100089";
+				url="http://service.blueseapay.com/gateway/notify/async/upin/UPIN20180511100103";
 			}
 			this.logger.info("上海漪雷代还向下游传递的异步地址:" + url);
 			String html = HttpClientUtil.post(url, bean2Util.bean2QueryStr(consume));
