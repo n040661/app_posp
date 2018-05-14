@@ -18,6 +18,6 @@ public class ScanCodeUtil {
 	public static final String ysbNotifyUrl=BaseUtil.url+"/ScanCodeController/ysbNotifyUrl.action";//银生宝扫码异步
 	public static final String ylcsNotifyUrl=BaseUtil.url+"/ScanCodeController/ylcsNotifyUrl.action";//漪雷乘势扫码异步
 	public static final String jhjNotifyUrl=BaseUtil.url+"/ScanCodeController/jhjNotifyUrl.action";//漪雷乘势扫码异步
-	
+	public static final String jmNotifyUrl=BaseUtil.url+"/ScanCodeController/jmNotifyUrl.action";//扫码异步
 	
 }

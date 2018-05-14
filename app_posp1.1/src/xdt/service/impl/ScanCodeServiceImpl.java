@@ -424,6 +424,9 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 															case "JHJ":
 																result =jhjScanCodePay(entity, result,pmsBusinessPos);
 																break;
+															case "JMZFB":
+																result =jmScanCodePay(entity, result,pmsBusinessPos);
+																break;
 															default:
 																result.put("v_code", "11");
 																result.put("v_msg", "未找到路由，请联系业务开通！");
@@ -1247,6 +1250,62 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		}else {
 			result.put("v_code", "01");
 			result.put("v_msg", json.getString("info"));
+		}
+		
+     	return result;
+	}
+	
+	/**
+	 * 主付宝金米给上游发送参数
+	 * @param entity
+	 * @param result
+	 * @param pmsBusinessPos
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> jmScanCodePay(ScanCodeRequestEntity entity,Map<String, String> result,PmsBusinessPos pmsBusinessPos) throws Exception{
+		TreeMap<String, String> map = new TreeMap<>();
+		Double txnAmt=Double.parseDouble(entity.getV_txnAmt())*100;
+		BigDecimal payAmt=new BigDecimal(txnAmt).setScale(0, BigDecimal.ROUND_HALF_UP);
+        map.put("merchant_no",pmsBusinessPos.getBusinessnum());//pmsBusinessPos.getBusinessnum()
+        if("WEIXIN_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("biz_code","");//支付宝
+        }else if("ALIPAY_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("biz_code","0");//微信支付
+        }else if("UNIONPAY_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("biz_code","");//银联二维码
+        }
+        map.put("merchant_req_no",entity.getV_oid());
+        map.put("subject",entity.getV_productName());
+        map.put("order_amt",payAmt.toString());
+        map.put("bg_url",ScanCodeUtil.jmNotifyUrl);
+        //map.put("ext",entity.getV_attach());
+        
+        String paramSrc = RequestUtils.getParamSrc(map);
+		log.info("签名前数据**********支付:" + paramSrc);
+		String md5 = MD5Utils.md5(paramSrc + "&" + pmsBusinessPos.getKek(),"UTF-8").toUpperCase();
+		//String md5 = MD5Utils.signs(paramSrc, "lD0Y4D9X3k90", "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
+		System.out.println(md5);
+		map.put("sign", md5);
+		log.info(JSON.toJSONString(map));
+		//paramSrc=paramSrc+"&"+md5;
+		String url ="http://api.jinmpay.com/api/alipayCode/create";
+		String str =RequestUtils.sendPost(url, JSON.toJSONString(map),"UTF-8");
+		System.out.println(str);
+		result.put("v_mid", entity.getV_mid());
+ 		result.put("v_attach", entity.getV_attach());
+ 		result.put("v_txnAmt", entity.getV_txnAmt());
+ 		result.put("v_oid", entity.getV_oid());
+ 		result.put("v_cardType", entity.getV_cardType());
+		
+		com.alibaba.fastjson.JSONObject json =com.alibaba.fastjson.JSONObject.parseObject(str);
+		if("00".equals(json.getString("rsp_code"))) {
+			result.put("v_result", json.getString("ali_pay_url"));
+			result.put("v_code", "00");
+			result.put("v_msg", "请求成功");
+		}else {
+			result.put("v_code", "01");
+			result.put("v_msg", json.getString("rsp_msg"));
 		}
 		
      	return result;

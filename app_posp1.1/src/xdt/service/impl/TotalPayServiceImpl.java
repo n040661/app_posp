@@ -577,6 +577,9 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 						case "JHJ":// 聚佰宝
 							jhjPay(payRequest, result, merchantinfo, pmsBusinessPos);
 							break;
+						case "JMZFB":
+							jmPay(payRequest, result, merchantinfo, pmsBusinessPos);
+							break;
 						default:
 							break;
 						}
@@ -3553,7 +3556,89 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 		}
 		return result;
 	}
-	
+	/**
+	 * 金米代付
+	 * 
+	 * @param payRequest
+	 * @param result
+	 * @param merchantinfo
+	 * @param pmsBusinessPos
+	 * @throws Exception
+	 */
+	public Map<String, String> jmPay(DaifuRequestEntity payRequest, Map<String, String> result,
+			PmsMerchantInfo merchantinfo, PmsBusinessPos pmsBusinessPos) throws Exception {
+		//PayBankInfo bank = new PayBankInfo();
+		//bank.setBank_pmsbankNo(payRequest.getV_pmsBankNo());
+		//bank = payBankInfoDao.selectByBankInfo(bank);
+		//log.info("查询商户银行信息:" + bank);
+		TreeMap<String, String> req = new TreeMap<>();
+		Double txnAmt=Double.parseDouble(payRequest.getV_amount())*100;
+		BigDecimal payAmt=new BigDecimal(txnAmt).setScale(0, BigDecimal.ROUND_HALF_UP);
+		req.put("merchant_no",pmsBusinessPos.getBusinessnum());//
+		req.put("req_pay_no",payRequest.getV_batch_no());
+		req.put("order_amt",payAmt.toString());
+		req.put("account_name",payRequest.getV_realName());
+		req.put("account_id_no",payRequest.getV_cert_no());
+		req.put("account_mobile", payRequest.getV_phone());
+		req.put("account_card_no", payRequest.getV_cardNo());
+		req.put("account_bank_name", payRequest.getV_bankname());
+		req.put("account_branch", payRequest.getV_bankname());
+		req.put("account_cnaps_no", payRequest.getV_pmsBankNo());
+		req.put("account_province", payRequest.getV_province());
+		req.put("account_city", payRequest.getV_city());
+        req.put("bg_url",xdt.dto.transfer_accounts.util.PayUtil.jmPayUrl);
+        //map.put("ext",entity.getV_attach());
+        
+        String paramSrc = RequestUtils.getParamSrc(req);
+		log.info("金米签名前数据**********支付:" + paramSrc);
+		String md5 = MD5Utils.md5(paramSrc + "&" + "7Yn9z78987r1","UTF-8").toUpperCase();
+		//String md5 = MD5Utils.signs(paramSrc, "lD0Y4D9X3k90", "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
+		System.out.println(md5);
+		req.put("sign", md5);
+		log.info(JSON.toJSONString(req));
+		//paramSrc=paramSrc+"&"+md5;
+		String url ="http://api.jinmpay.com/api/pay/create";
+		String str =RequestUtils.sendPost(url, JSON.toJSONString(req),"UTF-8");
+		log.info("金米代付返回参数str:"+JSON.toJSONString(str));
+		JSONObject json =JSONObject.fromObject(str);
+		if("00".equals(json.getString("rsp_code"))) {
+			result.put("v_mid", payRequest.getV_mid());
+			result.put("v_batch_no", payRequest.getV_batch_no());
+			result.put("v_code", "00");
+			result.put("v_msg", "请求成功");
+			result.put("v_sum_amount", payRequest.getV_sum_amount());
+			result.put("v_amount", payRequest.getV_amount());
+			result.put("v_identity", payRequest.getV_identity() == null ? "" : payRequest.getV_identity());
+			result.put("v_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+			result.put("v_type", "1");
+		}else {
+			result.put("v_code", "15");
+ 			result.put("v_msg", "请求失败："+json.getString("rsp_msg"));
+ 			UpdateDaifu(payRequest.getV_batch_no(), "02");
+ 			
+ 			Map<String, String> map =new HashMap<>();
+			map.put("machId",payRequest.getV_mid());
+			map.put("payMoney",Double.parseDouble(payRequest.getV_sum_amount())*100+Double.parseDouble(merchantinfo.getPoundage())*100+"");
+			int nus =updataPayT1(map);
+ 			if(nus==1) {
+ 				log.info("金米代付补款成功");
+ 				DaifuRequestEntity entity =new DaifuRequestEntity();
+ 				entity.setV_mid(payRequest.getV_mid());
+ 				entity.setV_batch_no(payRequest.getV_batch_no()+"/A");
+ 				entity.setV_amount(payRequest.getV_sum_amount());
+ 				entity.setV_sum_amount(payRequest.getV_sum_amount());
+ 				entity.setV_identity(payRequest.getV_identity());
+ 				entity.setV_cardNo(payRequest.getV_cardNo());
+ 				entity.setV_city(payRequest.getV_city());
+ 				entity.setV_province(payRequest.getV_province());
+ 				entity.setV_type("1");
+ 				entity.setV_pmsBankNo(payRequest.getV_pmsBankNo());
+				int ii =add(entity, merchantinfo, result, "00");
+				log.info("金米补款订单状态："+ii);
+ 			}
+		}
+		return result;
+	}
 	/**
 	 * oem假汇聚代付
 	 * 
@@ -4045,5 +4130,56 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 		
 			return result;
 	}
+
+	@Override
+	 public Map<String, String> jhjQuick(String mer, String orderId) {
+	    Map<String, String> map = new HashMap<String, String>();
+	    try {
+	      com.uns.inf.api.model.Request req = new com.uns.inf.api.model.Request();
+	      req.put("agentType", "01");
+	      req.put("mchId", mer);
+	      req.put("outTradeNo", orderId);
+	      String param = SignatureUtil.getSignPlainText(req);
+	      this.log.info("签名前参数：" + param);
+	      String key = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALyPluyE1wnc+ONM0p/fp8PQu45f95dMsi4NBQYFhWd9rFtEy5gZUV8IzLJdXKyJ/EMgAs446p+G22L/EJjb8HeFmWx6tEu7JQkqu+fMfmb0DM7EXqJvAioJhKqwRBaG8zbF5aFgGVF6Nnk/YrILQCwkFAszD5MWCXTCEmSY3LzVAgMBAAECgYAmTzoHlbmmzFlYvOvyBVutYgQpGgBQogl1Z7nEjmybKSJSbLi8jzBEEaKc/nDssSAqdx96zH+Gp7x88XtqwwyosfOXAatzKaPMHdyf9TBQWdYkrNbM/JLby9r1sslLq2xyrXWgqMS+kOWS2p/JWTo6X3YLxi0Bi4lqNbryEa81xQJBAPfkZTTTPILkQMdP+jdV8RKE3/HCpc0LQEOILZouY5GD90tZm7AblmvquQ0HFfKd/LHVHymDbFdD8QVKRhLe11sCQQDCummhY2EkUOYyJjJ+aG+IiqJNQ8xsv6sjn6wF25aHOfNJPphWz6hf6ND6QxPMvFdKF8qs14FPfVzW7TrooyOPAkEAyjcJDBeI1CmIYk5uibdUqUu1Nw0WnXYhHTW4JX7UAD9Leq8FXpqSkUPvYp42HC0elp6JBh9MQL+OnEcjdH9N4wJAdtR9C2By8k9v+mB25c7jaSZ4nr/l6uMYE7gnqLd053aEsUjCfA9ix4xyopX2ajTw66UTKGCmZ5Sv5/SCw15ynwJBANanZMAeJvoBloTvK5kKvQTi5pyNd+drb3PYiMO+jZEa0DQ3+/04EbxvzSNoBvlAKSrL4kUwfHZGF27EXM1/tAM=";
+	      String sign = xdt.util.utils.RSAUtils.sign(param.getBytes("UTF-8"), key, "SHA1WithRSA");
+	      req.put("sign", sign);
+	      this.log.info("签名：" + sign);
+	      req.put("sign", sign);
+	      this.log.info("请求前的参数：" + JSON.toJSONString(req));
+	      String url = "http://mch.fintech2syx.com/cloud/collectpay/api/query.html";
+	      String str = RequestUtils.sendPost(url, JSON.toJSONString(req), "UTF-8");
+	      this.log.info("oem汇聚代付返回参数str:" + JSON.toJSONString(str));
+
+	      if (!"".equals(str)) {
+	        net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(str);
+	        map.put("v_code", "00");
+	        map.put("v_msg", "请求成功");
+	        if ("0".equals(json.getString("returnCode"))) {
+	          if ("0".equals(json.getString("resultCode")))
+	            if ("SUCCESS".equals(json.getString("status"))) {
+	              map.put("v_status", "0000");
+	              map.put("v_status_msg", "代付成功");
+	            } else if ("FAIL".equals(json.getString("status"))) {
+	              map.put("v_status", "1001");
+	              map.put("v_status_msg", "代付失败");
+	            }
+	        }
+	        else {
+	          map.put("v_status", "1001");
+	          map.put("v_status_msg", "代付失败");
+	        }
+	      } else {
+	        map.put("v_code", "01");
+	        map.put("v_msg", "请求失败");
+	      }
+
+	    }
+	    catch (Exception localException)
+	    {
+	    }
+
+	    return map;
+	  }
 	
 }

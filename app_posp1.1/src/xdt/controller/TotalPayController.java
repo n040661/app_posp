@@ -1333,7 +1333,249 @@ public class TotalPayController extends BaseAction {
 			}
 		}
 	}
-	
+	@RequestMapping(value="jmNotifyUrl")
+	public void jmNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
+		log.info("金米代付异步来了！");
+		BufferedReader br;
+		String key ="";
+		String rsp_code="";
+		String rsp_msg ="";
+		String req_pay_no ="";
+		String account_name ="";
+		String account_id_no ="";
+		String account_mobile ="";
+		String account_branch ="";
+		String account_cnaps_no ="";
+		String account_card_no ="";
+		String order_amt ="";
+		String state ="";
+		String sign="";
+		Map<String, String> maps =new HashMap<>();
+		
+		try {
+			br = new BufferedReader(new InputStreamReader((ServletInputStream) request.getInputStream(), "UTF-8"));
+			String line = null;
+			StringBuffer sb = new StringBuffer();
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			String appMsg = sb.toString();
+			log.info("金米代付异步参数：" + appMsg);
+			
+			net.sf.json.JSONObject ob = net.sf.json.JSONObject.fromObject(appMsg);
+			Iterator it = ob.keys();
+			while (it.hasNext()) {
+				key = (String) it.next();
+				if (key.equals("rsp_code")) {
+					rsp_code = ob.getString(key);
+					System.out.println(rsp_code);
+				}
+				if (key.equals("rsp_msg")) {
+					rsp_msg = ob.getString(key);
+					System.out.println(rsp_msg);
+				}
+				if (key.equals("req_pay_no")) {
+					req_pay_no = ob.getString(key);
+					System.out.println(req_pay_no);
+				}
+				if (key.equals("account_name")) {
+					account_name = ob.getString(key);
+					System.out.println(account_name);
+				}
+				if (key.equals("account_id_no")) {
+					account_id_no = ob.getString(key);
+					System.out.println(account_id_no);
+				}
+				if (key.equals("account_mobile")) {
+					account_mobile = ob.getString(key);
+					System.out.println(account_mobile);
+				}
+				if (key.equals("account_branch")) {
+					account_branch = ob.getString(key);
+					System.out.println(account_branch);
+				}
+				if (key.equals("account_cnaps_no")) {
+					account_cnaps_no = ob.getString(key);
+					System.out.println(account_cnaps_no);
+				}
+				if (key.equals("account_card_no")) {
+					account_card_no = ob.getString(key);
+					System.out.println(account_card_no);
+				}
+				if (key.equals("order_amt")) {
+					order_amt = ob.getString(key);
+					System.out.println(order_amt);
+				}
+				if (key.equals("state")) {
+					state = ob.getString(key);
+					System.out.println(state);
+				}
+				if (key.equals("sign")) {
+					sign = ob.getString(key);
+					System.out.println(sign);
+				}
+
+			}
+		} catch (Exception e) {
+		log.info("获取金米代付异步参数异常："+e);
+		}
+		if(rsp_code!=""&&rsp_code!=null&&sign!=null&&sign!=""&&req_pay_no!=""&&req_pay_no!=null) {
+			log.info("来了！！！");
+			try {
+				outString(response, "SUCCESS");
+			} catch (IOException e) {
+				log.info("金米代付给上游发送参数异常："+e);
+				e.printStackTrace();
+			}
+			log.info("来了！！！!");
+			PmsDaifuMerchantInfo pmsDaifuMerchantInfo =new PmsDaifuMerchantInfo();
+			pmsDaifuMerchantInfo.setBatchNo(req_pay_no);
+			log.info("1来了！！！");
+			List<PmsDaifuMerchantInfo> pmsDaifuMerchantInfos =service.selectDaifu(pmsDaifuMerchantInfo);
+			log.info("2来了！！！");
+				ChannleMerchantConfigKey keyinfo=new ChannleMerchantConfigKey();
+				OriginalOrderInfo originalInfo=null;
+				try {
+					log.info("3来了！！！");
+					originalInfo  = this.gateWayService.getOriginOrderInfos(req_pay_no);
+					log.info("4来了！！！");
+					keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
+					log.info("5来了！！！");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				log.info("金米订单数据:" + JSON.toJSON(originalInfo));
+				
+				log.info("金米下游的异步地址" + originalInfo.getBgUrl());
+				maps.put("v_mid", originalInfo.getPid());
+				log.info("金米来了11！");
+				maps.put("v_oid", originalInfo.getOrderId());
+				log.info("金米来了22！");
+				maps.put("v_txnAmt", originalInfo.getOrderAmount());
+				log.info("金米来了33！");
+				maps.put("v_attach", originalInfo.getAttach());
+				log.info("金米来了44！");
+				maps.put("v_code", "00");
+				maps.put("v_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+				log.info("金米来了！33");
+				if("00".equals(rsp_code)) {
+					if("0".equals(state)){
+						maps.put("v_status", "0000");
+						maps.put("v_msg", "支付成功");
+						log.info("金米来了！11");
+						try {
+							service.UpdateDaifu(req_pay_no, "00");
+							log.info("金米来了！22");
+						} catch (Exception e) {
+							log.info("金米修改成功代付状态异常："+e);
+							e.printStackTrace();
+						}
+					}else if("1".equals(state)){
+						maps.put("v_status", "1001");
+						maps.put("v_msg", rsp_msg);
+						try {
+							service.UpdateDaifu(req_pay_no, "02");
+						} catch (Exception e) {
+							log.info("金米修改失败代付状态异常："+e);
+							e.printStackTrace();
+						}
+						Map<String, String> map =new HashMap<>();
+						map.put("machId",originalInfo.getPid());
+						map.put("payMoney",(Double.parseDouble(pmsDaifuMerchantInfos.get(0).getAmount())+Double.parseDouble(pmsDaifuMerchantInfos.get(0).getPayCounter()))*100+"");
+						int nus =service.updataPayT1(map);
+						if(nus==1) {
+							log.info("金米代付补款成功");
+							DaifuRequestEntity entity =new DaifuRequestEntity();
+			 				entity.setV_mid(pmsDaifuMerchantInfos.get(0).getMercId());
+			 				entity.setV_batch_no(pmsDaifuMerchantInfos.get(0).getBatchNo()+"/A");
+			 				entity.setV_amount(pmsDaifuMerchantInfos.get(0).getAmount());
+			 				entity.setV_sum_amount(pmsDaifuMerchantInfos.get(0).getAmount());
+			 				entity.setV_identity(pmsDaifuMerchantInfos.get(0).getIdentity());
+			 				entity.setV_cardNo(pmsDaifuMerchantInfos.get(0).getCardno());
+			 				entity.setV_city(pmsDaifuMerchantInfos.get(0).getCity());
+			 				entity.setV_province(pmsDaifuMerchantInfos.get(0).getProvince());
+			 				entity.setV_type("1");
+			 				entity.setV_pmsBankNo(pmsDaifuMerchantInfos.get(0).getPmsbankno());
+			 				PmsMerchantInfo merchantinfo =new PmsMerchantInfo();
+							int ii;
+							try {
+								ii = service.add(entity, merchantinfo, maps, "00");
+								log.info("金米补款订单状态："+ii);
+							} catch (Exception e) {
+								log.info("金米补款状态异常："+e);
+								e.printStackTrace();
+							}
+							
+						}else {
+							log.info("金米代付补款失败");
+						}
+					}
+				}else {
+					maps.put("v_status", "1001");
+					maps.put("v_msg", rsp_msg);
+					try {
+						service.UpdateDaifu(req_pay_no, "02");
+					} catch (Exception e) {
+						log.info("金米修改失败代付状态异常："+e);
+						e.printStackTrace();
+					}
+					Map<String, String> map =new HashMap<>();
+					map.put("machId",originalInfo.getPid());
+					map.put("payMoney",(Double.parseDouble(pmsDaifuMerchantInfos.get(0).getAmount())+Double.parseDouble(pmsDaifuMerchantInfos.get(0).getPayCounter()))*100+"");
+					int nus =service.updataPayT1(map);
+					if(nus==1) {
+						log.info("金米代付补款成功");
+						DaifuRequestEntity entity =new DaifuRequestEntity();
+		 				entity.setV_mid(pmsDaifuMerchantInfos.get(0).getMercId());
+		 				entity.setV_batch_no(pmsDaifuMerchantInfos.get(0).getBatchNo()+"/A");
+		 				entity.setV_amount(pmsDaifuMerchantInfos.get(0).getAmount());
+		 				entity.setV_sum_amount(pmsDaifuMerchantInfos.get(0).getAmount());
+		 				entity.setV_identity(pmsDaifuMerchantInfos.get(0).getIdentity());
+		 				entity.setV_cardNo(pmsDaifuMerchantInfos.get(0).getCardno());
+		 				entity.setV_city(pmsDaifuMerchantInfos.get(0).getCity());
+		 				entity.setV_province(pmsDaifuMerchantInfos.get(0).getProvince());
+		 				entity.setV_type("1");
+		 				entity.setV_pmsBankNo(pmsDaifuMerchantInfos.get(0).getPmsbankno());
+		 				PmsMerchantInfo merchantinfo =new PmsMerchantInfo();
+						int ii;
+						try {
+							ii = service.add(entity, merchantinfo, maps, "00");
+							log.info("金米补款订单状态："+ii);
+						} catch (Exception e) {
+							log.info("金米补款状态异常："+e);
+							e.printStackTrace();
+						}
+						
+					}else {
+						log.info("金米代付补款失败");
+					}
+				}
+				ScanCodeResponseEntity consume = (ScanCodeResponseEntity) BeanToMapUtil
+						.convertMap(ScanCodeResponseEntity.class, maps);
+				String signs = SignatureUtil.getSign(beanToMap(consume), keyinfo.getMerchantkey(), log);
+				maps.put("v_sign", signs);
+				String params = HttpURLConection.parseParams(maps);
+				log.info("金米代付给下游同步的数据:" + params);
+				try {
+					response.sendRedirect(originalInfo.getPageUrl()+"?"+params);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				logger.info("金米代付向下游 发送数据成功");
+			//}else {
+			//	log.info("异步验签失败！");
+			//}
+		}else {
+			try {
+				outString(response, "FAIL");
+			} catch (IOException e) {
+				log.info("金米代付给上游发送参数异常："+e);
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	@RequestMapping(value="selectPay")
 	public void selectPay(DaifuRequestEntity payRequest, HttpServletResponse response) {

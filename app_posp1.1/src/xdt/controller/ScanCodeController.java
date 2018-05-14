@@ -1174,5 +1174,167 @@ public class ScanCodeController extends BaseAction{
 		}
 		
 	}
-	
+	/**
+	 * 金米扫码异步
+	 * @param temp
+	 * @param response
+	 * @param request
+	 */
+	@RequestMapping(value="jmNotifyUrl")
+	public void jmNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
+		log.info("金米扫码异步参数！");
+		
+		BufferedReader br;
+		String rsp_code="";
+		String rsp_msg="";
+		String merchant_req_no="";
+		String merchant_rate="";
+		String order_amt="";
+		String biz_code="";
+		String state="";
+		String sign ="";
+		String key="";
+		try {
+			br = new BufferedReader(new InputStreamReader((ServletInputStream) request.getInputStream(), "UTF-8"));
+			String line = null;
+			StringBuffer sb = new StringBuffer();
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			String appMsg = sb.toString();
+			logger.info("金米扫码异步来了：" + appMsg);
+			net.sf.json.JSONObject ob = net.sf.json.JSONObject.fromObject(appMsg);
+			Iterator it = ob.keys();
+			while (it.hasNext()) {
+				key = (String) it.next();
+				if (key.equals("rsp_code")) {
+					rsp_code = ob.getString(key);
+					System.out.println(rsp_code);
+				}
+				if (key.equals("rsp_msg")) {
+					rsp_msg = ob.getString(key);
+					System.out.println(rsp_msg);
+				}
+				if (key.equals("merchant_req_no")) {
+					merchant_req_no = ob.getString(key);
+					System.out.println(merchant_req_no);
+				}
+				if (key.equals("merchant_rate")) {
+					merchant_rate = ob.getString(key);
+					System.out.println(merchant_rate);
+				}
+				if (key.equals("order_amt")) {
+					order_amt = ob.getString(key);
+					System.out.println(order_amt);
+				}
+				if (key.equals("biz_code")) {
+					biz_code = ob.getString(key);
+					System.out.println(biz_code);
+				}
+				if (key.equals("state")) {
+					state = ob.getString(key);
+					System.out.println(state);
+				}
+				if (key.equals("sign")) {
+					sign = ob.getString(key);
+					System.out.println(sign);
+				}
+				
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		log.info("金米异步返回参数：rsp_code="+rsp_code+",rsp_msg="+rsp_msg+",merchant_req_no="+merchant_req_no+",merchant_rate="+merchant_rate
+				+",order_amt="+order_amt+",biz_code="+biz_code+",state="+state+",sign="+sign);
+		Map<String, String> map =new HashMap<>();
+		String str ="";
+		if(merchant_req_no !=null &&merchant_req_no !="") {
+			str="SUCCESS";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("金米扫码返回信息异常"+e);
+				e.printStackTrace();
+			}
+			ChannleMerchantConfigKey keyinfo=new ChannleMerchantConfigKey();
+			OriginalOrderInfo originalInfo=null;
+			try {
+				originalInfo  = this.payService.getOriginOrderInfo(merchant_req_no);
+			} catch (Exception e) {
+				log.info("金米扫码查询原始订单信息返回异常");
+				e.printStackTrace();
+			}
+			keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
+			log.info("金米订单数据:" + JSON.toJSON(originalInfo));
+			
+			log.info("金米下游的异步地址" + originalInfo.getBgUrl());
+			map.put("v_mid", originalInfo.getPid());
+			map.put("v_oid", originalInfo.getOrderId());
+			map.put("v_txnAmt", originalInfo.getOrderAmount());
+			map.put("v_attach", originalInfo.getAttach());
+			map.put("v_code", "00");
+			map.put("v_msg", "成功");
+			if("00".equals(rsp_code)) {
+				if("0".equals(state)) {
+					map.put("v_status", "0000");
+					map.put("v_status_msg", "支付成功");
+				}else if("1".equals(state)) {
+					map.put("v_status", "1001");
+					map.put("v_status_msg", "支付失败");
+				}
+			}else {
+				map.put("v_status", "1001");
+				map.put("v_status_msg", "支付失败");
+			}
+			ScanCodeResponseEntity consume = (ScanCodeResponseEntity) BeanToMapUtil
+					.convertMap(ScanCodeResponseEntity.class, map);
+			try {
+				service.otherInvoke(consume);
+			} catch (Exception e1) {
+				log.info("金米修改状态失败");
+				e1.printStackTrace();
+			}
+			String signs = SignatureUtil.getSign(beanToMap(consume), keyinfo.getMerchantkey(), log);
+			map.put("v_sign", signs);
+			String params = HttpURLConection.parseParams(map);
+			log.info("金米给下游同步的数据:" + params);
+			String html="";
+			try {
+				html = HttpClientUtil.post(originalInfo.getBgUrl(),params);
+			}  catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		    logger.info("金米下游返回状态" + html);
+		    net.sf.json.JSONObject ob = net.sf.json.JSONObject.fromObject(html);
+			Iterator it = ob.keys();
+			Map<String, String> result = new HashMap<>();
+			while (it.hasNext()) {
+				String keys = (String) it.next();
+				if (keys.equals("success")) {
+					String value = ob.getString(keys);
+					logger.info("金米异步回馈的结果:" + "\t" + value);
+					result.put("success", value);
+				}
+			}
+			if (result.get("success").equals("false")) {
+
+				logger.info("启动线程进行异步通知");
+				// 启线程进行异步通知
+				ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(),params));
+			}
+			logger.info("金米向下游 发送数据成功");
+			
+		}else {
+			str="FALL";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("金米扫码返回信息异常");
+				e.printStackTrace();
+			}
+		}
+		
+	}
 }
