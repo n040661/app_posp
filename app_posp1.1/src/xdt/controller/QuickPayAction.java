@@ -287,12 +287,14 @@ public class QuickPayAction extends BaseAction {
 				logger.error("签名错误!");
 				result.put("v_code", "02");
 				result.put("v_msg", "签名错误!");
+				outString(response, gson.toJson(result));
 			}
 
 		} else {
 			logger.error("上送交易参数空!");
 			result.put("v_code", "01");
 			result.put("v_msg", "上送交易参数空");
+			outString(response, gson.toJson(result));
 		}
 
 	}
