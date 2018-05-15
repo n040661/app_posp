@@ -2762,7 +2762,7 @@ public class PayserviceImpl extends BaseServiceImpl implements IPayService {
 					});
 					
 					System.out.println("\n接口响应内容：" + res.getData());
-					
+					String orderStatus=res.getData().getOrderStatus().toString();
 					if("000000".equals(res.getCode())){
 						result.put("payDate", res.getData().getPayDate());
 						result.put("merchantCode", res.getData().getMerchantCode());
@@ -2770,13 +2770,13 @@ public class PayserviceImpl extends BaseServiceImpl implements IPayService {
 						result.put("payAmount", res.getData().getPayAmount());
 						result.put("orderId", res.getData().getOrderId());
 						result.put("requestId", res.getData().getRequestId());
-						if("2".equals(res.getData().getOrderStatus())){
+						if("2".equals(orderStatus)){
 							result.put("respCode", "00");
 							result.put("respMsg", "支付成功");
-						}else if("1".equals(res.getData().getOrderStatus())||"0".equals(res.getData().getOrderStatus())){
+						}else if("1".equals(orderStatus)||"0".equals(orderStatus)){
 							result.put("respCode", "200");
 							result.put("respMsg", "处理中");
-						}else{
+						}else if("3".equals(orderStatus)||"4".equals(orderStatus)||"5".equals(orderStatus)){
 							result.put("respCode", "01");
 							result.put("respMsg", "失败");
 						}

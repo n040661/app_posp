@@ -201,20 +201,20 @@ public class PayController extends BaseAction{
 		if(result!=null&&result.size()>0) {
 			
 		}else {
-			OriginalOrderInfo originalInfo;
-			try {
-				originalInfo = this.ihfbService.getOriginOrderInfo(payRequest.getMerchantId());
-				ThreadPool.executor(new PayThread(service, payRequest,originalInfo));
+			//OriginalOrderInfo originalInfo;
+			//try {
+				//originalInfo = this.ihfbService.getOriginOrderInfo(payRequest.getMerchantId());
+				//ThreadPool.executor(new PayThread(service, payRequest,originalInfo));
 				result.put("merchantId", payRequest.getMerchantId());
 				result.put("merchantCode", payRequest.getMerchantCode());
 				result.put("respCode", "00");
 				result.put("respMsg", "请求成功,请看异步或查询");
 				result.put("orderId",payRequest.getOrderId());
 				result.put("amount", payRequest.getAmount());
-			} catch (Exception e) {
+			//} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			//	e.printStackTrace();
+			//}
 		}
 		results1.putAll(result);
 		String paramSrc1 = RequestUtils.getParamSrc(results1);
@@ -295,7 +295,7 @@ public class PayController extends BaseAction{
 						service.updateByOrderId(orderId, orderStatus, result);//成功
 						respCode="00";
 						respMsg="成功";
-						Calendar cal1 = Calendar.getInstance();
+						/*Calendar cal1 = Calendar.getInstance();
 						TimeZone.setDefault(TimeZone.getTimeZone("GMT+8:00"));
 						java.text.SimpleDateFormat sdf = new SimpleDateFormat("kk:mm:ss");
 						log.info("真来了！！！1111");
@@ -309,7 +309,7 @@ public class PayController extends BaseAction{
 							map.put("type", "0");
 							//service.UpdatePmsMerchantInfo(originalInfo,map);
 					    }
-						log.info("真来了！！！333");
+						log.info("真来了！！！333");*/
 					}else if("3".equals(orderStatus)){
 						service.updateByOrderId(orderId, orderStatus, result);//请求超时
 						respCode="02";
