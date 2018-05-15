@@ -1046,7 +1046,7 @@
     join PMS_MERCHANT_INFO obj
     on obj.id = m.owner_id
     where t.business_num in ('10000173') and m.status='1')  and p.status in('200','2')
-   and p.tradetime between  TO_CHAR(sysdate-100/1440, 'yyyy-mm-dd hh24:mi:ss') and TO_CHAR(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+  <!--  and p.tradetime between  TO_CHAR(sysdate-100/1440, 'yyyy-mm-dd hh24:mi:ss') and TO_CHAR(sysdate, 'yyyy-mm-dd hh24:mi:ss') -->
  order by p.tradetime asc
 	</select>
 </mapper>

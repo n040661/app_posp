@@ -82,6 +82,7 @@ public class CJPayTiming {
 				    Map<String, String> result= new HashMap<>();
 				    payRequest.setMerchantId(pmsAppTransInfo.getMercid());
 				    payRequest.setOrderId(pmsAppTransInfo.getOrderid());
+				    payRequest.setMerchantCode(pmsAppTransInfo.getTotalpoundage());
 				    payRequest.setType("22");
 				    result = payService.select(payRequest, result);
 				    PospTransInfo posp = pospTransInfoDAO.searchBytransOrderId(pmsAppTransInfo.getOrderid());

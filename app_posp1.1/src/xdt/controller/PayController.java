@@ -3,7 +3,6 @@ package xdt.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,8 +22,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import xdt.dto.hj.HJRequest;
-import xdt.dto.pay.EncryptUtil;
 import xdt.dto.pay.PayRequest;
 import xdt.dto.pay.PayThread;
 import xdt.model.ChannleMerchantConfigKey;
@@ -245,7 +242,7 @@ public class PayController extends BaseAction{
 				sb.append(line);
 			}
 			String appMsg = sb.toString();
-			System.out.println(appMsg);
+			System.out.println("11111111111111:"+appMsg);
 			JSONObject json =JSONObject.parseObject(appMsg);
 			log.info("畅捷通异步参数:"+json);
 			String respCode=json.getString("respCode");

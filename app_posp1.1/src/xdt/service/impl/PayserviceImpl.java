@@ -2230,6 +2230,7 @@ public class PayserviceImpl extends BaseServiceImpl implements IPayService {
 							result.put("respCode", "01");
 							result.put("respMsg", res.getData().getRespMsg());
 							result.put("orderId",EncryptUtil.desDecrypt(res.getData().getOrderId(), pmsBusinessPos.getKek()));
+							updateByOrderId(transOrderId, "3", result);
 						}
 					}else{
 						result.put("respCode", "01");
@@ -2638,7 +2639,8 @@ public class PayserviceImpl extends BaseServiceImpl implements IPayService {
 	
 	@Override
 	public Map<String, String> updateByOrderId(String orderId,String orderStatus,Map<String, String> result) {
-		log.info("**************进入修改方法*************************");
+		log.info("**************进入修改方法*************************"+orderStatus);
+		
 		try {
 			// 流水表transOrderId
 			String transOrderId = "";
@@ -2719,8 +2721,8 @@ public class PayserviceImpl extends BaseServiceImpl implements IPayService {
 				log.info("tiken:"+token);
 				
 				String requestId = UUID.randomUUID().toString().replace("-", ""); // 请求流水号，每次请求保持唯一
-				String merchantCode = ""; // 合作商户编号，合作商户的唯一标识
-				String orderId = ""; // 商户订单号，商户系统保证唯一
+				String merchantCode = payRequest.getMerchantCode(); // 合作商户编号，合作商户的唯一标识
+				String orderId = payRequest.getOrderId(); // 商户订单号，商户系统保证唯一
 				String payNo = ""; //支付流水号
 
 				// 构建签名参数
@@ -2771,7 +2773,7 @@ public class PayserviceImpl extends BaseServiceImpl implements IPayService {
 						if("2".equals(res.getData().getOrderStatus())){
 							result.put("respCode", "00");
 							result.put("respMsg", "支付成功");
-						}else if("1".equals(res.getData().getOrderStatus())){
+						}else if("1".equals(res.getData().getOrderStatus())||"0".equals(res.getData().getOrderStatus())){
 							result.put("respCode", "200");
 							result.put("respMsg", "处理中");
 						}else{
