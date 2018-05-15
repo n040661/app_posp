@@ -54,6 +54,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.capinfo.crypt.Md5;
 import com.etonepay.b2c.utils.MD5;
+import com.kspay.MD5Util;
 import com.sun.corba.se.impl.logging.OMGSystemException;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -242,14 +243,6 @@ public class GateWayController extends BaseAction {
 					logger.info("上游通道信息:" + busInfo);
 					switch (busInfo.getChannelnum()) {// busInfo.getBusinessnum()
 					case "SXYWG":
-					/*case "13240":
-					case "12936":
-					case "12927":
-					case "12924":
-					case "12916":
-					case "12913":
-					case "16804":
-					case "12906":*/
 						logger.info("************************首信易----网关支付----处理 开始");
 						// 设置上送信息
 						String v_oid = UtilDate.getDate() + "-" + busInfo.getBusinessnum() + "-" + param.getV_oid();
@@ -331,8 +324,6 @@ public class GateWayController extends BaseAction {
 							log.info("没有上送的通道!");
 						}
 						break;
-					/*case "928000000012394":
-					case "928000000010449":*/
 					case "JS100669":
 						logger.info("************************江苏电商----网关支付----处理 开始");
 						Map<String, String> params = new HashMap<String, String>();
@@ -453,7 +444,6 @@ public class GateWayController extends BaseAction {
 							}
 						}
 						break;
-					/*case "600000000000722":*/
 					case "SXF":
 						logger.info("************************随行付----网关支付----处理 开始");
 						net.sf.json.JSONObject json = new net.sf.json.JSONObject();
@@ -532,7 +522,6 @@ public class GateWayController extends BaseAction {
 						result.put("pa_OrderPeriod", "0");
 						result.put("hmac", hmac);
 						break;
-					/*case "1800689259":*/
 					case "TXZF":
 						logger.info("************************天下支付----网关支付----处理 开始");
 						paramsMap.put("spid", busInfo.getBusinessnum());// 商户号 "1800071515"
@@ -591,7 +580,6 @@ public class GateWayController extends BaseAction {
 						result.remove("respMsg");
 
 						break;
-					/*case "100381":*/
 					case "HFB":
 						logger.info("************************汇付宝----网关支付----处理 开始");
 						Map<String, String> map2 = new HashMap<>();
@@ -608,8 +596,6 @@ public class GateWayController extends BaseAction {
 						map2.put("onlineType", HfbUtil.onlineType);
 						map2.put("signString", signString);
 						break;
-					/*case "800000200020011":
-					case "800001400010085":*/
 					case "JP":
 						logger.info("************************九派----网关支付----处理 开始");
 						Map<String, String> dataMap = new LinkedHashMap<String, String>();
@@ -669,7 +655,6 @@ public class GateWayController extends BaseAction {
 						result.put("merchantSign", merchantSign);
 						result.put("merchantCert", merchantCert);
 						break;
-					/*case "9001002015":*/
 					case "YY":
 						logger.info("************************甬易----网关支付----处理 开始");
 						// HashMap <String,String> payParam=new HashMap<String,String>();
@@ -700,10 +685,6 @@ public class GateWayController extends BaseAction {
 						// 签名
 						result.put("sign", sign3);
 						break;
-
-					/*case "000001110100000812":
-					case "000001220100000470":
-					case "000001110100000663":*/
 					case "YFWG":
 						logger.info("************************----裕福  网关支付----处理 开始");
 						Map<String, String> params1 = new HashMap<String, String>();
@@ -734,7 +715,6 @@ public class GateWayController extends BaseAction {
 						if (!"".equals(param.getV_attach())) {
 							params1.put("msgExt", param.getV_attach());
 						}
-
 						System.out.println("网银-置单上送报文：" + params1.toString());
 						final String merCertPath = new File(this.getClass().getResource("/").getPath()).getParentFile()
 								.getParentFile().getCanonicalPath() + "/ky/" + params1.get("merchantId") + ".cer";
@@ -755,7 +735,6 @@ public class GateWayController extends BaseAction {
 						log.info("置单返回数据：" + JSON.toJSONString(result));
 
 						break;
-					/*case "14270526":*/
 					case "SD":
 						logger.info("************************----杉德  网关支付----处理 开始");
 						// 组后台报文
@@ -777,12 +756,10 @@ public class GateWayController extends BaseAction {
 						body.setClientIp(InetAddress.getLocalHost().getHostAddress());
 						body.setNotifyUrl(BaseUtil.url+"/gateWay/sd_notifyUrl.action");
 						body.setFrontUrl(BaseUtil.url+"/gateWay/sd_returnUrl.action");
-
 						logger.info("下游上送的银行编码:" + param.getV_bankAddr());
 						PayBankInfo bank = new PayBankInfo();
 						bank.setBank_code(param.getV_bankAddr());
 						List<PayBankInfo> list = PayBankInfoService.selectBankCodes(bank);
-
 						bank = list.get(0);
 						String bancode = bank.getBank_code_id();
 						logger.info("查询银行信息:" + bancode);
@@ -816,7 +793,6 @@ public class GateWayController extends BaseAction {
 							e.printStackTrace();
 						}
 						break;
-					/*case "888888888888888":*/// 聚佰宝网关
 					case "JBB":
 						logger.info("************************----聚佰宝  网关支付----处理 开始");
 
@@ -917,42 +893,71 @@ public class GateWayController extends BaseAction {
 						result.put("signValue", signValue);
 						logger.info("聚佰宝上送的数据:" + result);
 						break;
+					case "YSB":
+						logger.info("#############银生宝网关支付处理 开始#############");
+						version = "3.0.0";
+					    merchantId = busInfo.getBusinessnum();
+					    String merchantUrl=BaseUtil.url+"/gateWay/ysb_notifyUrl.action";
+					    String responseMode="2";
+						String orderId = param.getV_oid();
+						currencyType="CNY";
+				        String amounts=param.getV_txnAmt();
+				        String assuredPay="false";
+				        String time=param.getV_time();
+				        String remark=param.getV_attach();
+				        bankCode=param.getV_bankAddr().toLowerCase();
+				        String b2b="";
+						String commodity = param.getV_productDesc();
+						String orderUrl = "";
+						String cardAssured="";
+						String frontURL = BaseUtil.url+"/gateWay/ysb_returnUrl.action?orderId="+orderId;
+						String keys = busInfo.getKek();
+						String strss="merchantId=" + merchantId + "&merchantUrl=" + merchantUrl + "&responseMode="
+								+ responseMode + "&orderId=" + orderId + "&currencyType=" + currencyType
+								+ "&amount=" + amounts + "&assuredPay=" + assuredPay +"&time=" + time
+								+ "&remark=" + remark + "&merchantKey=" + keys;
+						logger.info("银生宝生成签名前的数据:" + strss);
+						String signs = xdt.quickpay.conformityQucikPay.util.MD5Util.MD5Encode(strss.replaceAll("", "")).toUpperCase();
+						logger.info("银生宝生成的签名:" + signs);
+						result.put("version", version);
+						result.put("merchantId", merchantId);
+						result.put("merchantUrl", merchantUrl);
+						result.put("responseMode", responseMode);
+						result.put("orderId", orderId);
+						result.put("currencyType", currencyType);
+						result.put("amount", amounts);
+						result.put("assuredPay", assuredPay);
+						result.put("time", time);
+						result.put("remark", remark);
+						result.put("bankCode", bankCode);
+						result.put("commodity", commodity);
+						result.put("merchantKey", keys);
+						result.put("frontURL", frontURL);
+						result.put("mac", signs);
+						break;
 					default:
 						break;
 
 					}
 					switch (busInfo.getChannelnum()) {
-					/*case "13240":
-					case "12936":
-					case "12927":
-					case "12924":
-					case "12916":
-					case "12913":
-					case "16804":
-					case "12906":*/
 					case "SXYWG":
 						logger.info("************************首信易----网关支付----请求开始");
 						html = EffersonPayService.createAutoFormHtml(
 								"https://www.joinpay.com/gateway/gateway_init.action", result, "UTF-8");
 						outString(response, html);
 						break;
-					/*case "928000000012394":
-					case "928000000010449":*/
 					case "JS100669":
 						logger.info("************************江苏电商----网关支付----请求开始");
 						html = EffersonPayService.createAutoFormHtml(
 								"https://www.joinpay.com/gateway/gateway_init.action", result, "UTF-8");
 						outString(response, html);
 						break;
-					/*case "600000000000722":*/
 					case "SXF":
 						logger.info("************************随行付----网关支付----请求开始");
 						html = EffersonPayService.createAutoFormHtml(
 								"https://www.joinpay.com/gateway/gateway_init.action", result, "UTF-8");
 						outString(response, html);
 						break;
-					/*case "888101600000961":
-					case "888101700004594":*/
 					case "HJZF":
 						logger.info("************************汇聚----网关支付----请求开始");
 						result.remove("v_msg");
@@ -962,7 +967,6 @@ public class GateWayController extends BaseAction {
 								"https://www.joinpay.com/gateway/gateway_init.action", result, "UTF-8");
 						outString(response, html);
 						break;
-					/*case "1800689259":*/
 					case "TXZF":
 						logger.info("************************天下支付----网关支付----请求开始");
 						html = result.get("cipher_data");
@@ -971,15 +975,12 @@ public class GateWayController extends BaseAction {
 						response.sendRedirect(path.replace(" ", " "));
 						log.info("*******************执行完毕**************************");
 						break;
-					/*case "100381":*/
 					case "HFB":
 						logger.info("************************汇付宝----网关支付----请求开始");
 						html = EffersonPayService.createAutoFormHtml(
 								"https://www.joinpay.com/gateway/gateway_init.action", result, "UTF-8");
 						outString(response, html);
 						break;
-					/*case "800000200020011":
-					case "800001400010085":*/
 					case "JP":
 						logger.info("************************九派----网关支付----请求开始");
 						String url = "";
@@ -992,7 +993,6 @@ public class GateWayController extends BaseAction {
 						html = EffersonPayService.createAutoFormHtml(url, result, "UTF-8");
 						outString(response, html);
 						break;
-					/*case "9001002015":*/
 					case "YY":
 						logger.info("************************甬易----网关支付----请求开始");
 						result.remove("v_msg");
@@ -1001,10 +1001,6 @@ public class GateWayController extends BaseAction {
 								result, "UTF-8");
 						outString(response, html);
 						break;
-
-					/*case "000001110100000812":
-					case "000001220100000470":
-					case "000001110100000663":*/
 					case "YFWG":
 						logger.info("************************裕福----网关支付----请求开始");
 						//
@@ -1019,14 +1015,22 @@ public class GateWayController extends BaseAction {
 						logger.info("跳转的组装页面：" + html);
 						outString(response, html);
 						break;
-					/*case "888888888888888":*/// 聚佰宝网关
-					case "JBB":
+					case "JBB":// 聚佰宝网关
 						logger.info("************************聚佰宝----网关支付----请求开始");
 						result.remove("v_msg");
 						result.remove("v_code");
 						logger.info("上送的数据:" + result);
 						html = EffersonPayService.createAutoFormHtml(
 								"https://cashier.etonepay.com/NetPay/BankSelect.action", result, "UTF-8");
+						outString(response, html);
+						break;
+					case "YSB"://银生宝网关
+						logger.info("************************银生宝----网关支付----请求开始");
+						result.remove("v_msg");
+						result.remove("v_code");
+						logger.info("上送的数据:" + result);
+						html = EffersonPayService.createAutoFormHtml(
+								"https://www.unspay.com/unspay/page/linkbank/payRequest.do", result, "UTF-8");
 						outString(response, html);
 						break;
 					default:
@@ -1707,6 +1711,130 @@ public class GateWayController extends BaseAction {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * 银生宝网关异步响应信息
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "ysb_notifyUrl")
+	public void ysbnotifyUrl(HttpServletResponse response, HttpServletRequest request) {
+		try {
+			logger.info("银生宝网关异步通知来了");
+			Map<String, String> result = new HashMap<String, String>();	
+			String merchantId = request.getParameter("merchantId");
+			String merchantKey = "liangshuai123"; //密钥
+			String responseMode = request.getParameter("responseMode");
+			 String orderId = request.getParameter("orderId");
+			 String currencyType = request.getParameter("currencyType");
+			 String amount = request.getParameter("amount");
+			String returnCode = request.getParameter("returnCode");
+			String returnMessage = request.getParameter("returnMessage");
+			logger.info("银生宝网关异步响应订单号：" + orderId);
+			logger.info("银生宝网关异步响应状态描述：" + returnMessage);
+			logger.info("银生宝网关异步响应状态码：" + returnCode);
+			String mac = request.getParameter("mac") ;
+			boolean success = "0000".equals(returnCode);
+			boolean paid = "0001".equals(returnCode);
+			StringBuffer s = new StringBuffer(50);
+			//拼成数据串
+			s.append("merchantId=").append(merchantId);
+			s.append("&responseMode=").append(responseMode);
+			s.append("&orderId=").append(orderId);
+			s.append("&currencyType=").append(currencyType);
+			s.append("&amount=").append(amount);
+			s.append("&returnCode=").append(returnCode);
+			s.append("&returnMessage=").append(returnMessage);
+			s.append("&merchantKey=").append(merchantKey);
+			//md5加密
+			String nowMac = new MD5().getMD5ofStr(s.toString());
+			if(nowMac.equals(mac)){ //若mac校验匹配
+				response.getWriter().write("success");
+				OriginalOrderInfo originalInfo = null;
+							
+					// 查询原始订单信息
+					if (orderId != null && orderId != "") {
+						originalInfo = this.gateWayService.getOriginOrderInfo(orderId);
+					}
+					logger.info("银生宝绑卡异步订单数据:" + JSON.toJSON(originalInfo));
+					// 订单信息
+					PmsAppTransInfo pmsAppTransInfo = pmsAppTransInfoService.searchOrderInfo(originalInfo.getOrderId());
+					if (pmsAppTransInfo != null) {
+						logger.info("回调订单信息数据：" + JSON.toJSON(pmsAppTransInfo));
+						if (!"0".equals(pmsAppTransInfo.getStatus())) {
+							logger.info("订单表信息" + pmsAppTransInfo);
+							result.put("v_oid", originalInfo.getOrderId());
+							result.put("v_txnAmt", originalInfo.getOrderAmount());
+							result.put("v_code", "00");
+							result.put("v_attach", originalInfo.getAttach());
+							result.put("v_mid", originalInfo.getPid());
+							result.put("v_time", UtilDate.getTXDateTime());
+							if ("0000".equals(returnCode)) {
+								result.put("v_status", "0000");
+								result.put("v_msg", "支付成功");
+							} else {
+								result.put("v_status", "1001");
+								result.put("v_msg", "支付失败:"+request.getParameter("returnMessage"));
+								logger.info("交易错误码:" + request.getParameter("returnCode") + ",错误信息:"
+										+ request.getParameter("returnMessage"));
+							}
+							ChannleMerchantConfigKey keyinfo = gateWayService.getChannelConfigKey(originalInfo.getPid());
+							// 获取商户秘钥
+							String key = keyinfo.getMerchantkey();
+							GateWayQueryResponseEntity gatewey = (GateWayQueryResponseEntity) BeanToMapUtil
+									.convertMap(GateWayQueryResponseEntity.class, result);
+							// 修改订单状态
+							gateWayService.otherInvoke(gatewey);
+
+							// 生成签名
+							String sign = SignatureUtil.getSign(beanToMap(gatewey), key, log);
+							result.put("v_sign", sign);
+
+							logger.info("异步之前的参数：" + result);
+							ConsumeResponseEntity consumeResponseEntity = (ConsumeResponseEntity) BeanToMapUtil
+									.convertMap(ConsumeResponseEntity.class, result);
+							Bean2QueryStrUtil bean2Util = new Bean2QueryStrUtil();
+							logger.info("异步给下游传的数据参数：" + bean2Util.bean2QueryStr(consumeResponseEntity));
+							String html = HttpClientUtil.post(originalInfo.getBgUrl(),
+									bean2Util.bean2QueryStr(consumeResponseEntity));
+							logger.info("下游返回状态" + html);
+							JSONObject ob = JSONObject.fromObject(html);
+							Iterator it = ob.keys();
+							Map<String, String> map = new HashMap<>();
+							while (it.hasNext()) {
+								String keys = (String) it.next();
+								if (keys.equals("success")) {
+									String value = ob.getString(keys);
+									logger.info("异步回馈的结果:" + "\t" + value);
+									map.put("success", value);
+								}
+							}
+							if (map.get("success").equals("false")) {
+
+								logger.info("启动线程进行异步通知");
+								// 启线程进行异步通知
+								ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(),
+										bean2Util.bean2QueryStr(consumeResponseEntity)));
+							}
+							logger.info("银生宝网关向下游 发送数据成功");					
+					}
+				}				
+			}else{ //若mac校验不匹配
+				logger.error("回调的参数为空!");
+				result.put("v_code", "15");
+				result.put("v_msg", "请求失败");
+			}	
+		outString(response, gson.toJson(result));
+		} catch (
+
+		Exception e) {
+			logger.info("银生宝异步回调异常:" + e);
+			e.printStackTrace();
+		}
+		
+	}
+
 
 	
 	/**
@@ -2121,7 +2249,76 @@ public class GateWayController extends BaseAction {
 		}
 
 	}
+	/**
+	 * 银生宝网关同步响应信息
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "ysb_returnUrl")
+	public void ysbReturnUrl(HttpServletResponse response, HttpServletRequest request) {
 
+		try {
+			logger.info("##########银生宝同步数据返回参数##############");
+			String orderId = request.getParameter("orderId");
+
+			OriginalOrderInfo originalInfo = null;
+			if (orderId != null && orderId != "") {
+				originalInfo = this.gateWayService.getOriginOrderInfo(orderId);
+			}
+			logger.info("订单数据:" + JSON.toJSON(originalInfo));
+			Bean2QueryStrUtil queryUtil = new Bean2QueryStrUtil();
+			logger.info("下游的同步地址" + originalInfo.getPageUrl());
+			TreeMap<String, String> result = new TreeMap<String, String>();
+			String params = "";
+			if (!StringUtils.isEmpty(orderId)) {
+				ChannleMerchantConfigKey keyinfo = gateWayService.getChannelConfigKey(originalInfo.getPid());
+				// 获取商户秘钥
+				String key = keyinfo.getMerchantkey();
+				result.put("v_oid", originalInfo.getOrderId());
+				result.put("v_txnAmt", originalInfo.getOrderAmount());
+				result.put("v_code", "00");
+				result.put("v_msg", "请求成功");
+				result.put("v_time", originalInfo.getOrderTime());
+				result.put("v_mid", originalInfo.getPid());
+				ConsumeResponseEntity consume = (ConsumeResponseEntity) BeanToMapUtil
+						.convertMap(ConsumeResponseEntity.class, result);
+				String sign = SignatureUtil.getSign(beanToMap(consume), key, log);
+				result.put("v_sign", sign);
+				params = HttpURLConection.parseParams(result);
+				logger.info("给下游同步的数据:" + params);
+				request.getSession();
+				try {
+					// 给下游手动返回支付结果
+					if (originalInfo.getPageUrl().indexOf("?") == -1) {
+
+						String path = originalInfo.getPageUrl() + "?" + params;
+						logger.info("pageUrl 商户页面 重定向：" + path);
+
+						response.sendRedirect(path.replace(" ", ""));
+					} else {
+						logger.info("pageUrl 商户页面 重定向：" + originalInfo.getPageUrl());
+						String path = originalInfo.getPageUrl() + "&" + params;
+						logger.info("pageUrl 商户页面 重定向：" + path);
+						response.sendRedirect(path.replace(" ", ""));
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+
+			} else {
+				logger.info("没有收到聚佰宝的同步数据");
+				// outString(response, str);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+	}
 	/**
 	 * bean 转化为实体
 	 * 
