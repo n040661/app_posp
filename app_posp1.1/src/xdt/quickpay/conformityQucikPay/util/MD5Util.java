@@ -56,11 +56,22 @@ public class MD5Util {
 		try {
 			resultString = origin;
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			resultString = byteArrayToHexString(md.digest(resultString.getBytes()));
+			resultString = byteArrayToHexString(md.digest(resultString.getBytes("UTF-8")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resultString;
+	}
+	public static void main(String[] args) {
+		
+		String str="merchantId=2120180507170850001&merchantUrl=http://60.28.24.164:8102/app_posp/gateWay/ysb_notifyUrl.action&responseMode=2&orderId=1526348798334&currencyType=CNY&amount=100&assuredPay=false&time=20180515094638&remark=担担面&merchantKey=liangshuai123";
+		
+		String sign=MD5Encode(str);
+		
+		System.out.println(sign);
+		
+		String a="ABC";
+		System.out.println(a.toLowerCase());
 	}
 
 }

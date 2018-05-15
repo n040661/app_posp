@@ -133,7 +133,7 @@ public class SignatureUtil {
 	}
 	public static void main(String[] args) {
 		
-		String aa="v_attach=BWJ20180319183532786751&v_bankAddr=CEB&v_cardType=1&v_channel=0&v_currency=1&v_expire_time=60&v_mid=10043046611&v_notify_url=https://member.goldwang.cn/notify/changjiezhifu?ext1=3bafqxFzfkkLY1TVpmMHiTOYAmUec7Knq4eHuH_2BJ12s6QlNLGYd8bRWishetTJMocDiMAaC0&v_oid=BWJ20180319183532786751&v_productDesc=用户充值&v_productName=BWJ20180319183532786751&v_productNum=1&v_time=20180319183536&v_txnAmt=641.23&v_type=0&v_url=https:///member.goldwang.cn/member/changjiezhifuback&v_version=1.0.0.07d2feb66b6474964adcbfebe82e29744";
+		String aa="merchantId=2120180507170850001&merchantUrl=http://60.28.24.164:8102/app_posp/gateWay/ysb_notifyUrl.action&responseMode=2&orderId=1526281594233&currencyType=CNY&amount=10&assuredPay=false&time=20180514150634&remark=担担面&merchantKey=liangshuai123";
 		
 		//String result=aa+"060800f2001d413d813a532ea84fa08a";
 		String sign=MD5Util.MD5Encode(aa).toUpperCase();
