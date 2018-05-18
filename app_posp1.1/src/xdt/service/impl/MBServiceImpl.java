@@ -1895,7 +1895,7 @@ public class MBServiceImpl extends BaseServiceImpl implements IMBService {
 		}
 		public static void main(String[] args) {
 			try {
-				System.out.println(URLDecoder.decode("%B8%C3%C9%CC%BB%A7%B2%BB%B4%E6%D4%DA%BB%F2%D5%DF%C9%CC%BB%A7%D7%B4%CC%AC%CE%AA%BD%FB%D6%B9%2C%C7%EB%C1%AA%CF%B5%C4%A6%B1%A6%BF%CD%B7%FE","GBK"));
+				System.out.println(URLDecoder.decode("%CF%B5%CD%B3%B4%ED%CE%F3%2C%C7%EB%C1%AA%CF%B5%C4%A6%B1%A6%BF%CD%BB%A7%B7%FE%CE%F1","GBK"));
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

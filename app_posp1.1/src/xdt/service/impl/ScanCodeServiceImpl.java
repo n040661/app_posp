@@ -523,6 +523,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		original.setCertNo(entity.getV_subMerchantNo());
 		original.setBankId(entity.getV_merchantBankCode());
 		original.setSumCode(entity.getV_clientIP());
+		original.setAttach(entity.getV_attach());
 		int ii=0;
 		try {
 			ii = originalDao.insert(original);
@@ -1159,18 +1160,24 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 			map.put("channel","alipayQR");//支付宝
 		}else if("UNIONPAY_NATIVE".equals(entity.getV_cardType())) {
 			map.put("channel","unionpayQR");//银联二维码
+		}else if("QQ_NATIVE".equals(entity.getV_cardType())) {
+			map.put("channel","qqQr");//qq扫码
+		}else if("JD_NATIVE".equals(entity.getV_cardType())) {
+			map.put("channel","jdQR");//京东扫码
+		}else if("SUNING_NATIVE".equals(entity.getV_cardType())) {
+			map.put("channel","suningQr");//苏宁扫码
 		}
 		map.put("mchId", "000010010");
 		map.put("notifyUrl",ScanCodeUtil.jhjNotifyUrl);
 		map.put("outTradeNo",entity.getV_oid());
 		map.put("settleCycle", "0");
-		map.put("subMchId", "000010010000000014");
+		map.put("subMchId", pmsBusinessPos.getBusinessnum());
 		map.put("tradeType","cs.pay.submit");//
 		map.put("version", "1.5");
        
         String paramSrc = RequestUtils.getParamSrcs(map);
 		log.info("签名前数据**********支付:" + paramSrc);
-		String md5 = MD5Utils.sign(paramSrc, "50fa943f81b146da9cfa544108efd461", "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
+		String md5 = MD5Utils.sign(paramSrc, pmsBusinessPos.getKek(), "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
 		System.out.println(md5);
 		map.put("sign", md5);
 		log.info(JSON.toJSONString(map));

@@ -3968,7 +3968,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 		// 流水表transOrderId
 		String transOrderId = result.getV_oid();
 		// 流水信息
-		PospTransInfo pospTransInfo = pospTransInfoDAO.searchBytransOrderId(transOrderId);
+		PospTransInfo pospTransInfo = pospTransInfoDAO.searchBycjtOrderId(transOrderId);
 		logger.info("流水表信息" + pospTransInfo);
 		// 订单信息
 		PmsAppTransInfo pmsAppTransInfo = pmsAppTransInfoDao.searchOrderInfo(pospTransInfo.getOrderId());
