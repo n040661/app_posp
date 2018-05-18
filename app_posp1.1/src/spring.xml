@@ -83,16 +83,16 @@
     	<task:scheduled ref="user5" method="daifuTimeSelect" cron="0/3 * * * * ? " />  
     	  	
 	</task:scheduled-tasks> -->
-	<!--
-	  <bean id="user6" class="xdt.aspect.CJPayTiming" />
+	
+	 <!--  <bean id="user6" class="xdt.aspect.CJPayTiming" />
 	   <task:scheduled-tasks>
 	<task:scheduled ref="user6" method="CJPayTimingSelect"
 		cron="0 0/1 * * * ? " />  
 	</task:scheduled-tasks>  
 	 <task:scheduled-tasks>
 	<task:scheduled ref="user6" method="CJTimingSelect"
-		cron="0 0/10 * * * ? " />  
+		cron="0/5 * * * * ? " />  
     	  	
-	</task:scheduled-tasks>  -->
+	</task:scheduled-tasks>   -->
 	
 </beans>
