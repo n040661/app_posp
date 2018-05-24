@@ -2199,7 +2199,10 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									if ("1".equals(originalinfo.getV_accountType())) {
 										reqMaps.put("cardType", "P1");
 									} else if ("2".equals(originalinfo.getV_accountType())) {
-										reqMaps.put("cardType", "P2");
+										retMap.put("v_code", "01");
+										retMap.put("v_msg", "此商户不支持贷记卡");
+										return retMap;
+										//reqMaps.put("cardType", "P2");
 									} else {
 										retMap.put("v_code", "01");
 										retMap.put("v_msg", "v_accountType is null");
