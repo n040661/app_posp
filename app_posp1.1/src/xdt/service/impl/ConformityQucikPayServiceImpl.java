@@ -328,28 +328,29 @@ public class ConformityQucikPayServiceImpl extends BaseServiceImpl implements IC
 							this.logger.info("################摩宝(WAP)支付开始处理#################");
 							retMap.put("versionId", "001");
 							retMap.put("businessType", "1100");
-							retMap.put("merId", "936640995770000");
+							retMap.put("merId", "936327552190000");
 							retMap.put("orderId", originalinfo.getV_oid());
 							retMap.put("transDate", originalinfo.getV_time());
 							retMap.put("transAmount", originalinfo.getV_txnAmt());
 							retMap.put("transCurrency", "156");
 							retMap.put("transChanlName", "UNIONPAY");
 
-							retMap.put("pageNotifyUrl", "ssss");
-							retMap.put("backNotifyUrl", "ssss");
+							retMap.put("pageNotifyUrl", BaseUtil.url + "/conformity/mbReturnUrl.action");
+							retMap.put("backNotifyUrl", BaseUtil.url + "/conformity/mbNotifyUrl.action");
 							String attch = new String(originalinfo.getV_attach().getBytes("ISO-8859-1"), "GBK");
 							retMap.put("dev", attch);
 
-							String signstr = "versionId=001&businessType=1100&merId=936640995770000&orderId="
+							String signstr = "versionId=001&businessType=1100&merId=936327552190000&orderId="
 									+ originalinfo.getV_oid() + "&transDate=" + originalinfo.getV_time()
 									+ "&transAmount=" + originalinfo.getV_txnAmt()
 									+ "&transCurrency=156&transChanlName=UNIONPAY&pageNotifyUrl="
 									+ ((String) retMap.get("pageNotifyUrl")).toString() + "&backNotifyUrl="
 									+ ((String) retMap.get("backNotifyUrl")).toString() + "&dev=" + attch;
 							this.logger.info("需要签名的明文" + signstr);
-							String signtrue = MD5Util.MD5Encode(signstr + "072C15B8D473BB29");
+							String signtrue = MD5Util.MD5Encode(signstr + "10ED8DE4DFE53D48");
 
 							retMap.put("signData", signtrue);
+							retMap.put("v_code", "00");
 							break;
 						case "YBLS":
 							this.logger.info("################易宝(WAP)支付开始处理#################");

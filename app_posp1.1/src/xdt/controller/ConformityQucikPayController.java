@@ -42,6 +42,7 @@ import xdt.quickpay.conformityQucikPay.util.SignatureUtil;
 import xdt.schedule.ThreadPool;
 import xdt.service.IConformityQucikPayService;
 import xdt.util.HttpURLConection;
+import xdt.util.RSAUtil;
 
 @Controller
 @RequestMapping("conformity")
@@ -138,6 +139,7 @@ public class ConformityQucikPayController extends BaseAction {
 	        {
 				switch (pmsBusinessPos.getChannelnum()) {
 				case "MBXHF": // 摩宝快捷银联
+					result.remove("v_code");
 					logger.info("摩宝快捷上送的数据:" + result);
 					String params = HttpURLConection.parseParams(result);
 					logger.info("摩宝快捷上送的数据:" + params);
@@ -552,6 +554,7 @@ public class ConformityQucikPayController extends BaseAction {
 					logger.info("摩宝支付异步回调地址:" + originalInfo.getBgUrl());
 					result.put("v_mid", originalInfo.getPid());
 					result.put("v_oid", originalInfo.getOrderId());
+					result.put("v_userId", originalInfo.getUserId());
 					result.put("v_txnAmt", originalInfo.getOrderAmount());
 					result.put("v_time", originalInfo.getOrderTime());
 					result.put("v_code", "00");
@@ -561,13 +564,6 @@ public class ConformityQucikPayController extends BaseAction {
 
 						result.put("v_payStatus", "0000");
 						result.put("v_payMsg", "支付成功");
-						int i = conformityService.updatePmsMerchantInfo(originalInfo);
-						if (i > 0) {
-							logger.info("魔宝*****实时入金完成");
-						} else {
-							logger.info("魔宝*****实时入金失败");
-						}
-
 					} else {
 						result.put("v_payStatus", "1001");
 						result.put("v_payMsg", "支付失败:"+URLDecoder.decode(request.getParameter("payMsg"), "UTF-8"));
@@ -798,15 +794,32 @@ public class ConformityQucikPayController extends BaseAction {
 		@RequestMapping(value = "jsReturnUrl")
 		public void jsReturnUrl(HttpServletRequest request, HttpServletResponse response) {
 			try {
+				response.setHeader("content-type","text/html;charset=uft-8");
+				response.setContentType("text/html;charset=uft-8");
 				logger.info("###########江苏电商支付同步#############");
-				String orderNum = request.getParameter("orderNum");
-				String pl_payState = request.getParameter("pl_payState");
-				String pl_payMessage = request.getParameter("pl_payMessage");
-				String pl_orderNum = request.getParameter("pl_orderNum");
-				logger.info("江苏电商支付异步响应用户ID：" + pl_orderNum);
-				logger.info("江苏电商支付异步响应订单号：" + orderNum);
-				logger.info("江苏电商支付异步响应描述：" + pl_payMessage);
-				logger.info("江苏电商支付异步响应状态码：" + pl_payState);
+				request.setCharacterEncoding("UTF-8");
+				String pl_sign=new String(request.getParameter("pl_sign").getBytes("ISO-8859-1"),"UTF-8");
+				//String baseSign= URLDecoder.decode(pl_sign, "UTF-8");
+                logger.info("江苏电商同步返回的签名:"+pl_sign);
+				String baseSign = pl_sign.replace(" ", "+");
+
+				byte[] a = RSAUtil.verify("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSUnSUG5I3Xh2ANLpC5xLe96WCVQG+A5iPBKPqRKBcF2OCdCtwNs8X40nyqYnVWqhkZwGiItT4+wFc04boL1Az01UJiZBLqmOumU0mxyyKCqGwFZakl3LWI4u2IBDuwyde3muXZDWtSDBH1k2BKzOHju3eeSicZu5D7SQ1Hol7AwIDAQAB",RSAUtil.base64Decode(baseSign.replace(" ", "")));
+
+				String Str = new String(a);
+
+				logger.info("江苏电商解析之后的数据:" + Str);
+				String[] array = Str.split("\\&");
+
+				logger.info("江苏电商拆分数据:" + array);
+				String[] list = array[0].split("\\=");
+				String orderNum = array[0].replace("orderNum=", "");
+				String pl_orderNum = array[1].replace("pl_orderNum=", "");
+				String pl_payState = array[2].replace("pl_payState=", "");
+				String pl_payMessage = array[3].replace("pl_payMessage=", "");
+				logger.info("江苏电商支付同步响应用户ID：" + pl_orderNum);
+				logger.info("江苏电商支付同步响应订单号：" + orderNum);
+				logger.info("江苏电商支付同步响应描述：" + pl_payMessage);
+				logger.info("江苏电商支付同步响应状态码：" + pl_payState);
 				OriginalOrderInfo originalInfo = null;
 				if (orderNum != null && orderNum != "") {
 					originalInfo = conformityService.getOriginOrderInfo(orderNum);
@@ -874,17 +887,31 @@ public class ConformityQucikPayController extends BaseAction {
 			try {
 				logger.info("#############江苏电商支付异步##############");
 				TreeMap<String, String> result = new TreeMap<>();
-				String orderNum = request.getParameter("orderNum");
-				String pl_payState = request.getParameter("pl_payState");
-				String pl_payMessage = request.getParameter("pl_payMessage");
-				String pl_orderNum = request.getParameter("pl_orderNum");
+				String pl_sign=request.getParameter("pl_sign");
+				String baseSign= URLDecoder.decode(pl_sign, "UTF-8");
+
+				baseSign = baseSign.replace(" ", "+");
+
+				byte[] a = RSAUtil.verify("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSUnSUG5I3Xh2ANLpC5xLe96WCVQG+A5iPBKPqRKBcF2OCdCtwNs8X40nyqYnVWqhkZwGiItT4+wFc04boL1Az01UJiZBLqmOumU0mxyyKCqGwFZakl3LWI4u2IBDuwyde3muXZDWtSDBH1k2BKzOHju3eeSicZu5D7SQ1Hol7AwIDAQAB",RSAUtil.base64Decode(baseSign));
+
+				String Str = new String(a);
+
+				System.out.println("江苏电商解析之后的数据:" + Str);
+				String[] array = Str.split("\\&");
+
+				System.out.println("江苏电商拆分数据:" + array);
+				String[] list = array[0].split("\\=");
+				String orderNum = array[0].replace("orderNum=", "");
+				String pl_orderNum = array[1].replace("pl_orderNum=", "");
+				String pl_payState = array[2].replace("pl_payState=", "");
+				String pl_payMessage = array[3].replace("pl_payMessage=", "");
 				logger.info("江苏电商支付异步响应用户ID：" + pl_orderNum);
 				logger.info("江苏电商支付异步响应订单号：" + orderNum);
 				logger.info("江苏电商支付异步响应描述：" + pl_payMessage);
 				logger.info("江苏电商支付异步响应状态码：" + pl_payState);
 				OriginalOrderInfo originalInfo = null;
 
-				if (!StringUtils.isEmpty(request.getParameter("orderNum"))) {
+				if (!StringUtils.isEmpty(orderNum)) {
 					response.getWriter().write("SUCCESS");
 					if (orderNum != null && orderNum != "") {
 						originalInfo = conformityService.getOriginOrderInfo(orderNum);
@@ -898,7 +925,7 @@ public class ConformityQucikPayController extends BaseAction {
 					result.put("v_code", "00");
 					result.put("v_msg", "请求成功");
 					result.put("v_attach", originalInfo.getAttach());				
-					if ("4".equals(request.getParameter("pl_payState"))) {
+					if ("4".equals(pl_payState)) {
 
 						result.put("v_payStatus", "0000");
 						result.put("v_payMsg", "支付成功");

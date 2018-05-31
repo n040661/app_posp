@@ -687,14 +687,14 @@ public class GateWayController extends BaseAction {
 						break;
 					case "YFWG":
 						logger.info("************************----裕福  网关支付----处理 开始");
+						DecimalFormat df1 = new DecimalFormat("######0"); //四色五入转换成整数
 						Map<String, String> params1 = new HashMap<String, String>();
 						params1.put("version", "1.0.0");
 						params1.put("merchantId", busInfo.getBusinessnum());
 						params1.put("merchantOrderId", param.getV_oid());
 						params1.put("merchantOrderTime", param.getV_time());
 						Double dd = Double.parseDouble(param.getV_txnAmt()) * 100;
-						Integer ii = dd.intValue();
-						params1.put("merchantOrderAmt", ii.toString());
+						params1.put("merchantOrderAmt", df1.format(dd));
 						params1.put("merchantOrderCurrency", "156");
 						if ("1".equals(param.getV_channel())) {
 							params1.put("gwType", "02");
@@ -711,7 +711,7 @@ public class GateWayController extends BaseAction {
 						params1.put("merchantSettleInfo",
 								"[{\"sumGoodsName\":\"" + param.getV_productDesc() + "\",\"merchantId\":\""
 										+ busInfo.getBusinessnum() + "\"," + "\"merchantName\":\""
-										+ param.getV_productName() + "\",\"orderAmt\":\"" + ii.toString() + "\"}]");
+										+ param.getV_productName() + "\",\"orderAmt\":\"" + df1.format(dd) + "\"}]");
 						if (!"".equals(param.getV_attach())) {
 							params1.put("msgExt", param.getV_attach());
 						}
