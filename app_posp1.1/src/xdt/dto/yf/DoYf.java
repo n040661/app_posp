@@ -25,7 +25,9 @@ public class DoYf {
 		String merchantId = params.get("merchantId");
 		try {
 			// 一、置单
-			YufuCipher cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
 			ParamPacket bo = cipher.doPack(params);
 
 			TreeMap<String, String> map_param = new TreeMap<>();
@@ -94,7 +96,10 @@ public class DoYf {
 	public static void downResourse(FileDownReq req,String downloadFilePath,String merCertPath,String pfxPath,String pfxPwd) {
 		FileDownRsp rsp =null;
 		try{
-	       YufuCipher cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+	       //YufuCipher cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd);
 			
 	       String data = GsonUtil.objToJson(req);
 	      
@@ -107,10 +112,10 @@ public class DoYf {
 			map_param.put("enc", bo.getEnc());
 			map_param.put("sign", bo.getSign());
 			String url ="";
-			if("000001220100000470".equals(req.getMerchantId())) {
-				url ="http://www.yfpayment.com/batchpay/download.do";
-			}else if("000001110100000812".equals(req.getMerchantId())) {
+			if("000001110100000812".equals(req.getMerchantId())) {
 				url ="http://malltest.yfpayment.com/batchpay/download.do";
+			}else {
+				url ="http://www.yfpayment.com/batchpay/download.do";
 			}
 			String returnStr = DisburseClientUtil.sendPostInstream(url, map_param,downloadFilePath);
 			if(StringUtil.isNotEmpty(returnStr)){
@@ -135,7 +140,10 @@ public class DoYf {
 	public static DisburseResultQueryRsp query(DisburseResultQueryReq req,String merCertPath,String pfxPath,String pfxPwd) {
 		DisburseResultQueryRsp rsp = null;
 		try {
-			YufuCipher cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+			//YufuCipher cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd);
 
 			String data = GsonUtil.objToJson(req);
 
@@ -148,10 +156,10 @@ public class DoYf {
 			map_param.put("enc", bo.getEnc());
 			map_param.put("sign", bo.getSign());
 			String url ="";
-			if("000001220100000470".equals(req.getMerchantId())) {
-				url ="http://www.yfpayment.com/batchpay/payquery.do";
-			}else if("000001110100000812".equals(req.getMerchantId())) {
+			if("000001110100000812".equals(req.getMerchantId())) {
 				url ="http://malltest.yfpayment.com/batchpay/payquery.do";
+			}else  {
+				url ="http://www.yfpayment.com/batchpay/payquery.do";
 			}
 			String returnStr = DisburseClientUtil.sendPost(url, map_param);
 
@@ -180,7 +188,10 @@ public class DoYf {
 
 		RefundChequeResultDownRsp rsp =null;
 		try{
-	       YufuCipher cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+	       //YufuCipher cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd);
 			
 	       String data = GsonUtil.objToJson(req);
 	      
@@ -193,10 +204,10 @@ public class DoYf {
 			map_param.put("enc", bo.getEnc());
 			map_param.put("sign", bo.getSign());
 			String url ="";
-			if("000001220100000470".equals(req.getMerchantId())) {
-				url ="http://www.yfpayment.com/batchpay/payfetch.do";
-			}else if("000001110100000812".equals(req.getMerchantId())) {
+			if("000001110100000812".equals(req.getMerchantId())) {
 				url ="http://malltest.yfpayment.com/batchpay/payfetch.do";
+			}else  {
+				url ="http://www.yfpayment.com/batchpay/payfetch.do";
 			}
 			String returnStr = DisburseClientUtil.sendPost(url, map_param);
 			
@@ -226,7 +237,10 @@ public class DoYf {
 
 		RefundChequeResultDownRsp rsp =null;
 		try{
-	       YufuCipher cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+//	       YufuCipher cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd);
 			
 	       String data = GsonUtil.objToJson(req);
 	      
@@ -239,10 +253,10 @@ public class DoYf {
 			map_param.put("enc", bo.getEnc());
 			map_param.put("sign", bo.getSign());
 			String url ="";
-			if("000001220100000470".equals(req.getMerchantId())) {
-				url ="http://www.yfpayment.com/batchpay/refundfetch.do";
-			}else if("000001110100000812".equals(req.getMerchantId())) {
+			if("000001110100000812".equals(req.getMerchantId())) {
 				url ="http://malltest.yfpayment.com/batchpay/refundfetch.do";
+			}else {
+				url ="http://www.yfpayment.com/batchpay/refundfetch.do";
 			}
 			String returnStr = DisburseClientUtil.sendPost(url, map_param);
 			
