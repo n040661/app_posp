@@ -3277,7 +3277,10 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 			req.setMsgExt("");
 
 			BatchDisburseApplyRsp rsp = null;
-			YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+			//YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
 
 			String data = GsonUtil.objToJson(req);
 
@@ -3290,10 +3293,10 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 			map_param.put("enc", bo.getEnc());
 			map_param.put("sign", bo.getSign());
 			String url ="";
-			if("000001220100000470".equals(pmsBusinessPos.getBusinessnum())) {
-				url ="http://www.yfpayment.com/batchpay/payapply.do";
-			}else if("000001110100000812".equals(pmsBusinessPos.getBusinessnum())) {
+			if("000001110100000812".equals(pmsBusinessPos.getBusinessnum())) {
 				url ="http://malltest.yfpayment.com/batchpay/payapply.do";
+			}else  {
+				url ="http://www.yfpayment.com/batchpay/payapply.do";
 			}
 			log.info("请求之前的参数："+JSON.toJSONString(map_param));
 			log.info("请求之前的文件地址："+req.getFilePath());
@@ -3384,7 +3387,10 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 			//req.setMisc("");
 			log.info("裕福实时代付发送之前参数："+JSON.toJSONString(req));
 			BatchDisburseApplyRsp rsp = null;
-			YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+			//YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
 			String data = GsonUtil.objToJson(req);
 			Map<String, String> params = GsonUtil.jsonToObj(data, Map.class);
 			ParamPacket bo = cipher.doPack(params);
@@ -3395,10 +3401,10 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 			map_param.put("enc", URLEncoder.encode(bo.getEnc(), "utf-8"));
 			map_param.put("sign", URLEncoder.encode(bo.getSign(), "utf-8"));
 			String url ="";
-			if("000001220100000470".equals(pmsBusinessPos.getBusinessnum())) {
-				url ="http://www.yfpayment.com/batchpay/realTimeApply.do";
-			}else if("000001110100000812".equals(pmsBusinessPos.getBusinessnum())) {
+			if("000001110100000812".equals(pmsBusinessPos.getBusinessnum())) {
 				url ="http://malltest.yfpayment.com/batchpay/realTimeApply.do";
+			}else {
+				url ="http://www.yfpayment.com/batchpay/realTimeApply.do";
 			}
 			log.info("请求之前的参数："+JSON.toJSONString(map_param));
 			String returnStr = PostUtils.doPost(url, map_param);
@@ -4170,7 +4176,10 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 			reqMaps.put("version", "1.0.1");
 			reqMaps.put("merchantId", pmsBusinessPos.getBusinessnum());
 			reqMaps.put("batchApplyDate",payRequest.getV_time());
-			YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+			//YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
 			String data = GsonUtil.objToJson(reqMaps);
 			Map<String, String> params = GsonUtil.jsonToObj(data, Map.class);
 			ParamPacket bo = cipher.doPack(params);
@@ -4180,10 +4189,10 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 			map_param.put("enc", URLEncoder.encode(bo.getEnc(), "utf-8"));
 			map_param.put("sign", URLEncoder.encode(bo.getSign(), "utf-8"));
 			String urlPay ="";
-			if("000001220100000470".equals(pmsBusinessPos.getBusinessnum())) {
-				urlPay ="http://www.yfpayment.com/batchpay/batquery.do";
-			}else if("000001110100000812".equals(pmsBusinessPos.getBusinessnum())) {
+			if("000001110100000812".equals(pmsBusinessPos.getBusinessnum())) {
 				urlPay ="http://malltest.yfpayment.com/batchpay/batquery.do";
+			}else {
+				urlPay ="http://www.yfpayment.com/batchpay/batquery.do";
 			}
 			String returnStr = PostUtils.doPost(urlPay, map_param);
 

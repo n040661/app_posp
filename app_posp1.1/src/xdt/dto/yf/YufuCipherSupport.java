@@ -18,13 +18,12 @@ public class YufuCipherSupport {
 	//private final static String pfxPath = "d:/000001110100000812.pfx";
 	//private final static String pfxPwd="654321";
 	
-	private static volatile YufuCipher cipher = null;
-	private static volatile YufuCipherSupport instance = null;
 	
+	private YufuCipher cipher;
 	private YufuCipherSupport(){
 	}
 	
-	public static  YufuCipher getCipherInstance(String merCertPath,String pfxPath,String pfxPwd) throws Exception{
+	public static YufuCipher getCipherInstance(String merCertPath,String pfxPath,String pfxPwd,YufuCipher cipher,YufuCipherSupport instance) throws Exception{
 		try {
 			 if(cipher == null){
 				 synchronized(YufuCipherSupport.class){
@@ -47,7 +46,7 @@ public class YufuCipherSupport {
 		return cipher;
 	}
 	
-	public static  YufuCipherSupport getInstance(String merCertPath,String pfxPath,String pfxPwd) throws Exception{
+	public static  YufuCipherSupport getInstance(String merCertPath,String pfxPath,String pfxPwd,YufuCipherSupport instance) throws Exception{
 		try {
 			 if(instance == null){
 				 synchronized(YufuCipherSupport.class){

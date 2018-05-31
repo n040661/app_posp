@@ -25,22 +25,22 @@ public enum PaymentCodeEnum {
     zhifubaoPay("4", "支付宝支付",4),
     shuakaPay("5", "刷卡支付",5),
     ydhbPay("6", "移动和包支付",6),
-    bdSDKPay("7", "百度SDK支付",7),
-    weixinSDKPay("8", "微信SDK支付",8),
-    zhifubaoSDKPay("9", "支付宝SDK",9),
+    bdSDKPay("7", "百度支付H5",7),
+    weixinSDKPay("8", "微信支付H5",8),
+    zhifubaoSDKPay("9", "支付宝H5",9),
     moBaoQuickPay("10", "快捷支付",10),
 	hengFengQuickPay("11", "银联在线支付",11),
 	GatewayCodePay("16","网关支付",16),
 	WithholdPay("17","代扣",17),
-	JingDong("18","京东支付",18),
+	JingDong("18","京东扫码",18),
 	//浦发
-	QRCodePay("12", "二维码支付",12),
+	QRCodePay("12", "银联二维码",12),
 	BCQuickPay("13", "BC快捷",13),
 	//北农商
-	PNCodePay("14","公众号支付",14),
+	PNCodePay("14","微信公众号",14),
    //江苏
-    QQCodePay("15","QQ钱包支付",15),
-	suningPay("19","苏宁扫码支付",19);
+    QQCodePay("15","QQ扫码",15),
+	suningPay("19","苏宁扫码",19);
 
 
 	String typeCode;

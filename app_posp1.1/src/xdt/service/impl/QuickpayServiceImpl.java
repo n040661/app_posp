@@ -2143,6 +2143,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 							break;
 						case "000001110100000812":// 裕福快捷
 						case "000001220100000470":
+						case "000001110100000663":
 							if (originalinfo.getV_userId() == null || "".equals(originalinfo.getV_userId())) {
 								retMap.put("v_code", "01");
 								retMap.put("v_msg", "v_userId is null");
@@ -2156,7 +2157,10 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									+ ".pfx";
 							final String pfxPwd = pmsBusinessPos.getKek();
 							QuickReq req = new QuickReq();
-							YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+							YufuCipher cipher = null;
+							YufuCipherSupport instance = null;
+							cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+							//YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
 							try {
 								List<Map<String, String>> list = new ArrayList<>();
 								Map<String, String> reqMaps = new HashMap<>();
@@ -3736,6 +3740,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								break;
 							case "000001110100000812":// 裕福快捷
 							case "000001220100000470":
+							case "000001110100000663":
 								final String merCertPath = new File(this.getClass().getResource("/").getPath())
 										.getParentFile().getParentFile().getCanonicalPath() + "//ky//"
 										+ pmsBusinessPos.getBusinessnum() + ".cer";
@@ -3746,15 +3751,17 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								PayReq req = new PayReq();
 								OriginalOrderInfo originalInfo1 = null;
 								try {
-									originalInfo1 = this.payService.getOriginOrderInfo(originalinfo.getV_oid());
+									originalInfo1 = this.payService.getoriginInfoByMerchantOrderId(originalinfo.getV_oid());
 									List<Map<String, String>> list = new ArrayList<>();
 									Map<String, String> reqMaps = new HashMap<>();
 									req.setVersion("1.0.0");
 									req.setMerchantId(pmsBusinessPos.getBusinessnum());
 									req.setToken(originalInfo1.getSumCode());
 									req.setSmsCode(originalinfo.getV_smsCode());
-									YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath,
-											pfxPwd);
+									YufuCipher cipher = null;
+									YufuCipherSupport instance = null;
+									cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+									//YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath,pfxPwd);
 
 									String data = GsonUtil.objToJson(req);
 									logger.info("data:" + data);
@@ -4673,7 +4680,10 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 			final String pfxPath = new File(this.getClass().getResource("/").getPath()).getParentFile().getParentFile()
 					.getCanonicalPath() + "//ky//" + pmsBusinessPos.getBusinessnum() + ".pfx";
 			final String pfxPwd = pmsBusinessPos.getKek();
-			YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+			///YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
 			crd.put("version", "1.0.0");
 			crd.put("merchantId", pmsBusinessPos.getBusinessnum());
 			crd.put("merchantUserId", entity.getV_userId());

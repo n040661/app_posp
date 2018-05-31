@@ -730,8 +730,10 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 		final String pfxPath = new File(this.getClass().getResource("/").getPath()).getParentFile()
 				.getParentFile().getCanonicalPath() + "//ky//" + params1.get("merchantId") + ".pfx";
 		final String pfxPwd = busInfo.getKek();
-		YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath,
-				pfxPwd);
+		YufuCipher cipher = null;
+		YufuCipherSupport instance = null;
+		cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+		//YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath,pfxPwd);
 		ParamPacket bo = cipher.doPack(params1);
 		logger.info("11!:" + JSON.toJSON(bo));
 		TreeMap<String, String> map_param = new TreeMap<>();

@@ -1269,7 +1269,8 @@ public class GateWayController extends BaseAction {
 		log.info("裕福异步通知来了");
 		Map<String, String> result = new HashMap<String, String>();
 		// HJResponse hjResponses =new HJResponse();
-		YufuCipher cipher;
+		YufuCipher cipher = null;
+		YufuCipherSupport instance = null;
 		try {
 			final String merCertPath = new File(this.getClass().getResource("/").getPath()).getParentFile()
 					.getParentFile().getCanonicalPath() + "//ky//" + request.getParameter("merchantId") + ".cer";
@@ -1277,7 +1278,7 @@ public class GateWayController extends BaseAction {
 					.getCanonicalPath() + "//ky//" + request.getParameter("merchantId") + ".pfx";
 			final String pfxPwd = "123456";
 			String str;
-			cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+			cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd, cipher, instance);
 			Map<String, String> synchNotifyParams = cipher.unPack(new ParamPacket(request.getParameter("data"),
 					request.getParameter("enc"), request.getParameter("sign")));
 			log.info("裕福----异步通知返回数据:" + JSON.toJSONString(synchNotifyParams));
@@ -1850,7 +1851,8 @@ public class GateWayController extends BaseAction {
 		log.info("裕福退款异步通知来了");
 		Map<String, String> result = new HashMap<String, String>();
 		// HJResponse hjResponses =new HJResponse();
-		YufuCipher cipher;
+		YufuCipher cipher= null;
+		YufuCipherSupport instance = null;
 		try {
 			final String merCertPath = new File(this.getClass().getResource("/").getPath()).getParentFile()
 					.getParentFile().getCanonicalPath() + "//ky//" + request.getParameter("merchantId") + ".cer";
@@ -1858,7 +1860,7 @@ public class GateWayController extends BaseAction {
 					.getCanonicalPath() + "//ky//" + request.getParameter("merchantId") + ".pfx";
 			final String pfxPwd = "123456";
 			String str;
-			cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+			cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd, cipher, instance);
 			Map<String, String> synchNotifyParams = cipher.unPack(new ParamPacket(request.getParameter("data"),
 					request.getParameter("enc"), request.getParameter("sign")));
 			log.info("裕福----退款异步通知返回数据:" + JSON.toJSONString(synchNotifyParams));
@@ -2102,7 +2104,8 @@ public class GateWayController extends BaseAction {
 	@RequestMapping(value = "yf_returnUrl")
 	public void YFReturnUrl(HttpServletResponse response, HttpServletRequest request) {
 
-		YufuCipher cipher;
+		YufuCipher cipher = null;
+		YufuCipherSupport instance = null;
 		OriginalOrderInfo originalInfo = null;
 		log.info("裕福同步结果来了");
 		TreeMap<String, String> result = new TreeMap<String, String>();
@@ -2116,7 +2119,7 @@ public class GateWayController extends BaseAction {
 			final String pfxPath = new File(this.getClass().getResource("/").getPath()).getParentFile().getParentFile()
 					.getCanonicalPath() + "//ky//" + request.getParameter("merchantId") + ".pfx";
 			final String pfxPwd = busInfo.getKek();
-			cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+			cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd, cipher, instance);
 			synchNotifyParams = cipher.unPack(new ParamPacket(request.getParameter("data"), request.getParameter("enc"),
 					request.getParameter("sign")));
 			log.info("裕福----同步通知返回数据:" + JSON.toJSONString(synchNotifyParams));
