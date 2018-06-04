@@ -1350,7 +1350,7 @@ public class BaseServiceImpl {
             //设置订单id
             pospTransInfo.setOrderId(pmsAppTransInfo.getOrderid());
             //设置通道商户编码  商户编码不设置
-            pospTransInfo.setBusinfo(null);
+            pospTransInfo.setBusinfo(pmsAppTransInfo.getBusinessNum());
             //设置附加费用
             pospTransInfo.setAddfee(null);
             //设置刷卡费率  当前处理为调用第三方处理，刷卡费率不设置
@@ -1946,7 +1946,7 @@ public class BaseServiceImpl {
 		// 设置订单id
 		pospTransInfo.setOrderId(pmsAppTransInfo.getOrderid());
 		// 设置通道商户编码 商户编码不设置
-		pospTransInfo.setBusinfo(null);
+		pospTransInfo.setBusinfo(pmsAppTransInfo.getBusinessNum());
 		// 设置附加费用
 		pospTransInfo.setAddfee(null);
 		// 设置刷卡费率 当前处理为调用第三方处理，刷卡费率不设置

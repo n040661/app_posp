@@ -331,8 +331,8 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 														// 组装报文
 														BigDecimal totalAmount=new BigDecimal(txnAmt).setScale(0, BigDecimal.ROUND_HALF_UP);
 
-														PmsAppTransInfo appTransInfo = this.insertOrder(out_trade_no,
-																totalAmount.toString(), mercId, rateStr, oAgentNo);
+														PmsBusinessPos pmsBusinessPos =selectKey(entity.getV_mid());//获取上游商户号和秘钥
+														PmsAppTransInfo appTransInfo = this.insertOrder(totalAmount.toString(),rateStr, oAgentNo,pmsBusinessPos, entity);
 
 														if (appTransInfo != null) {
 															
@@ -403,7 +403,6 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 															}
 													        pmsAppTransInfoDao.update(appTransInfo);
 															log.info("1111"+result);
-															PmsBusinessPos pmsBusinessPos =selectKey(entity.getV_mid());//获取上游商户号和秘钥
 															switch (pmsBusinessPos.getChannelnum()) {//
 															case "HJZF":
 																result =hjScanCodePay(entity, result,pmsBusinessPos);
@@ -553,23 +552,22 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 	 * @return
 	 * @throws Exception
 	 */
-	public PmsAppTransInfo insertOrder(String orderid, String payamount, String mercId, String rateStr, String oAgentNo)
+	public PmsAppTransInfo insertOrder(String payamount, String rateStr, String oAgentNo,PmsBusinessPos pmsBusinessPos,ScanCodeRequestEntity entity)
 			throws Exception {
 
-		System.out.println("12345613454354=" + orderid);
+		System.out.println("12345613454354=" + entity.getV_oid());
 		// 查询商户费率
 		BigDecimal rate = new BigDecimal(rateStr);
 		BigDecimal amount = new BigDecimal(payamount);
-
 		// 成功后订到入库app后台
 		PmsAppTransInfo pmsAppTransInfo = new PmsAppTransInfo();
 
 		pmsAppTransInfo.setTradetype(TradeTypeEnum.merchantCollect.getTypeName());
 		pmsAppTransInfo.setTradetime(UtilDate.getDateFormatter());
-		pmsAppTransInfo.setOrderid(orderid);// 上送的订单号
+		pmsAppTransInfo.setOrderid(entity.getV_oid());// 上送的订单号
 
 		pmsAppTransInfo.setReasonofpayment(TradeTypeEnum.merchantCollect.getTypeName());
-		pmsAppTransInfo.setMercid(mercId);
+		pmsAppTransInfo.setMercid(entity.getV_mid());
 		pmsAppTransInfo.setFactamount(payamount);// 实际金额 按分为最小单位 例如：1元=100分
 													// 采用100
 		pmsAppTransInfo.setTradetypecode("1");
@@ -577,14 +575,19 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 													// 采用100
 		pmsAppTransInfo.setStatus(Constants.ORDERINITSTATUS);// 订单初始化状态
 		pmsAppTransInfo.setoAgentNo(oAgentNo);// o单编号
-
+		pmsAppTransInfo.setBusinessNum(pmsBusinessPos.getBusinessnum());
+		if("0".equals(entity.getV_channel())) {
+			pmsAppTransInfo.setSettlementState("D0");
+		}else if("1".equals(entity.getV_channel())) {
+			pmsAppTransInfo.setSettlementState("T1");
+		}
 		BigDecimal poundage = amount.multiply(rate);// 手续费
 		BigDecimal b = new BigDecimal(0);
 
 		BigDecimal dfactAmount = new BigDecimal(pmsAppTransInfo.getFactamount());
 		double fee1 = poundage.doubleValue();
 		PmsMerchantInfo merchantinfo = new PmsMerchantInfo();
-		merchantinfo.setMercId(mercId);
+		merchantinfo.setMercId(entity.getV_mid());
 		// 结算金额
 		BigDecimal payAmount = null;
 		List<PmsMerchantInfo> merchantList = pmsMerchantInfoDao.searchList(merchantinfo);
@@ -616,11 +619,11 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 
 		try {
 			if (pmsAppTransInfoDao.insert(pmsAppTransInfo) != 1) {
-				log.info("订单入库失败， 订单号：" + orderid + "，结束时间：" + UtilDate.getDateFormatter() + "。订单详细信息：" + sendString);
+				log.info("订单入库失败， 订单号：" + entity.getV_oid() + "，结束时间：" + UtilDate.getDateFormatter() + "。订单详细信息：" + sendString);
 				throw new RuntimeException("手动抛出");
 			}
 		} catch (Exception e) {
-			log.info("订单入库失败， 订单号：" + orderid + "，结束时间：" + UtilDate.getDateFormatter() + "。订单详细信息：" + sendString, e);
+			log.info("订单入库失败， 订单号：" + entity.getV_oid() + "，结束时间：" + UtilDate.getDateFormatter() + "。订单详细信息：" + sendString, e);
 			throw new RuntimeException("手动抛出");
 		}
 		return pmsAppTransInfo;

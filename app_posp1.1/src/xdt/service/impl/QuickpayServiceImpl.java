@@ -591,7 +591,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 				pmsAppTransInfo.setPaymentcode(PaymentCodeEnum.hengFengQuickPay.getTypeCode());
 				BigDecimal factBigDecimal = new BigDecimal(factAmount);
 				BigDecimal orderAmountBigDecimal = new BigDecimal(factAmount);
-
+				pmsAppTransInfo.setBusinessNum(pmsBusinessPos.getBusinessnum());
 				pmsAppTransInfo.setFactamount(factBigDecimal.stripTrailingZeros().toPlainString());// 实际金额
 				pmsAppTransInfo.setOrderamount(orderAmountBigDecimal.stripTrailingZeros().toPlainString());// 订单金额
 				pmsAppTransInfo.setDrawMoneyType("1");// 普通提款
@@ -769,12 +769,6 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								+ PaymentCodeEnum.hengFengQuickPay.getTypeCode());
 						return setResp("13", "暂不支持该交易方式");
 					}
-					ViewKyChannelInfo channelInfo = AppPospContext.context.get(HENGFENGPAY + HENGFENGCHANNELNUM);
-
-					// 设置通道信息
-					pmsAppTransInfo.setBusinessNum(channelInfo.getBusinessnum());
-					pmsAppTransInfo.setChannelNum(HENGFENGCHANNELNUM);
-
 					// 查看当前交易是否已经生成了流水表
 					PospTransInfo pospTransInfo = null;
 					// 流水表是否需要更新的标记 0 insert，1：update

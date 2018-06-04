@@ -51,6 +51,7 @@ import xdt.dto.gateway.entity.GateWayResponseEntity;
 import xdt.dto.gateway.entity.GatrWayGefundEntity;
 import xdt.dto.quickPay.entity.ConsumeResponseEntity;
 import xdt.dto.quickPay.entity.QueryRequestEntity;
+import xdt.dto.scanCode.entity.ScanCodeRequestEntity;
 import xdt.dto.yf.DoYf;
 import xdt.dto.yf.PostUtils;
 import xdt.dto.yf.YFUtil;
@@ -316,10 +317,16 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 						pmsAppTransInfo.setPaymentcode(PaymentCodeEnum.GatewayCodePay.getTypeCode());
 						BigDecimal factBigDecimal = new BigDecimal(factAmount);
 						BigDecimal orderAmountBigDecimal = new BigDecimal(factAmount);
-
+						pmsAppTransInfo.setBusinessNum(busInfo.getBusinessnum());
+						pmsAppTransInfo.setChannelNum(busInfo.getChannelnum());
 						pmsAppTransInfo.setFactamount(factBigDecimal.stripTrailingZeros().toPlainString());// 实际金额
 						pmsAppTransInfo.setOrderamount(orderAmountBigDecimal.stripTrailingZeros().toPlainString());// 订单金额
 						pmsAppTransInfo.setDrawMoneyType("1");// 普通提款
+						if("0".equals(originalinfo.getV_channel())) {
+							pmsAppTransInfo.setSettlementState("D0");
+						}else if("1".equals(originalinfo.getV_channel())) {
+							pmsAppTransInfo.setSettlementState("T1");
+						}
 
 						// 插入订单信息
 						Integer insertAppTrans = pmsAppTransInfoDao.insert(pmsAppTransInfo);
@@ -423,11 +430,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 										+ PaymentCodeEnum.GatewayCodePay.getTypeCode());
 								return setResp("13", "暂不支持该交易方式");
 							}
-							ViewKyChannelInfo channelInfo = AppPospContext.context.get(HENGFENGPAY + HENGFENGCHANNELNUM);
 
-							// 设置通道信息
-							pmsAppTransInfo.setBusinessNum(channelInfo.getBusinessnum());
-							pmsAppTransInfo.setChannelNum(HENGFENGCHANNELNUM);
 
 							// 查看当前交易是否已经生成了流水表
 							PospTransInfo pospTransInfo = null;
