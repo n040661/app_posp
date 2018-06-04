@@ -16,9 +16,11 @@
 		<result column="posstatus" property="posstatus"/>
 		<result column="kek" property="kek"/>
 		<result column="posopenstatus" property="posopenstatus"/>
+		<result column="outPay" property="outPay"/>
+		<result column="goldPay" property="goldPay"/>
 	</resultMap>
 	<sql id="Base_Column_List">
-		ID,POSNUM,BUSINESSNUM,CHANNELNUM,DEPARTMENTNUM,PERSONNUM,INDATE,OUTDATE,BATCHINNO,BATCHOUTNO,STATUS,POSSTATUS,KEK,POSOPENSTATUS
+		ID,POSNUM,BUSINESSNUM,CHANNELNUM,DEPARTMENTNUM,PERSONNUM,INDATE,OUTDATE,BATCHINNO,BATCHOUTNO,STATUS,POSSTATUS,KEK,POSOPENSTATUS,outPay,goldPay
 	</sql>
 		<insert id="insertSelective" parameterType="xdt.model.PmsBusinessPos">
 		insert into PMS_BUSINESS_POS
@@ -65,6 +67,12 @@
 			<if test="posopenstatus != null">
 				posopenstatus,
 			</if>
+			<if test="outPay != null">
+				outPay,
+			</if>
+			<if test="goldPay != null">
+				goldPay,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -108,6 +116,12 @@
 			</if>
 			<if test="posopenstatus != null">
 				#{posopenstatus,jdbcType=VARCHAR},
+			</if>
+			<if test="outPay != null">
+				#{outPay,jdbcType=VARCHAR},
+			</if>
+			<if test="goldPay != null">
+				#{goldPay,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>

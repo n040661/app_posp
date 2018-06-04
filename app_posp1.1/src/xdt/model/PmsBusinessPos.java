@@ -31,6 +31,26 @@ public class PmsBusinessPos {
 	private String kek; // pos主密钥
 	private String posopenstatus; // POSOPENSTATUS
     private String merchantId;//通道商户的主键id
+    private String outPay;//入金限制  0开启 1关闭
+    private String goldPay;//出金限制  0开启 1关闭
+    
+    
+    
+	public String getOutPay() {
+		return outPay;
+	}
+
+	public void setOutPay(String outPay) {
+		this.outPay = outPay;
+	}
+
+	public String getGoldPay() {
+		return goldPay;
+	}
+
+	public void setGoldPay(String goldPay) {
+		this.goldPay = goldPay;
+	}
 
 	public String getPosopenstatus() {
 		return posopenstatus;
