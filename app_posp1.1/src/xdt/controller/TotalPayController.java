@@ -541,13 +541,15 @@ public class TotalPayController extends BaseAction {
 		Map<String, String> results = new HashMap<String, String>();
 		List<String> list =new ArrayList<>();
 		// HJResponse hjResponses =new HJResponse();
-		YufuCipher cipher;
+		YufuCipher cipher = null;
+		YufuCipherSupport instance = null;
 		
 			final String merCertPath= new File(this.getClass().getResource("/").getPath()).getParentFile().getParentFile().getCanonicalPath()+"//ky//"+request.getParameter("merchantId")+".cer";
 			final String pfxPath= new File(this.getClass().getResource("/").getPath()).getParentFile().getParentFile().getCanonicalPath()+"//ky//"+request.getParameter("merchantId")+".pfx";
 			final String pfxPwd= businessPos.getKek();
 			
-			cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+			//cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
 			Map<String, String> synchNotifyParams = cipher
 					.unPack(new ParamPacket(request.getParameter("data"), request.getParameter("enc"), request.getParameter("sign")));
 			log.info("裕福----异步通知返回数据:" + JSON.toJSONString(synchNotifyParams));
@@ -784,13 +786,14 @@ public class TotalPayController extends BaseAction {
 			Map<String, String> result = new HashMap<String, String>();
 			Map<String, String> results = new HashMap<String, String>();
 			// HJResponse hjResponses =new HJResponse();
-			YufuCipher cipher;
 			
 				final String merCertPath= new File(this.getClass().getResource("/").getPath()).getParentFile().getParentFile().getCanonicalPath()+"//ky//"+request.getParameter("merchantId")+".cer";
 				final String pfxPath= new File(this.getClass().getResource("/").getPath()).getParentFile().getParentFile().getCanonicalPath()+"//ky//"+request.getParameter("merchantId")+".pfx";
 				final String pfxPwd= businessPos.getKek();
-				
-				cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+				YufuCipher cipher = null;
+				YufuCipherSupport instance = null;
+				cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+				//cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
 				Map<String, String> synchNotifyParams = cipher
 						.unPack(new ParamPacket(request.getParameter("data"), request.getParameter("enc"), request.getParameter("sign")));
 				log.info("裕福----实时单笔异步通知返回数据:" + JSON.toJSONString(synchNotifyParams));
@@ -950,13 +953,14 @@ public class TotalPayController extends BaseAction {
 		Map<String, String> results = new HashMap<String, String>();
 		List<String> list =new ArrayList<>();
 		// HJResponse hjResponses =new HJResponse();
-		YufuCipher cipher;
 		
 			final String merCertPath= new File(this.getClass().getResource("/").getPath()).getParentFile().getParentFile().getCanonicalPath()+"//ky//"+request.getParameter("merchantId")+".cer";
 			final String pfxPath= new File(this.getClass().getResource("/").getPath()).getParentFile().getParentFile().getCanonicalPath()+"//ky//"+request.getParameter("merchantId")+".pfx";
 			final String pfxPwd= businessPos.getKek();
-			
-			cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+			//cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath, pfxPwd);
 			Map<String, String> synchNotifyParams = cipher
 					.unPack(new ParamPacket(request.getParameter("data"), request.getParameter("enc"), request.getParameter("sign")));
 			log.info("----异步通知返回数据:" + JSON.toJSONString(synchNotifyParams));

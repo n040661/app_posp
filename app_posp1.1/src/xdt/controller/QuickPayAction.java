@@ -366,6 +366,7 @@ public class QuickPayAction extends BaseAction {
 					case "10044":// 柜银云快捷
 					case "000001110100000812":// 裕福测试号
 					case "000001220100000470":// 裕福生产号
+					case "000001110100000663":
 						ConsumeResponseEntity consume = (ConsumeResponseEntity) BeanToMapUtil
 								.convertMap(ConsumeResponseEntity.class, result);
 						String sign = SignatureUtil.getSign(beanToMap(consume), merchantKey, logger);
@@ -481,12 +482,11 @@ public class QuickPayAction extends BaseAction {
 		ChannleMerchantConfigKey keyinfo = quickPayService.getChannelConfigKey(param.getV_mid());
 		// ------------------------需要改签名
 		String merchantKey = keyinfo.getMerchantkey();
-		logger.info("下游上送参数:{}", param);
-		if (param.getV_sign() == null) {
+		logger.info("下游上送参数:{}", JSON.toJSON(param));
+		/*if (param.getV_sign() == null) {
 			String sign = SignatureUtil.getSign(beanToMap(param), merchantKey, logger);
 			param.setV_sign(sign);
-		}
-		String html = "";
+		}*/
 		if (!StringUtils.isEmpty(param.getV_mid())) {
 
 			logger.info("下游上送签名串{}" + param.getV_sign());
@@ -520,12 +520,14 @@ public class QuickPayAction extends BaseAction {
 				logger.error("签名错误!");
 				result.put("v_code", "02");
 				result.put("v_msg", "签名错误!");
+				outString(response, JSON.toJSON(result));
 			}
 
 		} else {
 			logger.error("上送交易参数空!");
 			result.put("v_code", "01");
 			result.put("v_msg", "上送交易参数空");
+			outString(response, JSON.toJSON(result));
 		}
 	}
 

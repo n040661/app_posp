@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -426,6 +428,9 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 																break;
 															case "JMZFB":
 																result =jmScanCodePay(entity, result,pmsBusinessPos);
+																break;
+															case "XMMZ":
+																result =xmmzScanCodePay(entity, result,pmsBusinessPos);
 																break;
 															default:
 																result.put("v_code", "11");
@@ -1317,7 +1322,81 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		
      	return result;
 	}
-	
+	/**
+	 * 厦门美智给上游发送参数
+	 * @param entity
+	 * @param result
+	 * @param pmsBusinessPos
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> xmmzScanCodePay(ScanCodeRequestEntity entity,Map<String, String> result,PmsBusinessPos pmsBusinessPos) throws Exception{
+		TreeMap<String, String> map = new TreeMap<>();
+        map.put("merchantId",pmsBusinessPos.getBusinessnum());//pmsBusinessPos.getBusinessnum()
+        if("WEIXIN_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("service","0002");//weixin
+        	map.put("payChannel", "WXP");
+        	map.put("corpOrg", "WXP");
+        	
+        }else if("ALIPAY_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("service","0010");//支付宝支付
+        	map.put("payChannel", "ALP");
+        	map.put("corpOrg", "ALP");
+        }else if("UNIONPAY_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("service","010800");//银联二维码
+        	map.put("payChannel", "Other");
+        	map.put("corpOrg", "ALP");
+        }else if("QQ_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("service","0015");//qq钱包
+        	map.put("payChannel", "QQ");
+        	map.put("corpOrg", "ALP");
+        }else if("JD_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("service","010700");//京东
+        	map.put("payChannel", "Other");
+        	map.put("corpOrg", "ALP");
+        }
+        map.put("orderId",entity.getV_oid());
+        map.put("transCode", "001");
+        map.put("reqDate", new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        map.put("reqTime", new SimpleDateFormat("hhMMss").format(new Date()));
+        map.put("requestIp", entity.getV_clientIP());
+        map.put("dateTime", entity.getV_time());
+        map.put("payChannel", "ALP");
+        map.put("goodsDesc", entity.getV_productDesc());
+        map.put("goodsName",entity.getV_productName());
+        map.put("amount",entity.getV_txnAmt());
+        map.put("offlineNotifyUrl",ScanCodeUtil.jmNotifyUrl);
+        map.put("terminalId", new SimpleDateFormat("ddHHMMss").format(new Date()));
+        String paramSrc = RequestUtils.getParamSrc(map);
+		log.info("签名前数据**********支付:" + paramSrc);
+		String md5 = MD5Utils.sign(paramSrc, pmsBusinessPos.getKek(), "UTF-8").toUpperCase();
+		//String md5 = MD5Utils.md5(paramSrc + "&" + pmsBusinessPos.getKek(),"UTF-8").toUpperCase();
+		//String md5 = MD5Utils.signs(paramSrc, "lD0Y4D9X3k90", "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
+		System.out.println(md5);
+		map.put("sign", md5);
+		log.info(JSON.toJSONString(map));
+		//paramSrc=paramSrc+"&"+md5;
+		String url ="http://paypaul.385mall.top/onlinepay/scanPayApi"; 
+		String str =RequestUtils.sendPost(url, JSON.toJSONString(map),"UTF-8");
+		System.out.println(str);
+		result.put("v_mid", entity.getV_mid());
+ 		result.put("v_attach", entity.getV_attach());
+ 		result.put("v_txnAmt", entity.getV_txnAmt());
+ 		result.put("v_oid", entity.getV_oid());
+ 		result.put("v_cardType", entity.getV_cardType());
+		
+		com.alibaba.fastjson.JSONObject json =com.alibaba.fastjson.JSONObject.parseObject(str);
+		if("00".equals(json.getString("rsp_code"))) {
+			result.put("v_result", json.getString("ali_pay_url"));
+			result.put("v_code", "00");
+			result.put("v_msg", "请求成功");
+		}else {
+			result.put("v_code", "01");
+			result.put("v_msg", json.getString("rsp_msg"));
+		}
+		
+     	return result;
+	}
 	public void otherInvoke(ScanCodeResponseEntity result) throws Exception {
 		// TODO Auto-generated method stub
 
