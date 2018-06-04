@@ -737,6 +737,72 @@ public class ConformityQucikPayServiceImpl extends BaseServiceImpl implements IC
 
 	public int updatePmsMerchantInfo80(OriginalOrderInfo originalInfo) throws Exception {
 
+		logger.info("代付实时填金:" + JSON.toJSON(originalInfo));
+		DecimalFormat df = new DecimalFormat("#.00");
+
+		PmsDaifuMerchantInfo pmsDaifuMerchantInfo = new PmsDaifuMerchantInfo();
+		PmsMerchantInfo merchantInfo = pmsMerchantInfoDao.selectMercByMercId(originalInfo.getPid());
+		logger.info("merchantInfo:" + JSON.toJSON(merchantInfo));
+		PmsAppTransInfo pmsAppTransInfo = pmsAppTransInfoDao.searchOrderInfo(originalInfo.getOrderId());
+		logger.info("pmsAppTransInfo:" + JSON.toJSON(pmsAppTransInfo));
+		pmsDaifuMerchantInfo.setBatchNo(originalInfo.getOrderId());
+		PmsDaifuMerchantInfo daifuMerchantInfo = pmsDaifuMerchantInfoDao.selectByDaifuMerchantInfo(pmsDaifuMerchantInfo);
+		logger.info("daifuMerchantInfo:" + JSON.toJSON(daifuMerchantInfo));
+		if (daifuMerchantInfo != null) {
+			logger.info("11111111111111111111111");
+			return 0;
+		}
+		if ("0".equals(merchantInfo.getOpenPay())) {
+			Double poundage = Double.valueOf(Double.parseDouble(pmsAppTransInfo.getPoundage()));
+			poundage = Double.valueOf(Double.parseDouble(df.format(poundage)));
+			String position = merchantInfo.getPosition();
+			Double amount = Double.valueOf(Double.parseDouble(originalInfo.getOrderAmount()));
+			this.logger.info("订单金额：" + amount);
+			BigDecimal positions = new BigDecimal(position);
+			
+			BigDecimal sum_amount=new BigDecimal(0);
+			
+
+			Double dd = Double.valueOf(amount.doubleValue() * 100.0D - poundage.doubleValue());
+			
+			sum_amount=positions.add(new BigDecimal(dd));
+			Map<String, String> map = new HashMap();
+			map.put("machId", originalInfo.getPid());
+			map.put("payMoney", sum_amount.toString());
+			int i = this.pmsMerchantInfoDao.updataPay(map);
+			if (i != 1) {
+				this.logger.info("实时填金失败！");
+
+				pmsDaifuMerchantInfo.setResponsecode("01");
+			} else {
+				this.logger.info("实时成功！");
+				pmsDaifuMerchantInfo.setResponsecode("00");
+			}
+			PmsMerchantInfo info = select(originalInfo.getPid());
+			pmsDaifuMerchantInfo.setMercId(originalInfo.getPid());
+
+			pmsDaifuMerchantInfo.setBatchNo(originalInfo.getOrderId());
+
+			pmsDaifuMerchantInfo.setAmount(Double.parseDouble(originalInfo.getOrderAmount()) + "");
+
+			pmsDaifuMerchantInfo.setRemarks("D0");
+
+			pmsDaifuMerchantInfo
+					.setRecordDescription("订单号:" + originalInfo.getOrderId() + "交易金额:" + originalInfo.getOrderAmount());
+
+			pmsDaifuMerchantInfo.setTransactionType(pmsAppTransInfo.getPaymenttype());
+
+			pmsDaifuMerchantInfo.setPayamount(Double.parseDouble(originalInfo.getOrderAmount()) + "");
+
+			pmsDaifuMerchantInfo.setPosition(info.getPosition());
+
+			pmsDaifuMerchantInfo.setPayCounter(poundage.doubleValue() / 100 + "");
+			pmsDaifuMerchantInfo.setOagentno("100333");
+			int s = this.pmsDaifuMerchantInfoDao.insert(pmsDaifuMerchantInfo);
+			return i;
+		}
+		this.logger.info("此商户未开通代付！！");
+
 		return 0;
 	}
 

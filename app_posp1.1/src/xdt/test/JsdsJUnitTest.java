@@ -88,21 +88,11 @@ public class JsdsJUnitTest extends TestCase{
 	}
    public static void main(String[] args) {
 	   try {
-	   String aa="iyMScJch9P8QyqMbPBjlbnFMXfUsOm66G1zTK1vcJFLfCG46KoyXVyk0LMa35Fs9H83ZEbsdqpKc%207Ge/FRZs4zsBm7Oda4x2WnNmXE7iLDgqD8xmfq1VfGs5JOg753yG227+WaQjKtBZfGotVRHcoaKt%20yZAF6PVMQFR2VU6gBNE=";
+	   String aa="G5HsQekcfT38v8MUHNVIQSiDB0NVBAt15Fwv7u+F2zMlncVrgnM0CbjJvoGaUREMSbNQLbsUMLEb8NYCy154LlQTHo7dDGKhGTkclXmUgjmw38V7/oLnmD01V5SWlbh/2ilPVKcf2K+so5bZM/qOhiYZxeJvhRyLUJqgkG33aEg=";
 
-		//String baseSign = URLDecoder.decode(aa,"UTF-8");
-
-       
-		String baseSign = aa.replace(" ", "+");
-		 String bb=baseSign.replace("%20", "");
-		 //String cc="iyMScJch9P8QyqMbPBjlbnFMXfUsOm66G1zTK1vcJFLfCG46KoyXVyk0LMa35Fs9H83ZEbsdqpKc 7Ge/FRZs4zsBm7Oda4x2WnNmXE7iLDgqD8xmfq1VfGs5JOg753yG227 WaQjKtBZfGotVRHcoaKt yZAF6PVMQFR2VU6gBNE=";
-		 
-//		 System.out.println(cc.replaceAll(" ", ""));
-//		 if(bb.equals(cc.replaceAll(" ", "")))
-//		 {
-//			 System.out.println("123333333");
-//		 }
-		byte[] a = RSAUtil.verify("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSUnSUG5I3Xh2ANLpC5xLe96WCVQG+A5iPBKPqRKBcF2OCdCtwNs8X40nyqYnVWqhkZwGiItT4+wFc04boL1Az01UJiZBLqmOumU0mxyyKCqGwFZakl3LWI4u2IBDuwyde3muXZDWtSDBH1k2BKzOHju3eeSicZu5D7SQ1Hol7AwIDAQAB",RSAUtil.base64Decode(bb));
+		String baseSign = URLDecoder.decode(aa,"UTF-8");
+		 String bb=baseSign.replace(" ", "+");
+		byte[] a = RSAUtil.verify("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCQAhZC1XB8jVMybKzBVmptEc6Mj9rZBcDWMtlitPiO4ncRwczB8giK8ZzUescmE2a7dAzxdYtzBCD7N3jMNHtW60Wf4pxv9YmwOn988ZRZjeVthVq6hOhuaE6bmj7KO2RK/1Ub8yXrglDMHdc3FxNqOVibXxxBRfivJ7zXCzUg1QIDAQAB",RSAUtil.base64Decode(bb));
 
 		String Str = new String(a);
 		

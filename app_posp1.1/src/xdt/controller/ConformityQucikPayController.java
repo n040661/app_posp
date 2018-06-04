@@ -172,8 +172,9 @@ public class ConformityQucikPayController extends BaseAction {
 					break;
 				case "JS100669"://江苏电商快捷
 					result.remove("v_code");
+					result.remove("v_msg");
 					url = result.get("pl_url");
-					logger.info("银生宝快捷上送的数据:" + url);
+					logger.info("银江苏电商快捷上送的数据:" + url);
 					outString(response, url);
 					break;
 				default:						
@@ -794,16 +795,16 @@ public class ConformityQucikPayController extends BaseAction {
 		@RequestMapping(value = "jsReturnUrl")
 		public void jsReturnUrl(HttpServletRequest request, HttpServletResponse response) {
 			try {
-				response.setHeader("content-type","text/html;charset=uft-8");
-				response.setContentType("text/html;charset=uft-8");
+				response.setHeader("content-type","text/html;charset=utf-8");
+				response.setContentType("text/html;charset=utf-8");
 				logger.info("###########江苏电商支付同步#############");
-				request.setCharacterEncoding("UTF-8");
-				String pl_sign=new String(request.getParameter("pl_sign").getBytes("ISO-8859-1"),"UTF-8");
-				//String baseSign= URLDecoder.decode(pl_sign, "UTF-8");
+				String pl_sign=request.getParameter("pl_sign");
                 logger.info("江苏电商同步返回的签名:"+pl_sign);
-				String baseSign = pl_sign.replace(" ", "+");
+				String baseSign= URLDecoder.decode(pl_sign, "UTF-8");
 
-				byte[] a = RSAUtil.verify("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSUnSUG5I3Xh2ANLpC5xLe96WCVQG+A5iPBKPqRKBcF2OCdCtwNs8X40nyqYnVWqhkZwGiItT4+wFc04boL1Az01UJiZBLqmOumU0mxyyKCqGwFZakl3LWI4u2IBDuwyde3muXZDWtSDBH1k2BKzOHju3eeSicZu5D7SQ1Hol7AwIDAQAB",RSAUtil.base64Decode(baseSign.replace(" ", "")));
+				baseSign = baseSign.replace(" ", "+");
+
+				byte[] a = RSAUtil.verify("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSUnSUG5I3Xh2ANLpC5xLe96WCVQG+A5iPBKPqRKBcF2OCdCtwNs8X40nyqYnVWqhkZwGiItT4+wFc04boL1Az01UJiZBLqmOumU0mxyyKCqGwFZakl3LWI4u2IBDuwyde3muXZDWtSDBH1k2BKzOHju3eeSicZu5D7SQ1Hol7AwIDAQAB",RSAUtil.base64Decode(baseSign));;
 
 				String Str = new String(a);
 
