@@ -526,7 +526,7 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 						case "HFB":// 汇付宝
 							result = hfbAccounts(payRequest, result, merchantinfo, pmsBusinessPos);
 							break;
-						case "HJZF":// 汇聚
+						case "HJZF":// 汇聚（老）
 							result = hjPay(payRequest, result, merchantinfo, pmsBusinessPos);
 							break;
 						case "HLB":// 合利宝
@@ -1833,8 +1833,6 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 				UpdateDaifu(hjPayRequest.getBatchNo(), "02");
 	
 				
-				String poundage = new BigDecimal(d).add(new BigDecimal(merchantinfo.getPoundage())) + "";
-				//Double amount=Double.parseDouble(hjPayRequest.getAmount())+Double.parseDouble(poundage);
 				maps.put("payMoney",(Double.parseDouble(hjPayRequest.getAmount())+shouxufei)+"");
 				maps.put("machId", hjPayRequest.getMerchantNo());
 				int nus = pmsMerchantInfoDao.updataPay(maps);
@@ -1853,7 +1851,81 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 		}
 		return result;
 	}
-
+	/**
+	 * 汇聚代付
+	 * 
+	 * @param payRequest
+	 * @param result
+	 * @param merchantinfo
+	 * @param pmsBusinessPos
+	 */
+	public Map<String, String> hjPays(DaifuRequestEntity payRequest, Map<String, String> result,
+			PmsMerchantInfo merchantinfo, PmsBusinessPos pmsBusinessPos) {
+		try {
+			Map<String, String> map = new HashMap<>();
+			StringBuilder str = new StringBuilder();
+			map.put("userNo", pmsBusinessPos.getBusinessnum());
+			if("0".equals(payRequest.getV_type())) {
+				map.put("productCode", "BANK_PAY_MAT_ENDOWMENT_ORDER");//任意付
+				str.append(map.get("productCode"));
+			}else if("1".equals(payRequest.getV_type())) {
+				map.put("productCode", "BANK_PAY_DAILY_ORDER");//朝夕付
+				str.append(map.get("productCode"));
+			}else {
+				result.put("v_code", "01");
+				result.put("v_msg", "v_cardType参数填写有误");
+				return result;
+			}
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+			map.put("requestTime",format.format(new Date()));
+			str.append(map.get("requestTime"));
+			map.put("merchantOrderNo", payRequest.getV_batch_no());
+			str.append(map.get("merchantOrderNo"));
+			map.put("receiverAccountNoEnc", payRequest.getV_cardNo());
+			str.append(map.get("receiverAccountNoEnc"));
+			map.put("receiverNameEnc", payRequest.getV_realName());
+			str.append(map.get("receiverNameEnc"));
+			if("1".equals(payRequest.getV_cardType())) {
+				map.put("receiverAccountType", "201");//对私
+				str.append(map.get("receiverAccountType"));
+			}else if("2".equals(payRequest.getV_cardType())) {
+				map.put("receiverAccountType", "204");//对公
+				str.append(map.get("receiverAccountType"));
+				map.put("receiverBankChannelNo",payRequest.getV_pmsBankNo()==null?"":payRequest.getV_pmsBankNo());//对公必填对私不填
+				str.append(map.get("receiverBankChannelNo"));
+			}else {
+				result.put("v_code", "01");
+				result.put("v_msg", "v_cardType参数填写有误");
+				return result;
+			}
+			map.put("paidAmount", payRequest.getV_sum_amount());
+			str.append(map.get("paidAmount"));
+			map.put("currency", "201");
+			str.append(map.get("currency"));
+			map.put("isChecked", "202");
+			str.append(map.get("isChecked"));
+			map.put("paidDesc", "代付");
+			str.append(map.get("paidDesc"));
+			map.put("paidUse", "202");//202活动经费 
+			str.append(map.get("paidUse"));
+			map.put("callbackUrl", xdt.dto.transfer_accounts.util.PayUtil.hjNotifyUrl);
+			str.append(map.get("callbackUrl"));
+			String hmac = DigestUtils.md5Hex(str.toString() + pmsBusinessPos.getKek());
+			map.put("hmac", URLEncoder.encode(hmac, "utf-8"));
+			TreeMap<String, String> paramsMap = new TreeMap<>();
+			paramsMap.putAll(map);
+			log.info("汇聚代付上传参数前数据:" + JSON.toJSONString(paramsMap));
+			HttpService HT = new HttpService();
+			String retuString = HT.POSTReturnString(HJUtil.xinPay, paramsMap, MBUtil.codeG);
+			log.info("汇聚返回字符串参数：" + retuString);
+			HJPayResponse payResponse = JsonUtils.fromJson(retuString, HJPayResponse.class);
+			log.info("汇聚代付返回参数:" + JSON.toJSONString(payResponse));
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return result;
+	}
 	/**
 	 * 合利宝借记卡代付
 	 * 
