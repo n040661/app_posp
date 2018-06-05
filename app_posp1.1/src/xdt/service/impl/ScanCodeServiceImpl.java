@@ -332,6 +332,11 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 														BigDecimal totalAmount=new BigDecimal(txnAmt).setScale(0, BigDecimal.ROUND_HALF_UP);
 
 														PmsBusinessPos pmsBusinessPos =selectKey(entity.getV_mid());//获取上游商户号和秘钥
+														if(pmsBusinessPos==null){
+															result.put("v_code", "11");
+															result.put("v_msg", "未找到路由，请联系业务开通！");
+															return result;
+														}
 														PmsAppTransInfo appTransInfo = this.insertOrder(totalAmount.toString(),rateStr, oAgentNo,pmsBusinessPos, entity);
 
 														if (appTransInfo != null) {
@@ -1715,5 +1720,16 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 			}
 		}
 		return original;
+	}
+	
+	public static void main(String[] args) {
+		Double txnAmt=Double.parseDouble("276.4")*100;
+		BigDecimal payAmt=new BigDecimal(txnAmt).setScale(0, BigDecimal.ROUND_HALF_UP);
+		System.out.println(payAmt.toString());
+		
+		
+		//String ss="{v_code=00, v_msg=请求成功, v_sign=171B89F93E49562DE30BB8F70B93918D}"; 
+		//com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(ss);
+		//System.out.println(json);
 	}
 }

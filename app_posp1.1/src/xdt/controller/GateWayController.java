@@ -1238,7 +1238,7 @@ public class GateWayController extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!map.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1356,7 +1356,7 @@ public class GateWayController extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!map.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1477,7 +1477,7 @@ public class GateWayController extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!map.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1580,7 +1580,7 @@ public class GateWayController extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!map.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1685,7 +1685,7 @@ public class GateWayController extends BaseAction {
 								map.put("success", value);
 							}
 						}
-						if (map.get("success").equals("false")) {
+						if (!map.get("success").equals("true")) {
 
 							logger.info("启动线程进行异步通知");
 							// 启线程进行异步通知
@@ -1811,7 +1811,7 @@ public class GateWayController extends BaseAction {
 									map.put("success", value);
 								}
 							}
-							if (map.get("success").equals("false")) {
+							if (!map.get("success").equals("true")) {
 
 								logger.info("启动线程进行异步通知");
 								// 启线程进行异步通知

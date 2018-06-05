@@ -2138,6 +2138,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 						case "000001110100000812":// 裕福快捷
 						case "000001220100000470":
 						case "000001110100000663":
+							DecimalFormat df1 = new DecimalFormat("######0"); //四色五入转换成整数
 							if (originalinfo.getV_userId() == null || "".equals(originalinfo.getV_userId())) {
 								retMap.put("v_code", "01");
 								retMap.put("v_msg", "v_userId is null");
@@ -2163,8 +2164,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								req.setMerchantOrderId(originalinfo.getV_oid());
 								req.setMerchantOrderTime(originalinfo.getV_time());
 								Double dd = Double.parseDouble(originalinfo.getV_txnAmt()) * 100;
-								Integer ii = dd.intValue();
-								req.setMerchantOrderAmt(ii.toString());
+								req.setMerchantOrderAmt(df1.format(dd));
 								// req.setMerchantDisctAmt(merchantDisctAmt);
 								req.setMerchantOrderCurrency("156");
 								req.setGwType("04");
@@ -2176,7 +2176,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								// merchantUserId=1523167250194, version=1.0.0, respCode=0000}
 								req.setMerchantSettleInfo("[{\"merchantId\":\"" + pmsBusinessPos.getBusinessnum()
 										+ "\",\"merchantName\":\"" + originalinfo.getV_productDesc()
-										+ "\",\"orderAmt\":\"" + ii + "\"," + "\"sumGoodsName \":\""
+										+ "\",\"orderAmt\":\"" + df1.format(dd) + "\"," + "\"sumGoodsName \":\""
 										+ originalinfo.getV_productDesc() + "\"}]");
 
 								req.setMerchantOrderDesc(originalinfo.getV_productDesc());
