@@ -1723,10 +1723,13 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 	}
 	
 	public static void main(String[] args) {
-		Double txnAmt=Double.parseDouble("276.4")*100;
-		BigDecimal payAmt=new BigDecimal(txnAmt).setScale(0, BigDecimal.ROUND_HALF_UP);
+		DecimalFormat df1 = new DecimalFormat("######0"); 
+		Double txnAmt=Double.parseDouble("5.02");
+		System.out.println(txnAmt*100.0);
+		System.out.println(df1.format(txnAmt));
+		BigDecimal payAmt=new BigDecimal(txnAmt).setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
 		System.out.println(payAmt.toString());
-		
+		System.out.println(df1.format(payAmt));
 		
 		//String ss="{v_code=00, v_msg=请求成功, v_sign=171B89F93E49562DE30BB8F70B93918D}"; 
 		//com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(ss);

@@ -1251,7 +1251,6 @@ public class TotalPayController extends BaseAction {
 					originalInfo  = this.gateWayService.getOriginOrderInfos(orderId);
 					keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				log.info("订单数据:" + JSON.toJSON(originalInfo));
@@ -1337,6 +1336,143 @@ public class TotalPayController extends BaseAction {
 			}
 		}
 	}
+	/**
+	 * 汇聚异步
+	 * @param response
+	 * @param request
+	 */
+	@RequestMapping(value="hjNotifyUrl")
+	public void hjNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
+		log.info("汇聚代付异步来了！");
+		String status=request.getParameter("status");
+		String errorCode =request.getParameter("errorCode");
+		String errorCodeDesc =request.getParameter("errorCodeDesc");
+		String userNo =request.getParameter("userNo");
+		String merchantOrderNo =request.getParameter("merchantOrderNo");
+		String platformSerialNo=request.getParameter("platformSerialNo");
+		String receiverAccountNoEnc=request.getParameter("receiverAccountNoEnc");
+		String receiverNameEnc=request.getParameter("receiverNameEnc");
+		String paidAmount=request.getParameter("paidAmount");
+		String fee=request.getParameter("fee");
+		String hmac=request.getParameter("hmac");
+		log.info("status:"+status);
+		log.info("errorCode:"+errorCode);
+		log.info("errorCodeDesc:"+errorCodeDesc);
+		log.info("userNo:"+userNo);
+		log.info("merchantOrderNo"+merchantOrderNo);
+		log.info("platformSerialNo:"+platformSerialNo);
+		log.info("receiverAccountNoEnc:"+receiverAccountNoEnc);
+		log.info("receiverNameEnc:"+receiverNameEnc);
+		log.info("paidAmount:"+paidAmount);
+		log.info("fee:"+fee);
+		log.info("hmac:"+hmac);
+		Map<String, String> maps =new HashMap<>();
+		
+		if(status!=""&&status!=null&&hmac!=null&&hmac!=""&&merchantOrderNo!=""&&merchantOrderNo!=null) {
+			try {
+				outString(response, "OK");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			PmsDaifuMerchantInfo pmsDaifuMerchantInfo =new PmsDaifuMerchantInfo();
+			pmsDaifuMerchantInfo.setBatchNo(merchantOrderNo);
+			List<PmsDaifuMerchantInfo> pmsDaifuMerchantInfos =service.selectDaifu(pmsDaifuMerchantInfo);
+				ChannleMerchantConfigKey keyinfo=new ChannleMerchantConfigKey();
+				OriginalOrderInfo originalInfo=null;
+				try {
+					originalInfo  = this.gateWayService.getOriginOrderInfos(merchantOrderNo);
+					keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				log.info("订单数据:" + JSON.toJSON(originalInfo));
+				
+				log.info("下游的异步地址" + originalInfo.getBgUrl());
+				maps.put("v_mid", originalInfo.getPid());
+				maps.put("v_oid", originalInfo.getOrderId());
+				maps.put("v_txnAmt", originalInfo.getOrderAmount());
+				maps.put("v_attach", originalInfo.getAttach());
+				maps.put("v_code", "00");
+				maps.put("v_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+				if("205".equals(status)) {
+					maps.put("v_status", "0000");
+					maps.put("v_msg", "代付成功");
+					try {
+						service.UpdateDaifu(merchantOrderNo, "00");
+					} catch (Exception e) {
+						log.info("汇聚修改成功代付状态异常："+e);
+						e.printStackTrace();
+					}
+				}else if("203".equals(status)||"203".equals(status)||"203".equals(status)||"203".equals(status)||"203".equals(status)){
+					
+				}else {
+					maps.put("v_status", "1001");
+					maps.put("v_msg", errorCodeDesc);
+					try {
+						service.UpdateDaifu(merchantOrderNo, "02");
+					} catch (Exception e) {
+						log.info("汇聚修改失败代付状态异常："+e);
+						e.printStackTrace();
+					}
+					Map<String, String> map =new HashMap<>();
+					map.put("machId",originalInfo.getPid());
+					map.put("payMoney",(Double.parseDouble(pmsDaifuMerchantInfos.get(0).getAmount())+Double.parseDouble(pmsDaifuMerchantInfos.get(0).getPayCounter()))*100+"");
+					int nus =service.updataPayT1(map);
+					if(nus==1) {
+						log.info("汇聚代付补款成功");
+						DaifuRequestEntity entity =new DaifuRequestEntity();
+		 				entity.setV_mid(pmsDaifuMerchantInfos.get(0).getMercId());
+		 				entity.setV_batch_no(pmsDaifuMerchantInfos.get(0).getBatchNo()+"/A");
+		 				entity.setV_amount(pmsDaifuMerchantInfos.get(0).getAmount());
+		 				entity.setV_sum_amount(pmsDaifuMerchantInfos.get(0).getAmount());
+		 				entity.setV_identity(pmsDaifuMerchantInfos.get(0).getIdentity());
+		 				entity.setV_cardNo(pmsDaifuMerchantInfos.get(0).getCardno());
+		 				entity.setV_city(pmsDaifuMerchantInfos.get(0).getCity());
+		 				entity.setV_province(pmsDaifuMerchantInfos.get(0).getProvince());
+		 				entity.setV_type("1");
+		 				entity.setV_pmsBankNo(pmsDaifuMerchantInfos.get(0).getPmsbankno());
+		 				PmsMerchantInfo merchantinfo =new PmsMerchantInfo();
+						int ii;
+						try {
+							ii = service.add(entity, merchantinfo, maps, "00");
+							log.info("汇聚补款订单状态："+ii);
+						} catch (Exception e) {
+							log.info("汇聚补款状态异常："+e);
+							e.printStackTrace();
+						}
+						
+					}else {
+						log.info("汇聚代付补款失败");
+					}
+				}
+				ScanCodeResponseEntity consume = (ScanCodeResponseEntity) BeanToMapUtil
+						.convertMap(ScanCodeResponseEntity.class, maps);
+				String signs = SignatureUtil.getSign(beanToMap(consume), keyinfo.getMerchantkey(), log);
+				maps.put("v_sign", signs);
+				String params = HttpURLConection.parseParams(maps);
+				log.info("汇聚代付给下游同步的数据:" + params);
+				try {
+					response.sendRedirect(originalInfo.getPageUrl()+"?"+params);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				logger.info("汇聚代付向下游 发送数据成功");
+			//}else {
+			//	log.info("异步验签失败！");
+			//}
+		}else {
+			try {
+				outString(response, "FAIL");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 	@RequestMapping(value="jmNotifyUrl")
 	public void jmNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
 		log.info("金米代付异步来了！");

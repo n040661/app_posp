@@ -2163,8 +2163,8 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								req.setMerchantId(pmsBusinessPos.getBusinessnum());
 								req.setMerchantOrderId(originalinfo.getV_oid());
 								req.setMerchantOrderTime(originalinfo.getV_time());
-								Double dd = Double.parseDouble(originalinfo.getV_txnAmt()) * 100;
-								req.setMerchantOrderAmt(df1.format(dd));
+								BigDecimal payAmt=new BigDecimal(originalinfo.getV_txnAmt()).setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
+								req.setMerchantOrderAmt(df1.format(payAmt));
 								// req.setMerchantDisctAmt(merchantDisctAmt);
 								req.setMerchantOrderCurrency("156");
 								req.setGwType("04");
@@ -2176,7 +2176,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								// merchantUserId=1523167250194, version=1.0.0, respCode=0000}
 								req.setMerchantSettleInfo("[{\"merchantId\":\"" + pmsBusinessPos.getBusinessnum()
 										+ "\",\"merchantName\":\"" + originalinfo.getV_productDesc()
-										+ "\",\"orderAmt\":\"" + df1.format(dd) + "\"," + "\"sumGoodsName \":\""
+										+ "\",\"orderAmt\":\"" + df1.format(payAmt) + "\"," + "\"sumGoodsName \":\""
 										+ originalinfo.getV_productDesc() + "\"}]");
 
 								req.setMerchantOrderDesc(originalinfo.getV_productDesc());
@@ -3778,13 +3778,13 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									if (returnStr != null && !"".equals(returnStr)) {
 										// 二、验签解密
 										returnStr = URLDecoder.decode(returnStr, "utf-8");
-										System.out.println("URL解码后的置单应答结果：" + returnStr);
+										logger.info("URL解码后的置单应答结果：" + returnStr);
 										TreeMap<String, String> boMap = JSON.parseObject(returnStr,
 												new TypeReference<TreeMap<String, String>>() {
 												});
 										Map<String, String> payshowParams = cipher.unPack(new ParamPacket(
 												boMap.get("data"), boMap.get("enc"), boMap.get("sign")));
-										System.out.println("解密后的置单应答结果：" + payshowParams);
+										logger.info("解密后的置单应答结果：" + payshowParams);
 										// {merchantDisctAmt=0, respDesc=调用接口成功, transTime=20180408105626,
 										// bpSerialNum=1001804081056248801, merchantId=000001110100000812,
 										// merchantOrderTime=20180408103938, merchantOrderAmt=100, currency=156,
