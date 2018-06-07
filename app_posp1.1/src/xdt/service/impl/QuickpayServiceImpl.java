@@ -4067,7 +4067,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 	 */
 	@Override
 	public Map<String, String> loanStillPay(MessageRequestEntity originalinfo) throws Exception {
-
+		PmsBusinessPos pmsBusinessPos = selectKey(originalinfo.getV_mid());
 		Map<String, String> retMap = new HashMap<String, String>();
 		// 商户号
 		String merchId = originalinfo.getV_mid();
@@ -4254,7 +4254,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 				pmsAppTransInfo.setFactamount(factBigDecimal.stripTrailingZeros().toPlainString());// 实际金额
 				pmsAppTransInfo.setOrderamount(orderAmountBigDecimal.stripTrailingZeros().toPlainString());// 订单金额
 				pmsAppTransInfo.setDrawMoneyType("1");// 普通提款
-
+				pmsAppTransInfo.setBusinessNum(pmsBusinessPos.getBusinessnum());
 				// 插入订单信息
 				Integer insertAppTrans = pmsAppTransInfoDao.insert(pmsAppTransInfo);
 				if (insertAppTrans == 1) {
@@ -4423,7 +4423,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 					}
 					logger.info("修改订单信息");
 					logger.info(pmsAppTransInfo);
-					PmsBusinessPos pmsBusinessPos = selectKey(originalinfo.getV_mid());
+					
 					int num = pmsAppTransInfoDao.update(pmsAppTransInfo);
 					if (num > 0) {
 

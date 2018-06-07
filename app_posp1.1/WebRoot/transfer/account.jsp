@@ -28,6 +28,7 @@
 账号类型： <input type="text" class="v_accountType" name="v_accountType" value="1"/><br />
 手机号： <input type="text" class="v_phone" name="v_phone" value="13323358548"/><br />
 证件号： <input type="text" class="v_cert_no" name="v_cert_no" value="120105197510055420"/><br />
+1:对私2:对公： <input type="text" class="v_cardType" name="v_cardType" value="1"/><br />
 
 <input type="button" value="提交" onclick="tijiao()"><br />
 <div id ="div"></div>
@@ -54,6 +55,8 @@
 			var v_accountType = $(".v_accountType").val();
 			var v_phone =$(".v_phone").val();
 			var v_cert_no = $(".v_cert_no").val();
+			var v_cardType = $(".v_cardType").val();
+			
 			var data={"v_version":v_version,
 					  "v_mid":v_mid,
 					  "v_count":v_count,
@@ -72,7 +75,7 @@
 					  "v_currency":v_currency,
 					  "v_accountType":v_accountType,
 					  "v_phone":v_phone,
-					  "v_cert_no":v_cert_no};
+					  "v_cert_no":v_cert_no,"v_cardType":v_cardType};
 			$.ajax({
 						url : "${pageContext.request.contextPath}/totalPayController/paySign.action",
 						type : 'post',
@@ -97,7 +100,7 @@
 									  "v_currency":v_currency,
 									  "v_accountType":v_accountType,
 									  "v_phone":v_phone,
-									  "v_cert_no":v_cert_no,
+									  "v_cert_no":v_cert_no,"v_cardType":v_cardType,
 									  "v_sign":data};
 							$.ajax({
 										url : "${pageContext.request.contextPath}/totalPayController/merchant/virement/mer_payment.action",
