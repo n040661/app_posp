@@ -511,10 +511,22 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 			// 判断是否为正式商户
 			if ("60".equals(merchantinfo.getMercSts())) {
 				logger.info("是正式商户");
+				
 				// 实际金额
 				String factAmount = "" + new BigDecimal(originalinfo.getV_txnAmt()).multiply(new BigDecimal(100));
 				// 查询商户路由
-				PmsBusinessPos pmsBusinessPos = selectKey(originalinfo.getV_mid());
+				PmsBusinessPos pmsBusinessPos =selectKey(originalinfo.getV_mid());//获取上游商户号和秘钥
+				if(pmsBusinessPos==null){
+					retMap.put("v_code", "18");
+					retMap.put("v_msg", "未找到路由，请联系业务开通！");
+					return retMap;
+				}
+				//判断入金是否开启
+				if("1".equals(pmsBusinessPos.getOutPay())) {
+					retMap.put("v_code", "19");
+					retMap.put("v_msg", "入金未开通,请联系业务经理!");
+					return retMap;
+				}
 				// 校验欧单金额限制
 				ResultInfo payCheckResult = iPublicTradeVerifyService
 						.amountVerifyOagent((int) Double.parseDouble(factAmount), TradeTypeEnum.onlinePay, oAgentNo);

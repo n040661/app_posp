@@ -156,7 +156,17 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 					result.put("v_msg", "下单重复");
 				} else if ("60".equals(merchantinfo.getMercSts())) {
 					// 判断是否为正式商户
-
+					PmsBusinessPos pmsBusinessPos =selectKey(entity.getV_mid());//获取上游商户号和秘钥
+					if(pmsBusinessPos==null){
+						result.put("v_code", "18");
+						result.put("v_msg", "未找到路由，请联系业务开通！");
+						return result;
+					}
+					if("1".equals(pmsBusinessPos.getOutPay())) {
+						result.put("v_code", "19");
+						result.put("v_msg", "入金未开通,请联系业务经理!");
+						return result;
+					}
 					saveOrderInfo(entity);
 					// 校验商户金额限制
 					Map<String, String> paramMap = new HashMap<String, String>();
@@ -331,12 +341,6 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 														// 组装报文
 														BigDecimal totalAmount=new BigDecimal(txnAmt).setScale(0, BigDecimal.ROUND_HALF_UP);
 
-														PmsBusinessPos pmsBusinessPos =selectKey(entity.getV_mid());//获取上游商户号和秘钥
-														if(pmsBusinessPos==null){
-															result.put("v_code", "11");
-															result.put("v_msg", "未找到路由，请联系业务开通！");
-															return result;
-														}
 														PmsAppTransInfo appTransInfo = this.insertOrder(totalAmount.toString(),rateStr, oAgentNo,pmsBusinessPos, entity);
 
 														if (appTransInfo != null) {

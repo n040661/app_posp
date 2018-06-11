@@ -313,6 +313,17 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 					// 插入异步数据
 					
 					PmsBusinessPos pmsBusinessPos = selectKey(payRequest.getV_mid());
+					if(pmsBusinessPos==null){
+						result.put("v_code", "18");
+						result.put("v_msg", "未找到路由，请联系业务开通！");
+						return result;
+					}
+					//判断入金是否开启
+					if("1".equals(pmsBusinessPos.getGoldPay())) {
+						result.put("v_code", "19");
+						result.put("v_msg", "出金未开通,请联系业务经理!");
+						return result;
+					}
 					// 判断交易类型
 					log.info("实际金额");
 					// 元
