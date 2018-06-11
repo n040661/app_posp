@@ -4023,8 +4023,8 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 		String orderid = query.getV_oid();
 		logger.info("快捷查询订单号:" + orderid);
 		origin = originalDao.getOriginalOrderInfoByOrderid(orderid);
+		logger.info("快捷根据订单号查询参数:" + JSON.toJSONString(origin));
 		// 查询商户路由
-		PmsBusinessPos pmsBusinessPos = selectKey(query.getV_mid());
 		PmsAppTransInfo pmsAppTransInfo = null;
 		try {
 			if (origin != null) {
@@ -4050,13 +4050,19 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 					}
 
 				} else {
-					result.put("v_code", "15");
-					result.put("v_msg", "请求失败");
+					logger.info("pmsAppTransInfo请求失败,未查到此订单!");
+					result.put("v_code", "17");
+					result.put("v_msg", "请求失败,未查到此订单!");
 				}
+			}else {
+				logger.info("origin请求失败,未查到此订单!");
+				result.put("v_code", "17");
+				result.put("v_msg", "请求失败,未查到此订单!");
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			result.put("v_code", "15");
+			result.put("v_msg", "请求失败");
 			e.printStackTrace();
 		}
 		return result;

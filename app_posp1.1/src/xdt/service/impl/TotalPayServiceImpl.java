@@ -3090,7 +3090,7 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 			result.put("v_status", "1001");
 			result.put("v_status_msg", "代付失败");
 			UpdateDaifu(payRequest.getV_batch_no(), "02");
-			m.put("payMoney", Double.parseDouble(payRequest.getV_amount()) + Double.parseDouble(merchantinfo.getPoundage())*100+"");
+			m.put("payMoney", Double.parseDouble(payRequest.getV_amount())*100 + Double.parseDouble(merchantinfo.getPoundage())*100+"");
 			m.put("machId", payRequest.getV_mid());
 			int nus = 0;
 			if ("0".equals(payRequest.getV_type())) {
@@ -3201,7 +3201,7 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 				result.put("v_status", "1001");
 				result.put("v_status_msg", "代付失败:"+json.getString("dealMsg"));
 				UpdateDaifu(payRequest.getV_batch_no(), "02");
-				m.put("payMoney", Double.parseDouble(payRequest.getV_amount())+Double.parseDouble(merchantinfo.getPoundage())*100+"");
+				m.put("payMoney", Double.parseDouble(payRequest.getV_amount())*100+Double.parseDouble(merchantinfo.getPoundage())*100+"");
 				m.put("machId", payRequest.getV_mid());
 				int nus=0;
 				if ("0".equals(payRequest.getV_type())) {
@@ -4133,7 +4133,7 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 			}
 
 		} else {
-			mapParams.put("v_code", "15");
+			mapParams.put("v_code", "17");
 			mapParams.put("v_msg", "查询无此订单");
 		}
 
