@@ -1367,10 +1367,12 @@ public class TotalPayController extends BaseAction {
 		log.info("fee:"+fee);
 		log.info("hmac:"+hmac);
 		Map<String, String> maps =new HashMap<>();
-		
+		Map<String, String> resp=new HashMap<>();
 		if(status!=""&&status!=null&&hmac!=null&&hmac!=""&&merchantOrderNo!=""&&merchantOrderNo!=null) {
 			try {
-				outString(response, "OK");
+				resp.put("statusCode", "2001");
+				resp.put("message", "成功");
+				outString(response, JSON.toJSON(resp));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -1464,7 +1466,9 @@ public class TotalPayController extends BaseAction {
 			//}
 		}else {
 			try {
-				outString(response, "FAIL");
+				resp.put("statusCode", "2002");
+				resp.put("message", "未收到参数");
+				outString(response, JSON.toJSON(resp));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

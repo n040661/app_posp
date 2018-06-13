@@ -539,7 +539,7 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 							result = hfbAccounts(payRequest, result, merchantinfo, pmsBusinessPos);
 							break;
 						case "HJZF":// 汇聚（老）
-							result = hjPay(payRequest, result, merchantinfo, pmsBusinessPos);
+							result = hjPays(payRequest, result, merchantinfo, pmsBusinessPos);
 							break;
 						case "HLB":// 合利宝
 							if ("1".equals(payRequest.getV_accountType())) {
