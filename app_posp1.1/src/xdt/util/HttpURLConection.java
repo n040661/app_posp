@@ -96,9 +96,9 @@ public class HttpURLConection {
             // 设置该HttpURLConnection实例是否自动执行重定向
             connection.setInstanceFollowRedirects(true);
             
-            connection.setConnectTimeout(20000);//2分钟
+            connection.setConnectTimeout(5000);//2分钟
             
-    		connection.setReadTimeout(20000);
+    		connection.setReadTimeout(5000);
             // 设置请求头里面的各个属性 (以下为设置内容的类型,设置为经过urlEncoded编码过的from参数)
             // application/x-javascript text/xml->xml数据 application/x-javascript->json对象 application/x-www-form-urlencoded->表单数据
             //connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");

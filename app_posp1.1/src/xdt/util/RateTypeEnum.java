@@ -30,7 +30,7 @@ public enum RateTypeEnum {
 	hebaoRateType("7", "第三方移动和包费率",6),
 
     //这个字段和吴萌做了协商，数据库中同一欧单下不能重复（费率表是他做的设计）
-    mobaoQuickPayRateType("12","第三方摩宝快捷支付费率",12),
+    mobaoQuickPayRateType("20","第三方摩宝快捷支付费率",20),
 
     
 	hengfengQuickPayRateType("50","第三方恒丰快捷支付费率",50),

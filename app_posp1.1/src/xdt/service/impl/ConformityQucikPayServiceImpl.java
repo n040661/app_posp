@@ -765,7 +765,7 @@ public class ConformityQucikPayServiceImpl extends BaseServiceImpl implements IC
 
 			Double dd = Double.valueOf(amount.doubleValue() * 100.0D - poundage.doubleValue());
 			
-			sum_amount=positions.add(new BigDecimal(dd).multiply(new BigDecimal(0.8)));
+			sum_amount=new BigDecimal(dd).multiply(new BigDecimal(0.8));
 			Map<String, String> map = new HashMap();
 			map.put("machId", originalInfo.getPid());
 			map.put("payMoney", sum_amount.toString());
