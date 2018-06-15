@@ -693,8 +693,9 @@ public class GateWayController extends BaseAction {
 						params1.put("merchantId", busInfo.getBusinessnum());
 						params1.put("merchantOrderId", param.getV_oid());
 						params1.put("merchantOrderTime", param.getV_time());
-						Double dd = Double.parseDouble(param.getV_txnAmt()) * 100;
-						params1.put("merchantOrderAmt", df1.format(dd));
+						BigDecimal payAmt=new BigDecimal(param.getV_txnAmt()).setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
+						//Double dd = Double.parseDouble(param.getV_txnAmt()) * 100;
+						params1.put("merchantOrderAmt", df1.format(payAmt));
 						params1.put("merchantOrderCurrency", "156");
 						if ("1".equals(param.getV_channel())) {
 							params1.put("gwType", "02");
@@ -711,7 +712,7 @@ public class GateWayController extends BaseAction {
 						params1.put("merchantSettleInfo",
 								"[{\"sumGoodsName\":\"" + param.getV_productDesc() + "\",\"merchantId\":\""
 										+ busInfo.getBusinessnum() + "\"," + "\"merchantName\":\""
-										+ param.getV_productName() + "\",\"orderAmt\":\"" + df1.format(dd) + "\"}]");
+										+ param.getV_productName() + "\",\"orderAmt\":\"" + df1.format(payAmt) + "\"}]");
 						if (!"".equals(param.getV_attach())) {
 							params1.put("msgExt", param.getV_attach());
 						}
@@ -1238,7 +1239,7 @@ public class GateWayController extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!map.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1356,7 +1357,7 @@ public class GateWayController extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!map.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1477,7 +1478,7 @@ public class GateWayController extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!map.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1580,7 +1581,7 @@ public class GateWayController extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!map.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1685,7 +1686,7 @@ public class GateWayController extends BaseAction {
 								map.put("success", value);
 							}
 						}
-						if (map.get("success").equals("false")) {
+						if (!map.get("success").equals("true")) {
 
 							logger.info("启动线程进行异步通知");
 							// 启线程进行异步通知
@@ -1811,7 +1812,7 @@ public class GateWayController extends BaseAction {
 									map.put("success", value);
 								}
 							}
-							if (map.get("success").equals("false")) {
+							if (!map.get("success").equals("true")) {
 
 								logger.info("启动线程进行异步通知");
 								// 启线程进行异步通知

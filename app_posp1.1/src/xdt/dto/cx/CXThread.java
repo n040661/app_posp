@@ -22,15 +22,18 @@ public class CXThread extends Thread{
 	private ITotalPayService service;
 	
 	private String batchNo;
+	
+	private PmsMerchantInfo merchantinfo;
 
-
+	
 	public CXThread(IPmsMerchantInfoDao pmsMerchantInfoDao, DaifuRequestEntity payRequest, ITotalPayService service,
-			String batchNo) {
+			String batchNo, PmsMerchantInfo merchantinfo) {
 		super();
 		this.pmsMerchantInfoDao = pmsMerchantInfoDao;
 		this.payRequest = payRequest;
 		this.service = service;
 		this.batchNo = batchNo;
+		this.merchantinfo = merchantinfo;
 	}
 	@Override
 	public void run() {
@@ -38,7 +41,6 @@ public class CXThread extends Thread{
 			sleep(5000);
 			Map<String, String> result=new HashMap<>();
 			Map<String, String> m =new HashMap<>();
-			PmsMerchantInfo merchantinfo =new PmsMerchantInfo();
 			for (int i = 0; i < 30; i++) {
 				result =service.cxQuick(payRequest.getV_mid(), batchNo, result);
 				log.info("创新查询代付状态："+JSON.toJSONString(result));
@@ -51,7 +53,7 @@ public class CXThread extends Thread{
 					//if("90001".equals(result.get("respCode").toString()))
 				}else {
 					service.UpdateDaifu(batchNo, "01");
-					m.put("payMoney", Double.parseDouble(result.get("amount"))*100+"");
+					m.put("payMoney", Double.parseDouble(result.get("amount"))+Double.parseDouble(merchantinfo.getPoundage())*100+"");
 					m.put("machId", payRequest.getV_mid());
 					int nus=0;
 					if ("0".equals(payRequest.getV_type())) {

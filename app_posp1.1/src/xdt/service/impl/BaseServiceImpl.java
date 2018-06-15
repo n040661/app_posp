@@ -1811,6 +1811,8 @@ public class BaseServiceImpl {
 			businessPos.setBusinessnum(busInfo.getBusinessNum());
 			businessPos = businessPosDao.searchById(businessPos
 					.getBusinessnum());
+			businessPos.setOutPay(route.getOutPay());
+			businessPos.setGoldPay(route.getGoldPay());
 			System.out.println(JSON.toJSON(businessPos));
 		} catch (Exception e) {
 			e.printStackTrace();

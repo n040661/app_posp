@@ -16,6 +16,7 @@ public class HJUtil {
 	public static final String agreementPay="https://www.joinpay.com/trade/agreementSignApi.action";
 	
 	public static final String pay="https://www.joinpay.com/trade/batchProxyPayNew.action";
+	public static final String xinPay="https://www.joinpay.com/payment/pay/singlePay";
 	public static final String paySelect="https://www.joinpay.com/trade/queryBatchProxyPay.action";
 	public static final String Version="1.0";
 	public static final String Version2="2.0";

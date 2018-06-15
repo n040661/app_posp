@@ -2091,7 +2091,7 @@ public class PayserviceImpl extends BaseServiceImpl implements IPayService {
 				String productName = payRequest.getProductName(); // 商品名称，购买商品名称
 				String productDesc = payRequest.getProductDesc(); // 商品描述，购买商品描述
 				String cvn2Text=payRequest.getCvv2();
-				String expiredText=payRequest.getYear()+payRequest.getMonth();
+				String expiredText=payRequest.getYear()==null?"":payRequest.getYear()+payRequest.getMonth()==null?"":payRequest.getMonth();
 				String offlineNotifyUrlText = PayUtil.notifyUrl; // 后台通知url，开通结果通过后台通讯通知到这个url（以此为准），3DES加密最外层做base64编码
 				// 敏感数据3DES加密
 				String payAmount = null;

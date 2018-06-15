@@ -15,12 +15,15 @@
 		<result column="OWNER_ID" property="ownerId" jdbcType="DECIMAL" />
 		<result column="PRIORITY_MER" property="priorityMer" jdbcType="VARCHAR" />
 		<result column="ROUNTTYPE" property="rounttype" jdbcType="VARCHAR" />
+		<result column="outPay" property="outPay" jdbcType="VARCHAR" />
+		<result column="goldPay" property="goldPay" jdbcType="VARCHAR" />
+		
 	</resultMap>
 
 	<sql id="Base_Column_List">
 		ID, CHANNEL_CODE, MERCHANT_ID, POS_ID, STATUS, EFFECT_FROM, EFFECT_TO,
 		PRIORITY,
-		OWNER_ID, PRIORITY_MER, ROUNTTYPE
+		OWNER_ID, PRIORITY_MER, ROUNTTYPE,outPay,goldPay
 	</sql>
     <insert id="insertPospRouteInfo" parameterType="xdt.model.PospRouteInfo">
 		insert into POSP_ROUTE_INFO
@@ -58,6 +61,12 @@
 			<if test="rounttype != null">
 				ROUNTTYPE,
 			</if>
+			<if test="outPay != null">
+				outPay,
+			</if>
+			<if test="goldPay != null">
+				goldPay,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -92,6 +101,12 @@
 			</if>
 			<if test="rounttype != null">
 				#{rounttype,jdbcType=DECIMAL},
+			</if>
+			<if test="outPay != null">
+				#{outPay,jdbcType=DECIMAL},
+			</if>
+			<if test="goldPay != null">
+				#{goldPay,jdbcType=DECIMAL},
 			</if>
 		</trim>
 	</insert>

@@ -371,7 +371,7 @@ public class QuickPayAction extends BaseAction {
 								.convertMap(ConsumeResponseEntity.class, result);
 						String sign = SignatureUtil.getSign(beanToMap(consume), merchantKey, logger);
 						result.put("v_sign", sign);
-						outString(response, result);
+						outString(response, JSON.toJSON(result));
 						break;
 					case "10000466938":// 易宝快捷
 
@@ -415,14 +415,14 @@ public class QuickPayAction extends BaseAction {
 				logger.error("签名错误!");
 				result.put("v_code", "02");
 				result.put("v_msg", "签名错误!");
-				outString(response, result);
+				outString(response, JSON.toJSON(result));
 			}
 
 		} else {
 			logger.error("上送交易参数空!");
 			result.put("v_code", "01");
 			result.put("v_msg", "上送交易参数空");
-			outString(response, result);
+			outString(response, JSON.toJSON(result));
 		}
 //		ConsumeResponseEntity consume = (ConsumeResponseEntity) BeanToMapUtil.convertMap(ConsumeResponseEntity.class,
 //				result);

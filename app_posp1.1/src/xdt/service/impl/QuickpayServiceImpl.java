@@ -511,10 +511,22 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 			// 判断是否为正式商户
 			if ("60".equals(merchantinfo.getMercSts())) {
 				logger.info("是正式商户");
+				
 				// 实际金额
 				String factAmount = "" + new BigDecimal(originalinfo.getV_txnAmt()).multiply(new BigDecimal(100));
 				// 查询商户路由
-				PmsBusinessPos pmsBusinessPos = selectKey(originalinfo.getV_mid());
+				PmsBusinessPos pmsBusinessPos =selectKey(originalinfo.getV_mid());//获取上游商户号和秘钥
+				if(pmsBusinessPos==null){
+					retMap.put("v_code", "18");
+					retMap.put("v_msg", "未找到路由，请联系业务开通！");
+					return retMap;
+				}
+				//判断入金是否开启
+				if("1".equals(pmsBusinessPos.getOutPay())) {
+					retMap.put("v_code", "19");
+					retMap.put("v_msg", "入金未开通,请联系业务经理!");
+					return retMap;
+				}
 				// 校验欧单金额限制
 				ResultInfo payCheckResult = iPublicTradeVerifyService
 						.amountVerifyOagent((int) Double.parseDouble(factAmount), TradeTypeEnum.onlinePay, oAgentNo);
@@ -2138,6 +2150,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 						case "000001110100000812":// 裕福快捷
 						case "000001220100000470":
 						case "000001110100000663":
+							DecimalFormat df1 = new DecimalFormat("######0"); //四色五入转换成整数
 							if (originalinfo.getV_userId() == null || "".equals(originalinfo.getV_userId())) {
 								retMap.put("v_code", "01");
 								retMap.put("v_msg", "v_userId is null");
@@ -2162,9 +2175,8 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								req.setMerchantId(pmsBusinessPos.getBusinessnum());
 								req.setMerchantOrderId(originalinfo.getV_oid());
 								req.setMerchantOrderTime(originalinfo.getV_time());
-								Double dd = Double.parseDouble(originalinfo.getV_txnAmt()) * 100;
-								Integer ii = dd.intValue();
-								req.setMerchantOrderAmt(ii.toString());
+								BigDecimal payAmt=new BigDecimal(originalinfo.getV_txnAmt()).setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
+								req.setMerchantOrderAmt(df1.format(payAmt));
 								// req.setMerchantDisctAmt(merchantDisctAmt);
 								req.setMerchantOrderCurrency("156");
 								req.setGwType("04");
@@ -2176,7 +2188,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								// merchantUserId=1523167250194, version=1.0.0, respCode=0000}
 								req.setMerchantSettleInfo("[{\"merchantId\":\"" + pmsBusinessPos.getBusinessnum()
 										+ "\",\"merchantName\":\"" + originalinfo.getV_productDesc()
-										+ "\",\"orderAmt\":\"" + ii + "\"," + "\"sumGoodsName \":\""
+										+ "\",\"orderAmt\":\"" + df1.format(payAmt) + "\"," + "\"sumGoodsName \":\""
 										+ originalinfo.getV_productDesc() + "\"}]");
 
 								req.setMerchantOrderDesc(originalinfo.getV_productDesc());
@@ -3778,13 +3790,13 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									if (returnStr != null && !"".equals(returnStr)) {
 										// 二、验签解密
 										returnStr = URLDecoder.decode(returnStr, "utf-8");
-										System.out.println("URL解码后的置单应答结果：" + returnStr);
+										logger.info("URL解码后的置单应答结果：" + returnStr);
 										TreeMap<String, String> boMap = JSON.parseObject(returnStr,
 												new TypeReference<TreeMap<String, String>>() {
 												});
 										Map<String, String> payshowParams = cipher.unPack(new ParamPacket(
 												boMap.get("data"), boMap.get("enc"), boMap.get("sign")));
-										System.out.println("解密后的置单应答结果：" + payshowParams);
+										logger.info("解密后的置单应答结果：" + payshowParams);
 										// {merchantDisctAmt=0, respDesc=调用接口成功, transTime=20180408105626,
 										// bpSerialNum=1001804081056248801, merchantId=000001110100000812,
 										// merchantOrderTime=20180408103938, merchantOrderAmt=100, currency=156,
@@ -4023,8 +4035,8 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 		String orderid = query.getV_oid();
 		logger.info("快捷查询订单号:" + orderid);
 		origin = originalDao.getOriginalOrderInfoByOrderid(orderid);
+		logger.info("快捷根据订单号查询参数:" + JSON.toJSONString(origin));
 		// 查询商户路由
-		PmsBusinessPos pmsBusinessPos = selectKey(query.getV_mid());
 		PmsAppTransInfo pmsAppTransInfo = null;
 		try {
 			if (origin != null) {
@@ -4050,13 +4062,19 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 					}
 
 				} else {
-					result.put("v_code", "15");
-					result.put("v_msg", "请求失败");
+					logger.info("pmsAppTransInfo请求失败,未查到此订单!");
+					result.put("v_code", "17");
+					result.put("v_msg", "请求失败,未查到此订单!");
 				}
+			}else {
+				logger.info("origin请求失败,未查到此订单!");
+				result.put("v_code", "17");
+				result.put("v_msg", "请求失败,未查到此订单!");
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			result.put("v_code", "15");
+			result.put("v_msg", "请求失败");
 			e.printStackTrace();
 		}
 		return result;
@@ -4067,7 +4085,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 	 */
 	@Override
 	public Map<String, String> loanStillPay(MessageRequestEntity originalinfo) throws Exception {
-
+		PmsBusinessPos pmsBusinessPos = selectKey(originalinfo.getV_mid());
 		Map<String, String> retMap = new HashMap<String, String>();
 		// 商户号
 		String merchId = originalinfo.getV_mid();
@@ -4254,7 +4272,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 				pmsAppTransInfo.setFactamount(factBigDecimal.stripTrailingZeros().toPlainString());// 实际金额
 				pmsAppTransInfo.setOrderamount(orderAmountBigDecimal.stripTrailingZeros().toPlainString());// 订单金额
 				pmsAppTransInfo.setDrawMoneyType("1");// 普通提款
-
+				pmsAppTransInfo.setBusinessNum(pmsBusinessPos.getBusinessnum());
 				// 插入订单信息
 				Integer insertAppTrans = pmsAppTransInfoDao.insert(pmsAppTransInfo);
 				if (insertAppTrans == 1) {
@@ -4423,7 +4441,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 					}
 					logger.info("修改订单信息");
 					logger.info(pmsAppTransInfo);
-					PmsBusinessPos pmsBusinessPos = selectKey(originalinfo.getV_mid());
+					
 					int num = pmsAppTransInfoDao.update(pmsAppTransInfo);
 					if (num > 0) {
 
