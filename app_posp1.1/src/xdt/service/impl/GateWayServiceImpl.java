@@ -240,7 +240,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 						String factAmount = "" + new BigDecimal(originalinfo.getV_txnAmt()).multiply(new BigDecimal(100));
 						// 校验欧单金额限制
 						ResultInfo payCheckResult = iPublicTradeVerifyService
-								.amountVerifyOagent((int) Double.parseDouble(factAmount), TradeTypeEnum.onlinePay, oAgentNo);
+								.amountVerifyOagent((int) Double.parseDouble(factAmount), TradeTypeEnum.merchantCollect, oAgentNo);
 						if (!payCheckResult.getErrCode().equals("0")) {
 							// 交易不支持
 							logger.info(
@@ -249,7 +249,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 						}
 
 						// 校验欧单模块是否开启
-						ResultInfo resultInfoForOAgentNo= iPublicTradeVerifyService.moduleVerifyOagent(TradeTypeEnum.onlinePay,
+						ResultInfo resultInfoForOAgentNo= iPublicTradeVerifyService.moduleVerifyOagent(TradeTypeEnum.merchantCollect,
 								oAgentNo);
 						if (!resultInfoForOAgentNo.getErrCode().equals("0")) {
 							// 交易不支持
@@ -265,7 +265,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 							
 						}
 						// 校验商户模块是否开启
-						ResultInfo payCheckResult3 = iPublicTradeVerifyService.moduelVerifyMer(TradeTypeEnum.onlinePay, mercId);
+						ResultInfo payCheckResult3 = iPublicTradeVerifyService.moduelVerifyMer(TradeTypeEnum.merchantCollect, mercId);
 						if (!payCheckResult3.getErrCode().equals("0")) {
 							// 交易不支持
 							logger.info(
@@ -275,7 +275,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 						// 校验商户金额限制
 						Map<String, String> paramMap = new HashMap<String, String>();
 						paramMap.put("mercid", merchantinfo.getMercId());// 商户编号
-						paramMap.put("businesscode", TradeTypeEnum.onlinePay.getTypeCode());// 业务编号
+						paramMap.put("businesscode", TradeTypeEnum.merchantCollect.getTypeCode());// 业务编号
 						paramMap.put("oAgentNo", oAgentNo);
 						// 商户 网购 业务信息
 						Map<String, String> resultMap = merchantMineDao.queryBusinessInfo(paramMap);
@@ -306,11 +306,11 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 						// 写入欧单编号
 						pmsAppTransInfo.setoAgentNo(oAgentNo);
 						pmsAppTransInfo.setStatus(OrderStatusEnum.initlize.getStatus());// 订单初始化状态
-						pmsAppTransInfo.setTradetype(TradeTypeEnum.onlinePay.getTypeName());// 业务功能模块名称
+						pmsAppTransInfo.setTradetype(TradeTypeEnum.merchantCollect.getTypeName());// 业务功能模块名称
 																							// ：网购
 						pmsAppTransInfo.setTradetime(UtilDate.getDateFormatter()); // 设置时间
 						pmsAppTransInfo.setMercid(merchantinfo.getMercId());
-						pmsAppTransInfo.setTradetypecode(TradeTypeEnum.onlinePay.getTypeCode());// 业务功能模块编号
+						pmsAppTransInfo.setTradetypecode(TradeTypeEnum.merchantCollect.getTypeCode());// 业务功能模块编号
 																								// ：17
 						pmsAppTransInfo.setOrderid(originalinfo.getV_oid());// 设置订单号
 						pmsAppTransInfo.setPaymenttype(PaymentCodeEnum.GatewayCodePay.getTypeName());
@@ -421,7 +421,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 							Integer paymentAmountInt = (int) Double.parseDouble(paymentAmount);
 
 							// 验证支付方式是否开启
-							payCheckResult = iPublicTradeVerifyService.totalVerify(paymentAmountInt, TradeTypeEnum.onlinePay,
+							payCheckResult = iPublicTradeVerifyService.totalVerify(paymentAmountInt, TradeTypeEnum.merchantCollect,
 									PaymentCodeEnum.GatewayCodePay, oAgentNo, merchantinfo.getMercId());
 							if (!payCheckResult.getErrCode().equals("0")) {
 								// 交易不支持
@@ -437,7 +437,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 							// 流水表是否需要更新的标记 0 insert，1：update
 							int insertOrUpdateFlag = 0;
 							// 生成上送流水号
-							String transOrderId = generateTransOrderId(TradeTypeEnum.onlinePay, PaymentCodeEnum.GatewayCodePay);
+							String transOrderId = generateTransOrderId(TradeTypeEnum.merchantCollect, PaymentCodeEnum.GatewayCodePay);
 							if ((pospTransInfo = pospTransInfoDAO.searchByOrderId(pmsAppTransInfo.getOrderid())) != null) {
 								// 已经存在，修改流水号，设置pospsn为空
 								logger.info("订单号：" + pmsAppTransInfo.getOrderid() + ",生成上送通道的流水号：" + transOrderId);

@@ -1613,6 +1613,10 @@ public class HJServiceImpl extends BaseServiceImpl implements IHJService{
 				 model.setRecordDescription("批次号:" + hjPayRequest.getBatchNo()+"订单号："+hjPayRequest.getIdentity()+ "错误原因:" + result.get("respMsg"));
 				 model.setResponsecode(state);
 				 model.setOagentno("100333");
+				 model.setIsDisplay("0");
+				 model.setIsDelete("1");
+				 model.setIsExamine("1");
+				 model.setIsAdd("0");
 				 //手续费
 				 BigDecimal PayFree =new BigDecimal("0");
 				 Double d ;

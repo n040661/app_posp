@@ -27,14 +27,18 @@
 			jdbcType="VARCHAR" />
 
 		<result column="POSITION" property="position" jdbcType="VARCHAR" />
-
+		<result column="isDisplay" property="isDisplay" jdbcType="VARCHAR" />
+		<result column="isDelete" property="isDelete" jdbcType="VARCHAR" />
+		<result column="isAdd" property="isAdd" jdbcType="VARCHAR" />
+		<result column="isExamine" property="isExamine" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		MERC_ID, COUNT,AMOUNT, BATCH_NO,
 		CARDNO, REALNAME,
 		PROVINCE,
 		CITY, PAYAMOUNT,
-		IDENTITY,PMSBANKNO,CREATIONDATE,RESPONSECODE,RESPONSECODE,CREATIONDATE,OAGENTNO,PAYCOUNTER,POSITION,transactionType,recordDescription
+		IDENTITY,PMSBANKNO,CREATIONDATE,RESPONSECODE,RESPONSECODE,CREATIONDATE,OAGENTNO,PAYCOUNTER,POSITION,transactionType,recordDescription,
+		isDisplay,isDelete,isAdd,isExamine
 	</sql>
 	<insert id="insert" parameterType="xdt.model.PmsDaifuMerchantInfo">
 		insert into
@@ -121,6 +125,18 @@
 			<if test="position != null">
 				POSITION,
 			</if>
+			<if test="isDisplay != null">
+				isDisplay,
+			</if>
+			<if test="isDelete != null">
+				isDelete,
+			</if>
+			<if test="isAdd != null">
+				isAdd,
+			</if>
+			<if test="isExamine != null">
+				isExamine,
+			</if>
 			CREATIONDATE,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -177,6 +193,18 @@
 			</if>
 			<if test="position != null">
 				#{position,jdbcType=VARCHAR},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay,jdbcType=VARCHAR},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=VARCHAR},
+			</if>
+			<if test="isAdd != null">
+				#{isAdd,jdbcType=VARCHAR},
+			</if>
+			<if test="isExamine != null">
+				#{isExamine,jdbcType=VARCHAR},
 			</if>
 			to_char(systimestamp,'yyyy-mm-dd hh24:mi:ss.ff3'),
 		</trim>
@@ -239,6 +267,18 @@
 			<if test="position != null">
 				POSITION,
 			</if>
+			<if test="isDisplay != null">
+				isDisplay,
+			</if>
+			<if test="isDelete != null">
+				isDelete,
+			</if>
+			<if test="isAdd != null">
+				isAdd,
+			</if>
+			<if test="isExamine != null">
+				isExamine,
+			</if>
 			CREATIONDATE,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -295,6 +335,18 @@
 			</if>
 			<if test="position != null">
 				#{position,jdbcType=VARCHAR},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay,jdbcType=VARCHAR},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=VARCHAR},
+			</if>
+			<if test="isAdd != null">
+				#{isAdd,jdbcType=VARCHAR},
+			</if>
+			<if test="isExamine != null">
+				#{isExamine,jdbcType=VARCHAR},
 			</if>
 			<if test="creationdate != null">
 				#{creationdate,jdbcType=VARCHAR},

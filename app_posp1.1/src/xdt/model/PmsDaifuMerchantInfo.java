@@ -48,10 +48,45 @@ public class PmsDaifuMerchantInfo {
     
     private String agentnumber;
     private String agentname;
+    private String isDisplay;//是否显示此记录 0 显示 1 不显示
+    private String isDelete;//0删除成功1删除失败
+    private String isAdd;//0添加成功 1添加失败
+    private String isExamine;//审核状态 0审核成功 1审核失败 2审核中
     
     
-    
-    public String getAgentnumber() {
+    public String getIsDisplay() {
+		return isDisplay;
+	}
+
+	public void setIsDisplay(String isDisplay) {
+		this.isDisplay = isDisplay;
+	}
+
+	public String getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
+
+	public String getIsAdd() {
+		return isAdd;
+	}
+
+	public void setIsAdd(String isAdd) {
+		this.isAdd = isAdd;
+	}
+
+	public String getIsExamine() {
+		return isExamine;
+	}
+
+	public void setIsExamine(String isExamine) {
+		this.isExamine = isExamine;
+	}
+
+	public String getAgentnumber() {
 		return agentnumber;
 	}
 

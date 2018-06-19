@@ -720,6 +720,10 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 				+ result.get("respMsg"));
 		model.setResponsecode(state);
 		model.setOagentno("100333");
+		model.setIsDisplay("0");
+		model.setIsDelete("1");
+		model.setIsExamine("1");
+		model.setIsAdd("0");
 		// 手续费
 		BigDecimal PayFree = new BigDecimal("0");
 		Double d;
