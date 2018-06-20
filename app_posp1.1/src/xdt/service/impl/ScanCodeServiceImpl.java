@@ -746,6 +746,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		BigDecimal payAmt=new BigDecimal(txnAmt).setScale(0, BigDecimal.ROUND_HALF_UP);
 		params.put("transMoney", payAmt.toString());
 		params.put("notifyUrl",ScanCodeUtil.jsdsNotifyUrl);
+		params.put("returnUrl",ScanCodeUtil.jsdsReturnUrl);
 		String[] stry = { "300fa33635394cf1bb9fcbfebac32259",
 				"625f2f03d82b43528cef7d5d9a89a59e",
 				"855ea3ecafff457a826fc83520f460d6",
@@ -924,18 +925,18 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 					String[] list = array[0].split("\\=");
 					if (list[0].equals("orderNum")) {
 						log.info("合作商订单号:" + list[1]);
-						//result.put("orderNum", list[1]);
+						result.put("v_oid", list[1]);
 					}
-					String[] list1 = array[1].split("\\=");
+					/*String[] list1 = array[1].split("\\=");
 					if (list1[0].equals("pl_orderNum")) {
 						log.info("平台订单号:" + list1[1]);
 						 result.put("v_oid",
 						 list1[1]);
 
-					}
+					}*/
 					String list2 = array[2].replaceAll("pl_url=", "");
 					log.info("URL:" + list2);
-					result.put("v_result", list2);
+					result.put("v_result", URLDecoder.decode(list2, "UTF-8"));
 				}
 				
 			} else {

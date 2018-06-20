@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.alibaba.fastjson.JSON;
 
 import xdt.dto.gateway.entity.GateWayQueryRequestEntity;
+import xdt.dto.gateway.entity.GateWayResponseEntity;
 import xdt.dto.hj.HJResponse;
 import xdt.dto.jsds.JsdsResponseDto;
 import xdt.dto.pay.PayRequest;
@@ -837,7 +838,62 @@ public class ScanCodeController extends BaseAction{
 			e.printStackTrace();
 		}
 	}
-	
+	@RequestMapping(value="jsdsReturnUrl")
+	public void jsdsReturnUrl(JsdsResponseDto temp,HttpServletResponse response,HttpServletRequest request) {
+		log.info("江苏电商同步数据返回参数:" + JSON.toJSONString(temp));
+		Map<String, String> result = new HashMap<String, String>();
+		// HJResponse hjResponses =new HJResponse();
+		OriginalOrderInfo originalInfo = null;
+		if (temp.getPl_orderNum() != null && temp.getPl_orderNum() != "") {
+			try {
+				originalInfo = this.payService.getOriginOrderInfo(temp.getPl_orderNum());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		log.info("订单数据:" + JSON.toJSON(originalInfo));
+		Bean2QueryStrUtil queryUtil = new Bean2QueryStrUtil();
+		log.info("下游的同步地址" + originalInfo.getPageUrl());
+		log.info("江苏电商同步返回解析参数" + JSON.toJSON(temp));
+		// ---------------------------------------------------
+		// 返回参数
+		ChannleMerchantConfigKey keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
+		// 获取商户秘钥
+		String key = keyinfo.getMerchantkey();
+		result.put("v_oid", originalInfo.getOrderId());
+		result.put("v_txnAmt", originalInfo.getOrderAmount());
+		result.put("v_code", "00");
+		result.put("v_msg", "请求成功");
+		result.put("v_time", originalInfo.getOrderTime());
+		result.put("v_mid", originalInfo.getPid());
+		GateWayResponseEntity gatewey = (GateWayResponseEntity) BeanToMapUtil
+				.convertMap(GateWayResponseEntity.class, result);
+		String sign = SignatureUtil.getSign(beanToMap(gatewey), key, log);
+		result.put("v_sign", sign);
+		String params = HttpURLConection.parseParams(result);
+		logger.info("给下游同步的数据:" + params);
+		request.getSession();
+		try {
+			// 给下游手动返回支付结果
+			if (originalInfo.getPageUrl().indexOf("?") == -1) {
+
+				String path = originalInfo.getPageUrl() + "?" + params;
+				logger.info("pageUrl 商户页面 重定向：" + path);
+
+				response.sendRedirect(path.replace(" ", ""));
+			} else {
+				logger.info("pageUrl 商户页面 重定向：" + originalInfo.getPageUrl());
+				String path = originalInfo.getPageUrl() + "&" + params;
+				logger.info("pageUrl 商户页面 重定向：" + path);
+				response.sendRedirect(path.replace(" ", ""));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+	}
 	
 	/**
 	 * 银生宝扫码异步

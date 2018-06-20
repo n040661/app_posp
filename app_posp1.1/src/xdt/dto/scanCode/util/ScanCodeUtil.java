@@ -13,6 +13,7 @@ public class ScanCodeUtil {
 	public static final String hjNotifyUrl=BaseUtil.url+"/ScanCodeController/hjNotifyUrl.action";//汇聚扫码异步
 	public static final String hjReturnUrl=BaseUtil.url+"/ScanCodeController/hjReturnUrl.action";//汇聚扫码同步
 	public static final String jsdsNotifyUrl=BaseUtil.url+"/ScanCodeController/jsdsNotifyUrl.action";//江苏电商扫码异步
+	public static final String jsdsReturnUrl=BaseUtil.url+"/ScanCodeController/jsdsReturnUrl.action";//江苏电商扫码同步
 	public static final String ylNotifyUrl=BaseUtil.url+"/ScanCodeController/YLNotifyUrl.action";//漪雷扫码支付异步
 	public static final String ylReturnUrl=BaseUtil.url+"/ScanCodeController/YLReturnUrl.action";//漪雷扫码支付同步
 	public static final String ysbNotifyUrl=BaseUtil.url+"/ScanCodeController/ysbNotifyUrl.action";//银生宝扫码异步
