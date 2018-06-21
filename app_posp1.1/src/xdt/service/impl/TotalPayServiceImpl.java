@@ -121,6 +121,8 @@ import xdt.dto.pay.PayUtil;
 import xdt.dto.pay.SignUtil;
 import xdt.dto.pay.TokenRes;
 import xdt.dto.quickPay.entity.ConsumeResponseEntity;
+import xdt.dto.scanCode.util.ScanCodeUtil;
+import xdt.dto.scanCode.util.WFBThread;
 import xdt.dto.sxf.Base64Utils;
 import xdt.dto.sxf.DESUtils;
 import xdt.dto.sxf.DF1003Request;
@@ -598,6 +600,9 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 							break;
 						case "JMZFB":
 							jmPay(payRequest, result, merchantinfo, pmsBusinessPos);
+							break;
+						case "WFB":
+							wfbPay(payRequest, result, merchantinfo, pmsBusinessPos);
 							break;
 						default:
 							result.put("v_code", "17");
@@ -3924,6 +3929,82 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 		}
 		return result;
 	}
+	
+	/**
+	 * 微宝付代付
+	 * 
+	 * @param payRequest
+	 * @param result
+	 * @param merchantinfo
+	 * @param pmsBusinessPos
+	 * @throws Exception
+	 */
+	public Map<String, String> wfbPay(DaifuRequestEntity payRequest, Map<String, String> result,
+			PmsMerchantInfo merchantinfo, PmsBusinessPos pmsBusinessPos) throws Exception {
+		TreeMap<String, String> req = new TreeMap<>();
+		req.put("payKey", pmsBusinessPos.getBusinessnum());// 商户支付Key
+		req.put("outTradeNo", payRequest.getV_batch_no());
+		//req.put("bankCode", "ICBC");//银行编码
+		req.put("receiverName", payRequest.getV_realName());
+		req.put("receiverAccountNo", payRequest.getV_cardNo());
+		req.put("bankBranchNo", payRequest.getV_pmsBankNo());// 
+		req.put("proxyType", "T0");
+		req.put("bankName", payRequest.getV_bankname()==null?"":payRequest.getV_bankname());
+		req.put("phoneNo", payRequest.getV_phone()==null?"":payRequest.getV_phone());
+		req.put("bankAccountType", "PRIVATE_DEBIT_ACCOUNT");//
+		req.put("orderPrice", payRequest.getV_sum_amount());
+		req.put("productType", "ALIPAY");//B2C T1支付
+        
+        String paramSrc = RequestUtils.getParamSrc(req);
+		log.info("微宝付签名前数据**********支付:" + paramSrc);
+		String md5 = MD5Utils.md5(paramSrc+"&paySecret="+pmsBusinessPos.getKek(), "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
+		System.out.println(md5);
+		req.put("sign", md5);
+		log.info(JSON.toJSONString(req));
+		//paramSrc=paramSrc+"&"+md5;
+		String url ="http://192.144.172.91:8080/gateway/accountProxyPay/initPay";
+		String str =xdt.dto.scanCode.util.SimpleHttpUtils.httpPost(url, req);
+		//String str =RequestUtils.sendPost(url, JSON.toJSONString(req),"UTF-8");
+		log.info("微宝付代付返回参数str:"+JSON.toJSONString(str));
+		JSONObject json =JSONObject.fromObject(str);
+		if("0000".equals(json.getString("resultCode"))) {
+			result.put("v_mid", payRequest.getV_mid());
+			result.put("v_batch_no", payRequest.getV_batch_no());
+			result.put("v_code", "00");
+			result.put("v_msg", "请求成功");
+			result.put("v_sum_amount", payRequest.getV_sum_amount());
+			result.put("v_amount", payRequest.getV_amount());
+			result.put("v_identity", payRequest.getV_identity() == null ? "" : payRequest.getV_identity());
+			result.put("v_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+			result.put("v_type", "0");
+			ThreadPool.executor(new WFBThread(this, payRequest.getV_mid(), payRequest.getV_batch_no(), payRequest, merchantinfo));
+		}else {
+			result.put("v_code", "15");
+ 			result.put("v_msg", "请求失败");
+ 			UpdateDaifu(payRequest.getV_batch_no(), "02");
+ 			Map<String, String> map =new HashMap<>();
+			map.put("machId",payRequest.getV_mid());
+			map.put("payMoney",Double.parseDouble(payRequest.getV_sum_amount())*100+Double.parseDouble(merchantinfo.getPoundage())*100+"");
+			int nus =updataPay(map);
+ 			if(nus==1) {
+ 				log.info("微宝付代付补款成功");
+ 				DaifuRequestEntity entity =new DaifuRequestEntity();
+ 				entity.setV_mid(payRequest.getV_mid());
+ 				entity.setV_batch_no(payRequest.getV_batch_no()+"/A");
+ 				entity.setV_amount(payRequest.getV_sum_amount());
+ 				entity.setV_sum_amount(payRequest.getV_sum_amount());
+ 				entity.setV_identity(payRequest.getV_identity());
+ 				entity.setV_cardNo(payRequest.getV_cardNo());
+ 				entity.setV_city(payRequest.getV_city());
+ 				entity.setV_province(payRequest.getV_province());
+ 				entity.setV_type("0");
+ 				entity.setV_pmsBankNo(payRequest.getV_pmsBankNo());
+				int ii =add(entity, merchantinfo, result, "00");
+				log.info("微宝付补款订单状态："+ii);
+ 			}
+		}
+		return result;
+	}
 	/**
 	 * oem假汇聚代付
 	 * 
@@ -4509,5 +4590,53 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 
 	    return map;
 	  }
+
+	@Override
+	public Map<String, String> wfbQuick(String merId, String batchNo) {
+		 Map<String, String> map = new HashMap<String, String>();
+		    try {
+		    	PmsBusinessPos pmsBusinessPos = selectKey(merId);
+		    	TreeMap<String, String> req = new TreeMap<>();
+		    	req.put("payKey",pmsBusinessPos.getBusinessnum());//
+		    	req.put("outTradeNo",batchNo);
+		        String paramSrc = RequestUtils.getParamSrc(req);
+				log.info("签名前数据**********支付:" + paramSrc);
+				String md5 = MD5Utils.md5(paramSrc+"&paySecret="+pmsBusinessPos.getKek(), "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
+				System.out.println(md5);
+				req.put("sign", md5);
+				log.info(JSON.toJSONString(req));
+				String url ="http://192.144.172.91:8080/gateway/proxyPayQuery/query"; 
+				String str = xdt.dto.scanCode.util.SimpleHttpUtils.httpPost(url, req);
+				System.out.println(str);
+
+		      if (!"".equals(str)) {
+		        net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(str);
+		        map.put("v_code", "00");
+		        map.put("v_msg", "请求成功");
+		        if ("0000".equals(json.getString("resultCode"))) {
+		            if ("REMIT_SUCCESS".equals(json.getString("remitStatus"))) {
+		              map.put("v_status", "0000");
+		              map.put("v_status_msg", "代付成功");
+		            } else if ("REMIT_FAIL".equals(json.getString("remitStatus"))||"CANCEL_FAIL".equals(json.getString("remitStatus"))||"RECEIVE_FAILURE".equals(json.getString("remitStatus"))) {
+		              map.put("v_status", "1001");
+		              map.put("v_status_msg", "代付失败");
+		            }
+		        }
+		        else {
+		          map.put("v_status", "1001");
+		          map.put("v_status_msg", "代付失败");
+		        }
+		      } else {
+		        map.put("v_code", "01");
+		        map.put("v_msg", "请求失败");
+		      }
+
+		    }
+		    catch (Exception localException)
+		    {
+		    }
+
+		    return map;
+	}
 	
 }

@@ -1393,4 +1393,124 @@ public class ScanCodeController extends BaseAction{
 		}
 		
 	}
+	
+	/**
+	 * 微宝付H5扫码异步
+	 * @param temp
+	 * @param response
+	 * @param request
+	 */
+	@RequestMapping(value="wbfNotifyUrl")
+	public void wbfNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
+		log.info("微宝付H5异步参数！");
+		String outTradeNo=request.getParameter("outTradeNo");
+		String orderTime=request.getParameter("orderTime");
+		String trxNo=request.getParameter("trxNo");
+		String successTime=request.getParameter("successTime");
+		String tradeStatus=request.getParameter("tradeStatus");
+		String orderPrice=request.getParameter("orderPrice");
+		String payKey=request.getParameter("payKey");
+		String remark=request.getParameter("remark");
+		String productName=request.getParameter("productName");
+		String productType=request.getParameter("productType");
+		String sign=request.getParameter("sign");
+		System.out.println(outTradeNo);
+
+		log.info("微宝付H5返回参数：outTradeNo="+outTradeNo+",orderTime="+orderTime+",tradeStatus="+tradeStatus+",successTime="+successTime
+				+",remark="+remark+",orderPrice="+orderPrice+",sign="+sign);
+		Map<String, String> map =new HashMap<>();
+		String str ="";
+		if(outTradeNo !=null &&outTradeNo !="") {
+			str="SUCCESS";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("微宝付H5返回信息异常"+e);
+				e.printStackTrace();
+			}
+			ChannleMerchantConfigKey keyinfo=new ChannleMerchantConfigKey();
+			OriginalOrderInfo originalInfo=null;
+			try {
+				originalInfo  = this.payService.getOriginOrderInfo(outTradeNo);
+			} catch (Exception e) {
+				log.info("微宝付H5查询原始订单信息返回异常");
+				e.printStackTrace();
+			}
+			keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
+			log.info("微宝付H5订单数据:" + JSON.toJSON(originalInfo));
+			
+			log.info("微宝付H5下游的异步地址" + originalInfo.getBgUrl());
+			map.put("v_mid", originalInfo.getPid());
+			map.put("v_oid", originalInfo.getOrderId());
+			map.put("v_txnAmt", originalInfo.getOrderAmount());
+			map.put("v_attach", originalInfo.getAttach());
+			map.put("v_code", "00");
+			map.put("v_msg", "成功");
+			if("SUCCESS".equals(tradeStatus)) {
+				map.put("v_status", "0000");
+				map.put("v_status_msg", "支付成功");
+				try {
+					int i =service.UpdatePmsMerchantInfo1(originalInfo);
+					if(i==1) {
+						log.info("微宝付H5入金成功");
+					}else {
+						log.info("微宝付H5入金失败");
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
+				map.put("v_status", "1001");
+				map.put("v_status_msg", "支付失败");
+			}
+			ScanCodeResponseEntity consume = (ScanCodeResponseEntity) BeanToMapUtil
+					.convertMap(ScanCodeResponseEntity.class, map);
+			try {
+				service.otherInvoke(consume);
+			} catch (Exception e1) {
+				log.info("微宝付H5修改状态失败");
+				e1.printStackTrace();
+			}
+			String signs = SignatureUtil.getSign(beanToMap(consume), keyinfo.getMerchantkey(), log);
+			map.put("v_sign", signs);
+			String params = HttpURLConection.parseParams(map);
+			log.info("微宝付H5给下游同步的数据:" + params);
+			String html="";
+			try {
+				html = HttpClientUtil.post(originalInfo.getBgUrl(),params);
+			}  catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		    logger.info("微宝付H5下游返回状态" + html);
+		    net.sf.json.JSONObject ob = net.sf.json.JSONObject.fromObject(html);
+			Iterator it = ob.keys();
+			Map<String, String> result = new HashMap<>();
+			while (it.hasNext()) {
+				String keys = (String) it.next();
+				if (keys.equals("success")) {
+					String value = ob.getString(keys);
+					logger.info("微宝付H5异步回馈的结果:" + "\t" + value);
+					result.put("success", value);
+				}
+			}
+			if (result.get("success").equals("false")) {
+
+				logger.info("微宝付H5启动线程进行异步通知");
+				// 启线程进行异步通知
+				ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(),params));
+			}
+			logger.info("微宝付H5向下游 发送数据成功");
+			
+		}else {
+			str="FALL";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("微宝付H5扫码返回信息异常");
+				e.printStackTrace();
+			}
+		}
+	}
 }

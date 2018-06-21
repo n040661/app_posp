@@ -4051,13 +4051,13 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 					result.put("v_code", "00");
 					result.put("v_msg", "请求成功");
 					if ("0".equals(pmsAppTransInfo.getStatus())) {
-						result.put("v_status_code", "0000");// 支付状态
+						result.put("v_status", "0000");// 支付状态
 						result.put("v_status_msg", "支付成功");
-					} else if (("1".equals(pmsAppTransInfo.getStatus()))) {
-						result.put("v_status_code", "1001");// 支付状态
+					} else if ("1".equals(pmsAppTransInfo.getStatus())) {
+						result.put("v_status", "1001");// 支付状态
 						result.put("v_status_msg", "支付失败");
 					} else {
-						result.put("v_status_code", "200");// 支付状态
+						result.put("v_status", "200");// 支付状态
 						result.put("v_status_msg", "初始化");
 					}
 
@@ -4670,7 +4670,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 			result.put("v_txnAmt", originalinfo.getV_txnAmt());
 		} else {
 			result.put("v_code", "15");
-			result.put("v_msg", "请求失败");
+			result.put("v_msg", json.getString("dealMsg"));
 			result.put("v_mid", originalinfo.getV_mid());
 			result.put("v_oid", originalinfo.getV_oid());
 			result.put("v_txnAmt", originalinfo.getV_txnAmt());

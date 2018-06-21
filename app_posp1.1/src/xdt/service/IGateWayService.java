@@ -98,4 +98,12 @@ public interface IGateWayService {
 	 * @return
 	 */
 	public Map<String, String> gatYftk(GatrWayGefundEntity param,Map<String, String> result);
+	
+	/**
+	 * 裕福查询接口
+	 * @param param
+	 * @param result
+	 * @return
+	 */
+	public Map<String, String> gatYfQuick(GatrWayGefundEntity param ,Map<String, String> result);
 }

@@ -440,6 +440,9 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 															case "XMMZ":
 																result =xmmzScanCodePay(entity, result,pmsBusinessPos);
 																break;
+															case "WFB":
+																result =wfbScanCodePay(entity, result,pmsBusinessPos);
+																break;
 															default:
 																result.put("v_code", "11");
 																result.put("v_msg", "未找到路由，请联系业务开通！");
@@ -1406,6 +1409,64 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		}else {
 			result.put("v_code", "01");
 			result.put("v_msg", json.getString("rsp_msg"));
+		}
+		
+     	return result;
+	}
+	
+	
+	/**
+	 * 微宝付给上游发送参数
+	 * @param entity
+	 * @param result
+	 * @param pmsBusinessPos
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> wfbScanCodePay(ScanCodeRequestEntity entity,Map<String, String> result,PmsBusinessPos pmsBusinessPos) throws Exception{
+		TreeMap<String, String> map = new TreeMap<>();
+        map.put("payKey",pmsBusinessPos.getBusinessnum());//pmsBusinessPos.getBusinessnum()
+        if("WEIXIN_H5".equals(entity.getV_cardType())) {
+        	map.put("productType","10000203");//weixinH5
+        }else if("UNIONPAY_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("productType","60000103");//银联二维码
+        }else if("QQ_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("productType","70000103");//qq钱包
+        }else if("JD_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("productType","80000103");//京东
+        }else if("ALIPAY_H5".equals(entity.getV_cardType())) {
+        	map.put("productType","20000203");//支付宝H5
+        }
+        map.put("outTradeNo",entity.getV_oid());//订单编号
+        map.put("orderPrice",entity.getV_txnAmt());//金额
+        map.put("orderTime", new SimpleDateFormat("yyyyMMDDHHMMSS").format(new Date()));
+        map.put("productName",entity.getV_productName());
+        map.put("orderIp", entity.getV_clientIP());
+        map.put("notifyUrl",ScanCodeUtil.wbfNotifyUrl);
+        map.put("returnUrl",ScanCodeUtil.wbfNotifyUrl);
+        String paramSrc = RequestUtils.getParamSrc(map);
+		log.info("签名前数据**********支付:" + paramSrc);
+		String md5 = MD5Utils.md5(paramSrc+"&paySecret="+pmsBusinessPos.getKek(), "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
+		System.out.println(md5);
+		map.put("sign", md5);
+		log.info(JSON.toJSONString(map));
+		String url ="http://192.144.172.91:8080/gateway/cnpPay/initPay"; 
+		String str = xdt.dto.scanCode.util.SimpleHttpUtils.httpPost(url, map);
+		System.out.println(str);
+		result.put("v_mid", entity.getV_mid());
+ 		result.put("v_attach", entity.getV_attach());
+ 		result.put("v_txnAmt", entity.getV_txnAmt());
+ 		result.put("v_oid", entity.getV_oid());
+ 		result.put("v_cardType", entity.getV_cardType());
+		
+		com.alibaba.fastjson.JSONObject json =com.alibaba.fastjson.JSONObject.parseObject(str);
+		if("0000".equals(json.getString("resultCode"))) {
+			result.put("v_result", json.getString("payMessage"));
+			result.put("v_code", "0000");
+			result.put("v_msg", "请求成功");
+		}else {
+			result.put("v_code", "01");
+			result.put("v_msg", json.getString("errMsg"));
 		}
 		
      	return result;

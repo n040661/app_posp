@@ -103,4 +103,5 @@ public interface ITotalPayService {
 	public Map<String, String> DownExcel(DaifuRequestEntity payRequest,String path);
 	
 	public Map<String, String> jhjQuick(String mer,String orderId);
+	public Map<String, String> wfbQuick(String merId, String batchNo);
 }

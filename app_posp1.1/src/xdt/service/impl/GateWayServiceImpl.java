@@ -789,4 +789,86 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 		return result;
 	}
 
+	
+	@Override
+	public Map<String, String> gatYfQuick(GatrWayGefundEntity param, Map<String, String> result) {
+		try {
+			
+			/*PmsBusinessPos busInfo =selectKey(param.getV_mid());
+			Map<String, String> params1 = new HashMap<String, String>();
+			params1.put("version", "1.0.0");
+			params1.put("merchantId", busInfo.getBusinessnum());
+			params1.put("settleMerchantId", busInfo.getBusinessnum());
+			params1.put("merchantOrderId", param.getV_oid());
+			params1.put("merchantOrderTime", param.getV_time());
+			Double dd = Double.parseDouble(param.getV_txnAmt()) * 100;
+			Integer ii = dd.intValue();
+			params1.put("merchantOrderAmt", ii.toString());
+			params1.put("gwType", "01");
+			params1.put("backUrl", YFUtil.tkNotifyUrl);// 商户异步通知接口
+			params1.put("orgTransTime", param.getV_orgTransTime());//原始订单时间
+			params1.put("orgBpSerialNum", param.getV_orgBpSerialNum());//原始订单
+
+			System.out.println("网银-置单上送报文：" + params1.toString());
+			final String merCertPath = new File(this.getClass().getResource("/").getPath()).getParentFile()
+					.getParentFile().getCanonicalPath() + "/ky/" + params1.get("merchantId") + ".cer";
+			final String pfxPath = new File(this.getClass().getResource("/").getPath()).getParentFile()
+					.getParentFile().getCanonicalPath() + "//ky//" + params1.get("merchantId") + ".pfx";
+			final String pfxPwd = busInfo.getKek();
+			YufuCipher cipher = null;
+			YufuCipherSupport instance = null;
+			cipher = YufuCipherSupport.getCipherInstance( merCertPath, pfxPath, pfxPwd,cipher,instance);
+			//YufuCipher cipher = YufuCipherSupport.getCipherInstance(merCertPath, pfxPath,pfxPwd);
+			ParamPacket bo = cipher.doPack(params1);
+			logger.info("11!:" + JSON.toJSON(bo));
+			TreeMap<String, String> map_param = new TreeMap<>();
+			map_param.put("merchantId", busInfo.getBusinessnum());
+			map_param.put("data", URLEncoder.encode(bo.getData(), "utf-8"));
+			map_param.put("enc", URLEncoder.encode(bo.getEnc(), "utf-8"));
+			map_param.put("sign", URLEncoder.encode(bo.getSign(), "utf-8"));
+			String urls = "";
+			if ("000001110100000812".equals(busInfo.getBusinessnum())) {
+				urls = " http://malltest.yfpayment.com/payment/refund.do";
+			} else {
+				urls = " http://www.yfpayment.com/payment/refund.do";
+			}
+			String returnStr = PostUtils.doPost(urls, map_param);
+			if (returnStr != null && !"".equals(returnStr)) {
+				// 二、验签解密
+				returnStr = URLDecoder.decode(returnStr, "utf-8");
+				System.out.println("WEB-置单应答报文：" + returnStr.toString());
+				TreeMap<String, String> boMap = JSON.parseObject(returnStr,
+						new TypeReference<TreeMap<String, String>>() {
+						});
+				Map<String, String> payshowParams = cipher.unPack(new ParamPacket(
+						boMap.get("data"), boMap.get("enc"), boMap.get("sign")));
+				System.out.println("解密后的置单应答结果：" + payshowParams);
+				if ("0000".equals(payshowParams.get("respCode"))) {
+					result.put("v_code", "00");
+					result.put("v_msg", "请求成功");
+					if("01".equals(payshowParams.get("transStatus"))) {
+						result.put("v_state", "00");
+						result.put("v_state_msg", "退款成功");
+					}else if("02".equals(payshowParams.get("transStatus"))) {
+						result.put("v_state", "01");
+						result.put("v_state_msg", "退款失败");
+					}else if("03".equals(payshowParams.get("transStatus"))) {
+						result.put("v_state", "200");
+						result.put("v_state_msg", "退款中");
+					}
+					
+				} else {
+					result.put("v_code", "01");
+					result.put("v_msg", payshowParams.get("respDesc"));
+				}
+			}else {
+				System.out.println("置单返回报文为空！");
+			}*/
+			
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			return result;
+	}
+
 }
