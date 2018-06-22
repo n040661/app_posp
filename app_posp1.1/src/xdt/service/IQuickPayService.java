@@ -111,4 +111,6 @@ public interface IQuickPayService {
 	 * @return
 	 */
 	public Map<String, String> selectCard(MessageRequestEntity entity);
+	
+	int UpdatePmsMerchantInfo(OriginalOrderInfo originalInfo) throws Exception;
 }

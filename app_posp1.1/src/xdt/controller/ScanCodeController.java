@@ -355,7 +355,7 @@ public class ScanCodeController extends BaseAction{
 						result.put("success", value);
 					}
 				}
-				if (result.get("success").equals("false")) {
+				if (!result.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -612,7 +612,7 @@ public class ScanCodeController extends BaseAction{
 					result.put("success", value);
 				}
 			}
-			if (result.get("success").equals("false")) {
+			if (!result.get("success").equals("true")) {
 
 				logger.info("启动线程进行异步通知");
 				// 启线程进行异步通知
@@ -714,7 +714,7 @@ public class ScanCodeController extends BaseAction{
 					result.put("success", value);
 				}
 			}
-			if (result.get("success").equals("false")) {
+			if (!result.get("success").equals("true")) {
 
 				logger.info("启动线程进行异步通知");
 				// 启线程进行异步通知
@@ -821,7 +821,7 @@ public class ScanCodeController extends BaseAction{
 					result.put("success", value);
 				}
 			}
-			if (result.get("success").equals("false")) {
+			if (!result.get("success").equals("true")) {
 
 				logger.info("启动线程进行异步通知");
 				// 启线程进行异步通知
@@ -1018,7 +1018,7 @@ public class ScanCodeController extends BaseAction{
 					result.put("success", value);
 				}
 			}
-			if (result.get("success").equals("false")) {
+			if (!result.get("success").equals("true")) {
 
 				logger.info("启动线程进行异步通知");
 				// 启线程进行异步通知
@@ -1212,7 +1212,7 @@ public class ScanCodeController extends BaseAction{
 					result.put("success", value);
 				}
 			}
-			if (result.get("success").equals("false")) {
+			if (!result.get("success").equals("true")) {
 
 				logger.info("启动线程进行异步通知");
 				// 启线程进行异步通知
@@ -1374,7 +1374,7 @@ public class ScanCodeController extends BaseAction{
 					result.put("success", value);
 				}
 			}
-			if (result.get("success").equals("false")) {
+			if (!result.get("success").equals("true")) {
 
 				logger.info("启动线程进行异步通知");
 				// 启线程进行异步通知
@@ -1495,7 +1495,7 @@ public class ScanCodeController extends BaseAction{
 					result.put("success", value);
 				}
 			}
-			if (result.get("success").equals("false")) {
+			if (!result.get("success").equals("true")) {
 
 				logger.info("微宝付H5启动线程进行异步通知");
 				// 启线程进行异步通知

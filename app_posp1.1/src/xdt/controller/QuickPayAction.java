@@ -656,7 +656,7 @@ public class QuickPayAction extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!result.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -746,7 +746,7 @@ public class QuickPayAction extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!result.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -906,7 +906,7 @@ public class QuickPayAction extends BaseAction {
 								map.put("success", value);
 							}
 						}
-						if (map.get("success").equals("false")) {
+						if (!result.get("success").equals("true")) {
 
 							logger.info("启动线程进行异步通知");
 							// 启线程进行异步通知
@@ -1029,7 +1029,7 @@ public class QuickPayAction extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!result.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1099,7 +1099,7 @@ public class QuickPayAction extends BaseAction {
 
 					result.put("v_status", "0000");
 					result.put("v_msg", "支付成功");
-					int i = imbService.UpdatePmsMerchantInfo(originalInfo);
+					int i = quickPayService.UpdatePmsMerchantInfo(originalInfo);
 					if (i > 0) {
 						logger.info("创新*****实时入金完成");
 					} else {
@@ -1140,7 +1140,7 @@ public class QuickPayAction extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!result.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1394,7 +1394,7 @@ public class QuickPayAction extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!result.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
@@ -1498,7 +1498,7 @@ public class QuickPayAction extends BaseAction {
 						map.put("success", value);
 					}
 				}
-				if (map.get("success").equals("false")) {
+				if (!result.get("success").equals("true")) {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知

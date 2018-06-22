@@ -777,7 +777,7 @@ public class MBServiceImpl extends BaseServiceImpl implements IMBService {
 		} 
 	}
 	//D0填金
-	public int UpdatePmsMerchantInfo(OriginalOrderInfo originalInfo ) throws Exception{
+	public synchronized int UpdatePmsMerchantInfo(OriginalOrderInfo originalInfo ) throws Exception{
 		log.info("代付实时填金:"+JSON.toJSON(originalInfo));
 		DecimalFormat df =new DecimalFormat("#.00");
 		PmsMerchantInfo pmsMerchantInfo =new PmsMerchantInfo();

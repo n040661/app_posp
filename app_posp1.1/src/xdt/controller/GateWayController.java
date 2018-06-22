@@ -1298,7 +1298,7 @@ public class GateWayController extends BaseAction {
 				result.put("v_txnAmt", originalInfo.getOrderAmount());
 				result.put("v_code", "00");
 				result.put("v_time", originalInfo.getOrderTime());
-				result.put("v_attach", synchNotifyParams.get("bpSerialNum"));
+				result.put("v_attach",  originalInfo.getAttach());
 				result.put("v_mid", originalInfo.getPid());
 				result.put("v_msg", "请求成功");
 				if ("01".equals(synchNotifyParams.get("transStatus"))) {
@@ -1318,8 +1318,8 @@ public class GateWayController extends BaseAction {
 						.convertMap(GateWayQueryResponseEntity.class, result);
 				// 修改订单状态
 				gateWayService.otherInvoke(gatewey);
-				gatewey.setV_attach(originalInfo.getAttach());
-				result.put("v_oid", originalInfo.getOrderId());
+				//gatewey.setV_attach(originalInfo.getAttach());
+				/*result.put("v_oid", originalInfo.getOrderId());
 				result.put("v_txnAmt", originalInfo.getOrderAmount());
 				result.put("v_code", "00");
 				result.put("v_time", originalInfo.getOrderTime());
@@ -1332,19 +1332,20 @@ public class GateWayController extends BaseAction {
 				} else if ("02".equals(synchNotifyParams.get("transStatus"))) {
 					result.put("v_status", "1001");
 					result.put("v_status_msg", "支付失败");
-				}
+				}*/
 				// 和下面的签名
 				// ---------------------------------------------------
 				logger.info("裕福给下游异步前的数据:" + result);
 				String sign = SignatureUtil.getSign(beanToMap(gatewey), keyinfo.getMerchantkey(), log);
 				logger.info("裕福给下游异步的签名:" + sign);
 				result.put("v_sign", sign);
-				GateWayQueryResponseEntity gatewey1 = (GateWayQueryResponseEntity) BeanToMapUtil
-						.convertMap(GateWayQueryResponseEntity.class, result);
+				gatewey.setV_sign(sign);
+				//GateWayQueryResponseEntity gatewey1 = (GateWayQueryResponseEntity) BeanToMapUtil
+				//		.convertMap(GateWayQueryResponseEntity.class, result);
 				// String params = HttpURLConection.parseParams(result);
 				Bean2QueryStrUtil bean2Util = new Bean2QueryStrUtil();
-				logger.info("裕福给下游异步后的数据:" + bean2Util.bean2QueryStr(gatewey1));
-				String html = HttpClientUtil.post(originalInfo.getBgUrl(), bean2Util.bean2QueryStr(gatewey1));
+				logger.info("裕福给下游异步后的数据:" + bean2Util.bean2QueryStr(gatewey));
+				String html = HttpClientUtil.post(originalInfo.getBgUrl(), bean2Util.bean2QueryStr(gatewey));
 				logger.info("下游返回状态" + html);
 				JSONObject ob = JSONObject.fromObject(html);
 				Iterator it = ob.keys();
@@ -1361,7 +1362,7 @@ public class GateWayController extends BaseAction {
 
 					logger.info("启动线程进行异步通知");
 					// 启线程进行异步通知
-					ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(), bean2Util.bean2QueryStr(gatewey1)));
+					ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(), bean2Util.bean2QueryStr(gatewey)));
 				}
 				logger.info("向下游 发送数据成功");
 				request.getSession();
