@@ -13,7 +13,7 @@
 		版本号:<input type="text" name="v_version" class="v_version" value="1.0.0.0"><br/><br/>
 		商户号:<input type="text" name="v_mid" class="v_mid" value="10032061473"><br/><br/>
 		支付订单号:<input type="text" name="v_oid" class="v_oid" value="<%=System.currentTimeMillis()%>"><br/><br/>
-		订单交易金额(元):<input type="text" name="v_txnAmt" class="v_txnAmt" value="10"><br/><br/>
+		订单交易金额(元):<input type="text" name="v_txnAmt" class="v_txnAmt" value="1"><br/><br/>
 		异步回调地址:<input type="text" name="v_notify_url" class="v_notify_url" value="http://60.28.24.164:8104/app_posp/TFBController/notifyUrl.action"><br/><br/>
 		异步回调地址:<input type="text" name="v_return_url" class="v_return_url" value="http://60.28.24.164:8104/app_posp/TFBController/returnUrl.action"><br/><br/>
 		商品名称 :<input type="text" name="v_productName" class="v_productName" value="大饼鸡蛋" ><br/><br/>
@@ -21,7 +21,7 @@
 		交易时间:<input type="text" name="v_time" class="v_time" value="<%=UtilDate.getOrderNum()%>"><br/><br/>
 		渠道类型:<input type="text" name="v_channel" class="v_channel" placeholder="D0:0,T1:1" value="1"><br/><br/>
 		客户端ip:<input type="text" name="v_clientIP" class="v_clientIP" value=""><br/><br/>
-		交易类型:<input type="text" name="v_cardType" class="v_cardType" value="QQ_NATIVE"><br/><br/>
+		交易类型:<input type="text" name="v_cardType" class="v_cardType" value="ALIPAY_H5"><br/><br/>
 		银行商户编码:<input type="text" name="v_merchantBankCode" class="v_merchantBankCode" value="" ><br/><br/>
 		子商户号:<input type="text" name="v_subMerchantNo" class="v_subMerchantNo" value="" ><br/><br/>
 		微信 Openid:<input type="text" name="v_openId" class="v_openId" value="" ><br/><br/>

@@ -22,7 +22,7 @@
 金额： <input type="text" class="v_amount" name="v_amount" value="0.02"/><br />
 客户标示： <input type="text" class="v_identity" name="v_identity" value="QP20180308135230358859"/><br />
 联行号： <input type="text" class="v_pmsBankNo" name="v_pmsBankNo" value="103110023002"/><br />
-代付类型： <input type="text" class="v_type" name="v_type" value="1"/><br />
+代付类型： <input type="text" class="v_type" name="v_type" value="0"/><br />
 代付时间： <input type="text" class="v_time" name="v_time" value="<%=UtilDate.getOrderNum()%>"/><br />
 代付币种： <input type="text" class="v_currency" name="v_currency" value="1"/><br />
 账号类型： <input type="text" class="v_accountType" name="v_accountType" value="1"/><br />

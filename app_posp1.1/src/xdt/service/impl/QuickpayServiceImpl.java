@@ -2150,6 +2150,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 						case "000001110100000812":// 裕福快捷
 						case "000001220100000470":
 						case "000001110100000663":
+						case "000001422800000762":
 							DecimalFormat df1 = new DecimalFormat("######0"); //四色五入转换成整数
 							if (originalinfo.getV_userId() == null || "".equals(originalinfo.getV_userId())) {
 								retMap.put("v_code", "01");
