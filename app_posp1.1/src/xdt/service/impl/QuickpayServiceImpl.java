@@ -831,102 +831,406 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 						bank2.setBank_pmsbankNo(originalinfo.getV_pmsBankNo());
 						bank2 = payBankInfoDao.selectByBankInfo(bank2);
 						logger.info("查询交易商户银行信息:" + bank2);
-						switch (pmsBusinessPos.getBusinessnum()) {
-						case "936640995770001": // 摩宝快捷收银台
+						int number=0;
+						String url="";
+						String sign="";
+						JSONObject json;
+						Calendar now = Calendar.getInstance();
+						String minute = "";
+						String month = "";
+						SmsBalanceRequest smsBalanceRequest;
+						SmsBalanceResponse smsVarableResponse;
+						switch (pmsBusinessPos.getChannelnum()) {
+						/*case "936640995770001": // 摩宝快捷收银台
 						case "936640995770002": // 摩宝快捷银联界面
 						case "88882017092010001121": // 赢酷快捷
 						case "000000003":// 易生快捷
-						case "1120180427134034001":// 银生宝快捷
-							Calendar now = Calendar.getInstance();
-							int number = now.get(Calendar.MONTH) + 1;
-							String minute = "";
-							String month = "";
-							if (number < 10) {
-								month = "0" + number;
-							}
-							if (now.get(Calendar.MINUTE) < 10) {
-								minute = "0" + now.get(Calendar.MINUTE);
-							}
-							String time = now.get(Calendar.YEAR) + "年" + month + "月" + now.get(Calendar.DAY_OF_MONTH)
-									+ "日" + now.get(Calendar.HOUR_OF_DAY) + ":" + minute;
+						case "1120180427134034001":// 银生宝快捷*/
+							
+						case "MBXHF":
+						case "YK":
+						case "YSKJ":
+						case "YSB":
+							if("936640995770000".equals(pmsBusinessPos.getBusinessnum())) {
+								Map<String, String> transmap = new LinkedHashMap<String, String>();
+								transmap.put("versionId", "001"); // 版本号 固定
+								transmap.put("businessType", "1401"); // 预交易 1401
+								transmap.put("merId", "936640995770000"); // 商户号
+								transmap.put("orderId", originalinfo.getV_oid()); // 订单号
+								transmap.put("transDate", originalinfo.getV_time()); // 时间 yymmddhhmmss
+								transmap.put("transAmount", originalinfo.getV_txnAmt()); // 金额
+																							// 单位元，对于正式商户最低支付金额为10元
+								transmap.put("cardByName", MD5Util.encode(originalinfo.getV_realName().getBytes("UTF-8"))); // 此处的MD5util为Base64加密
+								transmap.put("cardByNo", originalinfo.getV_cardNo()); // 卡号
+								if ("1".equals(originalinfo.getV_accountType())) {
+									transmap.put("cardType", "01"); // 卡类型01借记卡
 
-							merchantinfo = merchantList.get(0);
-							String phone = originalinfo.getV_phone();// 法人手机号
+								} else if ("2".equals(originalinfo.getV_accountType())) {
 
-							// 查询余额
-							SmsBalanceRequest smsBalanceRequest = new SmsBalanceRequest(ACCOUNT, PSWD);
-
-							String balancerequestJson = JSON.toJSONString(smsBalanceRequest);
-
-							logger.info("查询短信余额前上送的数据:" + balancerequestJson);
-
-							String balanceresponse = ChuangLanSmsUtil.sendSmsByPost(smsBalanceRequestUrl,
-									balancerequestJson);
-
-							logger.info("查询短信余额响应信息 : " + balanceresponse);
-
-							SmsBalanceResponse smsVarableResponse = JSON.parseObject(balanceresponse,
-									SmsBalanceResponse.class);
-
-							logger.info("查询余额实体信息 : " + smsVarableResponse);
-
-							if ("0".equals(smsVarableResponse.getCode())) {
-								logger.info("剩余可用余额条数:" + smsVarableResponse.getBalance());
-
-								if (Integer.parseInt(smsVarableResponse.getBalance()) > 0) {
-
-									Integer num1 = (int) ((Math.random() * 9 + 1) * 100000);
-
-									logger.info("上送的验证码：" + num1);
-
-									// 验证码实现
-
-									String params = originalinfo.getV_phone() + "," + num1.toString() + "," + time;
-
-									String massage = MSG + num1.toString();
-									SmsVariableRequest smsVariableRequest = new SmsVariableRequest(ACCOUNT, PSWD, MSG,
-											params, REPORT);
-									SmsSendRequest smsSingleRequest = new SmsSendRequest(ACCOUNT, PSWD, massage, phone,
-											REPORT);
-
-									String varrequestJson = JSON.toJSONString(smsVariableRequest);
-
-									logger.info("普通短信请求前数据:" + varrequestJson);
-									String smsresponse = ChuangLanSmsUtil.sendSmsByPost(smsVariableRequestUrl,
-											varrequestJson);
-
-									logger.info("普通短信响应数据:" + smsresponse);
-									SmsSendResponse smsSingleResponse = JSON.parseObject(smsresponse,
-											SmsSendResponse.class);
-									SmsVariableResponse smsVariableResponse = JSON.parseObject(smsresponse,
-											SmsVariableResponse.class);
-									if ("0".equals(smsVariableResponse.getCode())) {
+									transmap.put("cardType", "00"); // 卡类型00贷记卡
+									transmap.put("expireDate", originalinfo.getV_expired()); // 有效期
+									transmap.put("CVV", originalinfo.getV_cvn2()); // CVN
+								}
+								// transmap.put("bankCode",mbReqest.getBankCode()); //可为空 银行代码
+								// transmap.put("openBankName",mbReqest.getOpenBankName());//可为空 银行代码
+								transmap.put("cerType", "01"); // 证件类型 01 身份证
+								transmap.put("cerNumber", originalinfo.getV_cert_no());// 身份证
+								transmap.put("mobile", originalinfo.getV_phone()); // 手机号
+								transmap.put("isAcceptYzm", "00"); // 默认00
+								transmap.put("backNotifyUrl", MBUtil.notifyUrl);
+								transmap.put("instalTransFlag", "01"); // 分期标志
+								// 需要加密的字符串
+								String signstr = EncodeUtil.getUrlStr(transmap);
+								logger.info("需要签名的明文" + signstr);
+								String signtrue = MD5Util.MD5Encode(signstr + merKey);
+								transmap.put("signType", "MD5");
+								transmap.put("signData", signtrue);
+								// AES加密
+								String transUrlStr = EncodeUtil.getUrlStr(transmap);
+								//
+								String transData = AESUtil.encrypt(transUrlStr, merKey);
+								// 生产地址
+								String testUrl = MBUtil.quick;
+								String str = DemoBase.requestBody(merId, transData, testUrl);
+								// 获取交易返回结果
+								logger.info(str);
+								ObjectMapper om = new ObjectMapper();
+								Map<String, String> maps = new HashMap<>();
+								maps = om.readValue(str, Map.class);
+								retMap.put("v_mid", originalinfo.getV_mid());
+								retMap.put("v_txnAmt", originalinfo.getV_txnAmt());
+								retMap.put("v_time", originalinfo.getV_time());
+								retMap.put("v_oid", originalinfo.getV_oid());
+								if ("00".equals(maps.get("status"))) {
+									if ("01".equals(maps.get("refCode"))) {
 										OriginalOrderInfo info = new OriginalOrderInfo();
+										info.setMerchantOrderId(maps.get("ksPayOrderId"));
 										info.setOrderId(originalinfo.getV_oid());
-										info.setSumCode(num1.toString());
 										number = originalDao.update(info);
-										if (number > 0) {
-											retMap.put("v_mid", originalinfo.getV_mid());
-											retMap.put("v_txnAmt", originalinfo.getV_txnAmt());
-											retMap.put("v_time", originalinfo.getV_time());
-											retMap.put("v_code", "00");
-											retMap.put("v_msg", "请求成功");
-											retMap.put("v_oid", originalinfo.getV_oid());
+										retMap.put("v_code", "00");
+										retMap.put("v_msg", "请求成功");
+									} else if ("02".equals(maps.get("refCode"))) {
+										retMap.put("v_code", "15");
+										retMap.put("v_msg", "请求失败");
+									} else {
+										retMap.put("v_code", "15");
+										retMap.put("v_msg", "请求失败");
+									}
+								} else if ("01".equals(maps.get("status"))) {
+									retMap.put("v_code", "15");
+									retMap.put("v_msg", "请求失败");
+								} else if ("02".equals(maps.get("status"))) {
+									retMap.put("v_code", "15");
+									retMap.put("v_msg", "请求失败");
+								}
+							}else if("000000001".equals(pmsBusinessPos.getBusinessnum())) {
+								String channelKey = YSUtil.channelKey;
+								String channel_sign_method = "SHA256";
+								Map<String, Object> reqMap = new TreeMap<String, Object>();
+								reqMap.put("sp_id", YSUtil.sp_id);// 服务商号
+								reqMap.put("mch_id", YSUtil.merId2);// 商户号
+								reqMap.put("out_trade_no", originalinfo.getV_oid());
+								reqMap.put("id_type", "01");
+								reqMap.put("acc_name", originalinfo.getV_realName());// 持卡人姓名
+								reqMap.put("acc_type", "PERSONNEL");// PERSONNEL：对私 CORPORATE：对公
+								reqMap.put("in_acc_no", originalinfo.getV_settleCardNo());// 卡号
+								reqMap.put("mobile", originalinfo.getV_phone());// 手机号
+								reqMap.put("id_no", originalinfo.getV_cert_no());// 证件号
+								reqMap.put("settle_rate", originalinfo.getV_settleUserFee());// 结算费率
+								reqMap.put("extra_rate", originalinfo.getV_userFee());// T0费率
+								Date t = new Date();
+								java.util.Calendar cal = java.util.Calendar.getInstance();
+								cal.setTime(t);
+								long sys_timestamp = cal.getTimeInMillis();
+								reqMap.put("timestamp", sys_timestamp);// 时间戳
+
+								StringBuilder sb = new StringBuilder();
+								Set<String> keySet = reqMap.keySet();
+								Iterator<String> iter = keySet.iterator();
+								while (iter.hasNext()) {
+									String key = iter.next();
+									sb.append(key);
+									sb.append("=");
+									sb.append(reqMap.get(key));
+									sb.append("&");
+								}
+								sign = SwpHashUtil.getSign(sb.toString() + "key=" + channelKey, channelKey,
+										channel_sign_method);
+								reqMap.put("sign", sign);
+
+								sb.append("sign");
+								sb.append("=");
+								sb.append(sign);
+								System.out.println(sb.toString());
+								url = YSUtil.url + "/swp/up/settlecheck.do";
+								HttpResponse httpResponse = HttpUtils.doPost(url, "", sb.toString(),
+										"application/x-www-form-urlencoded; charset=UTF-8");
+								String resp = EntityUtils.toString(httpResponse.getEntity());
+								System.out.println("接受请求:" + resp);
+								json = JSONObject.parseObject(resp);
+
+								if ("SUCCESS".equals(json.getString("status"))) {
+									if ("SUCCESS".equals(json.getString("trade_state"))) {
+										PmsWeixinMerchartInfo merchartInfo = new PmsWeixinMerchartInfo();
+										merchartInfo.setAccount(json.getString("sub_mch_id"));// 账号
+										merchartInfo.setMerchartId(originalinfo.getV_mid());
+										merchartInfo.setMerchartName(merchantList.get(0).getMercName());
+										merchartInfo.setMerchartNameSort(merchantList.get(0).getShortname());
+										merchartInfo.setCertNo(originalinfo.getV_cert_no());// 证件号
+										merchartInfo.setCardNo(originalinfo.getV_cardNo());// 卡号
+										merchartInfo.setRealName(originalinfo.getV_realName());// 姓名
+										merchartInfo.setMobile(originalinfo.getV_phone());// 手机号
+										// merchartInfo.setAccountType(payRequest.getBusinessType());//账户类型
+										merchartInfo.setBankName(bank2.getBank_name());// 开户行
+										merchartInfo.setPmsBankNo(originalinfo.getV_pmsBankNo());// 联行号
+										merchartInfo.setProvince(bank2.getBank_province());// 省份
+										merchartInfo.setCity(bank2.getBank_city());// 城市
+										merchartInfo.setDebitRate(originalinfo.getV_userFee());// 借记卡费率
+										// merchartInfo.setWithdrawDepositSingleFee(payRequest.getWithdrawDepositSingleFee());//提现单笔手续费
+										merchartInfo.setoAgentNo("100333");
+										merchartInfo.setRateCode(originalinfo.getV_mid());
+										int i = weixinService.updateRegister(merchartInfo);
+										logger.info("易生修改状态:" + i);
+										if (i > 0) {
+											channelKey = YSUtil.channelKey;
+											channel_sign_method = "SHA256";
+											reqMap.put("sp_id", YSUtil.sp_id);// 服务商号
+											reqMap.put("mch_id", YSUtil.merId2);// 商户号
+											reqMap.put("out_trade_no", originalinfo.getV_oid());
+											reqMap.put("id_type", "01");
+											reqMap.put("sub_mch_id", json.getString("sub_mch_id"));
+											reqMap.put("acc_name", originalinfo.getV_realName());// 持卡人姓名
+											reqMap.put("cvn2", originalinfo.getV_cvn2());//
+											reqMap.put("expired", originalinfo.getV_expired());
+											reqMap.put("acc_no", originalinfo.getV_cardNo());// 卡号
+											reqMap.put("bankcode", bank2.getBank_code());// 银行代码
+											reqMap.put("mobile", originalinfo.getV_phone());// 手机号
+											reqMap.put("id_no", originalinfo.getV_cert_no());// 证件号
+											t = new Date();
+											cal = java.util.Calendar.getInstance();
+											cal.setTime(t);
+											sys_timestamp = cal.getTimeInMillis();
+											reqMap.put("timestamp", sys_timestamp);// 时间戳
+
+											sb = new StringBuilder();
+											keySet = reqMap.keySet();
+											iter = keySet.iterator();
+											while (iter.hasNext()) {
+												String key = iter.next();
+												sb.append(key);
+												sb.append("=");
+												sb.append(reqMap.get(key));
+												sb.append("&");
+											}
+											sign = SwpHashUtil.getSign(sb.toString() + "key=" + channelKey, channelKey,
+													channel_sign_method);
+											reqMap.put("sign", sign);
+
+											sb.append("sign");
+											sb.append("=");
+											sb.append(sign);
+											System.out.println(sb.toString());
+											url = YSUtil.url + "/swp/up/bindCardBack.do";
+											httpResponse = HttpUtils.doPost(url, "", sb.toString(),
+													"application/x-www-form-urlencoded; charset=UTF-8");
+											resp = EntityUtils.toString(httpResponse.getEntity());
+											System.out.println("接受请求:" + resp);
+											json = JSONObject.parseObject(resp);
+
+											if ("SUCCESS".equals(json.getString("status"))) {
+												if ("SUCCESS".equals(json.getString("trade_state"))) {
+													PmsDaifuMerchantInfo model = new PmsDaifuMerchantInfo();
+													model.setMercId(originalinfo.getV_mid());
+													model.setBatchNo(originalinfo.getV_oid());
+													model.setIdentity(json.getString("swpaccid"));
+													model.setCardno(originalinfo.getV_cardNo());
+													model.setRealname(originalinfo.getV_realName());
+													model.setPmsbankno(json.getString("trade_state_desc"));
+													model.setTransactionType("快捷绑卡");
+													model.setOagentno("100333");
+													model.setResponsecode("00");
+													i = pmsDaifuMerchantInfoDao.insert(model);
+													if (i > 0) {
+														logger.info("插入鉴权订单成功！！");
+														channelKey = YSUtil.channelKey;
+														channel_sign_method = "SHA256";
+														Map<String, Object> reqMap1 = new TreeMap<String, Object>();
+														reqMap1.put("sp_id", YSUtil.sp_id);
+														reqMap1.put("mch_id", pmsBusinessPos.getBusinessnum());// 商户号YSUtil.merId1
+														reqMap1.put("out_trade_no", originalinfo.getV_oid());
+														reqMap1.put("swpaccid", json.getString("swpaccid"));
+														Double amount = Double.parseDouble(originalinfo.getV_txnAmt())
+																* 100;
+														reqMap1.put("total_fee", amount.toString());
+														t = new Date();
+														cal = java.util.Calendar.getInstance();
+														cal.setTime(t);
+														sys_timestamp = cal.getTimeInMillis();
+														reqMap1.put("timestamp", sys_timestamp);
+
+														StringBuilder sb1 = new StringBuilder();
+														keySet = reqMap.keySet();
+														iter = keySet.iterator();
+														while (iter.hasNext()) {
+															String key = iter.next();
+															sb1.append(key);
+															sb1.append("=");
+															sb1.append(reqMap.get(key));
+															sb1.append("&");
+														}
+														sign = SwpHashUtil.getSign(sb1.toString() + "key=" + channelKey,
+																channelKey, channel_sign_method);
+														reqMap1.put("sign", sign);
+
+														sb1.append("sign");
+														sb1.append("=");
+														sb1.append(sign);
+														logger.info("签名串:" + sb1.toString());
+														url = YSUtil.url + "/swp/up/sms.do";
+														httpResponse = HttpUtils.doPost(url, "", sb.toString(),
+																"application/x-www-form-urlencoded; charset=UTF-8");
+														resp = EntityUtils.toString(httpResponse.getEntity());
+														logger.info("接受请求:" + resp);
+														json = JSONObject.parseObject(resp);
+														if ("SUCCESS".equals(json.getString("status"))) {
+															if ("SUCCESS".equals(json.getString("trade_state"))) {
+																OriginalOrderInfo info = new OriginalOrderInfo();
+																info.setOrderId(originalinfo.getV_oid());
+																info.setMerchantOrderId(json.getString("sys_trade_no"));
+																;
+																number = originalDao.update(info);
+																if (number > 0) {
+																	retMap.put("v_mid", originalinfo.getV_mid());
+																	retMap.put("v_txnAmt", originalinfo.getV_txnAmt());
+																	retMap.put("v_time", originalinfo.getV_time());
+																	retMap.put("v_code", "00");
+																	retMap.put("v_msg", "请求成功");
+																	retMap.put("v_oid", originalinfo.getV_oid());
+																}
+
+															} else {
+																retMap.put("v_code", "15");
+																retMap.put("v_msg", "请求失败");
+																return retMap;
+															}
+														} else {
+															retMap.put("v_code", "15");
+															retMap.put("v_msg", "请求失败");
+															return retMap;
+														}
+													}
+												} else {
+													retMap.put("v_code", "15");
+													retMap.put("v_msg", "请求失败");
+													return retMap;
+												}
+											} else {
+												retMap.put("v_code", "15");
+												retMap.put("v_msg", "请求失败");
+												return retMap;
+											}
+
 										}
+									} else {
+										retMap.put("v_code", "15");
+										retMap.put("v_msg", "请求失败");
+										return retMap;
 									}
 								} else {
-
-									logger.info("余额不足，请充值" + smsVarableResponse.getCode());
-									// retMap.put("002", "余额不足,请充值");
+									retMap.put("v_code", "15");
+									retMap.put("v_msg", "请求失败");
+									return retMap;
 								}
+							}else {
+								number = now.get(Calendar.MONTH) + 1;
+								if (number < 10) {
+									month = "0" + number;
+								}
+								if (now.get(Calendar.MINUTE) < 10) {
+									minute = "0" + now.get(Calendar.MINUTE);
+								}
+								String time = now.get(Calendar.YEAR) + "年" + month + "月" + now.get(Calendar.DAY_OF_MONTH)
+										+ "日" + now.get(Calendar.HOUR_OF_DAY) + ":" + minute;
 
-							} else {
+								merchantinfo = merchantList.get(0);
+								String phone = originalinfo.getV_phone();// 法人手机号
 
-								logger.info("信息有误，请充重新提交" + smsVarableResponse.getCode());
-								return setResp("07", "系统异常，请重试或联系客服");
+								// 查询余额
+								smsBalanceRequest = new SmsBalanceRequest(ACCOUNT, PSWD);
+
+								String balancerequestJson = JSON.toJSONString(smsBalanceRequest);
+
+								logger.info("查询短信余额前上送的数据:" + balancerequestJson);
+
+								String balanceresponse = ChuangLanSmsUtil.sendSmsByPost(smsBalanceRequestUrl,
+										balancerequestJson);
+
+								logger.info("查询短信余额响应信息 : " + balanceresponse);
+
+								smsVarableResponse = JSON.parseObject(balanceresponse,
+										SmsBalanceResponse.class);
+
+								logger.info("查询余额实体信息 : " + smsVarableResponse);
+
+								if ("0".equals(smsVarableResponse.getCode())) {
+									logger.info("剩余可用余额条数:" + smsVarableResponse.getBalance());
+
+									if (Integer.parseInt(smsVarableResponse.getBalance()) > 0) {
+
+										Integer num1 = (int) ((Math.random() * 9 + 1) * 100000);
+
+										logger.info("上送的验证码：" + num1);
+
+										// 验证码实现
+
+										String params = originalinfo.getV_phone() + "," + num1.toString() + "," + time;
+
+										String massage = MSG + num1.toString();
+										SmsVariableRequest smsVariableRequest = new SmsVariableRequest(ACCOUNT, PSWD, MSG,
+												params, REPORT);
+										SmsSendRequest smsSingleRequest = new SmsSendRequest(ACCOUNT, PSWD, massage, phone,
+												REPORT);
+
+										String varrequestJson = JSON.toJSONString(smsVariableRequest);
+
+										logger.info("普通短信请求前数据:" + varrequestJson);
+										String smsresponse = ChuangLanSmsUtil.sendSmsByPost(smsVariableRequestUrl,
+												varrequestJson);
+
+										logger.info("普通短信响应数据:" + smsresponse);
+										SmsSendResponse smsSingleResponse = JSON.parseObject(smsresponse,
+												SmsSendResponse.class);
+										SmsVariableResponse smsVariableResponse = JSON.parseObject(smsresponse,
+												SmsVariableResponse.class);
+										if ("0".equals(smsVariableResponse.getCode())) {
+											OriginalOrderInfo info = new OriginalOrderInfo();
+											info.setOrderId(originalinfo.getV_oid());
+											info.setSumCode(num1.toString());
+											number = originalDao.update(info);
+											if (number > 0) {
+												retMap.put("v_mid", originalinfo.getV_mid());
+												retMap.put("v_txnAmt", originalinfo.getV_txnAmt());
+												retMap.put("v_time", originalinfo.getV_time());
+												retMap.put("v_code", "00");
+												retMap.put("v_msg", "请求成功");
+												retMap.put("v_oid", originalinfo.getV_oid());
+											}
+										}
+									} else {
+
+										logger.info("余额不足，请充值" + smsVarableResponse.getCode());
+										// retMap.put("002", "余额不足,请充值");
+									}
+
+								} else {
+
+									logger.info("信息有误，请充重新提交" + smsVarableResponse.getCode());
+									return setResp("07", "系统异常，请重试或联系客服");
+								}
 							}
+							
 							break;
-						case "10000466938":// 易宝快捷
+						case "YBLS":// 易宝快捷
 							if ("1".equals(originalinfo.getV_type())) {
 								now = Calendar.getInstance();
 								number = now.get(Calendar.MONTH) + 1;
@@ -938,20 +1242,20 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								if (now.get(Calendar.MINUTE) < 10) {
 									minute = "0" + now.get(Calendar.MINUTE);
 								}
-								time = now.get(Calendar.YEAR) + "年" + month + "月" + now.get(Calendar.DAY_OF_MONTH) + "日"
+								String time = now.get(Calendar.YEAR) + "年" + month + "月" + now.get(Calendar.DAY_OF_MONTH) + "日"
 										+ now.get(Calendar.HOUR_OF_DAY) + ":" + minute;
 
 								merchantinfo = merchantList.get(0);
-								phone = originalinfo.getV_phone();// 法人手机号
+								String phone = originalinfo.getV_phone();// 法人手机号
 
 								// 查询余额
 								smsBalanceRequest = new SmsBalanceRequest(ACCOUNT, PSWD);
 
-								balancerequestJson = JSON.toJSONString(smsBalanceRequest);
+								String balancerequestJson = JSON.toJSONString(smsBalanceRequest);
 
 								logger.info("查询短信余额前上送的数据:" + balancerequestJson);
 
-								balanceresponse = ChuangLanSmsUtil.sendSmsByPost(smsBalanceRequestUrl,
+								String balanceresponse = ChuangLanSmsUtil.sendSmsByPost(smsBalanceRequestUrl,
 										balancerequestJson);
 
 								logger.info("查询短信余额响应信息 : " + balanceresponse);
@@ -1017,8 +1321,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								}
 							}
 							break;
-						case "936640995770000":// 摩宝快捷
-						case "936775585060000":// 摩宝快捷
+						case "MBYLM":// 摩宝快捷
 
 							Map<String, String> transmap = new LinkedHashMap<String, String>();
 							transmap.put("versionId", "001"); // 版本号 固定
@@ -1092,8 +1395,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								retMap.put("v_msg", "请求失败");
 							}
 							break;
-						case "1800056392":// 合利宝快捷
-						case "1800001582":// 合利宝快捷
+						case "HLB":// 合利宝快捷
 							LinkedHashMap<String, String> map = new LinkedHashMap<>();
 							try {
 								map.put("P1_bizType", "QuickPayBankCardPay");
@@ -1126,12 +1428,12 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								String key = pmsBusinessPos.getKek();
 								String oriMessage = MyBeanUtils.getSigned(map, null, key);
 								logger.info("签名原文串：" + oriMessage);
-								String sign = Disguiser.disguiseMD5(oriMessage, "UTF-8");
+								sign = Disguiser.disguiseMD5(oriMessage, "UTF-8");
 								map.put("sign", sign);
 								Map<String, Object> resultMap1 = HttpClientService.getHttpResp(map, HLBUtil.url);
 								String s = resultMap1.get("response").toString();
 								System.out.println(s);
-								JSONObject json = JSONObject.parseObject(s);
+								json = JSONObject.parseObject(s);
 								if ("0000".equals(json.getString("rt2_retCode"))) {
 									map.put("P1_bizType", "QuickPaySendValidateCode");
 									map.put("P2_customerNumber", "C" + pmsBusinessPos.getBusinessnum());
@@ -1180,7 +1482,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								logger.info("下单" + e);
 							}
 							break;
-						case "2017112113602199513":// 广州恒明有积分快捷
+						case "GZHM":// 广州恒明有积分快捷
 							JSONObject requestObj = new JSONObject();
 							requestObj.put("ordernumber", originalinfo.getV_oid());
 							requestObj.put("merchantid", "M" + pmsBusinessPos.getBusinessnum());
@@ -1257,226 +1559,8 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								return retMap;
 							}
 							break;
-						case "000000001":// 易生快捷
-							String channelKey = YSUtil.channelKey;
-							String channel_sign_method = "SHA256";
-							Map<String, Object> reqMap = new TreeMap<String, Object>();
-							reqMap.put("sp_id", YSUtil.sp_id);// 服务商号
-							reqMap.put("mch_id", YSUtil.merId2);// 商户号
-							reqMap.put("out_trade_no", originalinfo.getV_oid());
-							reqMap.put("id_type", "01");
-							reqMap.put("acc_name", originalinfo.getV_realName());// 持卡人姓名
-							reqMap.put("acc_type", "PERSONNEL");// PERSONNEL：对私 CORPORATE：对公
-							reqMap.put("in_acc_no", originalinfo.getV_settleCardNo());// 卡号
-							reqMap.put("mobile", originalinfo.getV_phone());// 手机号
-							reqMap.put("id_no", originalinfo.getV_cert_no());// 证件号
-							reqMap.put("settle_rate", originalinfo.getV_settleUserFee());// 结算费率
-							reqMap.put("extra_rate", originalinfo.getV_userFee());// T0费率
-							Date t = new Date();
-							java.util.Calendar cal = java.util.Calendar.getInstance();
-							cal.setTime(t);
-							long sys_timestamp = cal.getTimeInMillis();
-							reqMap.put("timestamp", sys_timestamp);// 时间戳
-
-							StringBuilder sb = new StringBuilder();
-							Set<String> keySet = reqMap.keySet();
-							Iterator<String> iter = keySet.iterator();
-							while (iter.hasNext()) {
-								String key = iter.next();
-								sb.append(key);
-								sb.append("=");
-								sb.append(reqMap.get(key));
-								sb.append("&");
-							}
-							String sign = SwpHashUtil.getSign(sb.toString() + "key=" + channelKey, channelKey,
-									channel_sign_method);
-							reqMap.put("sign", sign);
-
-							sb.append("sign");
-							sb.append("=");
-							sb.append(sign);
-							System.out.println(sb.toString());
-							String url = YSUtil.url + "/swp/up/settlecheck.do";
-							HttpResponse httpResponse = HttpUtils.doPost(url, "", sb.toString(),
-									"application/x-www-form-urlencoded; charset=UTF-8");
-							String resp = EntityUtils.toString(httpResponse.getEntity());
-							System.out.println("接受请求:" + resp);
-							JSONObject json = JSONObject.parseObject(resp);
-
-							if ("SUCCESS".equals(json.getString("status"))) {
-								if ("SUCCESS".equals(json.getString("trade_state"))) {
-									PmsWeixinMerchartInfo merchartInfo = new PmsWeixinMerchartInfo();
-									merchartInfo.setAccount(json.getString("sub_mch_id"));// 账号
-									merchartInfo.setMerchartId(originalinfo.getV_mid());
-									merchartInfo.setMerchartName(merchantList.get(0).getMercName());
-									merchartInfo.setMerchartNameSort(merchantList.get(0).getShortname());
-									merchartInfo.setCertNo(originalinfo.getV_cert_no());// 证件号
-									merchartInfo.setCardNo(originalinfo.getV_cardNo());// 卡号
-									merchartInfo.setRealName(originalinfo.getV_realName());// 姓名
-									merchartInfo.setMobile(originalinfo.getV_phone());// 手机号
-									// merchartInfo.setAccountType(payRequest.getBusinessType());//账户类型
-									merchartInfo.setBankName(bank2.getBank_name());// 开户行
-									merchartInfo.setPmsBankNo(originalinfo.getV_pmsBankNo());// 联行号
-									merchartInfo.setProvince(bank2.getBank_province());// 省份
-									merchartInfo.setCity(bank2.getBank_city());// 城市
-									merchartInfo.setDebitRate(originalinfo.getV_userFee());// 借记卡费率
-									// merchartInfo.setWithdrawDepositSingleFee(payRequest.getWithdrawDepositSingleFee());//提现单笔手续费
-									merchartInfo.setoAgentNo("100333");
-									merchartInfo.setRateCode(originalinfo.getV_mid());
-									int i = weixinService.updateRegister(merchartInfo);
-									logger.info("易生修改状态:" + i);
-									if (i > 0) {
-										channelKey = YSUtil.channelKey;
-										channel_sign_method = "SHA256";
-										reqMap.put("sp_id", YSUtil.sp_id);// 服务商号
-										reqMap.put("mch_id", YSUtil.merId2);// 商户号
-										reqMap.put("out_trade_no", originalinfo.getV_oid());
-										reqMap.put("id_type", "01");
-										reqMap.put("sub_mch_id", json.getString("sub_mch_id"));
-										reqMap.put("acc_name", originalinfo.getV_realName());// 持卡人姓名
-										reqMap.put("cvn2", originalinfo.getV_cvn2());//
-										reqMap.put("expired", originalinfo.getV_expired());
-										reqMap.put("acc_no", originalinfo.getV_cardNo());// 卡号
-										reqMap.put("bankcode", bank2.getBank_code());// 银行代码
-										reqMap.put("mobile", originalinfo.getV_phone());// 手机号
-										reqMap.put("id_no", originalinfo.getV_cert_no());// 证件号
-										t = new Date();
-										cal = java.util.Calendar.getInstance();
-										cal.setTime(t);
-										sys_timestamp = cal.getTimeInMillis();
-										reqMap.put("timestamp", sys_timestamp);// 时间戳
-
-										sb = new StringBuilder();
-										keySet = reqMap.keySet();
-										iter = keySet.iterator();
-										while (iter.hasNext()) {
-											String key = iter.next();
-											sb.append(key);
-											sb.append("=");
-											sb.append(reqMap.get(key));
-											sb.append("&");
-										}
-										sign = SwpHashUtil.getSign(sb.toString() + "key=" + channelKey, channelKey,
-												channel_sign_method);
-										reqMap.put("sign", sign);
-
-										sb.append("sign");
-										sb.append("=");
-										sb.append(sign);
-										System.out.println(sb.toString());
-										url = YSUtil.url + "/swp/up/bindCardBack.do";
-										httpResponse = HttpUtils.doPost(url, "", sb.toString(),
-												"application/x-www-form-urlencoded; charset=UTF-8");
-										resp = EntityUtils.toString(httpResponse.getEntity());
-										System.out.println("接受请求:" + resp);
-										json = JSONObject.parseObject(resp);
-
-										if ("SUCCESS".equals(json.getString("status"))) {
-											if ("SUCCESS".equals(json.getString("trade_state"))) {
-												PmsDaifuMerchantInfo model = new PmsDaifuMerchantInfo();
-												model.setMercId(originalinfo.getV_mid());
-												model.setBatchNo(originalinfo.getV_oid());
-												model.setIdentity(json.getString("swpaccid"));
-												model.setCardno(originalinfo.getV_cardNo());
-												model.setRealname(originalinfo.getV_realName());
-												model.setPmsbankno(json.getString("trade_state_desc"));
-												model.setTransactionType("快捷绑卡");
-												model.setOagentno("100333");
-												model.setResponsecode("00");
-												i = pmsDaifuMerchantInfoDao.insert(model);
-												if (i > 0) {
-													logger.info("插入鉴权订单成功！！");
-													channelKey = YSUtil.channelKey;
-													channel_sign_method = "SHA256";
-													Map<String, Object> reqMap1 = new TreeMap<String, Object>();
-													reqMap1.put("sp_id", YSUtil.sp_id);
-													reqMap1.put("mch_id", pmsBusinessPos.getBusinessnum());// 商户号YSUtil.merId1
-													reqMap1.put("out_trade_no", originalinfo.getV_oid());
-													reqMap1.put("swpaccid", json.getString("swpaccid"));
-													Double amount = Double.parseDouble(originalinfo.getV_txnAmt())
-															* 100;
-													reqMap1.put("total_fee", amount.toString());
-													t = new Date();
-													cal = java.util.Calendar.getInstance();
-													cal.setTime(t);
-													sys_timestamp = cal.getTimeInMillis();
-													reqMap1.put("timestamp", sys_timestamp);
-
-													StringBuilder sb1 = new StringBuilder();
-													keySet = reqMap.keySet();
-													iter = keySet.iterator();
-													while (iter.hasNext()) {
-														String key = iter.next();
-														sb1.append(key);
-														sb1.append("=");
-														sb1.append(reqMap.get(key));
-														sb1.append("&");
-													}
-													sign = SwpHashUtil.getSign(sb1.toString() + "key=" + channelKey,
-															channelKey, channel_sign_method);
-													reqMap1.put("sign", sign);
-
-													sb1.append("sign");
-													sb1.append("=");
-													sb1.append(sign);
-													logger.info("签名串:" + sb1.toString());
-													url = YSUtil.url + "/swp/up/sms.do";
-													httpResponse = HttpUtils.doPost(url, "", sb.toString(),
-															"application/x-www-form-urlencoded; charset=UTF-8");
-													resp = EntityUtils.toString(httpResponse.getEntity());
-													logger.info("接受请求:" + resp);
-													json = JSONObject.parseObject(resp);
-													if ("SUCCESS".equals(json.getString("status"))) {
-														if ("SUCCESS".equals(json.getString("trade_state"))) {
-															OriginalOrderInfo info = new OriginalOrderInfo();
-															info.setOrderId(originalinfo.getV_oid());
-															info.setMerchantOrderId(json.getString("sys_trade_no"));
-															;
-															number = originalDao.update(info);
-															if (number > 0) {
-																retMap.put("v_mid", originalinfo.getV_mid());
-																retMap.put("v_txnAmt", originalinfo.getV_txnAmt());
-																retMap.put("v_time", originalinfo.getV_time());
-																retMap.put("v_code", "00");
-																retMap.put("v_msg", "请求成功");
-																retMap.put("v_oid", originalinfo.getV_oid());
-															}
-
-														} else {
-															retMap.put("v_code", "15");
-															retMap.put("v_msg", "请求失败");
-															return retMap;
-														}
-													} else {
-														retMap.put("v_code", "15");
-														retMap.put("v_msg", "请求失败");
-														return retMap;
-													}
-												}
-											} else {
-												retMap.put("v_code", "15");
-												retMap.put("v_msg", "请求失败");
-												return retMap;
-											}
-										} else {
-											retMap.put("v_code", "15");
-											retMap.put("v_msg", "请求失败");
-											return retMap;
-										}
-
-									}
-								} else {
-									retMap.put("v_code", "15");
-									retMap.put("v_msg", "请求失败");
-									return retMap;
-								}
-							} else {
-								retMap.put("v_code", "15");
-								retMap.put("v_msg", "请求失败");
-								return retMap;
-							}
-							break;
-						case "1711030001":// 沈阳银盛
+						
+						case "SYYS":// 沈阳银盛
 							PmsWeixinMerchartInfo weixin = new PmsWeixinMerchartInfo();
 
 							weixin.setCardNo(originalinfo.getV_settleCardNo());
@@ -1919,7 +2003,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 
 							break;
 
-						case "888101700005315":// 汇聚快捷获取短信验证码
+						case "HJZF":// 汇聚快捷获取短信验证码
 							Map<String, String> result = new HashMap<>();
 							StringBuilder strs = new StringBuilder();
 							strs.append(HJUtil.Version2);
@@ -1985,7 +2069,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								retMap.put("v_msg", jsons.getString("rb_Msg"));
 							}
 							break;
-						case "888888888888888":// 聚佰宝快捷
+						case "JBB":// 聚佰宝快捷
 							 weixin = new PmsWeixinMerchartInfo();
 
 							weixin.setCardNo(originalinfo.getV_settleCardNo());
@@ -2147,10 +2231,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 							}
 							
 							break;
-						case "000001110100000812":// 裕福快捷
-						case "000001220100000470":
-						case "000001110100000663":
-						case "000001422800000762":
+						case "YFWG":// 裕福快捷
 							DecimalFormat df1 = new DecimalFormat("######0"); //四色五入转换成整数
 							if (originalinfo.getV_userId() == null || "".equals(originalinfo.getV_userId())) {
 								retMap.put("v_code", "01");
@@ -2320,7 +2401,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								e.printStackTrace();
 							}
 							break;
-						case "10044":// 柜银云快捷
+						case "GYY":// 柜银云快捷
 							Map<String, Object> infoMap = new HashMap<String, Object>();
 							infoMap.put("agentNo", "10033");// 机构号
 							infoMap.put("merName", originalinfo.getV_productDesc());// 商户名称
@@ -2464,7 +2545,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 							}
 
 							break;
-						case "20180413085019363857":// 上海漪雷快捷
+						case "SHYL":// 上海漪雷快捷
 							logger.info("###########上海漪雷快捷绑卡接口##########");
 							Map<String, Object> infos = new HashMap<String, Object>();
 							infos.put("tranType", "14000");// 机构号
@@ -2872,10 +2953,9 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 							bank2.setBank_pmsbankNo(origial.getBankId());
 							bank2 = payBankInfoDao.selectByBankInfo(bank2);
 							logger.info("查询交易商户银行信息:" + bank2);
-							switch (pmsBusinessPos.getBusinessnum()) {
+							switch (pmsBusinessPos.getChannelnum()) {
 
-							case "053211180":// 钱龙快捷
-							case "053211181":// 钱龙快捷
+							case "QDQLKJ":// 钱龙快捷
 								if (sumcode.equals(originalinfo.getV_smsCode())) {
 									Integer amount = (int) (Double.parseDouble(origial.getOrderAmount()) * 100);
 									Map<String, String> params = new HashMap<String, String>();
@@ -2942,63 +3022,142 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								break;
 							case "936640995770000":// 摩宝快捷
 							case "936775585060000":// 摩宝快捷
-								Map<String, String> transmap = new LinkedHashMap<String, String>();
-								transmap.put("versionId", "001");
-								transmap.put("businessType", "1411");
-								transmap.put("insCode", "");
-								transmap.put("merId", "936640995770000");
-								transmap.put("yzm", originalinfo.getV_smsCode()); // 从1401交易 获取的yzm 填入此项完成支付验证
-								transmap.put("ksPayOrderId", originalinfo.getV_oid()); // 从1401交易 获取的ksPayOrderId 填入此项
-																						// 寻找原交易
-																						// 完成支付
-								// 需要加密的字符串
-								String signstr = EncodeUtil.getUrlStr(transmap);
-								System.out.println("需要签名的明文" + signstr);
-								String signtrue = MD5Util.MD5Encode(signstr + merKey);
-								transmap.put("signType", "MD5");
-								transmap.put("signData", signtrue);
-								// AES加密
-								String transUrlStr = EncodeUtil.getUrlStr(transmap);
-								//
-								String transData = AESUtil.encrypt(transUrlStr, merKey);
-								// 获取交易返回结果
-								String testUrl = MBUtil.quick;
-								String str = DemoBase.requestBody(merId, transData, testUrl);
-								System.out.println(str);
-								ObjectMapper om = new ObjectMapper();
-								Map<String, String> maps = new HashMap<>();
-								retMap.put("v_mid", originalinfo.getV_mid());
-								retMap.put("v_oid", originalinfo.getV_oid());
-								retMap.put("v_time", originalinfo.getV_time());
-								if ("00".equals(maps.get("status"))) {
-									if ("00".equals(maps.get("refCode"))) {
-										retMap.put("v_code", "00");
-										retMap.put("v_msg", "请求成功");
-										return retMap;
-									} else if ("02".equals(maps.get("refCode"))) {
-										retMap.put("v_code", "15");
-										retMap.put("v_msg", "请求失败");
-										return retMap;
-									} else if ("03".equals(maps.get("refCode"))) {
-										retMap.put("v_code", "15");
-										retMap.put("v_msg", "请求失败");
-										return retMap;
+								String signstr = "";
+								String signtrue = "";
+								if("936640995770002".equals(pmsBusinessPos.getBusinessnum())) {
+									if (sumcode.equals(originalinfo.getV_smsCode())) {
+										// Map<String, String> transmap1=new HashMap<String, String>();
+										// transmap1 = new LinkedHashMap<String, String>();
+										retMap.put("versionId", "001"); // 版本号 固定
+										retMap.put("businessType", "1100"); // 预交易 1401
+										retMap.put("merId", "936640995770000"); // 商户号
+										retMap.put("orderId", originalinfo.getV_oid()); // 订单号
+										retMap.put("transDate", originalinfo.getV_time()); // 时间 yymmddhhmmss
+										retMap.put("transAmount", origial.getOrderAmount()); // 金额// 单位元，对于正式商户最低支付金额为10元
+										retMap.put("transCurrency", "156"); // 此处的MD5util为Base64加密
+										retMap.put("transChanlName", "UNIONPAY"); // 卡号
+										// transmap.put("openBankName",mbReqest.getOpenBankName());//可为空 银行代码
+										retMap.put("pageNotifyUrl", origial.getPageUrl()); // 证件类型 01 身份证
+										retMap.put("backNotifyUrl", origial.getBgUrl());// 身份证
+										String attch = new String(origial.getAttach().getBytes("ISO-8859-1"), "GBK");
+										retMap.put("dev", attch); // 手机号
+										// 需要加密的字符串
+										signstr = "versionId=001&businessType=1100&merId=936640995770000&orderId="
+												+ originalinfo.getV_oid() + "&transDate=" + originalinfo.getV_time()
+												+ "&transAmount=" + origial.getOrderAmount()
+												+ "&transCurrency=156&transChanlName=UNIONPAY&pageNotifyUrl="
+												+ origial.getPageUrl() + "&backNotifyUrl=" + origial.getBgUrl() + "&dev="
+												+ attch;
+										logger.info("需要签名的明文" + signstr);
+										signtrue = MD5Util.MD5Encode(signstr + "072C15B8D473BB29");
+										// retMap.put("signType", "MD5");
+										retMap.put("signData", signtrue);
+										// AES加密
+										// transUrlStr = EncodeUtil.getUrlStr(retMap);
+										//
+										// transData = AESUtil.encrypt(transUrlStr, "072C15B8D473BB29");
 									} else {
+										retMap.put("v_code", "19");
+										retMap.put("v_msg", "短信验证不正确");
+										return retMap;
+									}
+								}else if("936640995770001".equals(pmsBusinessPos.getBusinessnum())) {
+									if (sumcode.equals(originalinfo.getV_smsCode())) {
+										// Map<String, String> transmap1=new HashMap<String, String>();
+										// transmap1 = new LinkedHashMap<String, String>();
+										retMap.put("versionId", "001"); // 版本号 固定
+										retMap.put("businessType", "1100"); // 预交易 1401
+										retMap.put("merId", "936640995770000"); // 商户号
+										retMap.put("orderId", originalinfo.getV_oid()); // 订单号
+										retMap.put("transDate", originalinfo.getV_time()); // 时间 yymmddhhmmss
+										retMap.put("transAmount", origial.getOrderAmount()); // 金额// 单位元，对于正式商户最低支付金额为10元
+										retMap.put("transCurrency", "156"); // 此处的MD5util为Base64加密
+										// retMap.put("transChanlName", "UNIONPAY"); // 卡号
+										// transmap.put("openBankName",mbReqest.getOpenBankName());//可为空 银行代码
+										retMap.put("pageNotifyUrl", origial.getPageUrl()); // 证件类型 01 身份证
+										retMap.put("backNotifyUrl", origial.getBgUrl());// 身份证
+										String attch = new String(origial.getAttach().getBytes("ISO-8859-1"), "GBK");
+										retMap.put("dev", attch); // 手机号
+										// 需要加密的字符串
+										signstr = "versionId=001&businessType=1100&merId=936640995770000&orderId="
+												+ originalinfo.getV_oid() + "&transDate=" + originalinfo.getV_time()
+												+ "&transAmount=" + origial.getOrderAmount()
+												+ "&transCurrency=156&pageNotifyUrl=" + origial.getPageUrl()
+												+ "&backNotifyUrl=" + origial.getBgUrl() + "&dev=" + attch;
+										logger.info("需要签名的明文" + signstr);
+										signtrue = MD5Util.MD5Encode(signstr + "072C15B8D473BB29");
+										// retMap.put("signType", "MD5");
+										retMap.put("signData", signtrue);
+										// AES加密
+										// transUrlStr = EncodeUtil.getUrlStr(retMap);
+										//
+										// transData = AESUtil.encrypt(transUrlStr, "072C15B8D473BB29");
+									} else {
+										retMap.put("v_code", "19");
+										retMap.put("v_msg", "短信验证不正确");
+										return retMap;
+									}
+								}else {
+									Map<String, String> transmap = new LinkedHashMap<String, String>();
+									transmap.put("versionId", "001");
+									transmap.put("businessType", "1411");
+									transmap.put("insCode", "");
+									transmap.put("merId", "936640995770000");
+									transmap.put("yzm", originalinfo.getV_smsCode()); // 从1401交易 获取的yzm 填入此项完成支付验证
+									transmap.put("ksPayOrderId", originalinfo.getV_oid()); // 从1401交易 获取的ksPayOrderId 填入此项
+																							// 寻找原交易
+																							// 完成支付
+									// 需要加密的字符串
+									 signstr = EncodeUtil.getUrlStr(transmap);
+									System.out.println("需要签名的明文" + signstr);
+									 signtrue = MD5Util.MD5Encode(signstr + merKey);
+									transmap.put("signType", "MD5");
+									transmap.put("signData", signtrue);
+									// AES加密
+									String transUrlStr = EncodeUtil.getUrlStr(transmap);
+									//
+									String transData = AESUtil.encrypt(transUrlStr, merKey);
+									// 获取交易返回结果
+									String testUrl = MBUtil.quick;
+									String str = DemoBase.requestBody(merId, transData, testUrl);
+									System.out.println(str);
+									ObjectMapper om = new ObjectMapper();
+									Map<String, String> maps = new HashMap<>();
+									retMap.put("v_mid", originalinfo.getV_mid());
+									retMap.put("v_oid", originalinfo.getV_oid());
+									retMap.put("v_time", originalinfo.getV_time());
+									if ("00".equals(maps.get("status"))) {
+										if ("00".equals(maps.get("refCode"))) {
+											retMap.put("v_code", "00");
+											retMap.put("v_msg", "请求成功");
+											return retMap;
+										} else if ("02".equals(maps.get("refCode"))) {
+											retMap.put("v_code", "15");
+											retMap.put("v_msg", "请求失败");
+											return retMap;
+										} else if ("03".equals(maps.get("refCode"))) {
+											retMap.put("v_code", "15");
+											retMap.put("v_msg", "请求失败");
+											return retMap;
+										} else {
+											retMap.put("v_code", "15");
+											retMap.put("v_msg", "请求失败");
+											return retMap;
+										}
+									} else if ("01".equals(maps.get("status"))) {
+										retMap.put("v_code", "15");
+										retMap.put("v_msg", "请求失败");
+										return retMap;
+									} else if ("02".equals(maps.get("status"))) {
 										retMap.put("v_code", "15");
 										retMap.put("v_msg", "请求失败");
 										return retMap;
 									}
-								} else if ("01".equals(maps.get("status"))) {
-									retMap.put("v_code", "15");
-									retMap.put("v_msg", "请求失败");
-									return retMap;
-								} else if ("02".equals(maps.get("status"))) {
-									retMap.put("v_code", "15");
-									retMap.put("v_msg", "请求失败");
-									return retMap;
 								}
+								
+								
 								break;
-							case "936640995770002": // 摩宝快捷银联
+							/*case "936640995770002": // 摩宝快捷银联
 								if (sumcode.equals(originalinfo.getV_smsCode())) {
 									// Map<String, String> transmap1=new HashMap<String, String>();
 									// transmap1 = new LinkedHashMap<String, String>();
@@ -3072,10 +3231,9 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									retMap.put("v_msg", "短信验证不正确");
 									return retMap;
 								}
-								break;
-							case "1800056392":// 合利宝快捷
-							case "1800001582":// 合利宝快捷
-							case "88882017092010001121": // 赢酷快捷
+								break;*/
+							case "HLB":// 合利宝快捷
+							case "YK": // 赢酷快捷
 								if (sumcode.equals(originalinfo.getV_smsCode())) {
 
 									// Map<String, String> paramMap = new HashMap<String, String>();
@@ -3146,7 +3304,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									return retMap;
 								}
 								break;
-							case "2017112113602199513":// 广州恒明无积分快捷
+							case "GZHM":// 广州恒明无积分快捷
 								JSONObject requestObj = new JSONObject();
 								requestObj.put("payorderno", origial.getMerchantOrderId());
 								requestObj.put("merchantid", "M" + pmsBusinessPos.getBusinessnum());
@@ -3194,26 +3352,16 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									}
 								}
 								break;
-							case "000000003":// 易生快捷
-								if (sumcode.equals(originalinfo.getV_smsCode())) {
-
+							case "YSKJ":// 易生快捷
+								if("000000001".equals(pmsBusinessPos.getBusinessnum())) {
 									String channelKey = YSUtil.channelKey;
 									String channel_sign_method = "SHA256";
 									Map<String, Object> reqMap = new TreeMap<String, Object>();
 									reqMap.put("sp_id", YSUtil.sp_id);// 服务商号
-									reqMap.put("mch_id", YSUtil.merId4);// 商户号
-									reqMap.put("out_trade_no", originalinfo.getV_oid());
-									reqMap.put("id_type", "01");
-									reqMap.put("acc_name", origial.getRealName());// 持卡人姓名
-									reqMap.put("acc_type", "PERSONNEL");// PERSONNEL：对私 CORPORATE：对公
-									reqMap.put("bank_code", origial.getSettlePmsBankNo());// 联行号
-									reqMap.put("acc_no", origial.getSettleCardNo());// 卡号
-									reqMap.put("acc_province", bank.getBank_province());// 省
-									reqMap.put("acc_city", bank.getBank_city());// 市
-									reqMap.put("mobile", origial.getPhone());// 手机号
-									reqMap.put("id_no", origial.getCertNo());// 证件号
-									reqMap.put("settle_rate", origial.getUserFee());// 结算费率
-									reqMap.put("extra_rate", origial.getSettleUserFee());// T0手续费
+									reqMap.put("mch_id", YSUtil.merId1);// 商户号
+									reqMap.put("sys_trade_no", origial.getMerchantOrderId());
+									reqMap.put("password", originalinfo.getV_smsCode());
+									reqMap.put("notifyurl", YSUtil.notifyUrl);
 									Date t = new Date();
 									java.util.Calendar cal = java.util.Calendar.getInstance();
 									cal.setTime(t);
@@ -3238,106 +3386,23 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									sb.append("=");
 									sb.append(sign);
 									System.out.println(sb.toString());
-									String url = YSUtil.url + "/swp/ybbh/b2_register.do";
+									String url = YSUtil.url + "/swp/up/submit.do";
 									HttpResponse httpResponse = HttpUtils.doPost(url, "", sb.toString(),
 											"application/x-www-form-urlencoded; charset=UTF-8");
 									String resp = EntityUtils.toString(httpResponse.getEntity());
 									System.out.println("接受请求:" + resp);
 									JSONObject json = JSONObject.parseObject(resp);
-
+									retMap.put("v_mid", originalinfo.getV_mid());
+									retMap.put("v_txnAmt", origial.getOrderAmount());
+									retMap.put("v_time", originalinfo.getV_time());
+									retMap.put("v_oid", originalinfo.getV_oid());
 									if ("SUCCESS".equals(json.getString("status"))) {
 										if ("SUCCESS".equals(json.getString("trade_state"))) {
-											PmsWeixinMerchartInfo merchartInfo = new PmsWeixinMerchartInfo();
-											merchartInfo.setAccount(json.getString("swpaccid"));// 账号
-											merchartInfo.setMerchartId(originalinfo.getV_mid());
-											merchartInfo.setMerchartName(merchantList.get(0).getMercName());
-											merchartInfo.setMerchartNameSort(merchantList.get(0).getShortname());
-											merchartInfo.setCertNo(origial.getCertNo());// 证件号
-											merchartInfo.setCardNo(origial.getBankNo());// 卡号
-											merchartInfo.setRealName(origial.getRealName());// 姓名
-											merchartInfo.setMobile(origial.getPhone());// 手机号
-											// merchartInfo.setAccountType(payRequest.getBusinessType());//账户类型
-											merchartInfo.setBankName(bank.getBank_name());// 开户行
-											merchartInfo.setPmsBankNo(origial.getBankId());// 联行号
-											merchartInfo.setProvince(bank.getBank_province());// 省份
-											merchartInfo.setCity(bank.getBank_city());// 城市
-											merchartInfo.setDebitRate(origial.getUserFee());// 借记卡费率
-											// merchartInfo.setWithdrawDepositSingleFee(payRequest.getWithdrawDepositSingleFee());//提现单笔手续费
-											merchartInfo.setoAgentNo("100333");
-											merchartInfo.setRateCode(originalinfo.getV_mid());
-											int i = weixinService.updateRegister(merchartInfo);
-											logger.info("易生修改状态:" + i);
-											if (i > 0) {
-												channelKey = YSUtil.channelKey;
-												channel_sign_method = "SHA256";
-												Map<String, Object> reqMap1 = new TreeMap<String, Object>();
-												reqMap1.put("sp_id", YSUtil.sp_id);
-												reqMap1.put("mch_id", "BJ" + pmsBusinessPos.getBusinessnum());// 商户号YSUtil.merId3
-												reqMap1.put("out_trade_no", originalinfo.getV_oid());
-												reqMap1.put("swpaccid", json.getString("swpaccid"));
-												Double amount = Double.parseDouble(origial.getOrderAmount()) * 100;
-												Integer amount1 = amount.intValue();
-												logger.info("下游上送的金额:" + amount1);
-												reqMap1.put("total_fee", amount1.toString());
-												reqMap1.put("body", origial.getProcdutName());
-												reqMap1.put("acc_type", "CREDIT");
-												reqMap1.put("acc_name", origial.getRealName());
-												reqMap1.put("acc_no", origial.getBankNo());
-												reqMap1.put("mobile", origial.getPhone());
-												reqMap1.put("bank_code", origial.getSettlePmsBankNo());
-												reqMap1.put("id_type", "01");
-												reqMap1.put("id_no", origial.getCertNo());
-												reqMap1.put("front_notify_url", YSUtil.returnUrl);
-												reqMap1.put("back_notify_url", YSUtil.notifyUrl);
-												t = new Date();
-												cal = java.util.Calendar.getInstance();
-												cal.setTime(t);
-												sys_timestamp = cal.getTimeInMillis();
-												reqMap1.put("timestamp", sys_timestamp);
-
-												StringBuilder sb1 = new StringBuilder();
-												keySet = reqMap1.keySet();
-												iter = keySet.iterator();
-												while (iter.hasNext()) {
-													String key = iter.next();
-													sb1.append(key);
-													sb1.append("=");
-													sb1.append(reqMap1.get(key));
-													sb1.append("&");
-												}
-												sign = SwpHashUtil.getSign(sb1.toString() + "key=" + channelKey,
-														channelKey, channel_sign_method);
-												reqMap1.put("sign", sign);
-
-												sb1.append("sign");
-												sb1.append("=");
-												sb1.append(sign);
-												System.out.println(sb1.toString());
-												url = YSUtil.url + "/swp/ybbh/b2_preorder.do";
-												httpResponse = HttpUtils.doPost(url, "", sb1.toString(),
-														"application/x-www-form-urlencoded; charset=UTF-8");
-												resp = EntityUtils.toString(httpResponse.getEntity());
-												logger.info("接受请求:" + resp);
-												json = JSONObject.parseObject(resp);
-
-												if ("SUCCESS".equals(json.getString("status"))) {
-													retMap.put("v_code", "00");
-													retMap.put("v_msg", "请求成功");
-													if ("SUCCESS".equals(json.getString("trade_state"))) {
-
-														retMap.put("html", json.getString("page_content"));
-														retMap.put("orderId", json.getString("sys_trade_no"));
-													} else {
-														retMap.put("v_code", "15");
-														retMap.put("v_msg", "请求失败");
-														return retMap;
-													}
-												} else {
-													retMap.put("v_code", "15");
-													retMap.put("v_msg", "请求失败");
-													return retMap;
-												}
-											}
+											retMap.put("v_code", "00");
+											retMap.put("v_msg", "请求成功");
+										} else if ("PROCESSING".equals(json.getString("trade_state"))) {
+											retMap.put("v_code", "200");
+											retMap.put("v_msg", "初始化状态");
 										} else {
 											retMap.put("v_code", "15");
 											retMap.put("v_msg", "请求失败");
@@ -3348,13 +3413,169 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 										retMap.put("v_msg", "请求失败");
 										return retMap;
 									}
-								} else {
-									retMap.put("v_code", "19");
-									retMap.put("v_msg", "短信验证不正确");
-									return retMap;
+								}else {
+									if (sumcode.equals(originalinfo.getV_smsCode())) {
+
+										String channelKey = YSUtil.channelKey;
+										String channel_sign_method = "SHA256";
+										Map<String, Object> reqMap = new TreeMap<String, Object>();
+										reqMap.put("sp_id", YSUtil.sp_id);// 服务商号
+										reqMap.put("mch_id", YSUtil.merId4);// 商户号
+										reqMap.put("out_trade_no", originalinfo.getV_oid());
+										reqMap.put("id_type", "01");
+										reqMap.put("acc_name", origial.getRealName());// 持卡人姓名
+										reqMap.put("acc_type", "PERSONNEL");// PERSONNEL：对私 CORPORATE：对公
+										reqMap.put("bank_code", origial.getSettlePmsBankNo());// 联行号
+										reqMap.put("acc_no", origial.getSettleCardNo());// 卡号
+										reqMap.put("acc_province", bank.getBank_province());// 省
+										reqMap.put("acc_city", bank.getBank_city());// 市
+										reqMap.put("mobile", origial.getPhone());// 手机号
+										reqMap.put("id_no", origial.getCertNo());// 证件号
+										reqMap.put("settle_rate", origial.getUserFee());// 结算费率
+										reqMap.put("extra_rate", origial.getSettleUserFee());// T0手续费
+										Date t = new Date();
+										java.util.Calendar cal = java.util.Calendar.getInstance();
+										cal.setTime(t);
+										long sys_timestamp = cal.getTimeInMillis();
+										reqMap.put("timestamp", sys_timestamp);// 时间戳
+
+										StringBuilder sb = new StringBuilder();
+										Set<String> keySet = reqMap.keySet();
+										Iterator<String> iter = keySet.iterator();
+										while (iter.hasNext()) {
+											String key = iter.next();
+											sb.append(key);
+											sb.append("=");
+											sb.append(reqMap.get(key));
+											sb.append("&");
+										}
+										String sign = SwpHashUtil.getSign(sb.toString() + "key=" + channelKey, channelKey,
+												channel_sign_method);
+										reqMap.put("sign", sign);
+
+										sb.append("sign");
+										sb.append("=");
+										sb.append(sign);
+										System.out.println(sb.toString());
+										String url = YSUtil.url + "/swp/ybbh/b2_register.do";
+										HttpResponse httpResponse = HttpUtils.doPost(url, "", sb.toString(),
+												"application/x-www-form-urlencoded; charset=UTF-8");
+										String resp = EntityUtils.toString(httpResponse.getEntity());
+										System.out.println("接受请求:" + resp);
+										JSONObject json = JSONObject.parseObject(resp);
+
+										if ("SUCCESS".equals(json.getString("status"))) {
+											if ("SUCCESS".equals(json.getString("trade_state"))) {
+												PmsWeixinMerchartInfo merchartInfo = new PmsWeixinMerchartInfo();
+												merchartInfo.setAccount(json.getString("swpaccid"));// 账号
+												merchartInfo.setMerchartId(originalinfo.getV_mid());
+												merchartInfo.setMerchartName(merchantList.get(0).getMercName());
+												merchartInfo.setMerchartNameSort(merchantList.get(0).getShortname());
+												merchartInfo.setCertNo(origial.getCertNo());// 证件号
+												merchartInfo.setCardNo(origial.getBankNo());// 卡号
+												merchartInfo.setRealName(origial.getRealName());// 姓名
+												merchartInfo.setMobile(origial.getPhone());// 手机号
+												// merchartInfo.setAccountType(payRequest.getBusinessType());//账户类型
+												merchartInfo.setBankName(bank.getBank_name());// 开户行
+												merchartInfo.setPmsBankNo(origial.getBankId());// 联行号
+												merchartInfo.setProvince(bank.getBank_province());// 省份
+												merchartInfo.setCity(bank.getBank_city());// 城市
+												merchartInfo.setDebitRate(origial.getUserFee());// 借记卡费率
+												// merchartInfo.setWithdrawDepositSingleFee(payRequest.getWithdrawDepositSingleFee());//提现单笔手续费
+												merchartInfo.setoAgentNo("100333");
+												merchartInfo.setRateCode(originalinfo.getV_mid());
+												int i = weixinService.updateRegister(merchartInfo);
+												logger.info("易生修改状态:" + i);
+												if (i > 0) {
+													channelKey = YSUtil.channelKey;
+													channel_sign_method = "SHA256";
+													Map<String, Object> reqMap1 = new TreeMap<String, Object>();
+													reqMap1.put("sp_id", YSUtil.sp_id);
+													reqMap1.put("mch_id", "BJ" + pmsBusinessPos.getBusinessnum());// 商户号YSUtil.merId3
+													reqMap1.put("out_trade_no", originalinfo.getV_oid());
+													reqMap1.put("swpaccid", json.getString("swpaccid"));
+													Double amount = Double.parseDouble(origial.getOrderAmount()) * 100;
+													Integer amount1 = amount.intValue();
+													logger.info("下游上送的金额:" + amount1);
+													reqMap1.put("total_fee", amount1.toString());
+													reqMap1.put("body", origial.getProcdutName());
+													reqMap1.put("acc_type", "CREDIT");
+													reqMap1.put("acc_name", origial.getRealName());
+													reqMap1.put("acc_no", origial.getBankNo());
+													reqMap1.put("mobile", origial.getPhone());
+													reqMap1.put("bank_code", origial.getSettlePmsBankNo());
+													reqMap1.put("id_type", "01");
+													reqMap1.put("id_no", origial.getCertNo());
+													reqMap1.put("front_notify_url", YSUtil.returnUrl);
+													reqMap1.put("back_notify_url", YSUtil.notifyUrl);
+													t = new Date();
+													cal = java.util.Calendar.getInstance();
+													cal.setTime(t);
+													sys_timestamp = cal.getTimeInMillis();
+													reqMap1.put("timestamp", sys_timestamp);
+
+													StringBuilder sb1 = new StringBuilder();
+													keySet = reqMap1.keySet();
+													iter = keySet.iterator();
+													while (iter.hasNext()) {
+														String key = iter.next();
+														sb1.append(key);
+														sb1.append("=");
+														sb1.append(reqMap1.get(key));
+														sb1.append("&");
+													}
+													sign = SwpHashUtil.getSign(sb1.toString() + "key=" + channelKey,
+															channelKey, channel_sign_method);
+													reqMap1.put("sign", sign);
+
+													sb1.append("sign");
+													sb1.append("=");
+													sb1.append(sign);
+													System.out.println(sb1.toString());
+													url = YSUtil.url + "/swp/ybbh/b2_preorder.do";
+													httpResponse = HttpUtils.doPost(url, "", sb1.toString(),
+															"application/x-www-form-urlencoded; charset=UTF-8");
+													resp = EntityUtils.toString(httpResponse.getEntity());
+													logger.info("接受请求:" + resp);
+													json = JSONObject.parseObject(resp);
+
+													if ("SUCCESS".equals(json.getString("status"))) {
+														retMap.put("v_code", "00");
+														retMap.put("v_msg", "请求成功");
+														if ("SUCCESS".equals(json.getString("trade_state"))) {
+
+															retMap.put("html", json.getString("page_content"));
+															retMap.put("orderId", json.getString("sys_trade_no"));
+														} else {
+															retMap.put("v_code", "15");
+															retMap.put("v_msg", "请求失败");
+															return retMap;
+														}
+													} else {
+														retMap.put("v_code", "15");
+														retMap.put("v_msg", "请求失败");
+														return retMap;
+													}
+												}
+											} else {
+												retMap.put("v_code", "15");
+												retMap.put("v_msg", "请求失败");
+												return retMap;
+											}
+										} else {
+											retMap.put("v_code", "15");
+											retMap.put("v_msg", "请求失败");
+											return retMap;
+										}
+									} else {
+										retMap.put("v_code", "19");
+										retMap.put("v_msg", "短信验证不正确");
+										return retMap;
+									}
 								}
+								
 								break;
-							case "10000466938":// 易宝快捷
+							case "YBLS":// 易宝快捷
 								if (sumcode.equals(originalinfo.getV_smsCode())) {
 									String orderId = originalinfo.getV_oid();
 									String orderAmount = origial.getOrderAmount();
@@ -3451,7 +3672,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									return retMap;
 								}
 								break;
-							case "000000001":// 易生快捷
+							/*case "000000001":// 易生快捷
 								String channelKey = YSUtil.channelKey;
 								String channel_sign_method = "SHA256";
 								Map<String, Object> reqMap = new TreeMap<String, Object>();
@@ -3511,8 +3732,8 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									retMap.put("v_msg", "请求失败");
 									return retMap;
 								}
-								break;
-							case "1711030001":// 沈阳银盛
+								break;*/
+							case "SYYS":// 沈阳银盛
 								logger.info("###############进入沈阳银盛支付接口##################");
 								OriginalOrderInfo orig1 = new OriginalOrderInfo();
 								orig1.setMerchantOrderId(originalinfo.getV_oid());
@@ -3548,11 +3769,11 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 
 								String requestStr = JSON.toJSONString(extraparam);
 								logger.info(requestStr);
-								url = "http://pay.unvpay.com/services/fastpay/submitSms";
+								String url = "http://pay.unvpay.com/services/fastpay/submitSms";
 
 								String respStr = HttpClientUtil.post(url, "UTF-8", requestStr);
 								logger.info("沈阳银盛响应信息:" + respStr);
-								json = JSONObject.parseObject(respStr);
+								JSONObject json = JSONObject.parseObject(respStr);
 								if ("0000".equals(json.getString("ret_code"))) {
 									retMap.put("v_mid", originalinfo.getV_mid());
 									retMap.put("v_txnAmt", origial.getOrderAmount());
@@ -3566,7 +3787,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									return retMap;
 								}
 								break;
-							case "888101700005315"://汇聚快捷
+							case "HJZF"://汇聚快捷
 
 								OriginalOrderInfo originalInfo = null;
 								originalInfo = this.payService.getOriginOrderInfo(originalinfo.getV_oid());
@@ -3633,7 +3854,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								}
 
 								break;
-							case "888888888888888":// 聚佰宝快捷
+							case "JBB":// 聚佰宝快捷
 								logger.info("###############进入聚佰宝支付接口##################");
 								OriginalOrderInfo origs = new OriginalOrderInfo();
 								origs.setMerchantOrderId(originalinfo.getV_oid());
@@ -3745,9 +3966,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 //								}
 								
 								break;
-							case "000001110100000812":// 裕福快捷
-							case "000001220100000470":
-							case "000001110100000663":
+							case "YFWG":// 裕福快捷
 								final String merCertPath = new File(this.getClass().getResource("/").getPath())
 										.getParentFile().getParentFile().getCanonicalPath() + "//ky//"
 										+ pmsBusinessPos.getBusinessnum() + ".cer";
@@ -3828,7 +4047,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									e.printStackTrace();
 								}
 								break;
-							case "10044":// 柜银云快捷
+							case "GYY":// 柜银云快捷
 								logger.info("###############进入柜银云支付接口##################");
 								OriginalOrderInfo origina = new OriginalOrderInfo();
 								origina.setMerchantOrderId(originalinfo.getV_oid());
@@ -3859,7 +4078,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								infoMap.put("checkFlag", originals.getBankId());// 交易标记
 
 								String params = ApiUtil.sortMap(infoMap);
-								sign = xdt.quickpay.gyy.util.MD5.getSign(infoMap, originals.getSumCode());
+								String sign = xdt.quickpay.gyy.util.MD5.getSign(infoMap, originals.getSumCode());
 								params += "&sign=" + sign;
 								logger.info("柜银云支付提交信息：" + params);
 								String reStr = ApiUtil.sendPost("http://139.224.27.56/ygww/sys/api/outer/geteway.do",
@@ -3898,7 +4117,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 							case "20180413085019363857"://上海漪雷快捷
 							logger.info("###########上海漪雷快捷支付##########");
 							 break;
-							case "1120180427134034001"://银生宝快捷
+							case "YSB"://银生宝快捷
 								logger.info("###########银生宝快捷支付##########");
 								if (sumcode.equals(originalinfo.getV_smsCode())) {
 									OriginalOrderInfo originas = new OriginalOrderInfo();
@@ -4451,12 +4670,12 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 						String merId = pmsBusinessPos.getBusinessnum();// 818310048160000
 						// 商户号私钥
 						String merKey = pmsBusinessPos.getKek();
-						switch (pmsBusinessPos.getBusinessnum()) {
-						case "0008136": // 高汇通代还
+						switch (pmsBusinessPos.getChannelnum()) {
+						case "CX": // 高汇通代还
 							logger.info("************************高汇通----代还----请求开始");
 							retMap = CXLoanStillPay(originalinfo, retMap, pmsBusinessPos);
 							break;
-						case "12345678": // 上海漪雷代还
+						case "SHYL": // 上海漪雷代还
 							logger.info("************************上海漪雷----代还----请求开始");
 							retMap = ylLoanStillPay(originalinfo, retMap, pmsBusinessPos);
 							break;
