@@ -139,28 +139,28 @@ public class PmsMerchantInfoDaoImpl extends BaseDaoImpl<PmsMerchantInfo> impleme
 
 
 	@Override
-	public int updataPay(Map<String, String> map) {
+	public synchronized int updataPay(Map<String, String> map) {
 		String sql = this.getStatementId("updataPay"); 
 		return sqlSession.update(sql, map);
 	}
 
 
 	@Override
-	public int updataPayT1(Map<String, String> map) {
+	public synchronized int updataPayT1(Map<String, String> map) {
 		String sql = this.getStatementId("updataPayT1");
 		return sqlSession.update(sql, map);
 	}
 
 
 	@Override
-	public int updataD0(Map<String, String> map) {
+	public synchronized int updataD0(Map<String, String> map) {
 		String sql = this.getStatementId("updataD0");
 		return sqlSession.update(sql, map);
 	}
 
 
 	@Override
-	public int updataT1(Map<String, String> map) {
+	public synchronized int updataT1(Map<String, String> map) {
 		String sql = this.getStatementId("updateT1");
 		return sqlSession.update(sql, map);
 	}
