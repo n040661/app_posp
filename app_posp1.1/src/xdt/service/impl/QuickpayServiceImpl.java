@@ -3020,8 +3020,8 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 									return retMap;
 								}
 								break;
-							case "936640995770000":// 摩宝快捷
-							case "936775585060000":// 摩宝快捷
+							case "MBXHF":// 摩宝快捷
+							case "MBYLM":// 摩宝快捷
 								String signstr = "";
 								String signtrue = "";
 								if("936640995770002".equals(pmsBusinessPos.getBusinessnum())) {

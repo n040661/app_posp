@@ -330,17 +330,17 @@ public class QuickPayAction extends BaseAction {
 				logger.info("对比签名成功");
 				result = quickPayService.payHandle(param);
 				if ("00".equals(result.get("v_code"))) {
-					switch (pmsBusinessPos.getBusinessnum()) {
+					switch (pmsBusinessPos.getChannelnum()) {
 
-					case "053211180":// 钱龙快捷
-					case "053211181":// 钱龙快捷
+					//case "053211180":// 钱龙快捷
+					case "QDQLKJ":// 钱龙快捷
 						logger.info("钱龙快捷上送的数据:" + result);
 						html = EffersonPayService.createAutoFormHtml("", result, "GBK");
 						logger.info("返回结果:{}", html);
 						outString(response, html);
 						break;
-					case "936640995770001": // 摩宝快捷收银台
-					case "936640995770002": // 摩宝快捷银联
+					case "MBXHF": // 摩宝快捷收银台
+					//case "936640995770002": // 摩宝快捷银联
 						logger.info("摩宝快捷上送的数据:" + result);
 						String params = HttpURLConection.parseParams(result);
 						logger.info("摩宝快捷上送的数据:" + params);
@@ -350,30 +350,14 @@ public class QuickPayAction extends BaseAction {
 						response.setCharacterEncoding("GBK");
 						response.sendRedirect(path.replace(" ", " "));
 						break;
-					case "88882017092010001121": // 赢酷快捷
+					case "YK": // 赢酷快捷
 						result.remove("v_code");
 						logger.info("赢酷快捷上送的数据:" + result);
 						html = EffersonPayService.createAutoFormHtml(
 								"https://service.blueseapay.com/gateway/transaction/request", result, "UTF-8");
 						logger.info("返回结果:{}", html);
 						outString(response, html);
-					case "936640995770000":// 摩宝快捷
-					case "936775585060000":// 摩宝快捷
-					case "1800056392":// 合利宝快捷
-					case "1800001582":// 合利宝快捷
-					case "2017112113602199512":// 广州恒明有积分快捷
-					case "2017112113602199513":// 广州恒明有积分快捷
-					case "10044":// 柜银云快捷
-					case "000001110100000812":// 裕福测试号
-					case "000001220100000470":// 裕福生产号
-					case "000001110100000663":
-						ConsumeResponseEntity consume = (ConsumeResponseEntity) BeanToMapUtil
-								.convertMap(ConsumeResponseEntity.class, result);
-						String sign = SignatureUtil.getSign(beanToMap(consume), merchantKey, logger);
-						result.put("v_sign", sign);
-						outString(response, JSON.toJSON(result));
-						break;
-					case "10000466938":// 易宝快捷
+					case "YBLS":// 易宝快捷
 
 						String url = result.get("path");
 						logger.info("URL 重定向：" + url);
@@ -386,17 +370,17 @@ public class QuickPayAction extends BaseAction {
 						response.setCharacterEncoding("UTF-8");
 						response.sendRedirect(path.replace(" ", " "));
 						break;
-					case "000000003":// 易生快捷
+					case "YSKJ":// 易生快捷
 						url = result.get("html");
 						logger.info("URL 重定向：" + url);
 						outString(response, url);
 						break;
-					case "888888888888888":// 聚佰宝快捷
+					case "JBB":// 聚佰宝快捷
 						url = result.get("path");
 						logger.info("URL 重定向：" + url);
 						outString(response, url);
 						break;										
-					case "1120180427134034001":// 银生宝快捷
+					case "YSB":// 银生宝快捷
 						result.remove("v_code");
 						logger.info("银生宝快捷上送的数据:" + result);
 						html = EffersonPayService.createAutoFormHtml(
@@ -404,7 +388,12 @@ public class QuickPayAction extends BaseAction {
 						logger.info("返回结果:{}", html);
 						outString(response, html);
 						break;
-					default:						
+					default:	
+						ConsumeResponseEntity consume = (ConsumeResponseEntity) BeanToMapUtil
+						.convertMap(ConsumeResponseEntity.class, result);
+						String sign = SignatureUtil.getSign(beanToMap(consume), merchantKey, logger);
+						result.put("v_sign", sign);
+						outString(response, JSON.toJSON(result));
 						break;
 					}
 				}else {
