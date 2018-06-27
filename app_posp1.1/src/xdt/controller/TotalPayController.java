@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -1236,6 +1238,7 @@ public class TotalPayController extends BaseAction {
 		} catch (Exception e) {
 		log.info("获取银生宝代付异步参数异常："+e);
 		}*/
+		request.getSession();
 		if(result_code!=""&&result_code!=null&&mac!=null&&mac!=""&&orderId!=""&&orderId!=null) {
 			try {
 				outString(response, "OK");
@@ -1344,30 +1347,59 @@ public class TotalPayController extends BaseAction {
 	@RequestMapping(value="hjNotifyUrl")
 	public void hjNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
 		log.info("汇聚代付异步来了！");
-		String status=request.getParameter("status");
-		String errorCode =request.getParameter("errorCode");
-		String errorCodeDesc =request.getParameter("errorCodeDesc");
-		String userNo =request.getParameter("userNo");
-		String merchantOrderNo =request.getParameter("merchantOrderNo");
-		String platformSerialNo=request.getParameter("platformSerialNo");
-		String receiverAccountNoEnc=request.getParameter("receiverAccountNoEnc");
-		String receiverNameEnc=request.getParameter("receiverNameEnc");
-		String paidAmount=request.getParameter("paidAmount");
-		String fee=request.getParameter("fee");
-		String hmac=request.getParameter("hmac");
-		log.info("status:"+status);
-		log.info("errorCode:"+errorCode);
-		log.info("errorCodeDesc:"+errorCodeDesc);
-		log.info("userNo:"+userNo);
-		log.info("merchantOrderNo"+merchantOrderNo);
-		log.info("platformSerialNo:"+platformSerialNo);
-		log.info("receiverAccountNoEnc:"+receiverAccountNoEnc);
-		log.info("receiverNameEnc:"+receiverNameEnc);
-		log.info("paidAmount:"+paidAmount);
-		log.info("fee:"+fee);
-		log.info("hmac:"+hmac);
+		
+		BufferedReader br;
+		String status="";
+		String errorCode ="";
+		String errorCodeDesc ="";
+		String userNo ="";
+		String merchantOrderNo ="";
+		String platformSerialNo="";
+		String receiverAccountNoEnc="";
+		String receiverNameEnc="";
+		String paidAmount="";
+		String fee="";
+		String hmac="";
+		try {
+			br = new BufferedReader(new InputStreamReader((ServletInputStream) request.getInputStream(), "UTF-8"));
+			String line = null;
+			StringBuffer sb = new StringBuffer();
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			String appMsg = sb.toString();
+			log.info("汇聚代付异步来了：" + appMsg);
+			com.alibaba.fastjson.JSONObject json =com.alibaba.fastjson.JSONObject.parseObject(appMsg);
+			status=json.getString("status");
+			errorCode =json.getString("errorCode");
+			errorCodeDesc =json.getString("errorCodeDesc");
+			userNo =json.getString("userNo");
+			merchantOrderNo =json.getString("merchantOrderNo");
+			platformSerialNo=json.getString("platformSerialNo");
+			receiverAccountNoEnc=json.getString("receiverAccountNoEnc");
+			receiverNameEnc=json.getString("receiverNameEnc");
+			paidAmount=json.getString("paidAmount");
+			fee=json.getString("fee");
+			hmac=json.getString("hmac");
+			log.info("status:"+status);
+			log.info("errorCode:"+errorCode);
+			log.info("errorCodeDesc:"+errorCodeDesc);
+			log.info("userNo:"+userNo);
+			log.info("merchantOrderNo"+merchantOrderNo);
+			log.info("platformSerialNo:"+platformSerialNo);
+			log.info("receiverAccountNoEnc:"+receiverAccountNoEnc);
+			log.info("receiverNameEnc:"+receiverNameEnc);
+			log.info("paidAmount:"+paidAmount);
+			log.info("fee:"+fee);
+			log.info("hmac:"+hmac);
+			
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
 		Map<String, String> maps =new HashMap<>();
 		Map<String, String> resp=new HashMap<>();
+		request.getSession();
 		if(status!=""&&status!=null&&hmac!=null&&hmac!=""&&merchantOrderNo!=""&&merchantOrderNo!=null) {
 			try {
 				resp.put("statusCode", "2001");
@@ -1420,7 +1452,7 @@ public class TotalPayController extends BaseAction {
 					Map<String, String> map =new HashMap<>();
 					map.put("machId",originalInfo.getPid());
 					map.put("payMoney",(Double.parseDouble(pmsDaifuMerchantInfos.get(0).getAmount())+Double.parseDouble(pmsDaifuMerchantInfos.get(0).getPayCounter()))*100+"");
-					int nus =service.updataPayT1(map);
+					int nus =service.updataPay(map);
 					if(nus==1) {
 						log.info("汇聚代付补款成功");
 						DaifuRequestEntity entity =new DaifuRequestEntity();
@@ -1432,7 +1464,7 @@ public class TotalPayController extends BaseAction {
 		 				entity.setV_cardNo(pmsDaifuMerchantInfos.get(0).getCardno());
 		 				entity.setV_city(pmsDaifuMerchantInfos.get(0).getCity());
 		 				entity.setV_province(pmsDaifuMerchantInfos.get(0).getProvince());
-		 				entity.setV_type("1");
+		 				entity.setV_type("0");
 		 				entity.setV_pmsBankNo(pmsDaifuMerchantInfos.get(0).getPmsbankno());
 		 				PmsMerchantInfo merchantinfo =new PmsMerchantInfo();
 						int ii;
