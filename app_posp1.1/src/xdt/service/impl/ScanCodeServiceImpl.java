@@ -1442,7 +1442,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
         map.put("productName",entity.getV_productName());
         map.put("orderIp", entity.getV_clientIP());
         map.put("notifyUrl",ScanCodeUtil.wbfNotifyUrl);
-        map.put("returnUrl",ScanCodeUtil.wbfNotifyUrl);
+        map.put("returnUrl",ScanCodeUtil.wbfReturnUrl);
         String paramSrc = RequestUtils.getParamSrc(map);
 		log.info("签名前数据**********支付:" + paramSrc);
 		String md5 = MD5Utils.md5(paramSrc+"&paySecret="+pmsBusinessPos.getKek(), "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
