@@ -1,9 +1,7 @@
 package xdt.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.mina.http.api.HttpResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,10 +13,8 @@ import com.yeepay.g3.facade.yop.ca.dto.DigitalEnvelopeDTO;
 import com.yeepay.g3.facade.yop.ca.enums.CertTypeEnum;
 import com.yeepay.g3.frame.yop.ca.DigitalEnvelopeUtils;
 import com.yeepay.g3.sdk.yop.utils.InternalConfig;
-import com.yeepay.shade.org.springframework.beans.factory.annotation.Autowired;
 
 import net.sf.json.JSONObject;
-import xdt.dto.gateway.entity.GateWayRequestEntity;
 import xdt.dto.lhzf.LhzfResponse;
 import xdt.dto.mb.MBResponse;
 import xdt.dto.quickPay.entity.ConsumeRequestEntity;
@@ -28,19 +24,14 @@ import xdt.dto.quickPay.entity.MessageRequestEntity;
 import xdt.dto.quickPay.entity.QueryRequestEntity;
 import xdt.dto.quickPay.entity.QueryResponseEntity;
 import xdt.dto.quickPay.util.MbUtilThread;
-import xdt.dto.tfb.TFBConfig;
-import xdt.dto.transfer_accounts.entity.DaifuQueryRequestEntity;
-import xdt.dto.transfer_accounts.entity.DaifuQueryResponseEntity;
 import xdt.model.ChannleMerchantConfigKey;
 import xdt.model.OriginalOrderInfo;
 import xdt.model.PmsBusinessPos;
 import xdt.model.PmsWeixinMerchartInfo;
-import xdt.quickpay.gyy.util.ApiUtil;
 import xdt.quickpay.hengfeng.util.Bean2QueryStrUtil;
 import xdt.quickpay.hengfeng.util.HttpClientUtil;
 import xdt.quickpay.hf.util.EffersonPayService;
 import xdt.quickpay.jbb.util.Base64;
-import xdt.quickpay.jbb.util.RSAEncrypt;
 import xdt.quickpay.nbs.common.util.SignatureUtil;
 import xdt.quickpay.syys.PayCore;
 import xdt.schedule.ThreadPool;
@@ -49,15 +40,11 @@ import xdt.service.IMBService;
 import xdt.service.IQuickPayService;
 import xdt.service.OriginalOrderInfoService;
 import xdt.service.PmsWeixinMerchartInfoService;
+import xdt.service.impl.QuickpayServiceImpl;
 import xdt.util.BeanToMapUtil;
 import xdt.util.HttpURLConection;
 import xdt.util.HttpUtil;
-import xdt.util.JsPostThread;
-import xdt.util.JsdsUtil;
 import xdt.util.UtilDate;
-import xdt.util.utils.MD5Utils;
-import xdt.util.utils.RequestUtils;
-import xdt.util.utils.UtilThread;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -70,11 +57,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -90,7 +74,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("quickPayAction")
 public class QuickPayAction extends BaseAction {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = Logger.getLogger(QuickPayAction.class);
 
 	@Resource
 	private IQuickPayService quickPayService;
@@ -212,7 +196,7 @@ public class QuickPayAction extends BaseAction {
 
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setContentType("text/html;charset=utf-8");
-		logger.info("下游上送的参数:" + entity);
+		logger.info("下游上送的参数:" + JSON.toJSONString(entity));
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 查询商户密钥
 		ChannleMerchantConfigKey keyinfo = quickPayService.getChannelConfigKey(entity.getV_mid());
@@ -242,7 +226,7 @@ public class QuickPayAction extends BaseAction {
 		response.setContentType("text/html;charset=utf-8");
 		Map<String, String> result = new HashMap<String, String>();
 
-		logger.info("下游上送参数:{}", param);
+		logger.info("下游上送参数:{}"+ param);
 		if (!StringUtils.isEmpty(param.getV_mid())) {
 			logger.info("下游上送签名串{}" + param.getV_sign());
 			// 查询商户密钥
@@ -319,7 +303,7 @@ public class QuickPayAction extends BaseAction {
 		ChannleMerchantConfigKey keyinfo = quickPayService.getChannelConfigKey(param.getV_mid());
 		// ------------------------需要改签名
 		String merchantKey = keyinfo.getMerchantkey();
-		logger.info("下游上送参数:{}", param);
+		logger.info("下游上送参数:{}"+ JSON.toJSONString(param));
 		String html = "";
 		if (!StringUtils.isEmpty(param.getV_mid())) {
 
@@ -336,7 +320,7 @@ public class QuickPayAction extends BaseAction {
 					case "QDQLKJ":// 钱龙快捷
 						logger.info("钱龙快捷上送的数据:" + result);
 						html = EffersonPayService.createAutoFormHtml("", result, "GBK");
-						logger.info("返回结果:{}", html);
+						logger.info("返回结果:{}"+ html);
 						outString(response, html);
 						break;
 					case "MBXHF": // 摩宝快捷收银台
@@ -355,7 +339,7 @@ public class QuickPayAction extends BaseAction {
 						logger.info("赢酷快捷上送的数据:" + result);
 						html = EffersonPayService.createAutoFormHtml(
 								"https://service.blueseapay.com/gateway/transaction/request", result, "UTF-8");
-						logger.info("返回结果:{}", html);
+						logger.info("返回结果:{}"+ html);
 						outString(response, html);
 					case "YBLS":// 易宝快捷
 
@@ -385,7 +369,7 @@ public class QuickPayAction extends BaseAction {
 						logger.info("银生宝快捷上送的数据:" + result);
 						html = EffersonPayService.createAutoFormHtml(
 								"http://180.166.114.155:18083/quickpay-front/quickPayWap/prePay", result, "UTF-8");
-						logger.info("返回结果:{}", html);
+						logger.info("返回结果:{}"+ html);
 						outString(response, html);
 						break;
 					default:	
@@ -471,7 +455,7 @@ public class QuickPayAction extends BaseAction {
 		ChannleMerchantConfigKey keyinfo = quickPayService.getChannelConfigKey(param.getV_mid());
 		// ------------------------需要改签名
 		String merchantKey = keyinfo.getMerchantkey();
-		logger.info("下游上送参数:{}", JSON.toJSON(param));
+		logger.info("下游上送参数:{}"+JSON.toJSON(param));
 		/*if (param.getV_sign() == null) {
 			String sign = SignatureUtil.getSign(beanToMap(param), merchantKey, logger);
 			param.setV_sign(sign);
@@ -491,7 +475,7 @@ public class QuickPayAction extends BaseAction {
 					// 生成签名
 					String sign = SignatureUtil.getSign(beanToMap(consume), merchantKey, logger);
 					result.put("v_sign", sign);
-					logger.info("返回结果:{}", result);
+					logger.info("返回结果:{}"+result);
 					outString(response, JSON.toJSON(result));
 					break;
 				case "12345678":// 上海漪雷代还
@@ -776,7 +760,7 @@ public class QuickPayAction extends BaseAction {
 			logger.info("请求参数：" + appMsg);
 			if (!StringUtils.isEmpty(appMsg)) {
 				JSONObject ob = JSONObject.fromObject(appMsg);
-				logger.info("封装之后的数据:{}", ob);
+				logger.info("封装之后的数据:{}"+ ob);
 				Iterator it = ob.keys();
 				String order_num = "";
 				String auth_id = "";
@@ -838,7 +822,7 @@ public class QuickPayAction extends BaseAction {
 			logger.info("请求参数：" + appMsg);
 			if (!StringUtils.isEmpty(appMsg)) {
 				JSONObject ob = JSONObject.fromObject(appMsg);
-				logger.info("封装之后的数据:{}", ob);
+				logger.info("封装之后的数据:{}"+ob);
 				Iterator it = ob.keys();
 				String order_num = "";
 				String ret_code = "";
@@ -1073,7 +1057,7 @@ public class QuickPayAction extends BaseAction {
 			logger.info("返回订单号：" + orderNo);
 			if (!StringUtils.isEmpty(orderNo)) {
 				response.getWriter().write("SUCCESS");
-				logger.info("易宝解密数据:" + orderNo);
+				logger.info("创新解密数据:" + orderNo);
 				// 开始
 				OriginalOrderInfo originalInfo = null;
 				if (orderNo != null && orderNo != "") {
@@ -1096,7 +1080,7 @@ public class QuickPayAction extends BaseAction {
 					}
 				} else {
 					result.put("v_status", "1001");
-					result.put("v_msg", "支付失败");
+					result.put("v_msg", "支付失败:"+URLDecoder.decode(dealMsg, "UTF-8"));
 					logger.info("交易错误码:" + dealMsg + ",错误信息:" + URLDecoder.decode(dealMsg, "UTF-8"));
 				}
 				ChannleMerchantConfigKey keyinfo = quickPayService.getChannelConfigKey(originalInfo.getPid());
@@ -1974,7 +1958,7 @@ public class QuickPayAction extends BaseAction {
 		Map<String, String> result = new HashMap<String, String>();
 		Map<String, Object> maps = new HashMap<>();
 		try {
-			logger.info("下游上送参数:{}", entity);
+			logger.info("下游上送参数:{}"+JSON.toJSONString(entity));
 			if (!StringUtils.isEmpty(entity.getV_mid())) {
 				logger.info("下游上送签名串{}" + entity.getV_sign());
 				// 查询商户密钥
