@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.bouncycastle.crypto.agreement.srp.SRP6Server;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -1449,13 +1450,20 @@ public class ScanCodeController extends BaseAction{
 			if("SUCCESS".equals(tradeStatus)) {
 				map.put("v_status", "0000");
 				map.put("v_status_msg", "支付成功");
+				GateWayQueryRequestEntity query =new GateWayQueryRequestEntity();
+				query.setV_mid(originalInfo.getPid());
+				query.setV_oid(originalInfo.getOrderId());
+				Map<String,String> maps =service.getScanCodeQuick(query);
 				try {
-					int i =service.UpdatePmsMerchantInfo1(originalInfo);
-					if(i==1) {
-						log.info("微宝付H5入金成功");
-					}else {
-						log.info("微宝付H5入金失败");
+					if(!"0000".equals(maps.get("v_status"))) {
+						int i =service.UpdatePmsMerchantInfo1(originalInfo);
+						if(i==1) {
+							log.info("微宝付H5入金成功");
+						}else {
+							log.info("微宝付H5入金失败");
+						}
 					}
+					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
