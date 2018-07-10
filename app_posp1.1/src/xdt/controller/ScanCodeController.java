@@ -1521,4 +1521,113 @@ public class ScanCodeController extends BaseAction{
 			}
 		}
 	}
+	
+	
+	/**
+	 * 三境界H5异步
+	 * @param temp
+	 * @param response
+	 * @param request
+	 */
+	@RequestMapping(value="sjjNotifyUrl")
+	public void sjjNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
+		log.info("三境界H5异步参数！");
+		String sysNo=request.getParameter("sysNo");
+		String transactionId=request.getParameter("transactionId");
+		String mchtid=request.getParameter("mchtid");
+		String totalAmount=request.getParameter("totalAmount");
+		String resultCode=request.getParameter("resultCode");
+		String resultMsg=request.getParameter("resultMsg");
+		String sign=request.getParameter("sign");
+		request.getSession();
+		log.info("三境界H5返回参数：sysNo="+sysNo+",transactionId="+transactionId+",mchtid="+mchtid+",totalAmount="+totalAmount
+				+",resultMsg="+resultMsg+",sign="+sign);
+		Map<String, String> map =new HashMap<>();
+		String str ="";
+		if(transactionId !=null &&transactionId !="") {
+			str="SUCCESS";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("三境界H5返回信息异常"+e);
+				e.printStackTrace();
+			}
+			ChannleMerchantConfigKey keyinfo=new ChannleMerchantConfigKey();
+			OriginalOrderInfo originalInfo=null;
+			try {
+				originalInfo  = this.payService.getOriginOrderInfo(transactionId);
+			} catch (Exception e) {
+				log.info("三境界H5查询原始订单信息返回异常");
+				e.printStackTrace();
+			}
+			keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
+			log.info("三境界H5订单数据:" + JSON.toJSON(originalInfo));
+			
+			log.info("三境界H5下游的异步地址" + originalInfo.getBgUrl());
+			map.put("v_mid", originalInfo.getPid());
+			map.put("v_oid", originalInfo.getOrderId());
+			map.put("v_txnAmt", originalInfo.getOrderAmount());
+			map.put("v_attach", originalInfo.getAttach());
+			map.put("v_code", "00");
+			map.put("v_msg", "成功");
+			if("0".equals(resultCode)) {
+				map.put("v_status", "0000");
+				map.put("v_status_msg", "支付成功");
+				GateWayQueryRequestEntity query =new GateWayQueryRequestEntity();
+				query.setV_mid(originalInfo.getPid());
+				query.setV_oid(originalInfo.getOrderId());
+				Map<String,String> maps =service.getScanCodeQuick(query);
+			}else {
+				map.put("v_status", "1001");
+				map.put("v_status_msg", "支付失败");
+			}
+			ScanCodeResponseEntity consume = (ScanCodeResponseEntity) BeanToMapUtil
+					.convertMap(ScanCodeResponseEntity.class, map);
+			try {
+				service.otherInvoke(consume);
+			} catch (Exception e1) {
+				log.info("三境界H5修改状态失败");
+				e1.printStackTrace();
+			}
+			String signs = SignatureUtil.getSign(beanToMap(consume), keyinfo.getMerchantkey(), log);
+			map.put("v_sign", signs);
+			String params = HttpURLConection.parseParams(map);
+			log.info("三境界H5给下游同步的数据:" + params);
+			String html="";
+			try {
+				html = HttpClientUtil.post(originalInfo.getBgUrl(),params);
+			}  catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		    logger.info("三境界H5下游返回状态" + html);
+		    net.sf.json.JSONObject ob = net.sf.json.JSONObject.fromObject(html);
+			Iterator it = ob.keys();
+			Map<String, String> result = new HashMap<>();
+			while (it.hasNext()) {
+				String keys = (String) it.next();
+				if (keys.equals("success")) {
+					String value = ob.getString(keys);
+					logger.info("三境界H5异步回馈的结果:" + "\t" + value);
+					result.put("success", value);
+				}
+			}
+			if (!result.get("success").equals("true")) {
+
+				logger.info("三境界H5启动线程进行异步通知");
+				// 启线程进行异步通知
+				ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(),params));
+			}
+			logger.info("三境界H5向下游 发送数据成功");
+			
+		}else {
+			str="FALL";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("三境界H5扫码返回信息异常");
+				e.printStackTrace();
+			}
+		}
+	}
 }

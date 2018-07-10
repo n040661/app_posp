@@ -24,7 +24,80 @@ public class PmsAppMerchantPayChannel {
     private String oAgentNo;//欧单编号
 
     private String reason;//关闭原因
-    public String getStatus() {
+    
+    private String openPay;//是否开通代付 0开通1未开通
+	
+	private String poundage;//代付手续费 元
+	
+	private String poundageFree;//代付手续费率%
+	
+	private String quickRateTypeT1;//费率类型T1
+	
+	private String quickRateTypeD0;//费率类型D0
+	
+	private String counter;//最低手续费
+	
+	private String clearType;//清算类型0 D0 1 T1
+	
+	
+	
+    public String getOpenPay() {
+		return openPay;
+	}
+
+	public void setOpenPay(String openPay) {
+		this.openPay = openPay;
+	}
+
+	public String getPoundage() {
+		return poundage;
+	}
+
+	public void setPoundage(String poundage) {
+		this.poundage = poundage;
+	}
+
+	public String getPoundageFree() {
+		return poundageFree;
+	}
+
+	public void setPoundageFree(String poundageFree) {
+		this.poundageFree = poundageFree;
+	}
+
+	public String getQuickRateTypeT1() {
+		return quickRateTypeT1;
+	}
+
+	public void setQuickRateTypeT1(String quickRateTypeT1) {
+		this.quickRateTypeT1 = quickRateTypeT1;
+	}
+
+	public String getQuickRateTypeD0() {
+		return quickRateTypeD0;
+	}
+
+	public void setQuickRateTypeD0(String quickRateTypeD0) {
+		this.quickRateTypeD0 = quickRateTypeD0;
+	}
+
+	public String getCounter() {
+		return counter;
+	}
+
+	public void setCounter(String counter) {
+		this.counter = counter;
+	}
+
+	public String getClearType() {
+		return clearType;
+	}
+
+	public void setClearType(String clearType) {
+		this.clearType = clearType;
+	}
+
+	public String getStatus() {
         return status;
     }
 

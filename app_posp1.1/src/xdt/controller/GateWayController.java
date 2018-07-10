@@ -40,12 +40,11 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -139,7 +138,7 @@ public class GateWayController extends BaseAction {
 	/**
 	 * 日志记录
 	 */
-	private Logger log = LoggerFactory.getLogger(this.getClass());
+	Logger log = Logger.getLogger(this.getClass());
 
 	@Resource
 	private IGateWayService gateWayService;
@@ -219,7 +218,7 @@ public class GateWayController extends BaseAction {
 		response.setContentType("text/html;charset=utf-8");
 		Map<String, String> result = new HashMap<String, String>();
 		TreeMap<String, String> paramsMap = new TreeMap<String, String>();
-		log.info("下游上送参数:{}", param);
+		log.info("下游上送参数:{}"+ JSON.toJSONString(param));
 		String html = "";
 		if (!StringUtils.isEmpty(param.getV_mid())) {
 			log.info("下游上送签名串{}" + param.getV_sign());
@@ -697,11 +696,11 @@ public class GateWayController extends BaseAction {
 						//Double dd = Double.parseDouble(param.getV_txnAmt()) * 100;
 						params1.put("merchantOrderAmt", df1.format(payAmt));
 						params1.put("merchantOrderCurrency", "156");
-						if ("1".equals(param.getV_channel())) {
+						//if ("1".equals(param.getV_channel())) {
 							params1.put("gwType", "02");
-						} else if ("2".equals(param.getV_channel())) {
-							params1.put("gwType", "01");
-						}
+						//} else if ("2".equals(param.getV_channel())) {
+						//	params1.put("gwType", "01");
+						//}
 						params1.put("frontUrl", YFUtil.reistUrl);
 						params1.put("backUrl", YFUtil.notifyUrl);// 商户异步通知接口
 						params1.put("bankId", param.getV_bankAddr() == null ? "" : param.getV_bankAddr());
@@ -1056,7 +1055,7 @@ public class GateWayController extends BaseAction {
 			result.put("v_msg", "上送交易参数空");
 			outString(response, JSON.toJSON(result));
 		}
-		log.info("返回结果:{}", html);
+		log.info("返回结果:{}"+ html);
 
 	}
 
@@ -1298,12 +1297,20 @@ public class GateWayController extends BaseAction {
 				result.put("v_txnAmt", originalInfo.getOrderAmount());
 				result.put("v_code", "00");
 				result.put("v_time", originalInfo.getOrderTime());
-				result.put("v_attach",  originalInfo.getAttach());
+				result.put("v_attach", synchNotifyParams.get("bpSerialNum"));
 				result.put("v_mid", originalInfo.getPid());
 				result.put("v_msg", "请求成功");
 				if ("01".equals(synchNotifyParams.get("transStatus"))) {
-					// int ii =gateWayService.UpdatePmsMerchantInfo(originalInfo);
-					// log.info("汇聚异步订单信息:"+ii);
+					if("000001110100000663".equals(request.getParameter("merchantId"))) {
+						int ii =0;
+						if("10021016940".equals(originalInfo.getPid())) {
+							ii =gateWayService.UpdatePmsMerchantInfo(originalInfo,0.5);
+						}else {
+							ii =gateWayService.UpdatePmsMerchantInfo(originalInfo,1.0);
+						}
+						
+						 log.info("裕福实时入金状态:"+ii);
+					}
 					result.put("v_status", "0000");
 					result.put("v_status_msg", "支付成功");
 				} else if ("02".equals(synchNotifyParams.get("transStatus"))) {
@@ -1318,7 +1325,7 @@ public class GateWayController extends BaseAction {
 						.convertMap(GateWayQueryResponseEntity.class, result);
 				// 修改订单状态
 				gateWayService.otherInvoke(gatewey);
-				//gatewey.setV_attach(originalInfo.getAttach());
+				gatewey.setV_attach(originalInfo.getAttach());
 				/*result.put("v_oid", originalInfo.getOrderId());
 				result.put("v_txnAmt", originalInfo.getOrderAmount());
 				result.put("v_code", "00");
@@ -1333,6 +1340,7 @@ public class GateWayController extends BaseAction {
 					result.put("v_status", "1001");
 					result.put("v_status_msg", "支付失败");
 				}*/
+				result.put("v_attach", originalInfo.getAttach());
 				// 和下面的签名
 				// ---------------------------------------------------
 				logger.info("裕福给下游异步前的数据:" + result);
@@ -1440,7 +1448,7 @@ public class GateWayController extends BaseAction {
 				result.put("v_mid", originalInfo.getPid());
 				result.put("v_msg", "请求成功");
 				if ("000000".equals(resultCode)) {
-					int ii = gateWayService.UpdatePmsMerchantInfo(originalInfo);
+					int ii = gateWayService.UpdatePmsMerchantInfo(originalInfo,1.0);
 					log.info("汇聚异步订单信息:" + ii);
 					result.put("v_status", "0000");
 					result.put("v_status_msg", "支付成功");
@@ -1543,7 +1551,7 @@ public class GateWayController extends BaseAction {
 				result.put("v_mid", originalInfo.getPid());
 				result.put("v_msg", "请求成功");
 				if ("1".equals(status)) {
-					int ii = gateWayService.UpdatePmsMerchantInfo(originalInfo);
+					int ii = gateWayService.UpdatePmsMerchantInfo(originalInfo,1.0);
 					log.info("杉德异步订单信息:" + ii);
 					result.put("v_status", "0000");
 					result.put("v_status_msg", "支付成功");
@@ -1642,7 +1650,7 @@ public class GateWayController extends BaseAction {
 							result.put("v_status", "0000");
 							result.put("v_msg", "支付成功");
 							if ("0".equals(originalInfo.getPayType())) {
-								int i = gateWayService.UpdatePmsMerchantInfo(originalInfo);
+								int i = gateWayService.UpdatePmsMerchantInfo(originalInfo,1.0);
 								if (i > 0) {
 									logger.info("聚佰宝*****实时入金完成");
 								} else {

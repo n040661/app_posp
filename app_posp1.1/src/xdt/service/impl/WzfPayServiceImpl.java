@@ -606,15 +606,5 @@ public class WzfPayServiceImpl extends BaseServiceImpl implements IWZFPayService
 		result.put("respInfo", respInfo);
 		return result;
 	}
-	public static void main(String[] args) throws Exception {
-		
-		String cert="accCode=A02|accType=1|bankCode=SPDB|charSet=UTF-8|interfaceVersion=2.0.0.0|merNo=301101910008366|payProducts=YDK|signAccInfo=lHswGHRVaiXRvPs5+5PkHPcAYAVeDVTgbhQpKi0ZcR7VoBctGFEwxcvD3J5pPG8P4iHdLhCPWw4bkjtHLSyoaLYwuyAhrtgpqTSlDJ+E/xzMa4LlmJyWU4eICgaz8UXg|signChnl=www|signDate=20171116|signNo=20171116150756|signType=RSA_SHA256|";
-		// 生成签名
-		Map<String, String> params = WzfSignUtil.rep2Map(cert);
-		// 商户的签名
-		String sign = UniPaySignUtils.merSign(params, "RSA_SHA256");
-		
-		System.out.println(sign);
-	}
 
 }

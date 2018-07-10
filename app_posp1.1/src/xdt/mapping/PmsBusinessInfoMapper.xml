@@ -16,11 +16,12 @@
 		<result column="MONEY_START" jdbcType="DECIMAL" property="moneyStart" />
 		<result column="MONEY_END" jdbcType="DECIMAL" property="moneyEnd" />
 		<result column="PREMIUMERATE" jdbcType="VARCHAR" property="premiumerate" />
+		<result column="poundage" jdbcType="VARCHAR" property="poundage" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		ID, BUSINESS_NUM, CHANNEL_ID, BUSINESS_NAME, TYPE, TIME, STATE,
 		KUAIYI_ID, POS_ID,
-		TOTAL_SUM, FAILURES, MONEY_START, MONEY_END, PREMIUMERATE
+		TOTAL_SUM, FAILURES, MONEY_START, MONEY_END, PREMIUMERATE,poundage
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal"
 		resultMap="BaseResultMap">
@@ -52,7 +53,7 @@
 		#{state,jdbcType=VARCHAR}, #{kuaiyiId,jdbcType=VARCHAR},
 		#{posId,jdbcType=VARCHAR},
 		#{totalSum,jdbcType=DECIMAL}, #{failures,jdbcType=DECIMAL}, #{moneyStart,jdbcType=DECIMAL},
-		#{moneyEnd,jdbcType=DECIMAL}, #{premiumerate,jdbcType=VARCHAR})
+		#{moneyEnd,jdbcType=DECIMAL}, #{premiumerate,jdbcType=VARCHAR},#{poundage,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="xdt.model.PmsBusinessInfo">
 		insert into PMS_BUSINESS_INFO
@@ -99,6 +100,10 @@
 			<if test="premiumerate != null">
 				PREMIUMERATE,
 			</if>
+			<if test="premiumerate != null">
+				poundage,
+			</if>
+			
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -143,6 +148,10 @@
 			<if test="premiumerate != null">
 				#{premiumerate,jdbcType=VARCHAR},
 			</if>
+			<if test="poundage != null">
+				#{poundage,jdbcType=VARCHAR},
+			</if>
+			
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="xdt.model.PmsBusinessInfo">
@@ -187,6 +196,10 @@
 			<if test="premiumerate != null">
 				PREMIUMERATE = #{premiumerate,jdbcType=VARCHAR},
 			</if>
+			<if test="poundage != null">
+				poundage = #{poundage,jdbcType=VARCHAR},
+			</if>
+			
 		</set>
 		where ID = #{id,jdbcType=DECIMAL}
 	</update>
@@ -205,6 +218,7 @@
 		MONEY_START = #{moneyStart,jdbcType=DECIMAL},
 		MONEY_END = #{moneyEnd,jdbcType=DECIMAL},
 		PREMIUMERATE = #{premiumerate,jdbcType=VARCHAR}
+		poundage= #{poundage,jdbcType=VARCHAR}
 		where ID = #{id,jdbcType=DECIMAL}
 	</update>
 
@@ -253,6 +267,9 @@
 			</if>
 			<if test="premiumerate != null">
 				AND PREMIUMERATE = #{premiumerate,jdbcType=VARCHAR}
+			</if>
+			<if test="poundage != null">
+				AND poundage = #{poundage,jdbcType=VARCHAR}
 			</if>
 		</where>
 	</select>

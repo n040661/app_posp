@@ -37,7 +37,7 @@
 		CARDNO, REALNAME,
 		PROVINCE,
 		CITY, PAYAMOUNT,
-		IDENTITY,PMSBANKNO,CREATIONDATE,RESPONSECODE,RESPONSECODE,CREATIONDATE,OAGENTNO,PAYCOUNTER,POSITION,transactionType,recordDescription,
+		IDENTITY,PMSBANKNO,CREATIONDATE,RESPONSECODE,RESPONSECODE,CREATIONDATE,OAGENTNO,PAYCOUNTER,POSITION,transactionType,recordDescription,remarks,
 		isDisplay,isDelete,isAdd,isExamine
 	</sql>
 	<insert id="insert" parameterType="xdt.model.PmsDaifuMerchantInfo">

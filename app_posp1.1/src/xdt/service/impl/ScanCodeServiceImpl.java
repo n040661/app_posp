@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.mybatis.generator.codegen.mybatis3.javamapper.elements.SelectAllMethodGenerator;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -410,7 +411,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 																appTransInfo.setPaymentcode(PaymentCodeEnum.suningPay.getTypeCode());
 															}
 													        pmsAppTransInfoDao.update(appTransInfo);
-															log.info("1111"+result);
+													        insertProfit(entity.getV_oid(), entity.getV_txnAmt(), merchantinfo, appTransInfo.getPaymenttype(), entity.getV_channel());
 															switch (pmsBusinessPos.getChannelnum()) {//
 															case "HJZF":
 																result =hjScanCodePay(entity, result,pmsBusinessPos);
@@ -441,6 +442,9 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 																break;
 															case "WFB":
 																result =wfbScanCodePay(entity, result,pmsBusinessPos);
+																break;
+															case "SJJ":
+																result =sjjScanCodePay(entity, result,pmsBusinessPos);
 																break;
 															default:
 																result.put("v_code", "11");
@@ -1461,8 +1465,67 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		com.alibaba.fastjson.JSONObject json =com.alibaba.fastjson.JSONObject.parseObject(str);
 		if("0000".equals(json.getString("resultCode"))) {
 			result.put("v_result", json.getString("payMessage"));
-			result.put("v_code", "0000");
+			result.put("v_code", "00");
 			result.put("v_msg", "请求成功");
+		}else {
+			result.put("v_code", "01");
+			result.put("v_msg", json.getString("errMsg"));
+		}
+		
+     	return result;
+	}
+	
+	/**
+	 * 三境界给上游发送参数
+	 * @param entity
+	 * @param result
+	 * @param pmsBusinessPos
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> sjjScanCodePay(ScanCodeRequestEntity entity,Map<String, String> result,PmsBusinessPos pmsBusinessPos) throws Exception{
+		if(!"ALIPAY_H5".equals(entity.getV_cardType())){
+			result.put("v_mid", entity.getV_mid());
+	 		result.put("v_attach", entity.getV_attach());
+	 		result.put("v_txnAmt", entity.getV_txnAmt());
+	 		result.put("v_oid", entity.getV_oid());
+	 		result.put("v_cardType", entity.getV_cardType());
+			result.put("v_code", "01");
+			result.put("v_msg", "支付类型有误");
+			return result;
+		}
+		TreeMap<String, String> map = new TreeMap<>();
+        map.put("mcht_no",pmsBusinessPos.getBusinessnum());//pmsBusinessPos.getBusinessnum()
+        map.put("trade_no",entity.getV_oid());//订单编号
+        map.put("notify_url",ScanCodeUtil.sjjReturnUrl);
+        map.put("totalAmount",new BigDecimal(entity.getV_txnAmt()).multiply(new BigDecimal("100"))+"");//金额
+        map.put("subject",entity.getV_productName());
+        String paramSrc = RequestUtils.getParamSrc(map);
+		log.info("签名前数据**********支付:" + paramSrc);
+		String md5 = MD5Utils.sign(paramSrc, pmsBusinessPos.getKek(), "UTF-8").toUpperCase();//pmsBusinessPos.getKek()
+		System.out.println(md5);
+		map.put("sign", md5);
+		log.info(JSON.toJSONString(map));
+		String url ="http://47.105.32.53:8080/gyprovider/alipay/alipayScavenging"; 
+		String str =RequestUtils.sendPost(url, JSON.toJSONString(map),"UTF-8");
+		System.out.println(str);
+		result.put("v_mid", entity.getV_mid());
+ 		result.put("v_attach", entity.getV_attach());
+ 		result.put("v_txnAmt", entity.getV_txnAmt());
+ 		result.put("v_oid", entity.getV_oid());
+ 		result.put("v_cardType", entity.getV_cardType());
+		
+		com.alibaba.fastjson.JSONObject json =com.alibaba.fastjson.JSONObject.parseObject(str);
+		if("0".equals(json.getString("status"))) {
+			if("000000".equals(json.getString("resultCode"))) {
+				result.put("v_result", json.getString("qrcode"));
+				result.put("v_code", "00");
+				result.put("v_msg", "请求成功");
+			}else {
+				result.put("v_code", "01");
+				result.put("v_msg", json.getString("errMsg"));
+			}
+			
 		}else {
 			result.put("v_code", "01");
 			result.put("v_msg", json.getString("errMsg"));
@@ -1788,14 +1851,13 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 	}
 	
 	public static void main(String[] args) {
-		DecimalFormat df1 = new DecimalFormat("######0"); 
+		/*DecimalFormat df1 = new DecimalFormat("######0"); 
 		Double txnAmt=Double.parseDouble("5.02");
 		System.out.println(txnAmt*100.0);
 		System.out.println(df1.format(txnAmt));
 		BigDecimal payAmt=new BigDecimal(txnAmt).setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
 		System.out.println(payAmt.toString());
-		System.out.println(df1.format(payAmt));
-		
+		System.out.println(df1.format(payAmt));*/
 		//String ss="{v_code=00, v_msg=请求成功, v_sign=171B89F93E49562DE30BB8F70B93918D}"; 
 		//com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(ss);
 		//System.out.println(json);

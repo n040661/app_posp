@@ -81,7 +81,7 @@ public interface IGateWayService {
 	 * @return
 	 * @throws Exception
 	 */
-	int UpdatePmsMerchantInfo(OriginalOrderInfo originalInfo ) throws Exception;
+	int UpdatePmsMerchantInfo(OriginalOrderInfo originalInfo,Double dou) throws Exception;
 
 	
 	/**

@@ -11,6 +11,7 @@ import xdt.dto.transfer_accounts.entity.DaifuQueryRequestEntity;
 import xdt.dto.transfer_accounts.entity.DaifuRequestEntity;
 import xdt.model.ChannleMerchantConfigKey;
 import xdt.model.OriginalOrderInfo;
+import xdt.model.PmsAgentInfo;
 import xdt.model.PmsBusinessPos;
 import xdt.model.PmsDaifuMerchantInfo;
 import xdt.model.PmsMerchantInfo;
@@ -104,4 +105,6 @@ public interface ITotalPayService {
 	
 	public Map<String, String> jhjQuick(String mer,String orderId);
 	public Map<String, String> wfbQuick(String merId, String batchNo);
+	
+	public int insertProfit(String orderId,String amount,PmsMerchantInfo merchantinfo,String transactionType,String type) throws Exception ;
 }

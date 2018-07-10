@@ -72,6 +72,9 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.uns.inf.api.common.Util;
+import com.yst.m2.sdk.M2;
+import com.yst.m2.sdk.M2Config;
+import com.yst.m2.sdk.M2Obj;
 import com.yufusoft.payplatform.security.cipher.YufuCipher;
 import com.yufusoft.payplatform.security.vo.ParamPacket;
 import xdt.dao.IAmountLimitControlDao;
@@ -519,7 +522,8 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 					}
 					if (i == 1) {
 						log.info("代付订单添加成功");
-
+						int iii =insertProfit(payRequest.getV_batch_no(), payRequest.getV_sum_amount(), merchantinfo, "代付", payRequest.getV_type());
+						System.out.println(iii);
 						switch (pmsBusinessPos.getChannelnum()) {//pmsBusinessPos.getChannelnum()
 
 						case "SXYWG":// 首信易网关
@@ -603,6 +607,9 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 							break;
 						case "WFB":
 							wfbPay(payRequest, result, merchantinfo, pmsBusinessPos);
+							break;
+						case "YYT":
+							yytPay(payRequest, result, merchantinfo, pmsBusinessPos);
 							break;
 						default:
 							result.put("v_code", "17");
@@ -4005,6 +4012,115 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 		}
 		return result;
 	}
+	/**
+	 * 银盈通代付
+	 * 
+	 * @param payRequest
+	 * @param result
+	 * @param merchantinfo
+	 * @param pmsBusinessPos
+	 * @throws Exception
+	 */
+	public Map<String, String> yytPay(DaifuRequestEntity payRequest, Map<String, String> result,
+			PmsMerchantInfo merchantinfo, PmsBusinessPos pmsBusinessPos) throws Exception {
+		Map<String, Object> df_Map = new HashMap<String, Object>();
+		// 全局参数
+		df_Map.put("login_token", "");// 登陆令牌
+		df_Map.put("req_no", payRequest.getV_batch_no());// 请求流水号
+		df_Map.put("app_code", "apc_02000001760");// 应用号
+		df_Map.put("app_version", "1.0.0");// 应用版本
+		df_Map.put("service_code", "sne_00000000002");// 服务号
+		df_Map.put("plat_form", "03");// 平台
+		// 输入参数
+		df_Map.put("merchant_number", pmsBusinessPos.getBusinessnum());// 商户号
+		df_Map.put("order_number", payRequest.getV_identity());// 商家原始订单号
+		df_Map.put("wallet_id", "0100851217641658");// 付款钱包id
+		df_Map.put("asset_id", "8087cf5ff12e45a8a52c766ff94b2188");// 付款资产id
+		df_Map.put("password_type", "02");// 付款方密码类型
+		df_Map.put("encrypt_type", "02");// 付款方加密类型
+		String md5 = MD5Utils.md5(pmsBusinessPos.getKek(), "UTF-8");
+		System.out.println(md5);
+		df_Map.put("pay_password", md5);// 付款方支付密码
+		df_Map.put("customer_type", "01");// 收款人客户类型
+		df_Map.put("customer_name", payRequest.getV_realName());// 收款人客户姓名
+		df_Map.put("currency", "CNY");// 代付币种
+		df_Map.put("amount", payRequest.getV_sum_amount());// 代付金额
+		df_Map.put("async_notification_addr", xdt.dto.transfer_accounts.util.PayUtil.yytNotifyUrl);// 异步通知地址
+		df_Map.put("asset_type_code", "000002");// 收款客户资产大类编码
+		df_Map.put("account_type_code", "01");// 收款客户资产小类编码
+		df_Map.put("login_name", "");// 收款人登录名
+		df_Map.put("effective_time", "");// 有效时间
+		df_Map.put("account_number", payRequest.getV_cardNo());// 收款人银行卡
+		df_Map.put("headquarters_bank_id", "");// 收款人总联行号
+		df_Map.put("issue_bank_name", "");// 收款人发卡名称
+		df_Map.put("issue_bank_id", "");// 收款人发卡行id
+		// 配置1
+		M2Config m2c_1 = new M2Config();
+		m2c_1.load("m2.properties");
+		m2c_1.aid = "8a179b8c63d8c63b0164644837a10b4f";
+		m2c_1.app_key = "jiujiuxing|m2|20180704";
+		m2c_1.url = "https://api.gomepay.com/CoreServlet?aid=AID&api_id=API_ID&signature=SIGNATURE&timestamp=TIMESTAMP&nonce=NONCE";
+		m2c_1.url_ac = "https://api.gomepay.com/CoreServlet?aid=AID&api_id=API_ID&access_token=ACCESS_TOKEN";
+		m2c_1.url_ac_token = "https://api.gomepay.com/access_token?aid=AID&signature=SIGNATURE&timestamp=TIMESTAMP&nonce=NONCE";
+		m2c_1.debug = false;
+		m2c_1.mode = "1";
+		m2c_1.data_sign = false;
+		M2Obj m2Obj_sogo = M2.build(m2c_1);
+		// 将map转成json字符串
+		String json = JSON.toJSONString(df_Map);
+		com.yst.m2.sdk.ReturnObj ret = m2Obj_sogo.send("epay_api_deal@agent_for_paying", json);
+
+		// 向接口发送数据
+		// ReturnObj ret = M2.send("epay_api_deal@agent_for_paying", json);
+
+		// 接口请求完成后，设置返回数据
+		String ret_data = ret.get_data();// 设置服务返回的数据
+		if (!ret.is_ok()) {
+	        //如果服务处理失败，则返回m2的异常信息数据
+	        ret_data = ret.to_json();
+	    }
+	    System.out.println(ret_data);
+		com.alibaba.fastjson.JSONObject jsons= com.alibaba.fastjson.JSONObject.parseObject(ret_data);
+	  if("000".equals(jsons.getString("op_ret_code"))) {
+			result.put("v_mid", payRequest.getV_mid());
+			result.put("v_batch_no", payRequest.getV_batch_no());
+			result.put("v_code", "00");
+			result.put("v_msg", "请求成功");
+			result.put("v_sum_amount", payRequest.getV_sum_amount());
+			result.put("v_amount", payRequest.getV_amount());
+			result.put("v_identity", payRequest.getV_identity() == null ? "" : payRequest.getV_identity());
+			result.put("v_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+			result.put("v_type", "0");
+			//ThreadPool.executor(new WFBThread(this, payRequest.getV_mid(), payRequest.getV_batch_no(), payRequest, merchantinfo));
+		}else {
+			result.put("v_code", "15");
+ 			result.put("v_msg", "请求失败");
+ 			UpdateDaifu(payRequest.getV_batch_no(), "02");
+ 			Map<String, String> map =new HashMap<>();
+			map.put("machId",payRequest.getV_mid());
+			map.put("payMoney",Double.parseDouble(payRequest.getV_sum_amount())*100+Double.parseDouble(merchantinfo.getPoundage())*100+"");
+			int nus =updataPay(map);
+ 			if(nus==1) {
+ 				log.info("银盈通代付补款成功");
+ 				DaifuRequestEntity entity =new DaifuRequestEntity();
+ 				entity.setV_mid(payRequest.getV_mid());
+ 				entity.setV_batch_no(payRequest.getV_batch_no()+"/A");
+ 				entity.setV_amount(payRequest.getV_sum_amount());
+ 				entity.setV_sum_amount(payRequest.getV_sum_amount());
+ 				entity.setV_identity(payRequest.getV_identity());
+ 				entity.setV_cardNo(payRequest.getV_cardNo());
+ 				entity.setV_city(payRequest.getV_city());
+ 				entity.setV_province(payRequest.getV_province());
+ 				entity.setV_type("0");
+ 				entity.setV_pmsBankNo(payRequest.getV_pmsBankNo());
+				int ii =add(entity, merchantinfo, result, "00");
+				log.info("银盈通补款订单状态："+ii);
+ 			}
+		}
+	 	return result;
+	}
+	
+	
 	/**
 	 * oem假汇聚代付
 	 * 

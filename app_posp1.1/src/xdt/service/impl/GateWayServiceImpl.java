@@ -463,6 +463,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 							logger.info("修改订单信息");
 							logger.info(pmsAppTransInfo);
 							int num=pmsAppTransInfoDao.update(pmsAppTransInfo);
+							insertProfit(originalinfo.getV_oid(), originalinfo.getV_txnAmt(), merchantinfo, PaymentCodeEnum.GatewayCodePay.getTypeName(), originalinfo.getV_channel());
 							if (num>0) {
 								
 								retMap.put("v_code", "00");
@@ -637,7 +638,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 	 * @param respInfo
 	 * @return
 	 */
-	public synchronized int UpdatePmsMerchantInfo(OriginalOrderInfo originalInfo)
+	public synchronized int UpdatePmsMerchantInfo(OriginalOrderInfo originalInfo,Double dou)
 			throws Exception {
 		logger.info("代付实时填金:"+JSON.toJSON(originalInfo));
 		DecimalFormat df =new DecimalFormat("#.00");
@@ -664,7 +665,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 				BigDecimal  positions =new BigDecimal(position);
 				Double ds =positions.doubleValue();
 				Double dd=0.0;
-				dd =amount*100-poundage;
+				dd =(amount*100-poundage)*dou;
 				dd =(dd+ds);
 				logger.info("来了1---------");
 				pmsMerchantInfo.setMercId(originalInfo.getPid());
@@ -706,7 +707,6 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 		
 		return 0;
 	}
-
 
 	@Override
 	public Map<String, String> gatYftk(GatrWayGefundEntity param ,Map<String, String> result) {

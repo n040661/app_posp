@@ -143,6 +143,9 @@ public class PmsMerchantInfo {
 
     private String quickRateType;//快捷费率类型
     
+    private String quickRateTypeT1;//快捷费率类型
+    private String quickRateTypeD0;//快捷费率类型
+    
     private String counter;//最低手续费
     
     private String type;//小微商户和大商户类型0小微商户 1大商户
@@ -184,7 +187,23 @@ public class PmsMerchantInfo {
     private String poundageFree;//代付手续费率
     
     
-    public String getPoundageFree() {
+    public String getQuickRateTypeT1() {
+		return quickRateTypeT1;
+	}
+
+	public void setQuickRateTypeT1(String quickRateTypeT1) {
+		this.quickRateTypeT1 = quickRateTypeT1;
+	}
+
+	public String getQuickRateTypeD0() {
+		return quickRateTypeD0;
+	}
+
+	public void setQuickRateTypeD0(String quickRateTypeD0) {
+		this.quickRateTypeD0 = quickRateTypeD0;
+	}
+
+	public String getPoundageFree() {
 		return poundageFree;
 	}
 

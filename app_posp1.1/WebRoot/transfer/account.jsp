@@ -20,7 +20,7 @@
 省份： <input type="text" class="v_province" name="v_province" value="天津市"/><br />
 城市： <input type="text" class="v_city" name="v_city" value="天津市"/><br />
 金额： <input type="text" class="v_amount" name="v_amount" value="0.02"/><br />
-客户标示： <input type="text" class="v_identity" name="v_identity" value="QP20180308135230358859"/><br />
+客户标示： <input type="text" class="v_identity" name="v_identity" value="<%=System.currentTimeMillis()%>"/><br />
 联行号： <input type="text" class="v_pmsBankNo" name="v_pmsBankNo" value="103110023002"/><br />
 代付类型： <input type="text" class="v_type" name="v_type" value="0"/><br />
 代付时间： <input type="text" class="v_time" name="v_time" value="<%=UtilDate.getOrderNum()%>"/><br />

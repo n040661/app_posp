@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,7 +59,6 @@ import xdt.model.OriginalOrderInfo;
 import xdt.model.PmsBusinessPos;
 import xdt.model.PmsDaifuMerchantInfo;
 import xdt.model.PmsMerchantInfo;
-import xdt.quickpay.hengfeng.util.Bean2QueryStrUtil;
 import xdt.quickpay.hengfeng.util.HttpClientUtil;
 import xdt.quickpay.nbs.common.util.SignatureUtil;
 import xdt.schedule.ThreadPool;
@@ -67,6 +66,7 @@ import xdt.service.IClientCollectionPayService;
 import xdt.service.IGateWayService;
 import xdt.service.ITotalPayService;
 import xdt.util.BeanToMapUtil;
+import xdt.util.DSDES;
 import xdt.util.HttpURLConection;
 
 /**
@@ -76,8 +76,8 @@ import xdt.util.HttpURLConection;
 @Controller
 @RequestMapping("/totalPayController")
 public class TotalPayController extends BaseAction {
-
-	private Logger log = LoggerFactory.getLogger(this.getClass());
+	private Logger log = Logger.getLogger(this.getClass());
+	//private Logger log = LoggerFactory.getLogger(this.getClass());
 	@Resource
 	private IClientCollectionPayService clientCollectionPayService;
 
@@ -823,7 +823,11 @@ public class TotalPayController extends BaseAction {
 						log.info("手续费"+-Double.parseDouble(info.getPoundage()));
 						mapParams.put("machId",info.getMercId());
 						mapParams.put("payMoney",dd.toString());
-						nus =service.updataPayT1(mapParams);
+						if("D0".equals(pmsDaifuMerchantInfos.get(0).getRemarks())) {
+							nus =service.updataPay(mapParams);
+						}else if("T1".equals(pmsDaifuMerchantInfos.get(0).getRemarks())) {
+							nus =service.updataPayT1(mapParams);
+						}
 						for (PmsDaifuMerchantInfo pmsDaifuMerchantInfo2 : pmsDaifuMerchantInfos) {
 							log.info("来了222");
 							DaifuRequestEntity payRequest =new DaifuRequestEntity();
@@ -836,7 +840,11 @@ public class TotalPayController extends BaseAction {
 							payRequest.setV_cardNo(pmsDaifuMerchantInfo2.getCardno());
 							payRequest.setV_city(pmsDaifuMerchantInfo2.getCity());
 							payRequest.setV_province(pmsDaifuMerchantInfo2.getProvince());
-							payRequest.setV_type("1");
+							if("D0".equals(pmsDaifuMerchantInfo2.getRemarks())) {
+								payRequest.setV_type("0");
+							}else if("T1".equals(pmsDaifuMerchantInfo2.getRemarks())) {
+								payRequest.setV_type("1");
+							}
 							payRequest.setV_pmsBankNo(pmsDaifuMerchantInfo2.getPmsbankno());
 							result.put("fee", info.getPoundage());
 							int ii =service.add(payRequest, info, result, "00");
@@ -854,7 +862,11 @@ public class TotalPayController extends BaseAction {
 							log.info("手续费"+-Double.parseDouble(info.getPoundage()));
 							mapParams.put("machId",info.getMercId());
 							mapParams.put("payMoney",dd.toString());
-							nus =service.updataPayT1(mapParams);
+							if("D0".equals(pmsDaifuMerchantInfos.get(0).getRemarks())) {
+								nus =service.updataPay(mapParams);
+							}else if("T1".equals(pmsDaifuMerchantInfos.get(0).getRemarks())) {
+								nus =service.updataPayT1(mapParams);
+							}
 							for (PmsDaifuMerchantInfo pmsDaifuMerchantInfo2 : pmsDaifuMerchantInfos) {
 								log.info("来了222");
 								DaifuRequestEntity payRequest =new DaifuRequestEntity();
@@ -867,7 +879,11 @@ public class TotalPayController extends BaseAction {
 								payRequest.setV_cardNo(pmsDaifuMerchantInfo2.getCardno());
 								payRequest.setV_city(pmsDaifuMerchantInfo2.getCity());
 								payRequest.setV_province(pmsDaifuMerchantInfo2.getProvince());
-								payRequest.setV_type("1");
+								if("D0".equals(pmsDaifuMerchantInfo2.getRemarks())) {
+									payRequest.setV_type("0");
+								}else if("T1".equals(pmsDaifuMerchantInfo2.getRemarks())) {
+									payRequest.setV_type("1");
+								}
 								payRequest.setV_pmsBankNo(pmsDaifuMerchantInfo2.getPmsbankno());
 								result.put("fee", info.getPoundage());
 								int ii =service.add(payRequest, info, result, "00");
@@ -1508,6 +1524,164 @@ public class TotalPayController extends BaseAction {
 		}
 	}
 	
+	/**
+	 * 银盈通异步
+	 * @param response
+	 * @param request
+	 */
+	@RequestMapping(value="yytNotifyUrl")
+	public void yytNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
+		log.info("银盈通代付异步来了！");
+		
+		String dstbdata= request.getParameter("dstbdata") ;
+		String dstbdatasign= request.getParameter("dstbdatasign") ;
+		Map<String, String> maps =new HashMap<>();
+		request.getSession();
+		//String sign="";
+		
+		Map<String, String> respMap =new HashMap<>();
+		
+		if(dstbdata!=""&&dstbdata!=null&&dstbdatasign!=null&&dstbdatasign!="") {
+			/*try {
+				sign=DSDES.getBlackData("1b2aeaa4".getBytes(), dstbdata.getBytes("UTF-8"));
+			}  catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(sign.equals(dstbdatasign)) {*/
+				try {
+					outString(response, "00");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				String [] dstbdatas =dstbdata.split("&");
+				for (int i = 0; i < dstbdatas.length; i++) {
+					String[] dstbdatas1 =dstbdatas[i].split("=");
+					respMap.put(dstbdatas1[0], dstbdatas1[1]);
+				}
+				PmsDaifuMerchantInfo pmsDaifuMerchantInfo =new PmsDaifuMerchantInfo();
+				pmsDaifuMerchantInfo.setBatchNo(respMap.get("dsorderid"));
+				List<PmsDaifuMerchantInfo> pmsDaifuMerchantInfos =service.selectDaifu(pmsDaifuMerchantInfo);
+					ChannleMerchantConfigKey keyinfo=new ChannleMerchantConfigKey();
+					OriginalOrderInfo originalInfo=null;
+					try {
+						originalInfo  = this.gateWayService.getOriginOrderInfos(respMap.get("dsorderid"));
+						keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					log.info("银盈通订单数据:" + JSON.toJSON(originalInfo));
+					
+					log.info("银盈通下游的异步地址" + originalInfo.getBgUrl());
+					maps.put("v_mid", originalInfo.getPid());
+					maps.put("v_oid", originalInfo.getOrderId());
+					maps.put("v_txnAmt", originalInfo.getOrderAmount());
+					maps.put("v_attach", originalInfo.getAttach());
+					maps.put("v_code", "00");
+					maps.put("v_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+					if("00".equals(respMap.get("returncode"))) {
+						maps.put("v_status", "0000");
+						maps.put("v_msg", "代付成功");
+						try {
+							service.UpdateDaifu(respMap.get("dsorderid"), "00");
+						} catch (Exception e) {
+							log.info("银盈通修改成功代付状态异常："+e);
+							e.printStackTrace();
+						}
+					}else {
+						maps.put("v_status", "1001");
+						maps.put("v_msg", respMap.get("errtext"));
+						try {
+							service.UpdateDaifu(respMap.get("dsorderid"), "02");
+						} catch (Exception e) {
+							log.info("银盈通修改失败代付状态异常："+e);
+							e.printStackTrace();
+						}
+						Map<String, String> map =new HashMap<>();
+						map.put("machId",originalInfo.getPid());
+						map.put("payMoney",(Double.parseDouble(pmsDaifuMerchantInfos.get(0).getAmount())+Double.parseDouble(pmsDaifuMerchantInfos.get(0).getPayCounter()))*100+"");
+						int nus =service.updataPay(map);
+						if(nus==1) {
+							log.info("银盈通代付补款成功");
+							DaifuRequestEntity entity =new DaifuRequestEntity();
+			 				entity.setV_mid(pmsDaifuMerchantInfos.get(0).getMercId());
+			 				entity.setV_batch_no(pmsDaifuMerchantInfos.get(0).getBatchNo()+"/A");
+			 				entity.setV_amount(pmsDaifuMerchantInfos.get(0).getAmount());
+			 				entity.setV_sum_amount(pmsDaifuMerchantInfos.get(0).getAmount());
+			 				entity.setV_identity(pmsDaifuMerchantInfos.get(0).getIdentity());
+			 				entity.setV_cardNo(pmsDaifuMerchantInfos.get(0).getCardno());
+			 				entity.setV_city(pmsDaifuMerchantInfos.get(0).getCity());
+			 				entity.setV_province(pmsDaifuMerchantInfos.get(0).getProvince());
+			 				entity.setV_type("0");
+			 				entity.setV_pmsBankNo(pmsDaifuMerchantInfos.get(0).getPmsbankno());
+			 				PmsMerchantInfo merchantinfo =new PmsMerchantInfo();
+							int ii;
+							try {
+								ii = service.add(entity, merchantinfo, maps, "00");
+								log.info("银盈通补款订单状态："+ii);
+							} catch (Exception e) {
+								log.info("银盈通补款状态异常："+e);
+								e.printStackTrace();
+							}
+							
+						}else {
+							log.info("银盈通代付补款失败");
+						}
+					}
+					ScanCodeResponseEntity consume = (ScanCodeResponseEntity) BeanToMapUtil
+							.convertMap(ScanCodeResponseEntity.class, maps);
+					String signs = SignatureUtil.getSign(beanToMap(consume), keyinfo.getMerchantkey(), log);
+					maps.put("v_sign", signs);
+					String params = HttpURLConection.parseParams(maps);
+					log.info("银盈通代付给下游同步的数据:" + params);
+					String html;
+					try {
+						html = HttpClientUtil.post(originalInfo.getBgUrl(), params);
+						logger.info("下游返回状态" + html);
+						JSONObject ob = JSONObject.fromObject(html);
+						Iterator it = ob.keys();
+						Map<String, String> resp = new HashMap<>();
+						while (it.hasNext()) {
+							String keys = (String) it.next();
+							if (keys.equals("success")) {
+								String value = ob.getString(keys);
+								logger.info("异步回馈的结果:"+ value);
+								resp.put("success", value);
+							}
+						}
+						if (!resp.get("success").equals("true")) {
+		
+							logger.info("启动线程进行异步通知");
+							// 启线程进行异步通知
+							ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(), params));
+							logger.info("银盈通代付向下游 发送数据成功");
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				/*}else {
+					log.info("银盈通代付异步验签失败！");
+					try {
+						outString(response, "01");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}*/
+		}else {
+			try {
+				outString(response, "01");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 	
 	@RequestMapping(value="jmNotifyUrl")
 	public void jmNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
@@ -1774,5 +1948,15 @@ public class TotalPayController extends BaseAction {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public static void main(String[] args) {
+		String dstbdata="returncode=25&errtext=余额不足或其他错误&merchno=SHID20180704093&dsorderid=1530757612454&amount=0.02&orderid=null&transdate=20180705&transtime=103628";
+		Map<String, String> map =new HashMap<>();
+		String [] dstbdatas =dstbdata.split("&");
+		for (int i = 0; i < dstbdatas.length; i++) {
+			String[] dstbdatas1 =dstbdatas[i].split("=");
+			map.put(dstbdatas1[0], dstbdatas1[1]);
+		}
+		System.out.println(JSON.toJSON(map));
 	}
 }

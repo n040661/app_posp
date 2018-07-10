@@ -750,9 +750,21 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								fee = fee.add(new BigDecimal(20));
 								break;
 							default:
-								payAmount = dfactAmount.subtract(fee)
+								/*payAmount = dfactAmount.subtract(fee)
 										.subtract(new BigDecimal(settleFee).multiply(new BigDecimal(100)));
-								fee = fee.add(new BigDecimal(settleFee).multiply(new BigDecimal(100)));
+								fee = fee.add(new BigDecimal(settleFee).multiply(new BigDecimal(100)));*/
+								BigDecimal num = dfactAmount.multiply(new BigDecimal(userfee));
+								if (num.doubleValue() / 100 >= daifu) {
+									fee = num;
+								} else {
+									fee = new BigDecimal(daifu * 100);
+								}
+								rateStr = userfee.toString();
+								payAmount = dfactAmount.subtract(fee);
+								logger.info("清算金额:" + paymentAmount);
+								if (payAmount.doubleValue() < 0) {
+									payAmount = new BigDecimal(0.00);
+								}
 								break;
 
 							}
@@ -814,7 +826,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 					}
 					logger.info("修改订单信息");
 					logger.info(pmsAppTransInfo);
-
+					insertProfit(originalinfo.getV_oid(), originalinfo.getV_txnAmt(), merchantinfo, PaymentCodeEnum.moBaoQuickPay.getTypeName(), originalinfo.getV_type());
 					int num = pmsAppTransInfoDao.update(pmsAppTransInfo);
 					if (num > 0) {
 

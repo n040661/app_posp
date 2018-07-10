@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper
+PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='xdt.mapping.PmsAgentProfitMapper'>
+	<resultMap type="xdt.model.PmsAgentProfit" id="resultMap">
+		<result column="merc_Id" property="mercId" />
+		<result column="merc_name" property="mercName" />
+		<result column="agent_name" property="agentName" />
+		<result column="agent_number" property="agentNumber" />
+		<result column="agent_level" property="agentLevel" />
+		<result column="business_Num" property="businessNum" />
+		<result column="business_Name" property="businessName" />
+		<result column="tariff_rate" property="tariffRate" />
+		<result column="standard_rate" property="standardRate" />
+		<result column="agent_Rate" property="agentRate" />
+		<result column="poundage" property="poundage" />
+		<result column="merc_Poundage" property="mercPoundage" />
+		<result column="agent_Poundage" property="agentPoundage" />
+		<result column="pospsn" property="pospsn" />
+		<result column="transamt" property="transamt" />
+		<result column="profit_ratio" property="profitRatio" />
+		<result column="profit" property="profit" />
+		<result column="profit_One" property="profitOne" />
+		<result column="SENDDATE" property="endDate" />
+		<result column="TRADETYPECODE" property="tradeTypeCode" />
+		<result column="oAgentNo" property="oAgentNo"/>
+	</resultMap>
+
+	<select id="selectList" resultMap="resultMap" parameterType="xdt.model.PmsAgentProfit">
+		select * from pms_agent_profit
+		<where>
+				<if test="pospsn !=null  and  pospsn!=''">
+				and pospsn=#{pospsn}
+			</if>
+				<if test="senddate !=null  and  senddate!=''">
+				and senddate=#{senddate}
+			</if>
+				<if test="agentLevel !=null  and  agentLevel!=''">
+				and agent_level=#{agentLevel}
+			</if>
+				<if test="tariffRate !=null  and  tariffRate!=''">
+				and tariff_rate=#{tariffRate}
+			</if>
+				<if test="mercId !=null  and  mercId!=''">
+				and merc_id=#{mercId}
+			</if>
+				<if test="standardRate !=null  and  standardRate!=''">
+				and standard_rate=#{standardRate}
+			</if>
+				<if test="transamt !=null  and  transamt!=0">
+				and transamt=#{transamt}
+			</if>
+				<if test="profitRatio !=null  and  profitRatio!=''">
+				and profit_ratio=#{profitRatio}
+			</if>
+				<if test="mercName !=null  and  mercName!=''">
+				and merc_name=#{mercName}
+			</if>
+				<if test="tradeTypeCode !=null  and  tradeTypeCode!=''">
+				and tradeTypeCode=#{tradeTypeCode}
+			</if>
+				<if test="agentName !=null  and  agentName!=''">
+				and agent_name=#{agentName}
+			</if>
+				<if test="agentNumber !=null  and  agentNumber!=''">
+				and agent_number=#{agentNumber}
+			</if>
+			<if test="businessNum !=null  and  businessNum!=''">
+				and business_Num=#{businessNum}
+			</if>
+			<if test="businessName !=null  and  businessName !=''">
+				and business_Name=#{businessName}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertSelective" parameterType="xdt.model.PmsAgentProfit">
+			insert into pms_agent_profit (merc_Id,merc_name,agent_name,agent_number,agent_level,business_Num,business_Name,
+			tariff_rate,standard_rate,agent_Rate,poundage,merc_Poundage,agent_Poundage,pospsn,transamt,profit_ratio,profit,
+			profit_One,SENDDATE,tradeTypeCode,oAgentNo)
+			values (
+			#{mercId,jdbcType=VARCHAR},
+			#{mercName,jdbcType=VARCHAR},
+			#{agentName,jdbcType=VARCHAR},
+			#{agentNumber,jdbcType=VARCHAR},
+			#{agentLevel,jdbcType=VARCHAR},
+			#{businessNum,jdbcType=VARCHAR},
+			#{businessName,jdbcType=VARCHAR},
+			#{tariffRate,jdbcType=VARCHAR},
+			#{standardRate,jdbcType=VARCHAR},
+			#{agentRate,jdbcType=VARCHAR},
+			#{poundage,jdbcType=VARCHAR},
+			#{mercPoundage,jdbcType=VARCHAR},
+			#{agentPoundage,jdbcType=VARCHAR},
+			#{pospsn,jdbcType=VARCHAR},
+			#{transamt,jdbcType=VARCHAR},
+			#{profitRatio,jdbcType=VARCHAR},
+			#{profit,jdbcType=VARCHAR},
+			#{profitOne,jdbcType=VARCHAR},
+			#{endDate,jdbcType=VARCHAR},
+			#{tradeTypeCode,jdbcType=VARCHAR},
+			#{oAgentNo,jdbcType=VARCHAR}
+			)
+		</insert>
+</mapper>
+

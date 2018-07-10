@@ -29,7 +29,9 @@ public class PmsBusinessInfo {
 
     private BigDecimal moneyEnd;
 
-    private String premiumerate;
+    private String premiumerate;//通道费率
+    
+    private String poundage;//代付手续费
     
     private String city;
     
@@ -39,7 +41,16 @@ public class PmsBusinessInfo {
 
     private String payTypeName;
 
-    public String getCity() {
+    
+    public String getPoundage() {
+		return poundage;
+	}
+
+	public void setPoundage(String poundage) {
+		this.poundage = poundage;
+	}
+
+	public String getCity() {
 		return city;
 	}
 

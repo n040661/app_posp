@@ -12,11 +12,17 @@
 		<result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
 		<result column="OAGENTNO" property="oAgentNo" jdbcType="VARCHAR" />
 		<result column="REASON" property="reason" jdbcType="VARCHAR" />
-
+		<result column="openPay" property="openPay" jdbcType="VARCHAR" />
+		<result column="poundage" property="poundage" jdbcType="VARCHAR" />
+		<result column="poundageFree" property="poundageFree" jdbcType="VARCHAR" />
+		<result column="quickRateTypeT1" property="quickRateTypeT1" jdbcType="VARCHAR" />
+		<result column="quickRateTypeD0" property="quickRateTypeD0" jdbcType="VARCHAR" />
+		<result column="counter" property="counter" jdbcType="VARCHAR" />
+		<result column="clearType" property="clearType" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		MERC_ID, BUSINESSCODE, PAYMENTCODE, STATUS, CREATETIME, MODIFYTIME,
-		MODIFYUSER,DESCRIBE,OAGENTNO,REASON
+		MODIFYUSER,DESCRIBE,OAGENTNO,REASON,openPay,poundage,poundageFree,quickRateTypeT1,quickRateTypeD0,counter,clearType
 	</sql>
 
 	<insert id="insert" parameterType="xdt.model.PmsAppMerchantPayChannel">
@@ -122,6 +128,7 @@
 		<where>
 			<if test="mercId!=null and mercId!=''"> and MERC_ID = #{mercId,jdbcType=VARCHAR}</if>
 			<if test="paymentcode!=null and paymentcode!=''"> and PAYMENTCODE = #{paymentcode,jdbcType=VARCHAR}</if>
+			<if test="describe!=null and describe!=''"> and describe = #{describe,jdbcType=VARCHAR}</if>
 		</where>
 	</select>
 </mapper>

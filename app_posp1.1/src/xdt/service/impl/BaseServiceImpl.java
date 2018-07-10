@@ -43,6 +43,7 @@ import org.apache.log4j.MDC;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.tree.DefaultElement;
+import org.mybatis.generator.codegen.mybatis3.javamapper.elements.SelectAllMethodGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.w3c.dom.Document;
@@ -58,7 +59,10 @@ import xdt.dao.IAppRateConfigDao;
 import xdt.dao.IErrorLogDao;
 import xdt.dao.IMerchantMineDao;
 import xdt.dao.IPayCmmtufitDao;
+import xdt.dao.IPmsAgentInfoDao;
+import xdt.dao.IPmsAgentProfitDao;
 import xdt.dao.IPmsAppAmountAndRateConfigDao;
+import xdt.dao.IPmsAppMerchantPayChannelDao;
 import xdt.dao.IPmsBusinessInfoDao;
 import xdt.dao.IPmsBusinessPosDao;
 import xdt.dao.IPmsMerchantFeeDao;
@@ -81,6 +85,9 @@ import xdt.model.ErrorLog;
 import xdt.model.OagentMsgCfg;
 import xdt.model.OriginalOrderInfo;
 import xdt.model.PayCmmtufit;
+import xdt.model.PmsAgentInfo;
+import xdt.model.PmsAgentProfit;
+import xdt.model.PmsAppMerchantPayChannel;
 import xdt.model.PmsAppTransInfo;
 import xdt.model.PmsBusinessInfo;
 import xdt.model.PmsBusinessPos;
@@ -117,6 +124,8 @@ public class BaseServiceImpl {
     @Resource
     private IPmsAppAmountAndRateConfigDao pmsAppAmountAndRateConfigDao;//商户费率配置
     @Resource
+    private IPmsAppMerchantPayChannelDao appMerchantPayChannelDao;//
+    @Resource
     private IPmsMerchantPosDao pmsPos;//刷卡信息层
     @Resource
     private IAppRateConfigDao appRateConfig;//费率配置
@@ -144,8 +153,11 @@ public class BaseServiceImpl {
 	
 	@Resource
 	IPmsBusinessPosDao businessPosDao;
-    
-  
+	
+	@Resource
+	IPmsAgentInfoDao agentInfoDao;
+	@Resource
+	IPmsAgentProfitDao agentProfitDao;
 
 	protected SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //时间格式
 	protected SimpleDateFormat dtoSdf = new SimpleDateFormat("yyyyMMddHHmmss"); //第三方要求的时间格式
@@ -1813,13 +1825,42 @@ public class BaseServiceImpl {
 					.getBusinessnum());
 			businessPos.setOutPay(route.getOutPay());
 			businessPos.setGoldPay(route.getGoldPay());
+			int i = businessPos.getBusinessnum().indexOf("-");
+			if(i>0) {
+				String newStr = businessPos.getBusinessnum().substring(0,i);
+				businessPos.setBusinessnum(newStr);
+			}
 			System.out.println(JSON.toJSON(businessPos));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return businessPos;
 	}
-	
+
+	/**
+	 * 查询通道费率和代付手续费
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public PmsBusinessInfo selectRate(String merid) {
+		PmsBusinessInfo busInfo = new PmsBusinessInfo();
+		try {
+			PospRouteInfo route = route(merid);
+			System.out.println(route);
+			System.out.println(route.getMerchantId().toString());
+			busInfo = pmsBusinessInfoDao.searchById(route.getMerchantId().toString());
+			int i = busInfo.getBusinessNum().indexOf("-");
+			if (i > 0) {
+				String newStr = busInfo.getBusinessNum().substring(0, i);
+				busInfo.setBusinessNum(newStr);
+			}
+			System.out.println(JSON.toJSON(busInfo));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return busInfo;
+	}
 	/**
 	 * 代付扣款D0
 	 */
@@ -2007,5 +2048,119 @@ public class BaseServiceImpl {
 	public int UpdatePmsMerchantInfo(OriginalOrderInfo originalInfo, String aa) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	/**
+	 * 添加分润详情
+	 * @param orderId 订单号
+	 * @param amount 交易金额
+	 * @param merchantinfo 商户信息
+	 * @param transactionType 业务类型
+	 * @param type 结算 周期 D0 T1
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertProfit(String orderId,String amount,PmsMerchantInfo merchantinfo,String transactionType,String type) throws Exception {
+		int praem=0;
+		
+		//merchantinfo=pmsMerchantInfoDao.searchList(merchantinfo).get(0);
+		PmsAgentProfit agentProfit =new PmsAgentProfit();
+		//根据商户号获取绑定通道的费率和代付手续费
+		PmsBusinessInfo businessInfo =selectRate(merchantinfo.getMercId());
+		String busRate =businessInfo.getPremiumerate();//通道费率
+		String merRate ="";//商户费率
+		String agentRate="";
+		BigDecimal profit=new BigDecimal("0");//通道分润
+		BigDecimal profitOne=new BigDecimal("0");//代理商分润
+		logger.info("根据商户号获取绑定通道的费率和代付手续费:"+JSON.toJSONString(businessInfo));
+		//获取代理商一级代理商编号
+		PmsAgentInfo agentInfo =selectAgent(merchantinfo.getAgentNumber());
+		//通道分润 计算
+		PmsAppMerchantPayChannel merchantPayChannel=new PmsAppMerchantPayChannel();
+		merchantPayChannel.setMercId(agentInfo.getAgentNumber());
+		merchantPayChannel.setDescribe(merchantinfo.getSalesway());
+		List<PmsAppMerchantPayChannel> payChannels=appMerchantPayChannelDao.searchList(merchantPayChannel);
+		agentProfit.setAgentName(agentInfo.getAgentName());
+		agentProfit.setAgentNumber(agentInfo.getAgentNumber());
+		agentProfit.setMercId(merchantinfo.getMercId());
+		agentProfit.setMercName(merchantinfo.getMercName());
+		agentProfit.setBusinessName(businessInfo.getBusinessName());
+		agentProfit.setBusinessNum(businessInfo.getBusinessNum());
+		agentProfit.setEndDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+		agentProfit.setTradeTypeCode(transactionType);
+		agentProfit.setTransamt(new BigDecimal(amount).multiply(new BigDecimal("100")).toString());
+		agentProfit.setPospsn(orderId);
+		agentProfit.setProfitRatio("1");
+		agentProfit.setoAgentNo(merchantinfo.getoAgentNo());
+		
+		if("100333".equals(agentInfo.getAgentNumber())) {
+			agentProfit.setAgentLevel("0");
+			agentProfit.setAgentRate(busRate);
+			agentProfit.setTariffRate(busRate);
+			agentProfit.setStandardRate(busRate);
+			agentProfit.setProfit(profit.toString());
+			agentProfit.setProfitOne(profitOne.toString());
+			agentProfit.setPoundage(businessInfo.getPoundage());
+			agentProfit.setMercPoundage(merchantinfo.getPoundage());
+			agentProfit.setAgentPoundage(payChannels.get(0).getPoundage());
+		}else {
+			if("代付".equals(transactionType)) {
+				String agentPoundage=payChannels.get(0).getPoundage();//代理商本业务代付手续费
+				String poundage=businessInfo.getPoundage();//通道代付手续费
+				String mercPoundage=merchantinfo.getPoundage();//商户代付手续费
+				merRate="0";
+				agentRate="0";
+				profit =new BigDecimal(mercPoundage).subtract(new BigDecimal(poundage));//通道代付分润
+				profitOne=new BigDecimal(mercPoundage).subtract(new BigDecimal(agentPoundage));//代理代付商分润
+			}else {
+				if("0".equals(type)) {
+					merRate =rate(merchantinfo.getQuickRateTypeD0()).getRate();
+					agentRate=rate(payChannels.get(0).getQuickRateTypeD0()).getRate();
+				}else if("1".equals(type)) {
+					merRate=rate(merchantinfo.getQuickRateTypeT1()).getRate();
+					agentRate=rate(payChannels.get(0).getQuickRateTypeT1()).getRate();
+				}
+				profit=new BigDecimal(amount).multiply((new BigDecimal(merRate).subtract(new BigDecimal(busRate))));//通道交易分润
+				profitOne =new BigDecimal(amount).multiply((new BigDecimal(merRate).subtract(new BigDecimal(agentRate))));
+			}
+			agentProfit.setAgentLevel("1");
+			agentProfit.setAgentRate(agentRate);
+			agentProfit.setTariffRate(merRate);
+			agentProfit.setStandardRate(busRate);
+			agentProfit.setProfit(profit.toString());
+			agentProfit.setProfitOne(profitOne.toString());
+			agentProfit.setPoundage(businessInfo.getPoundage());
+			agentProfit.setMercPoundage(merchantinfo.getPoundage());
+			agentProfit.setAgentPoundage(payChannels.get(0).getPoundage());
+		}
+		praem=agentProfitDao.insert(agentProfit);
+		
+		return praem;
+	}
+	/**
+	 * 根据费率类型查询费率
+	 * @param rateType
+	 * @return
+	 * @throws Exception 
+	 */
+	public AppRateConfig rate(String rateType) throws Exception {
+		AppRateConfig rateConfig =new AppRateConfig();
+		rateConfig.setRateType(rateType);
+		List<AppRateConfig> list=appRateConfig.searchList(rateConfig);
+		return list.get(0);
+		
+	}
+	public PmsAgentInfo selectAgent(String agentNumber) throws Exception {
+		PmsAgentInfo agentInfo =new PmsAgentInfo();
+		agentInfo.setAgentNumber(agentNumber);
+		List<PmsAgentInfo> infos =agentInfoDao.searchList(agentInfo);
+		if(Integer.parseInt(infos.get(0).getAgentLevel())>1) {
+			agentInfo.setAgentNumber("");
+			agentInfo.setAgentId(infos.get(0).getParentid());
+			List<PmsAgentInfo> infos1 =agentInfoDao.searchList(agentInfo);
+			agentInfo =selectAgent(infos1.get(0).getAgentNumber());
+		}else {
+			agentInfo=infos.get(0);
+		}
+		return agentInfo;
 	}
 }
