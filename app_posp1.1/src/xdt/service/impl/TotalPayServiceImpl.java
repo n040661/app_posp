@@ -58,6 +58,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.capinfo.crypt.Md5;
 import com.huateng.xmapper.common.IConstants;
+import com.ielpm.mer.sdk.secret.Secret;
+import com.ielpm.mer.sdk.secret.SecretConfig;
 import com.innovatepay.merchsdk.DefaultChinaInPayClient;
 import com.innovatepay.merchsdk.request.ChinaInPayOnePayRequest;
 import com.innovatepay.merchsdk.request.ChinaInPayRequest;
@@ -124,8 +126,10 @@ import xdt.dto.pay.PayUtil;
 import xdt.dto.pay.SignUtil;
 import xdt.dto.pay.TokenRes;
 import xdt.dto.quickPay.entity.ConsumeResponseEntity;
+import xdt.dto.scanCode.util.ResponseUtil;
 import xdt.dto.scanCode.util.ScanCodeUtil;
 import xdt.dto.scanCode.util.WFBThread;
+import xdt.dto.scanCode.util.YSZFThread;
 import xdt.dto.sxf.Base64Utils;
 import xdt.dto.sxf.DESUtils;
 import xdt.dto.sxf.DF1003Request;
@@ -524,7 +528,7 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 						log.info("代付订单添加成功");
 						int iii =insertProfit(payRequest.getV_batch_no(), payRequest.getV_sum_amount(), merchantinfo, "代付", payRequest.getV_type());
 						System.out.println(iii);
-						switch (pmsBusinessPos.getChannelnum()) {//pmsBusinessPos.getChannelnum()
+						switch ("YSZF") {//pmsBusinessPos.getChannelnum()
 
 						case "SXYWG":// 首信易网关
 							result = payeasyAccounts(payRequest, result, merchantinfo, pmsBusinessPos);
@@ -610,6 +614,9 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 							break;
 						case "YYT":
 							yytPay(payRequest, result, merchantinfo, pmsBusinessPos);
+							break;
+						case "YSZF":
+							yszfPay(payRequest, result, merchantinfo, pmsBusinessPos);
 							break;
 						default:
 							result.put("v_code", "17");
@@ -4119,7 +4126,106 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 		}
 	 	return result;
 	}
-	
+	/**
+	 * 易势代付
+	 * 
+	 * @param payRequest
+	 * @param result
+	 * @param merchantinfo
+	 * @param pmsBusinessPos
+	 * @throws Exception
+	 */
+	public Map<String, String> yszfPay(DaifuRequestEntity payRequest, Map<String, String> result,
+			PmsMerchantInfo merchantinfo, PmsBusinessPos pmsBusinessPos) throws Exception {
+		Map<String, String> resultMap = null;
+		TreeMap<String, String> maps = new TreeMap<>();
+		DecimalFormat df =new DecimalFormat("#");
+		// 全局参数
+	 	String cerPath=new File(this.getClass().getResource("/").getPath()).getParentFile()
+				.getParentFile().getCanonicalPath() + "/ky/"+pmsBusinessPos.getBusinessnum()+".cer";
+        String keyStorePath=new File(this.getClass().getResource("/").getPath()).getParentFile()
+				.getParentFile().getCanonicalPath() + "/ky/"+pmsBusinessPos.getBusinessnum()+".pfx";
+        
+        String keyPass=pmsBusinessPos.getKek();
+        
+        SecretConfig e = new SecretConfig(cerPath, keyStorePath, keyPass);
+        Secret secret = new Secret(e);
+        maps.put("merchantNo", pmsBusinessPos.getBusinessnum());// 
+        maps.put("version", "v1");// 
+        maps.put("channelNo", "04");// 
+        maps.put("app_version", "1.0.0");// 
+        maps.put("tranCode", "1001");// 
+        maps.put("tranFlow", payRequest.getV_batch_no());// 
+		// 输入参数
+        maps.put("tranDate", payRequest.getV_time().substring(0, 8));// 
+        maps.put("tranTime", payRequest.getV_time().substring(8, 14));// 
+        maps.put("accNo", secret.encrypt(payRequest.getV_cardNo()));// 
+        maps.put("accName", secret.encrypt(payRequest.getV_realName()));// 
+        maps.put("bankAgentId", payRequest.getV_pmsBankNo());// 
+        maps.put("currency", "RMB");// 
+        maps.put("bankName", payRequest.getV_bankname());// 
+        maps.put("amount", df.format(new BigDecimal(payRequest.getV_sum_amount()).multiply(new BigDecimal("100")).doubleValue()));// 
+        maps.put("remark", "代付");// 
+		String paramSrc = RequestUtils.getParamSrc(maps);
+		log.info("易势支付签名前数据**********支付:" + paramSrc);
+		String sign = secret.sign(paramSrc);
+		System.out.println(sign);
+		maps.put("sign", sign);
+		log.info(JSON.toJSONString(maps));
+		String url ="https://paydemo.ielpm.com/paygate/v1/dfpay"; 
+		String str = xdt.dto.scanCode.util.SimpleHttpUtils.httpPost(url, maps);
+		resultMap = ResponseUtil.parseResponse(str, secret);
+		System.out.println("易势返回的参数"+JSON.toJSON(resultMap));
+		// 接口请求完成后，设置返回数据
+	  if("0000".equals(resultMap.get("rtnCode"))) {
+			result.put("v_mid", payRequest.getV_mid());
+			result.put("v_batch_no", payRequest.getV_batch_no());
+			result.put("v_code", "00");
+			result.put("v_msg", "请求成功");
+			result.put("v_sum_amount",payRequest.getV_sum_amount());
+			result.put("v_amount", payRequest.getV_amount());
+			result.put("v_identity", payRequest.getV_identity() == null ? "" : payRequest.getV_identity());
+			result.put("v_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+			result.put("v_type", "0");
+			UpdateDaifu(payRequest.getV_batch_no(), "00");
+		}else if("0002".equals(resultMap.get("rtnCode"))||"0030".equals(resultMap.get("rtnCode"))||"0003".equals(resultMap.get("rtnCode"))||"00R1".equals(resultMap.get("rtnCode"))||"9999".equals(resultMap.get("rtnCode"))){
+			result.put("v_mid", payRequest.getV_mid());
+			result.put("v_batch_no", payRequest.getV_batch_no());
+			result.put("v_code", "00");
+			result.put("v_msg", "请求成功");
+			result.put("v_sum_amount",payRequest.getV_sum_amount());
+			result.put("v_amount", payRequest.getV_amount());
+			result.put("v_identity", payRequest.getV_identity() == null ? "" : payRequest.getV_identity());
+			result.put("v_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+			result.put("v_type", "0");
+			ThreadPool.executor(new YSZFThread(this, payRequest.getV_mid(), payRequest.getV_batch_no(), payRequest, merchantinfo));
+		}else {
+			result.put("v_code", "15");
+ 			result.put("v_msg", "请求失败");
+ 			UpdateDaifu(payRequest.getV_batch_no(), "02");
+ 			Map<String, String> map =new HashMap<>();
+			map.put("machId",payRequest.getV_mid());
+			map.put("payMoney",Double.parseDouble(payRequest.getV_sum_amount())*100+Double.parseDouble(merchantinfo.getPoundage())*100+"");
+			int nus =updataPay(map);
+ 			if(nus==1) {
+ 				log.info("易势代付补款成功");
+ 				DaifuRequestEntity entity =new DaifuRequestEntity();
+ 				entity.setV_mid(payRequest.getV_mid());
+ 				entity.setV_batch_no(payRequest.getV_batch_no()+"/A");
+ 				entity.setV_amount(payRequest.getV_sum_amount());
+ 				entity.setV_sum_amount(payRequest.getV_sum_amount());
+ 				entity.setV_identity(payRequest.getV_identity());
+ 				entity.setV_cardNo(payRequest.getV_cardNo());
+ 				entity.setV_city(payRequest.getV_city());
+ 				entity.setV_province(payRequest.getV_province());
+ 				entity.setV_type("0");
+ 				entity.setV_pmsBankNo(payRequest.getV_pmsBankNo());
+				int ii =add(entity, merchantinfo, result, "00");
+				log.info("易势补款订单状态："+ii);
+ 			}
+		}
+	 	return result;
+	}
 	
 	/**
 	 * oem假汇聚代付
@@ -4753,6 +4859,70 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 		    }
 
 		    return map;
+	}
+
+	@Override
+	public Map<String, String> yszfQuick(String merId, String batchNo) {
+		Map<String, String> resultMap = null;
+		 Map<String, String> map = new HashMap<String, String>();
+		 try {
+			 	PmsDaifuMerchantInfo info =new PmsDaifuMerchantInfo();
+		    	info.setBatchNo(batchNo);
+		    	List<PmsDaifuMerchantInfo> list =selectDaifu(info);
+		    	PmsBusinessPos pmsBusinessPos = selectKey(merId);
+		    	TreeMap<String, String> req = new TreeMap<>();
+		    	req.put("merchantNo",pmsBusinessPos.getBusinessnum());//
+		    	req.put("tranFlow",merId+batchNo);
+		    	req.put("version", "v1");
+		    	req.put("channelNo", "04");
+		    	req.put("tranCode", "1004");
+		    	req.put("tranDate", new SimpleDateFormat("yyyyMMdd").format(new Date()));
+		    	req.put("tranTime", new SimpleDateFormat("HHmmss").format(new Date()));
+		    	req.put("oriTranFlow", batchNo);
+		    	req.put("oriTranDate", list.get(0).getCreationdate().replace("-", "").substring(0,8));
+		    	String cerPath=new File(this.getClass().getResource("/").getPath()).getParentFile()
+						.getParentFile().getCanonicalPath() + "/ky/"+pmsBusinessPos.getBusinessnum()+".cer";
+		        String keyStorePath=new File(this.getClass().getResource("/").getPath()).getParentFile()
+						.getParentFile().getCanonicalPath() + "/ky/"+pmsBusinessPos.getBusinessnum()+".pfx";
+		        
+		        String keyPass=pmsBusinessPos.getKek();
+		        
+		        SecretConfig e = new SecretConfig(cerPath, keyStorePath, keyPass);
+		        Secret secret = new Secret(e);
+		        String paramSrc = RequestUtils.getParamSrc(req);
+				log.info("签名前数据**********支付:" + paramSrc);
+				String md5 = secret.sign(paramSrc);
+				System.out.println(md5);
+				req.put("sign", md5);
+				log.info(JSON.toJSONString(req));
+				String url ="https://paydemo.ielpm.com/paygate/v1/dfpay"; 
+				String str = xdt.dto.scanCode.util.SimpleHttpUtils.httpPost(url, req);
+				System.out.println(str);
+		      if (!"".equals(str)) {
+		    	resultMap = ResponseUtil.parseResponse(str, secret);
+		        map.put("v_code", "00");
+		        map.put("v_msg", "请求成功");
+		        if ("0000".equals(resultMap.get("rtnCode"))) {
+		        	if("0000".equals(resultMap.get("oriRtnCode"))) {
+		        		map.put("v_status", "0000");
+		        		map.put("v_status_msg", "代付成功");
+		        	}else if("".equals(resultMap.get("oriRtnCode"))||"0030".equals(resultMap.get("oriRtnCode"))||"0002".equals(resultMap.get("oriRtnCode"))||"0003".equals(resultMap.get("oriRtnCode"))||"00R1".equals(resultMap.get("oriRtnCode"))||"9999".equals(resultMap.get("oriRtnCode"))) {
+		        		
+		        	}else {
+		        		map.put("v_status", "1001");
+				          map.put("v_status_msg", "代付失败");
+		        	}
+		        }
+		      } else {
+		        map.put("v_code", "01");
+		        map.put("v_msg", "请求失败");
+		      }
+
+		    }
+		    catch (Exception localException)
+		    {
+		    }
+		return map;
 	}
 	
 }

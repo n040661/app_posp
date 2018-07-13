@@ -3,6 +3,7 @@ package xdt.service.impl;
 
 import static com.jiupai.paysdk.entity.enums.Service.QRCODESPDBPREORDER;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -25,7 +26,11 @@ import org.mybatis.generator.codegen.mybatis3.javamapper.elements.SelectAllMetho
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.ielpm.mer.sdk.secret.CertUtil;
+import com.ielpm.mer.sdk.secret.Secret;
+import com.ielpm.mer.sdk.secret.SecretConfig;
 import com.jiupai.paysdk.entity.requestDTO.QrcodeSpdbPreOrderDTO;
+import com.yeepay.shade.com.yeepay.g3.utils.common.CommonUtils;
 
 import net.sf.json.JSONObject;
 import xdt.dao.ChannleMerchantConfigKeyDao;
@@ -49,6 +54,7 @@ import xdt.dto.mb.MBUtil;
 import xdt.dto.scanCode.entity.ScanCodeRequestEntity;
 import xdt.dto.scanCode.entity.ScanCodeResponseEntity;
 import xdt.dto.scanCode.util.RequestUtil;
+import xdt.dto.scanCode.util.ResponseUtil;
 import xdt.dto.scanCode.util.ScanCodeUtil;
 import xdt.model.AppRateConfig;
 import xdt.model.AppRateTypeAndAmount;
@@ -412,7 +418,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 															}
 													        pmsAppTransInfoDao.update(appTransInfo);
 													        insertProfit(entity.getV_oid(), entity.getV_txnAmt(), merchantinfo, appTransInfo.getPaymenttype(), entity.getV_channel());
-															switch (pmsBusinessPos.getChannelnum()) {//
+															switch ("YSZF") {//pmsBusinessPos.getChannelnum()
 															case "HJZF":
 																result =hjScanCodePay(entity, result,pmsBusinessPos);
 																break;
@@ -445,6 +451,9 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 																break;
 															case "SJJ":
 																result =sjjScanCodePay(entity, result,pmsBusinessPos);
+																break;
+															case "YSZF":
+																result =yszfScanCodePay(entity, result,pmsBusinessPos);
 																break;
 															default:
 																result.put("v_code", "11");
@@ -1533,6 +1542,102 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		
      	return result;
 	}
+	
+	/**
+	 * 易势支付给上游发送参数
+	 * @param entity
+	 * @param result
+	 * @param pmsBusinessPos
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> yszfScanCodePay(ScanCodeRequestEntity entity,Map<String, String> result,PmsBusinessPos pmsBusinessPos) throws Exception{
+		Map<String, String> resultMap = null;
+		TreeMap<String, String> map = new TreeMap<>();
+		DecimalFormat df =new DecimalFormat("#");
+        map.put("merchantNo",pmsBusinessPos.getBusinessnum());//pmsBusinessPos.getBusinessnum()
+        map.put("version","v1");//订单编号
+        map.put("channelNo", "05");
+        map.put("tranCode", "YS1003");
+        map.put("tranFlow", entity.getV_oid());
+        map.put("tranDate", entity.getV_time().substring(0,8));
+        map.put("tranTime", entity.getV_time().substring(8,14));
+        map.put("amount",df.format(new BigDecimal(entity.getV_txnAmt()).multiply(new BigDecimal("100")).doubleValue()));//金额
+        if("WEIXIN_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("payType", "1"); //微信
+        }else if("ALIPAY_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("payType", "2"); //支付宝
+        }else if("WEIXIN_GZH".equals(entity.getV_cardType())) {
+        	map.put("payType", "3"); //微信公众号
+        }else if("ALIPAY_FWC".equals(entity.getV_cardType())) {
+        	map.put("payType", "4"); //支付宝服务窗支付 
+        }else if("WEIXIN_CARD".equals(entity.getV_cardType())) {
+        	map.put("payType", "5"); //微信条码支付
+        }else if("ALIPAY_CARD".equals(entity.getV_cardType())) {
+        	map.put("payType", "6"); //支付宝条码支付 
+        }else if("QQ_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("payType", "7"); //QQ 钱包支付 
+        }else if("WEIXIN_H5".equals(entity.getV_cardType())) {
+        	map.put("payType", "8"); //微信 WAP 支付
+        }else if("ALIPAY_H5".equals(entity.getV_cardType())) {
+        	map.put("payType", "9"); //支付宝 WAP 支付 
+        }else if("WEIXIN_APP".equals(entity.getV_cardType())) {
+        	map.put("payType", "10"); //微信 APP 支付 
+        }else if("QQ_CARD".equals(entity.getV_cardType())) {
+        	map.put("payType", "11"); //QQ 钱包条码支付 
+        }else if("ALIPAY_APP".equals(entity.getV_cardType())) {
+        	map.put("payType", "12"); //支付宝 APP 支付 
+        }else if("UNIONPAY_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("payType", "13"); //银联钱包扫码支付 
+        }else if("UNIONPAY_CARD".equals(entity.getV_cardType())) {
+        	map.put("payType", "14"); //银联钱包条码支付
+        }else if("JD_NATIVE".equals(entity.getV_cardType())) {
+        	map.put("payType", "17"); //京东钱包支付  
+        }
+        //此接口特殊的地方
+        map.put("bindId",pmsBusinessPos.getDepartmentnum());//"YS2016092315422110117263111723"
+        map.put("notifyUrl",ScanCodeUtil.yszfReturnUrl);
+        map.put("bizType","09");
+        map.put("goodsName", entity.getV_productName());
+        String cerPath=new File(this.getClass().getResource("/").getPath()).getParentFile()
+				.getParentFile().getCanonicalPath() + "/ky/"+pmsBusinessPos.getBusinessnum()+".cer";
+        String keyStorePath=new File(this.getClass().getResource("/").getPath()).getParentFile()
+				.getParentFile().getCanonicalPath() + "/ky/"+pmsBusinessPos.getBusinessnum()+".pfx";
+        
+        String keyPass=pmsBusinessPos.getKek();
+        
+        SecretConfig e = new SecretConfig(cerPath, keyStorePath, keyPass);
+        Secret secret = new Secret(e);
+        // 敏感信息加密
+        map.put("buyerName", secret.encrypt("张三"));
+        map.put("buyerId", "123456");
+        map.put("remark", entity.getV_attach()==null?"付款":entity.getV_attach());
+        String paramSrc = RequestUtils.getParamSrc(map);
+		log.info("易势支付签名前数据**********支付:" + paramSrc);
+		String sign = secret.sign(paramSrc);
+		System.out.println(sign);
+		map.put("sign", sign);
+		log.info(JSON.toJSONString(map));
+		String url ="https://paydemo.ielpm.com/paygate/v1/smpay"; 
+		String str = xdt.dto.scanCode.util.SimpleHttpUtils.httpPost(url, map);
+		System.out.println(str);
+		resultMap = ResponseUtil.parseResponse(str, secret);
+		result.put("v_mid", entity.getV_mid());
+ 		result.put("v_attach", entity.getV_attach());
+ 		result.put("v_txnAmt", entity.getV_txnAmt());
+ 		result.put("v_oid", entity.getV_oid());
+ 		result.put("v_cardType", entity.getV_cardType());
+		
+			if("0000".equals(resultMap.get("rtnCode"))) {
+				result.put("v_result", resultMap.get("qrCodeURL"));
+				result.put("v_code", "00");
+				result.put("v_msg", "请求成功");
+			}else {
+				result.put("v_code", "01");
+				result.put("v_msg", resultMap.get("rtnMsg"));
+			}
+     	return result;
+	}
 	public void otherInvoke(ScanCodeResponseEntity result) throws Exception {
 		// TODO Auto-generated method stub
 
@@ -1849,7 +1954,69 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		}
 		return original;
 	}
-	
+	/**
+	 * 易势扫码支付查询
+	 */
+	public Map<String, String> quickYs(String orderId,String merId){
+		PmsBusinessPos pmsBusinessPos = selectKey(merId);
+		TreeMap<String, String> req = new TreeMap<>();
+		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> resultMap = null;
+    	req.put("merchantNo",pmsBusinessPos.getBusinessnum());//
+    	req.put("version", "v1");
+    	req.put("channelNo", "05");
+    	req.put("tranCode", "YS2002");
+    	req.put("tranSerialNumY", orderId);
+    	String cerPath;
+		try {
+			cerPath = new File(this.getClass().getResource("/").getPath()).getParentFile()
+					.getParentFile().getCanonicalPath() + "/ky/"+pmsBusinessPos.getBusinessnum()+".cer";
+		
+        String keyStorePath=new File(this.getClass().getResource("/").getPath()).getParentFile()
+				.getParentFile().getCanonicalPath() + "/ky/"+pmsBusinessPos.getBusinessnum()+".pfx";
+        
+        String keyPass=pmsBusinessPos.getKek();
+        
+        SecretConfig e = new SecretConfig(cerPath, keyStorePath, keyPass);
+        Secret secret = new Secret(e);
+        String paramSrc = RequestUtils.getParamSrc(req);
+		log.info("签名前数据**********支付:" + paramSrc);
+		String md5 = secret.sign(paramSrc);
+		System.out.println(md5);
+		req.put("sign", md5);
+		log.info(JSON.toJSONString(req));
+		String url ="https://paydemo.ielpm.com/paygate/v1/smpay"; 
+		String str = xdt.dto.scanCode.util.SimpleHttpUtils.httpPost(url, req);
+		System.out.println(str);
+		if (!"".equals(str)) {
+	    	resultMap = ResponseUtil.parseResponse(str, secret);
+	        map.put("v_code", "00");
+	        map.put("v_msg", "请求成功");
+	        if ("0000".equals(resultMap.get("rtnCode"))) {
+	        	if("0000".equals(resultMap.get("rtnCodeY"))&&"1".equals(resultMap.get("status"))) {
+	        		map.put("v_status", "0000");
+	        		map.put("v_status_msg", "支付成功");
+	        	}else if(!"0000".equals(resultMap.get("rtnCodeY"))&&"2".equals(resultMap.get("status"))) {
+	        		map.put("v_status", "1001");
+			          map.put("v_status_msg", "交易失败");
+	        	}else if(!"0000".equals(resultMap.get("rtnCodeY"))&&"0".equals(resultMap.get("status"))){
+	        		
+	        	}
+	        }else if("2000".equals(resultMap.get("rtnCode"))) {
+	        	map.put("v_status", "1001");
+		        map.put("v_status_msg", "交易不存在");
+	        }
+	      } else {
+	        map.put("v_code", "01");
+	        map.put("v_msg", "请求失败");
+	      }
+		
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return resultMap;
+	}
 	public static void main(String[] args) {
 		/*DecimalFormat df1 = new DecimalFormat("######0"); 
 		Double txnAmt=Double.parseDouble("5.02");

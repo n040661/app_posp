@@ -2109,8 +2109,8 @@ public class BaseServiceImpl {
 				String mercPoundage=merchantinfo.getPoundage();//商户代付手续费
 				merRate="0";
 				agentRate="0";
-				profit =new BigDecimal(mercPoundage).subtract(new BigDecimal(poundage));//通道代付分润
-				profitOne=new BigDecimal(mercPoundage).subtract(new BigDecimal(agentPoundage));//代理代付商分润
+				profit =new BigDecimal(mercPoundage==null?"0":mercPoundage).subtract(new BigDecimal(poundage==null?"0":poundage));//通道代付分润
+				profitOne=new BigDecimal(mercPoundage==null?"0":mercPoundage).subtract(new BigDecimal(agentPoundage==null?"0":agentPoundage));//代理代付商分润
 			}else {
 				if("0".equals(type)) {
 					merRate =rate(merchantinfo.getQuickRateTypeD0()).getRate();
@@ -2119,13 +2119,13 @@ public class BaseServiceImpl {
 					merRate=rate(merchantinfo.getQuickRateTypeT1()).getRate();
 					agentRate=rate(payChannels.get(0).getQuickRateTypeT1()).getRate();
 				}
-				profit=new BigDecimal(amount).multiply((new BigDecimal(merRate).subtract(new BigDecimal(busRate))));//通道交易分润
-				profitOne =new BigDecimal(amount).multiply((new BigDecimal(merRate).subtract(new BigDecimal(agentRate))));
+				profit=new BigDecimal(amount).multiply((new BigDecimal(merRate==null?"0":merRate).subtract(new BigDecimal(busRate==null?"0":busRate))));//通道交易分润
+				profitOne =new BigDecimal(amount).multiply((new BigDecimal(merRate==null?"0":merRate).subtract(new BigDecimal(agentRate==null?"0":agentRate))));
 			}
 			agentProfit.setAgentLevel("1");
-			agentProfit.setAgentRate(agentRate);
-			agentProfit.setTariffRate(merRate);
-			agentProfit.setStandardRate(busRate);
+			agentProfit.setAgentRate(agentRate==null?"0":agentRate);
+			agentProfit.setTariffRate(merRate==null?"0":merRate);
+			agentProfit.setStandardRate(busRate==null?"0":busRate);
 			agentProfit.setProfit(profit.toString());
 			agentProfit.setProfitOne(profitOne.toString());
 			agentProfit.setPoundage(businessInfo.getPoundage());

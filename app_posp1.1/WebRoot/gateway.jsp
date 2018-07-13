@@ -20,7 +20,7 @@
 		
 			<tr>
 				<td>商户号：</td>
-				<td><input type="text" name="v_mid" value="100341512318531"></td>
+				<td><input type="text" name="v_mid" value="10032061473"></td>
 			</tr>
 			<tr>
 				<td>订单号：</td>
@@ -87,8 +87,8 @@
 						<tr>
 				<td>渠道类型：</td>
 				<td><select name="v_channel">
-					<option selected="selected" value="1">PC端</option>
-					<option value="2">移动端</option>
+					<option selected="selected" value="0">D0</option>
+					<option value="1">T1</option>
 				</select></td>
 			</tr>
 						<tr>

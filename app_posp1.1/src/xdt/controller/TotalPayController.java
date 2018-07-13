@@ -225,22 +225,55 @@ public class TotalPayController extends BaseAction {
 			MultipartFile file =payRequest.getV_fileName();
 			SignatureUtil signUtil = new SignatureUtil();
 			Map map = BeanToMapUtil.convertBean(payRequest);
-			switch (busInfo.getChannelnum()) {
-			case "YFWG":
-				
-				if (file!=null) {
-					if(!file.isEmpty()) {
-						try {
-			                // 文件保存路径  
-			                String filePath = request.getSession().getServletContext().getRealPath("/") + "upload/"  
-			                        + file.getOriginalFilename();  
-			                // 转存文件  
-			                file.transferTo(new File(filePath)); 
-			                if (signUtil.checkSign(map, keyinfo.getMerchantkey(), log)) {
+			if(busInfo!=null) {
+				switch (busInfo.getChannelnum()) {
+				case "YFWG":
+					
+					if (file!=null) {
+						if(!file.isEmpty()) {
+							try {
+				                // 文件保存路径  
+				                String filePath = request.getSession().getServletContext().getRealPath("/") + "upload/"  
+				                        + file.getOriginalFilename();  
+				                // 转存文件  
+				                file.transferTo(new File(filePath)); 
+				                if (signUtil.checkSign(map, keyinfo.getMerchantkey(), log)) {
 
-								log.info("裕福批量代付对比签名成功");
-								 result.put("type", "1");
-								 result = service.pay(payRequest, result);
+									log.info("裕福批量代付对比签名成功");
+									 result.put("type", "1");
+									 result = service.pay(payRequest, result);
+
+								} else {
+									log.error("签名错误!");
+									result.put("v_code", "02");
+									result.put("v_msg", "签名错误!");
+									log.info("返回的参数:" + JSON.toJSON(result));
+								}
+				               
+				            } catch (Exception e) {  
+				                e.printStackTrace();  
+				            }  
+						}else {
+							log.info("文件有问题！");
+						}
+			            
+			        } else {
+			        	//result.put("v_code", "15");
+			 			//result.put("v_msg", "代付文件为null");
+			 			log.info("casnhu:"+JSON.toJSONString(payRequest));
+			 			//检验数据是否合法
+						if (service.validationStr(payRequest)) {
+							log.info("下游上送签名串{}" + payRequest.getV_sign());
+							// 查询商户密钥
+							
+							// ------------------------需要改签名
+							String merchantKey = keyinfo.getMerchantkey();
+							
+							if (signUtil.checkSign(map, merchantKey, log)) {
+
+								log.info("对比签名成功");
+								result.put("type", "0");
+								result = service.pay(payRequest, result);
 
 							} else {
 								log.error("签名错误!");
@@ -248,19 +281,18 @@ public class TotalPayController extends BaseAction {
 								result.put("v_msg", "签名错误!");
 								log.info("返回的参数:" + JSON.toJSON(result));
 							}
-			               
-			            } catch (Exception e) {  
-			                e.printStackTrace();  
-			            }  
-					}else {
-						log.info("文件有问题！");
-					}
-		            
-		        } else {
-		        	//result.put("v_code", "15");
-		 			//result.put("v_msg", "代付文件为null");
-		 			log.info("casnhu:"+JSON.toJSONString(payRequest));
-		 			//检验数据是否合法
+						}else {
+							
+							log.error("数据不合法!");
+							result.put("v_code", "12");
+							result.put("v_msg", "数据不合法");
+							
+						}
+						
+			        } 
+					break;
+				default:
+					//检验数据是否合法
 					if (service.validationStr(payRequest)) {
 						log.info("下游上送签名串{}" + payRequest.getV_sign());
 						// 查询商户密钥
@@ -271,7 +303,7 @@ public class TotalPayController extends BaseAction {
 						if (signUtil.checkSign(map, merchantKey, log)) {
 
 							log.info("对比签名成功");
-							result.put("type", "0");
+							
 							result = service.pay(payRequest, result);
 
 						} else {
@@ -288,38 +320,11 @@ public class TotalPayController extends BaseAction {
 						
 					}
 					
-		        } 
-				break;
-			default:
-				//检验数据是否合法
-				if (service.validationStr(payRequest)) {
-					log.info("下游上送签名串{}" + payRequest.getV_sign());
-					// 查询商户密钥
-					
-					// ------------------------需要改签名
-					String merchantKey = keyinfo.getMerchantkey();
-					
-					if (signUtil.checkSign(map, merchantKey, log)) {
-
-						log.info("对比签名成功");
-						
-						result = service.pay(payRequest, result);
-
-					} else {
-						log.error("签名错误!");
-						result.put("v_code", "02");
-						result.put("v_msg", "签名错误!");
-						log.info("返回的参数:" + JSON.toJSON(result));
-					}
-				}else {
-					
-					log.error("数据不合法!");
-					result.put("v_code", "12");
-					result.put("v_msg", "数据不合法");
-					
+					break;
 				}
-				
-				break;
+			}else {
+				result.put("v_code", "15");
+				result.put("v_msg", "未找到路由,联系运营!");
 			}
 			DaifuResponseEntity daifuconsume = (DaifuResponseEntity) BeanToMapUtil
 					.convertMap(DaifuResponseEntity.class, result);

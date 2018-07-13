@@ -105,6 +105,6 @@ public interface ITotalPayService {
 	
 	public Map<String, String> jhjQuick(String mer,String orderId);
 	public Map<String, String> wfbQuick(String merId, String batchNo);
-	
+	public Map<String, String> yszfQuick(String merId, String batchNo);
 	public int insertProfit(String orderId,String amount,PmsMerchantInfo merchantinfo,String transactionType,String type) throws Exception ;
 }

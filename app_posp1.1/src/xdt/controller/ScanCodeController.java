@@ -1576,7 +1576,6 @@ public class ScanCodeController extends BaseAction{
 				GateWayQueryRequestEntity query =new GateWayQueryRequestEntity();
 				query.setV_mid(originalInfo.getPid());
 				query.setV_oid(originalInfo.getOrderId());
-				Map<String,String> maps =service.getScanCodeQuick(query);
 			}else {
 				map.put("v_status", "1001");
 				map.put("v_status_msg", "支付失败");
@@ -1630,4 +1629,129 @@ public class ScanCodeController extends BaseAction{
 			}
 		}
 	}
+	/**
+	 * 易势支付异步
+	 * @param temp
+	 * @param response
+	 * @param request
+	 */
+	@RequestMapping(value="yszfReturnUrl")
+	public void yszfReturnUrl(HttpServletResponse response,HttpServletRequest request) {
+		log.info("易势支付异步参数！");
+		String merchantNo=request.getParameter("merchantNo");
+		String version=request.getParameter("version");
+		String channelNo=request.getParameter("channelNo");
+		String tranCode=request.getParameter("tranCode");
+		String tranFlow=request.getParameter("tranFlow");
+		String amount=request.getParameter("amount");
+		String rtnCode=request.getParameter("rtnCode");
+		String rtnMsg=request.getParameter("rtnCode");
+		String sign=request.getParameter("sign");
+		request.getSession();
+		log.info("易势支付返回参数：rtnCode="+rtnCode+",rtnMsg="+rtnMsg+",amount="+amount+",tranFlow="+tranFlow
+				+",tranCode="+tranCode+",channelNo="+channelNo+",merchantNo="+merchantNo+",version="+version+",sign="+sign);
+		Map<String, String> map =new HashMap<>();
+		String str ="";
+		if(tranFlow !=null &&tranFlow !="") {
+			str="SUCCESS";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("易势支付返回信息异常"+e);
+				e.printStackTrace();
+			}
+			ChannleMerchantConfigKey keyinfo=new ChannleMerchantConfigKey();
+			OriginalOrderInfo originalInfo=null;
+			try {
+				originalInfo  = this.payService.getOriginOrderInfo(tranFlow);
+			} catch (Exception e) {
+				log.info("易势支付查询原始订单信息返回异常");
+				e.printStackTrace();
+			}
+			keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
+			log.info("易势支付订单数据:" + JSON.toJSON(originalInfo));
+			
+			log.info("易势支付下游的异步地址" + originalInfo.getBgUrl());
+			map.put("v_mid", originalInfo.getPid());
+			map.put("v_oid", originalInfo.getOrderId());
+			map.put("v_txnAmt", originalInfo.getOrderAmount());
+			map.put("v_attach", originalInfo.getAttach());
+			map.put("v_code", "00");
+			map.put("v_msg", "成功");
+			if("0000".equals(tranCode)) {
+				map.put("v_status", "0000");
+				map.put("v_status_msg", "支付成功");
+				GateWayQueryRequestEntity query =new GateWayQueryRequestEntity();
+				query.setV_mid(originalInfo.getPid());
+				query.setV_oid(originalInfo.getOrderId());
+				Map<String,String> maps =service.getScanCodeQuick(query);
+				try {
+					if(!"0000".equals(maps.get("v_status"))) {
+						int i =service.UpdatePmsMerchantInfo(originalInfo);
+						if(i==1) {
+							log.info("易势支付入金成功");
+						}else {
+							log.info("易势支付入金失败");
+						}
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else if("0002".equals(tranCode)){
+				
+			}else {
+				map.put("v_status", "1001");
+				map.put("v_status_msg", "支付失败");
+			}
+			ScanCodeResponseEntity consume = (ScanCodeResponseEntity) BeanToMapUtil
+					.convertMap(ScanCodeResponseEntity.class, map);
+			try {
+				service.otherInvoke(consume);
+			} catch (Exception e1) {
+				log.info("易势支付修改状态失败");
+				e1.printStackTrace();
+			}
+			String signs = SignatureUtil.getSign(beanToMap(consume), keyinfo.getMerchantkey(), log);
+			map.put("v_sign", signs);
+			String params = HttpURLConection.parseParams(map);
+			log.info("易势支付给下游同步的数据:" + params);
+			String html="";
+			try {
+				html = HttpClientUtil.post(originalInfo.getBgUrl(),params);
+			}  catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		    logger.info("易势支付下游返回状态" + html);
+		    net.sf.json.JSONObject ob = net.sf.json.JSONObject.fromObject(html);
+			Iterator it = ob.keys();
+			Map<String, String> result = new HashMap<>();
+			while (it.hasNext()) {
+				String keys = (String) it.next();
+				if (keys.equals("success")) {
+					String value = ob.getString(keys);
+					logger.info("易势支付异步回馈的结果:" + "\t" + value);
+					result.put("success", value);
+				}
+			}
+			if (!result.get("success").equals("true")) {
+
+				logger.info("易势支付启动线程进行异步通知");
+				// 启线程进行异步通知
+				ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(),params));
+			}
+			logger.info("易势支付向下游 发送数据成功");
+			
+		}else {
+			str="FALL";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("易势支付扫码返回信息异常");
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }

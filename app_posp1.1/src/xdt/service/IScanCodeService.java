@@ -31,5 +31,6 @@ public interface IScanCodeService {
 	public Map<String, String> getScanCodeQuick(GateWayQueryRequestEntity query);//查询交易状态
 	
 	public Map<String, String> handleNofity(JsdsResponseDto result) throws Exception ;
+	public Map<String, String> quickYs(String orderId,String merId);
 }
 

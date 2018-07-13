@@ -4287,7 +4287,7 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 						result.put("v_status_msg", "支付成功");
 					} else if ("1".equals(pmsAppTransInfo.getStatus())) {
 						result.put("v_status", "1001");// 支付状态
-						result.put("v_status_msg", "支付失败");
+						result.put("v_status_msg", pmsAppTransInfo.getThirdPartResultCode());
 					} else {
 						result.put("v_status", "200");// 支付状态
 						result.put("v_status_msg", "初始化");
