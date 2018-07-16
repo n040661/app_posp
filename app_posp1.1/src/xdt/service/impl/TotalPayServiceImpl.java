@@ -528,7 +528,7 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 						log.info("代付订单添加成功");
 						int iii =insertProfit(payRequest.getV_batch_no(), payRequest.getV_sum_amount(), merchantinfo, "代付", payRequest.getV_type());
 						System.out.println(iii);
-						switch ("YSZF") {//pmsBusinessPos.getChannelnum()
+						switch (pmsBusinessPos.getChannelnum()) {//
 
 						case "SXYWG":// 首信易网关
 							result = payeasyAccounts(payRequest, result, merchantinfo, pmsBusinessPos);

@@ -418,7 +418,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 															}
 													        pmsAppTransInfoDao.update(appTransInfo);
 													        insertProfit(entity.getV_oid(), entity.getV_txnAmt(), merchantinfo, appTransInfo.getPaymenttype(), entity.getV_channel());
-															switch ("YSZF") {//pmsBusinessPos.getChannelnum()
+															switch (pmsBusinessPos.getChannelnum()) {//
 															case "HJZF":
 																result =hjScanCodePay(entity, result,pmsBusinessPos);
 																break;
