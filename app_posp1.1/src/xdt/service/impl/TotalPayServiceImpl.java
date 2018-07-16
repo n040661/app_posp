@@ -4097,7 +4097,7 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 			result.put("v_amount", payRequest.getV_amount());
 			result.put("v_identity", payRequest.getV_identity() == null ? "" : payRequest.getV_identity());
 			result.put("v_time", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
-			result.put("v_type", "0");
+			result.put("v_type", payRequest.getV_type());
 			//ThreadPool.executor(new WFBThread(this, payRequest.getV_mid(), payRequest.getV_batch_no(), payRequest, merchantinfo));
 		}else {
 			result.put("v_code", "15");
@@ -4118,7 +4118,7 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
  				entity.setV_cardNo(payRequest.getV_cardNo());
  				entity.setV_city(payRequest.getV_city());
  				entity.setV_province(payRequest.getV_province());
- 				entity.setV_type("0");
+ 				entity.setV_type(payRequest.getV_type());
  				entity.setV_pmsBankNo(payRequest.getV_pmsBankNo());
 				int ii =add(entity, merchantinfo, result, "00");
 				log.info("银盈通补款订单状态："+ii);
