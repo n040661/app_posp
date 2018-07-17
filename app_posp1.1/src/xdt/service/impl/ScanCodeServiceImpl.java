@@ -51,11 +51,13 @@ import xdt.dto.jsds.JsdsResponseDto;
 import xdt.dto.jsds.JsdsUtils;
 import xdt.dto.mb.HttpService;
 import xdt.dto.mb.MBUtil;
+import xdt.dto.quickPay.util.MbUtilThread;
 import xdt.dto.scanCode.entity.ScanCodeRequestEntity;
 import xdt.dto.scanCode.entity.ScanCodeResponseEntity;
 import xdt.dto.scanCode.util.RequestUtil;
 import xdt.dto.scanCode.util.ResponseUtil;
 import xdt.dto.scanCode.util.ScanCodeUtil;
+import xdt.dto.scanCode.util.ZHJHThread;
 import xdt.model.AppRateConfig;
 import xdt.model.AppRateTypeAndAmount;
 import xdt.model.OriginalOrderInfo;
@@ -65,6 +67,7 @@ import xdt.model.PmsDaifuMerchantInfo;
 import xdt.model.PmsMerchantInfo;
 import xdt.model.PospTransInfo;
 import xdt.model.ResultInfo;
+import xdt.schedule.ThreadPool;
 import xdt.service.IPublicTradeVerifyService;
 import xdt.service.IScanCodeService;
 import xdt.util.Constants;
@@ -417,7 +420,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 																appTransInfo.setPaymentcode(PaymentCodeEnum.suningPay.getTypeCode());
 															}
 													        pmsAppTransInfoDao.update(appTransInfo);
-													        insertProfit(entity.getV_oid(), entity.getV_txnAmt(), merchantinfo, appTransInfo.getPaymenttype(), entity.getV_channel());
+													        //insertProfit(entity.getV_oid(), entity.getV_txnAmt(), merchantinfo, appTransInfo.getPaymenttype(), entity.getV_channel());
 															switch (pmsBusinessPos.getChannelnum()) {//
 															case "HJZF":
 																result =hjScanCodePay(entity, result,pmsBusinessPos);
@@ -454,6 +457,9 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 																break;
 															case "YSZF":
 																result =yszfScanCodePay(entity, result,pmsBusinessPos);
+																break;
+															case "ZHJH":
+																result =zxjhScanCodePay(entity, result,pmsBusinessPos);
 																break;
 															default:
 																result.put("v_code", "11");
@@ -1638,6 +1644,64 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 			}
      	return result;
 	}
+	
+	/**
+	 * 兆行聚合给上游发送参数
+	 * @param entity
+	 * @param result
+	 * @param pmsBusinessPos
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> zxjhScanCodePay(ScanCodeRequestEntity entity,Map<String, String> result,PmsBusinessPos pmsBusinessPos) throws Exception{
+		if(!"ALIPAY_NATIVE".equals(entity.getV_cardType())){
+			result.put("v_mid", entity.getV_mid());
+	 		result.put("v_attach", entity.getV_attach());
+	 		result.put("v_txnAmt", entity.getV_txnAmt());
+	 		result.put("v_oid", entity.getV_oid());
+	 		result.put("v_cardType", entity.getV_cardType());
+			result.put("v_code", "01");
+			result.put("v_msg", "支付类型有误");
+			return result;
+		}
+		TreeMap<String, String> map = new TreeMap<>();
+        map.put("mchNo",pmsBusinessPos.getBusinessnum());//pmsBusinessPos.getBusinessnum()
+        map.put("type", "1");
+        map.put("orderCode", entity.getV_oid());
+        map.put("ts", System.currentTimeMillis() / 1000+"");
+        map.put("price",entity.getV_txnAmt());//金额
+        //此接口特殊的地方
+        map.put("notifyUrl",ScanCodeUtil.zhjhNotifyUrl);
+        
+        // 敏感信息加密
+        String paramSrc = RequestUtils.getParamSrc(map);
+		log.info("兆行支付签名前数据**********支付:" + paramSrc);
+		log.info(JSON.toJSONString(map));
+		String md5 = MD5Utils.md5(paramSrc+"&token=" +pmsBusinessPos.getKek(), "UTF-8");//pmsBusinessPos.getKek()
+		System.out.println(md5);
+		map.put("sign", md5);
+		log.info(JSON.toJSONString(map));
+		String url ="http://www.51manqian.com/api/getQrcode";
+		String str =HttpURLConection.httpURLConectionGET(url+"?"+paramSrc+"&sign="+md5,"UTF-8");
+		System.out.println(str);
+		result.put("v_mid", entity.getV_mid());
+ 		result.put("v_attach", entity.getV_attach());
+ 		result.put("v_txnAmt", entity.getV_txnAmt());
+ 		result.put("v_oid", entity.getV_oid());
+ 		result.put("v_cardType", entity.getV_cardType());
+ 		com.alibaba.fastjson.JSONObject json =com.alibaba.fastjson.JSONObject.parseObject(str);
+		if("0".equals(json.getString("code"))) {
+			com.alibaba.fastjson.JSONObject jsons =com.alibaba.fastjson.JSONObject.parseObject(json.getString("data"));
+			result.put("v_result", jsons.getString("payUrl"));
+			result.put("v_code", "00");
+			result.put("v_msg", "请求成功");
+			ThreadPool.executor(new ZHJHThread(this, entity.getV_mid(), entity.getV_oid()));
+		}else {
+			result.put("v_code", "01");
+			result.put("v_msg", json.getString("msg"));
+		}
+     	return result;
+	}
 	public void otherInvoke(ScanCodeResponseEntity result) throws Exception {
 		// TODO Auto-generated method stub
 
@@ -2016,6 +2080,46 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 			e1.printStackTrace();
 		}
 		return resultMap;
+	}
+	
+	public Map<String, String> zhjhQuick(String merId,String orderId){
+		PmsBusinessPos pmsBusinessPos = selectKey(merId);
+		TreeMap<String, String> map = new TreeMap<>();
+        map.put("mchNo",pmsBusinessPos.getBusinessnum());//pmsBusinessPos.getBusinessnum()
+        map.put("orderCode", orderId);
+        map.put("ts", System.currentTimeMillis() / 1000+"");
+        String paramSrc = RequestUtils.getParamSrc(map);
+		log.info("兆行支付签名前数据**********支付:" + paramSrc);
+		log.info(JSON.toJSONString(map));
+		String md5 = MD5Utils.md5(paramSrc+"&token=" +pmsBusinessPos.getKek(), "UTF-8");//pmsBusinessPos.getKek()
+		System.out.println(md5);
+		map.put("sign", md5);
+		log.info(JSON.toJSONString(map));
+		String url ="http://www.51manqian.com/api/queryOrder";
+		String str =HttpURLConection.httpURLConectionGET(url+"?"+paramSrc+"&sign="+md5,"UTF-8");
+		log.info("兆行查询返回参数"+JSON.toJSON(str));
+		com.alibaba.fastjson.JSONObject json =com.alibaba.fastjson.JSONObject.parseObject(str);
+		if("0".equals(json.getString("code"))) {
+			map.put("v_code", "00");
+	        map.put("v_msg", "请求成功");
+	        map.put("v_oid", orderId);
+			com.alibaba.fastjson.JSONObject jsons =com.alibaba.fastjson.JSONObject.parseObject(json.getString("data"));
+			if("2".equals(jsons.getString("jsons"))||"3".equals(jsons.getString("jsons"))){
+				map.put("v_status", "0000");
+        		map.put("v_status_msg", "支付成功");
+			}else if("0".equals(jsons.getString("jsons"))) {
+				map.put("v_status", "1001");
+		        map.put("v_status_msg", "交易失败");
+			}else {
+				Integer ii=Integer.parseInt(jsons.getString("expireTime").substring(0,10));
+				Integer i=(int)(System.currentTimeMillis() / 1000);
+				if(i>ii) {
+					map.put("v_status", "1001");
+			        map.put("v_status_msg", "交易失败");	
+				}
+			}
+		}
+		return map;
 	}
 	public static void main(String[] args) {
 		/*DecimalFormat df1 = new DecimalFormat("######0"); 

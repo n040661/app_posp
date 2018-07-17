@@ -22,6 +22,7 @@ public class ScanCodeUtil {
 	public static final String jmNotifyUrl=BaseUtil.url+"/ScanCodeController/jmNotifyUrl.action";//扫码异步
 	public static final String wbfNotifyUrl=BaseUtil.url+"/ScanCodeController/wbfNotifyUrl.action";//微宝付扫码异步
 	public static final String wbfReturnUrl=BaseUtil.url+"/ScanCodeController/wbfReturnUrl.action";//微宝付扫码同步
-	public static final String sjjReturnUrl=BaseUtil.url+"/ScanCodeController/sjjReturnUrl.action";//三境界扫码异步步
+	public static final String sjjReturnUrl=BaseUtil.url+"/ScanCodeController/sjjNotifyUrl.action";//三境界扫码异步步
 	public static final String yszfReturnUrl=BaseUtil.url+"/ScanCodeController/yszfReturnUrl.action";//易势扫码异步步
+	public static final String zhjhNotifyUrl=BaseUtil.url+"/ScanCodeController/zhjhNotifyUrl.action";//易势扫码异步步
 }

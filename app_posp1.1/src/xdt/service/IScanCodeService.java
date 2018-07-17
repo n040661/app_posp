@@ -32,5 +32,6 @@ public interface IScanCodeService {
 	
 	public Map<String, String> handleNofity(JsdsResponseDto result) throws Exception ;
 	public Map<String, String> quickYs(String orderId,String merId);
+	public Map<String, String> zhjhQuick(String orderId,String merId);
 }
 
