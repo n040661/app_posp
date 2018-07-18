@@ -1167,7 +1167,7 @@ public class GateWayController extends BaseAction {
 	 */
 	@RequestMapping(value = "hj_notifyUrl")
 	public void HjnotifyUrl(HJResponse hjResponse, HttpServletResponse response, HttpServletRequest request) {
-
+		request.getSession();
 		log.info("汇聚----异步通知返回数据:" + JSON.toJSONString(hjResponse));
 
 		log.info("汇聚异步通知来了");
@@ -1265,7 +1265,7 @@ public class GateWayController extends BaseAction {
 	 */
 	@RequestMapping(value = "yf_notifyUrl")
 	public void YFNotifyUrl(HttpServletResponse response, HttpServletRequest request) {
-
+		request.getSession();
 		log.info("裕福异步通知来了");
 		Map<String, String> result = new HashMap<String, String>();
 		// HJResponse hjResponses =new HJResponse();
@@ -1393,7 +1393,7 @@ public class GateWayController extends BaseAction {
 	 */
 	@RequestMapping(value = "yy_notifyUrl")
 	public void YynotifyUrl(HttpServletResponse response, HttpServletRequest request) {
-
+		request.getSession();
 		log.info("甬易异步通知来了");
 		Map<String, String> result = new HashMap<String, String>();
 		BufferedReader br;
@@ -1515,7 +1515,7 @@ public class GateWayController extends BaseAction {
 	 */
 	@RequestMapping(value = "sd_notifyUrl")
 	public void sdnotifyUrl(HttpServletResponse response, HttpServletRequest request) {
-
+		request.getSession();
 		log.info("杉德异步通知来了");
 		try {
 			Map<String, String[]> parameterMap = request.getParameterMap();
@@ -1616,6 +1616,7 @@ public class GateWayController extends BaseAction {
 	 */
 	@RequestMapping(value = "jbb_notifyUrl")
 	public void jbbnotifyUrl(HttpServletResponse response, HttpServletRequest request) {
+		request.getSession();
 		try {
 			logger.info("聚佰宝网关异步通知来了");
 			String respCode = request.getParameter("respCode");
@@ -1731,6 +1732,7 @@ public class GateWayController extends BaseAction {
 	 */
 	@RequestMapping(value = "ysb_notifyUrl")
 	public void ysbnotifyUrl(HttpServletResponse response, HttpServletRequest request) {
+		request.getSession();
 		try {
 			logger.info("银生宝网关异步通知来了");
 			Map<String, String> result = new HashMap<String, String>();	
@@ -1857,7 +1859,7 @@ public class GateWayController extends BaseAction {
 	 */
 	@RequestMapping(value = "yftk_notifyUrl")
 	public void yftk_notifyUrl(HttpServletResponse response, HttpServletRequest request) {
-
+		request.getSession();
 		log.info("裕福退款异步通知来了");
 		Map<String, String> result = new HashMap<String, String>();
 		// HJResponse hjResponses =new HJResponse();
@@ -1924,7 +1926,7 @@ public class GateWayController extends BaseAction {
 	 */
 	@RequestMapping(value = "hj_returnUrl")
 	public void HjreturnUrl(HJResponse hjResponse, HttpServletResponse response, HttpServletRequest request) {
-
+		request.getSession();
 		try {
 			log.info("汇聚同步数据返回参数:" + JSON.toJSONString(hjResponse));
 			Map<String, String> result = new HashMap<String, String>();
