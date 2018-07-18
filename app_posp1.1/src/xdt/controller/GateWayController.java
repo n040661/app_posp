@@ -1303,10 +1303,10 @@ public class GateWayController extends BaseAction {
 				if ("01".equals(synchNotifyParams.get("transStatus"))) {
 					if("000001110100000663".equals(request.getParameter("merchantId"))) {
 						int ii =0;
-						if("10021016940".equals(originalInfo.getPid())) {
-							ii =gateWayService.UpdatePmsMerchantInfo(originalInfo,0.5);
-						}else {
+						if("10036048439".equals(originalInfo.getPid())) {
 							ii =gateWayService.UpdatePmsMerchantInfo(originalInfo,1.0);
+						}else {
+							ii =gateWayService.UpdatePmsMerchantInfo(originalInfo,0.5);
 						}
 						
 						 log.info("裕福实时入金状态:"+ii);
