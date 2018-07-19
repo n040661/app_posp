@@ -537,6 +537,7 @@ public class TotalPayController extends BaseAction {
 		log.info("sign:"+request.getParameter("sign"));
 		log.info("merchantId:"+request.getParameter("merchantId"));
 		String str;
+		request.getSession();
 		try {
 		if (request.getParameter("merchantId") != null) {
 			str = "success";
@@ -764,7 +765,7 @@ public class TotalPayController extends BaseAction {
 				 // 启线程进行异步通知
 				 ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(),params));
 				 logger.info("向下游 发送数据成功");
-				request.getSession();
+				
 			} else {
 				str = "FAIL";
 				outString(response, str);
@@ -783,6 +784,7 @@ public class TotalPayController extends BaseAction {
 			log.info("sign:"+request.getParameter("sign"));
 			log.info("merchantId:"+request.getParameter("merchantId"));
 			String str;
+			request.getSession();
 			try {
 			if (request.getParameter("merchantId") != null) {
 				str = "success";
@@ -933,13 +935,13 @@ public class TotalPayController extends BaseAction {
 					 logger.info("异步回馈的结果:" + "\t" + value);
 					 resp.put("success", value);}
 					 }
-					 if (resp.get("success").equals("false")) {
+					 if (!resp.get("success").equals("true")) {
 					
 					 logger.info("启动线程进行异步通知");
 					 // 启线程进行异步通知
 					 ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(),params));
 					 logger.info("向下游 发送数据成功");
-					request.getSession();
+					
 				} else {
 					str = "FAIL";
 					outString(response, str);

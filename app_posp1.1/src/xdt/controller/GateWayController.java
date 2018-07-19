@@ -1303,7 +1303,9 @@ public class GateWayController extends BaseAction {
 				if ("01".equals(synchNotifyParams.get("transStatus"))) {
 					if("000001110100000663".equals(request.getParameter("merchantId"))) {
 						int ii =0;
-						if("10036048439".equals(originalInfo.getPid())||"10032051737".equals(originalInfo.getPid())||"10032057782".equals(originalInfo.getPid())) {
+						if("10036048439".equals(originalInfo.getPid())||"10032051737".equals(originalInfo.getPid())||"10032057782".equals(originalInfo.getPid())||"10037295627".equals(originalInfo.getPid())
+								||"10037293512".equals(originalInfo.getPid())||"10052245878".equals(originalInfo.getPid())||"10052241126".equals(originalInfo.getPid())||"10051292767".equals(originalInfo.getPid())
+								||"10021015594".equals(originalInfo.getPid())||"10035224171".equals(originalInfo.getPid())) {
 							ii =gateWayService.UpdatePmsMerchantInfo(originalInfo,1.0);
 						}else {
 							ii =gateWayService.UpdatePmsMerchantInfo(originalInfo,0.5);
