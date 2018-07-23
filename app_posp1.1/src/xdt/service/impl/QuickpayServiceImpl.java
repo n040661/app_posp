@@ -4636,11 +4636,9 @@ public class QuickpayServiceImpl extends BaseServiceImpl implements IQuickPaySer
 								+ PaymentCodeEnum.moBaoQuickPay.getTypeCode());
 						return setResp("13", "暂不支持该交易方式");
 					}
-					ViewKyChannelInfo channelInfo = AppPospContext.context.get(HENGFENGPAY + HENGFENGCHANNELNUM);
-
 					// 设置通道信息
-					pmsAppTransInfo.setBusinessNum(channelInfo.getBusinessnum());
-					pmsAppTransInfo.setChannelNum(HENGFENGCHANNELNUM);
+					pmsAppTransInfo.setBusinessNum(pmsBusinessPos.getBusinessnum());
+					pmsAppTransInfo.setChannelNum(pmsBusinessPos.getChannelnum());
 
 					// 查看当前交易是否已经生成了流水表
 					PospTransInfo pospTransInfo = null;
