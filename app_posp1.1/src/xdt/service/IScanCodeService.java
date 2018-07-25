@@ -26,7 +26,7 @@ public interface IScanCodeService {
 	public void otherInvoke(ScanCodeResponseEntity result) throws Exception;
 	public int UpdatePmsMerchantInfo(OriginalOrderInfo originalInfo)
 			throws Exception;//异步实时入金80%
-	public int UpdatePmsMerchantInfo1(OriginalOrderInfo originalInfo)
+	public int UpdatePmsMerchantInfo1(OriginalOrderInfo originalInfo,Double dou)
 			throws Exception;//异步实时入金100%
 	public Map<String, String> getScanCodeQuick(GateWayQueryRequestEntity query);//查询交易状态
 	

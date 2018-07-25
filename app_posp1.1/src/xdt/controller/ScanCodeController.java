@@ -1161,7 +1161,7 @@ public class ScanCodeController extends BaseAction{
 						map.put("v_status_msg", "支付成功");
 						int ii=0;
 						try {
-							ii = service.UpdatePmsMerchantInfo1(originalInfo);
+							ii = service.UpdatePmsMerchantInfo1(originalInfo,1.0);
 						} catch (Exception e) {
 							log.info("汇聚入金异常！");
 							e.printStackTrace();
@@ -1456,7 +1456,7 @@ public class ScanCodeController extends BaseAction{
 				Map<String,String> maps =service.getScanCodeQuick(query);
 				try {
 					if(!"0000".equals(maps.get("v_status"))) {
-						int i =service.UpdatePmsMerchantInfo1(originalInfo);
+						int i =service.UpdatePmsMerchantInfo1(originalInfo,1.0);
 						if(i==1) {
 							log.info("微宝付H5入金成功");
 						}else {
@@ -1687,7 +1687,7 @@ public class ScanCodeController extends BaseAction{
 				Map<String,String> maps =service.getScanCodeQuick(query);
 				try {
 					if(!"0000".equals(maps.get("v_status"))) {
-						int i =service.UpdatePmsMerchantInfo(originalInfo);
+						int i =service.UpdatePmsMerchantInfo1(originalInfo,0.6);
 						if(i==1) {
 							log.info("易势支付入金成功");
 						}else {

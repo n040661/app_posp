@@ -1611,7 +1611,9 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 				.getParentFile().getCanonicalPath() + "/ky/"+pmsBusinessPos.getBusinessnum()+".pfx";
         
         String keyPass=pmsBusinessPos.getKek();
-        
+        log.info("cerPath:"+cerPath);
+        log.info("keyStorePath:"+keyStorePath);
+        log.info("keyPass:"+keyPass);
         SecretConfig e = new SecretConfig(cerPath, keyStorePath, keyPass);
         Secret secret = new Secret(e);
         // 敏感信息加密
@@ -1624,7 +1626,12 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		System.out.println(sign);
 		map.put("sign", sign);
 		log.info(JSON.toJSONString(map));
-		String url ="https://paydemo.ielpm.com/paygate/v1/smpay"; 
+		String url ="";
+		if("000020161103001".equals(pmsBusinessPos.getBusinessnum())) {
+			url ="https://paydemo.ielpm.com/paygate/v1/smpay"; 
+		}else {
+			url ="https://cashier.ielpm.com/paygate/v1/smpay"; 
+		}
 		String str = xdt.dto.scanCode.util.SimpleHttpUtils.httpPost(url, map);
 		System.out.println(str);
 		resultMap = ResponseUtil.parseResponse(str, secret);
@@ -1838,7 +1845,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 	 * @return
 	 * @throws Exception
 	 */
-	public synchronized int UpdatePmsMerchantInfo1(OriginalOrderInfo originalInfo)
+	public synchronized int UpdatePmsMerchantInfo1(OriginalOrderInfo originalInfo,Double dou)
 			throws Exception {
 		log.info("代付实时填金:"+JSON.toJSON(originalInfo));
 		DecimalFormat df =new DecimalFormat("#.00");
@@ -1865,7 +1872,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 				BigDecimal  positions =new BigDecimal(position);
 				Double ds =positions.doubleValue();
 				Double dd=0.0;
-				dd =(amount*100-poundage);
+				dd =(amount*100-poundage)*dou;
 				dd =(dd+ds);
 				log.info("来了1---------");
 				pmsMerchantInfo.setMercId(originalInfo.getPid());
