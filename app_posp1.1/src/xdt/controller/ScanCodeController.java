@@ -1678,7 +1678,7 @@ public class ScanCodeController extends BaseAction{
 			map.put("v_attach", originalInfo.getAttach());
 			map.put("v_code", "00");
 			map.put("v_msg", "成功");
-			if("0000".equals(tranCode)) {
+			if("0000".equals(rtnCode)) {
 				map.put("v_status", "0000");
 				map.put("v_status_msg", "支付成功");
 				GateWayQueryRequestEntity query =new GateWayQueryRequestEntity();

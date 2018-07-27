@@ -526,8 +526,8 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 					}
 					if (i == 1) {
 						log.info("代付订单添加成功");
-						int iii =insertProfit(payRequest.getV_batch_no(), payRequest.getV_sum_amount(), merchantinfo, "代付", payRequest.getV_type());
-						System.out.println(iii);
+						//int iii =insertProfit(payRequest.getV_batch_no(), payRequest.getV_sum_amount(), merchantinfo, "代付", payRequest.getV_type());
+						//System.out.println(iii);
 						switch (pmsBusinessPos.getChannelnum()) {//
 
 						case "SXYWG":// 首信易网关
@@ -4172,7 +4172,12 @@ public class TotalPayServiceImpl extends BaseServiceImpl implements ITotalPaySer
 		System.out.println(sign);
 		maps.put("sign", sign);
 		log.info(JSON.toJSONString(maps));
-		String url ="https://paydemo.ielpm.com/paygate/v1/dfpay"; 
+		String url ="";
+		if("000020161103001".equals(pmsBusinessPos.getBusinessnum())) {
+			url ="https://paydemo.ielpm.com/paygate/v1/dfpay"; 
+		}else {
+			url ="https://cashier.ielpm.com/paygate/v1/dfpay"; 
+		}
 		String str = xdt.dto.scanCode.util.SimpleHttpUtils.httpPost(url, maps);
 		resultMap = ResponseUtil.parseResponse(str, secret);
 		System.out.println("易势返回的参数"+JSON.toJSON(resultMap));
