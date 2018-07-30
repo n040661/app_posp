@@ -44,6 +44,8 @@ import xdt.dao.IPmsDaifuMerchantInfoDao;
 import xdt.dao.IPmsMerchantInfoDao;
 import xdt.dao.IPospTransInfoDAO;
 import xdt.dao.OriginalOrderInfoDao;
+import xdt.dto.cj.BaseConstant;
+import xdt.dto.cj.ChanPayUtil;
 import xdt.dto.gateway.entity.GateWayQueryRequestEntity;
 import xdt.dto.hj.HJUtil;
 import xdt.dto.jp.JpUtil;
@@ -73,6 +75,7 @@ import xdt.service.IScanCodeService;
 import xdt.util.Constants;
 import xdt.util.HttpURLConection;
 import xdt.util.HttpUtil;
+import xdt.util.JsonUtil;
 import xdt.util.OrderStatusEnum;
 import xdt.util.PaymentCodeEnum;
 import xdt.util.RSAUtil;
@@ -197,7 +200,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 					paramMap.put("businesscode", TradeTypeEnum.merchantCollect.getTypeCode());
 					//--------------------------------------------------------------------
 					// 支付宝支付
-					if("ALIPAY_NATIVE".equals(entity.getV_cardType())||"ALIPAY_CARD".equals(entity.getV_cardType())||"ALIPAY_APP".equals(entity.getV_cardType())||"ALIPAY_H5".equals(entity.getV_cardType())||"ALIPAY_FWC".equals(entity.getV_cardType())||"ALIPAY_SYT".equals(entity.getV_cardType())){
+					if("ALIPAY_NATIVE".equals(entity.getV_cardType())||"ALIPAY_CARD".equals(entity.getV_cardType())||"ALIPAY_APP".equals(entity.getV_cardType())||"ALIPAY_H5".equals(entity.getV_cardType())||"ALIPAY_FWC".equals(entity.getV_cardType())||"ALIPAY_SYT".equals(entity.getV_cardType())||"ALIPAY_WAP".equals(entity.getV_cardType())){
 						paramMap.put("paymentcode", PaymentCodeEnum.zhifubaoPay.getTypeCode());
 					//微信
 					}else if("WEIXIN_NATIVE".equals(entity.getV_cardType())||"WEIXIN_CARD".equals(entity.getV_cardType())||"WEIXIN_APP".equals(entity.getV_cardType())||"WEIXIN_H5".equals(entity.getV_cardType())||"WEIXIN_GZH".equals(entity.getV_cardType())||"WEIXIN_XCX".equals(entity.getV_cardType())){
@@ -251,7 +254,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 
 								// 判断支付方式时候开通总开关
 								ResultInfo payCheckResult = null;
-								if("ALIPAY_NATIVE".equals(entity.getV_cardType())||"ALIPAY_CARD".equals(entity.getV_cardType())||"ALIPAY_APP".equals(entity.getV_cardType())||"ALIPAY_H5".equals(entity.getV_cardType())||"ALIPAY_FWC".equals(entity.getV_cardType())||"ALIPAY_SYT".equals(entity.getV_cardType())){
+								if("ALIPAY_NATIVE".equals(entity.getV_cardType())||"ALIPAY_CARD".equals(entity.getV_cardType())||"ALIPAY_APP".equals(entity.getV_cardType())||"ALIPAY_H5".equals(entity.getV_cardType())||"ALIPAY_FWC".equals(entity.getV_cardType())||"ALIPAY_SYT".equals(entity.getV_cardType())||"ALIPAY_WAP".equals(entity.getV_cardType())){
 									payCheckResult = payTypeControlDao.checkLimit(oAgentNo,
 											PaymentCodeEnum.GatewayCodePay.getTypeCode());
 								//微信
@@ -301,7 +304,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 										// 商户渠道支付方式
 										// 商户渠道交易类型
 										// 验证支付方式是否开启
-										if("ALIPAY_NATIVE".equals(entity.getV_cardType())||"ALIPAY_CARD".equals(entity.getV_cardType())||"ALIPAY_APP".equals(entity.getV_cardType())||"ALIPAY_H5".equals(entity.getV_cardType())||"ALIPAY_FWC".equals(entity.getV_cardType())||"ALIPAY_SYT".equals(entity.getV_cardType())){
+										if("ALIPAY_NATIVE".equals(entity.getV_cardType())||"ALIPAY_CARD".equals(entity.getV_cardType())||"ALIPAY_APP".equals(entity.getV_cardType())||"ALIPAY_H5".equals(entity.getV_cardType())||"ALIPAY_FWC".equals(entity.getV_cardType())||"ALIPAY_SYT".equals(entity.getV_cardType())||"ALIPAY_WAP".equals(entity.getV_cardType())){
 											resultinfo = iPublicTradeVerifyService
 													.payTypeVerifyMer(PaymentCodeEnum.GatewayCodePay, mercId);
 										//微信
@@ -393,7 +396,7 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 															log.info("请求交易生成二维码map");
 													// 组装上送参数
 															//1微信
-															if("ALIPAY_NATIVE".equals(entity.getV_cardType())||"ALIPAY_CARD".equals(entity.getV_cardType())||"ALIPAY_APP".equals(entity.getV_cardType())||"ALIPAY_H5".equals(entity.getV_cardType())||"ALIPAY_FWC".equals(entity.getV_cardType())||"ALIPAY_SYT".equals(entity.getV_cardType())){
+															if("ALIPAY_NATIVE".equals(entity.getV_cardType())||"ALIPAY_CARD".equals(entity.getV_cardType())||"ALIPAY_APP".equals(entity.getV_cardType())||"ALIPAY_H5".equals(entity.getV_cardType())||"ALIPAY_FWC".equals(entity.getV_cardType())||"ALIPAY_SYT".equals(entity.getV_cardType())||"ALIPAY_WAP".equals(entity.getV_cardType())){
 																appTransInfo.setPaymenttype(PaymentCodeEnum.zhifubaoPay.getTypeName());
 																appTransInfo.setPaymentcode(PaymentCodeEnum.zhifubaoPay.getTypeCode());
 															//微信
@@ -460,6 +463,9 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 																break;
 															case "ZHJH":
 																result =zxjhScanCodePay(entity, result,pmsBusinessPos);
+																break;
+															case "CJ":
+																result =cjScanCodePay(entity, result,pmsBusinessPos);
 																break;
 															default:
 																result.put("v_code", "11");
@@ -1709,6 +1715,82 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		}
      	return result;
 	}
+	
+	/**
+	 * 畅接给上游发送参数
+	 * @param entity
+	 * @param result
+	 * @param pmsBusinessPos
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> cjScanCodePay(ScanCodeRequestEntity entity,Map<String, String> result,PmsBusinessPos pmsBusinessPos) throws Exception{
+		
+		Map<String, String> origMap = new HashMap<String, String>();
+		// 基本参数
+		if("ALIPAY_NATIVE".equals(entity.getV_cardType())){
+			origMap.put("Service", "mag_init_code_pay");
+			origMap.put("BankCode", "ALIPAY");
+		}else if("WEIXIN_NATIVE".equals(entity.getV_cardType())){
+			origMap.put("Service", "mag_init_code_pay");
+			origMap.put("BankCode", "WXPAY");
+		}else if("UNIONPAY_NATIVE".equals(entity.getV_cardType())) {
+			origMap.put("Service", "mag_init_code_pay");
+			origMap.put("BankCode", "UNIONPAY");
+			origMap.put("DeviceInfo", entity.getV_merchantBankCode());
+		}else if("ALIPAY_H5".equals(entity.getV_cardType())||"WEIXIN_H5".equals(entity.getV_cardType())) {
+			origMap.put("Service", "mag_wx_wap_pay");
+			origMap.put("DeviceInfo", entity.getV_merchantBankCode());
+		}else if("ALIPAY_WAP".equals(entity.getV_cardType())) {
+			origMap.put("Service", "mag_ali_wap_pay");
+		}
+		
+		origMap.put("Version", "1.0");
+		origMap.put("PartnerId", pmsBusinessPos.getBusinessnum());//生产环境测试商户号
+		origMap.put("InputCharset", "UTF-8");
+		origMap.put("TradeDate", entity.getV_time().substring(0,8));
+		origMap.put("TradeTime", entity.getV_time().substring(8,14));
+		// origMap.put("SignType","RSA");
+		origMap.put("ReturnUrl", "");// 前台跳转url
+		origMap.put("Memo", entity.getV_attach()==null?"":entity.getV_attach());
+
+		// 4.2.1.1. 公众号/服务窗确认支付 api 业务参数
+		origMap.put("OutTradeNo", entity.getV_oid());
+		origMap.put("MchId", pmsBusinessPos.getBusinessnum());
+		origMap.put("SubMchId", "");
+		origMap.put("TradeType", "11");
+		
+		origMap.put("AppId", entity.getV_appId()==null?"":entity.getV_appId());
+		origMap.put("Currency", "CNY");
+		origMap.put("TradeAmount", entity.getV_txnAmt());
+		origMap.put("EnsureAmount", "");
+		origMap.put("GoodsName", entity.getV_productName());
+		origMap.put("TradeMemo", entity.getV_productDesc());
+		origMap.put("Subject", "商城订单");
+		origMap.put("OrderStartTime",entity.getV_time());
+		origMap.put("OrderEndTime", "");
+		origMap.put("NotifyUrl", ScanCodeUtil.cjNotifyUrl);
+		origMap.put("SpbillCreateIp", entity.getV_clientIP());
+		origMap.put("SplitList", "");
+		origMap.put("Ext", "{'ext':'ext1'}");
+
+		String data = ChanPayUtil.sendPost(origMap, BaseConstant.CHARSET, pmsBusinessPos.getKek());
+		log.info("畅捷返回参数：" +data);
+		Map<String, String> maps = JsonUtil.jsonToMap(data);
+		if("S".equals(maps.get("AcceptStatus"))&&"SYSTEM_SUCCESS".equals(maps.get("RetCode"))) {
+			if(maps.get("CodeUrl")!=null) {
+				result.put("v_result",maps.get("CodeUrl"));
+			}else if(maps.get("PayInfo")!=null) {
+				result.put("v_result",maps.get("PayInfo"));
+			}
+			result.put("v_code", "00");
+			result.put("v_msg", "请求成功");
+		}else {
+			result.put("v_code", "01");
+			result.put("v_msg", maps.get("RetMsg"));
+		}
+     	return result;
+	}
 	public void otherInvoke(ScanCodeResponseEntity result) throws Exception {
 		// TODO Auto-generated method stub
 
@@ -2129,15 +2211,20 @@ public class ScanCodeServiceImpl extends BaseServiceImpl implements IScanCodeSer
 		return map;
 	}
 	public static void main(String[] args) {
-		/*DecimalFormat df1 = new DecimalFormat("######0"); 
-		Double txnAmt=Double.parseDouble("5.02");
-		System.out.println(txnAmt*100.0);
-		System.out.println(df1.format(txnAmt));
-		BigDecimal payAmt=new BigDecimal(txnAmt).setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
-		System.out.println(payAmt.toString());
-		System.out.println(df1.format(payAmt));*/
-		//String ss="{v_code=00, v_msg=请求成功, v_sign=171B89F93E49562DE30BB8F70B93918D}"; 
-		//com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(ss);
-		//System.out.println(json);
+		String ss ="WInA0R9Ki1Ats9bvFVNlsk5GkSZLj/oeOStnk9FOdv71T6fdzCoWZk6Qh3Ak7rlf" + 
+				"UClb2yjDMVBqkdwuwbNU23/n4QcLquxtjP+tPQHmUUsueSMmKbZZBr4Uj2TPAHC6" + 
+				"klAPASYcGixEYmUWPnmCt3R0aVWVAgMBAAECgYEAgkbIm4CZeBUGXX9ASsXyKBIz" + 
+				"r9QK6dRK7Cs1xVS/y63kj8FHqTSRM282US8wqXc7JxOrWURlb2SVIPhnYG9K5qX4" + 
+				"OzLR0DBd0+y0WpmPeJKo3LxPwRn+B1uQUj09Yivt5CClP8MYaIEhE4lFqiTwH2Uw" + 
+				"I59+ZLaYsgCUvMFS+e0CQQD1FN+xVggI+v88B1pnYztxK/jXBxzcwJtjj3JQWGk9" + 
+				"dUvFp6SWTA35ZNEMHQhak+ji5x8DnOguOM2HUUOCjAQPAkEAzHfpdEULHLtGOhsX" + 
+				"qyYaDSlLBYCN5LXvUeu/v/HDhWJznHd15aGzql8XDfYzumZqx2Wg3gnYmh3ujjh0" + 
+				"swSYGwJBAM17puHko/ADoiQOdjng9WG54HVJPWXJB3++MbYzqmkhA1rBaDmrorvL" + 
+				"T4q8fNiU0toLtfEtiW3XqlseQ2AdTPkCQQDCXPJkfgVUKIlXTs2u+acl/6y67Dr1" + 
+				"wCRgwTMjaNQthSrU/5Ho2U+Kkp29vd3qQNUb+nVy2/U0e2N7ehsk2SclAkAeAR11" + 
+				"p0KkF30NOaoFbw7AXUjFLVfkEE528O9/IN05BnqISPeqKlTELTXRJEug9/f3O52c" + 
+				"csip+Ifjj0LMx0uI";
+		System.out.println(ss.trim());
 	}
+	
 }

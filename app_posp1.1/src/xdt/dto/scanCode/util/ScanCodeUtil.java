@@ -25,4 +25,5 @@ public class ScanCodeUtil {
 	public static final String sjjReturnUrl=BaseUtil.url+"/ScanCodeController/sjjNotifyUrl.action";//三境界扫码异步步
 	public static final String yszfReturnUrl=BaseUtil.url+"/ScanCodeController/yszfReturnUrl.action";//易势扫码异步步
 	public static final String zhjhNotifyUrl=BaseUtil.url+"/ScanCodeController/zhjhNotifyUrl.action";//易势扫码异步步
+	public static final String cjNotifyUrl=BaseUtil.url+"/ScanCodeController/cjNotifyUrl.action";//畅接扫码异步步
 }

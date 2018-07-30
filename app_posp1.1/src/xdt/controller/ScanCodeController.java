@@ -1849,4 +1849,134 @@ public class ScanCodeController extends BaseAction{
 			}
 		}
 	}
+	/**
+	 * 畅捷异步
+	 * @param temp
+	 * @param response
+	 * @param request
+	 */
+	@RequestMapping(value="cjNotifyUrl")
+	public void cjNotifyUrl(HttpServletResponse response,HttpServletRequest request) {
+		log.info("畅捷异步参数！");
+		String notify_id=request.getParameter("notify_id");
+		String notify_type=request.getParameter("notify_type");
+		String notify_time=request.getParameter("notify_time");
+		String _input_charset=request.getParameter("_input_charset");
+		String sign=request.getParameter("sign");
+		String sign_type=request.getParameter("sign_type");
+		String version=request.getParameter("version");
+		String outer_trade_no=request.getParameter("outer_trade_no");
+		String inner_trade_no=request.getParameter("inner_trade_no");
+		String trade_status=request.getParameter("trade_status");
+		String trade_amount=request.getParameter("trade_amount");
+		String gmt_create=request.getParameter("gmt_create");
+		String gmt_payment=request.getParameter("gmt_payment");
+		String gmt_close=request.getParameter("gmt_close");
+		String extension=request.getParameter("extension");
+		request.getSession();
+		log.info("畅捷返回参数：outer_trade_no="+outer_trade_no+",trade_status="+trade_status+",trade_amount="+trade_amount+",notify_id="+notify_id
+				+",sign="+sign);
+		Map<String, String> map =new HashMap<>();
+		String str ="";
+		if(outer_trade_no !=null &&outer_trade_no !="") {
+			str="success";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("畅捷返回信息异常"+e);
+				e.printStackTrace();
+			}
+			ChannleMerchantConfigKey keyinfo=new ChannleMerchantConfigKey();
+			OriginalOrderInfo originalInfo=null;
+			try {
+				originalInfo  = this.payService.getOriginOrderInfo(outer_trade_no);
+			} catch (Exception e) {
+				log.info("畅捷查询原始订单信息返回异常");
+				e.printStackTrace();
+			}
+			keyinfo = clientCollectionPayService.getChannelConfigKey(originalInfo.getPid());
+			log.info("畅捷订单数据:" + JSON.toJSON(originalInfo));
+			
+			log.info("畅捷下游的异步地址" + originalInfo.getBgUrl());
+			map.put("v_mid", originalInfo.getPid());
+			map.put("v_oid", originalInfo.getOrderId());
+			map.put("v_txnAmt", originalInfo.getOrderAmount());
+			map.put("v_attach", originalInfo.getAttach());
+			map.put("v_code", "00");
+			map.put("v_msg", "成功");
+			
+			if("TRADE_SUCCESS".equals(trade_status)) {
+				map.put("v_status", "0000");
+				map.put("v_status_msg", "支付成功");
+				/*GateWayQueryRequestEntity query =new GateWayQueryRequestEntity();
+				query.setV_mid(originalInfo.getPid());
+				query.setV_oid(originalInfo.getOrderId());
+				Map<String,String> maps =service.getScanCodeQuick(query);
+				try {
+					if(!"0000".equals(maps.get("v_status"))) {
+						int i =service.UpdatePmsMerchantInfo1(originalInfo,0.6);
+						if(i==1) {
+							log.info("易势支付入金成功");
+						}else {
+							log.info("易势支付入金失败");
+						}
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+			}else if("TRADE_FINISHED".equals(trade_status)){
+				map.put("v_status", "1001");
+				map.put("v_status_msg", "交易结束");
+			}
+			
+			ScanCodeResponseEntity consume = (ScanCodeResponseEntity) BeanToMapUtil
+					.convertMap(ScanCodeResponseEntity.class, map);
+			try {
+				service.otherInvoke(consume);
+			} catch (Exception e1) {
+				log.info("畅捷修改状态失败");
+				e1.printStackTrace();
+			}
+			String signs = SignatureUtil.getSign(beanToMap(consume), keyinfo.getMerchantkey(), log);
+			map.put("v_sign", signs);
+			String params = HttpURLConection.parseParams(map);
+			log.info("畅捷给下游异步的数据:" + params);
+			String html="";
+			try {
+				html = HttpClientUtil.post(originalInfo.getBgUrl(),params);
+			}  catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		    logger.info("畅捷下游返回状态" + html);
+		    net.sf.json.JSONObject ob = net.sf.json.JSONObject.fromObject(html);
+			Iterator it = ob.keys();
+			Map<String, String> result = new HashMap<>();
+			while (it.hasNext()) {
+				String keys = (String) it.next();
+				if (keys.equals("success")) {
+					String value = ob.getString(keys);
+					logger.info("畅捷异步回馈的结果:" + "\t" + value);
+					result.put("success", value);
+				}
+			}
+			if (!result.get("success").equals("true")) {
+
+				logger.info("畅捷启动线程进行异步通知");
+				// 启线程进行异步通知
+				ThreadPool.executor(new MbUtilThread(originalInfo.getBgUrl(),params));
+			}
+			logger.info("畅捷向下游 发送数据成功");
+			
+		}else {
+			str="FALL";
+			try {
+				outString(response, str);
+			} catch (IOException e) {
+				log.info("畅捷扫码返回信息异常");
+				e.printStackTrace();
+			}
+		}
+	}
 }
