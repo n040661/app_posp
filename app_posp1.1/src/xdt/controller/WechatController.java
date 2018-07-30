@@ -924,7 +924,6 @@ public class WechatController extends BaseAction {
 			log.error("回调的参数为空!");
 			result.put("respCode", "01");
 			result.put("respMsg", "fail");
-			response.getWriter().write("FAIL");
 		}
 
 	}

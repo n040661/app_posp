@@ -50,8 +50,8 @@ import xdt.util.PaymentCodeEnum;
 import xdt.util.TradeTypeEnum;
 
 @Service("IClearPayQuickService")
-public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearPayQuickService{
-	
+public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearPayQuickService {
+
 	private Logger logger = Logger.getLogger(ClearPayQuickServiceImpl.class);
 	@Resource
 	private ChannleMerchantConfigKeyDao cmckeyDao;
@@ -73,16 +73,17 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 	private IAppRateConfigDao appRateConfigDao;
 	@Resource
 	private IPayBankInfoDao payBankInfoDao;
+
 	@Override
 	public ChannleMerchantConfigKey getChannelConfigKey(String merchantId) throws Exception {
-		
+
 		logger.info("获取商户密钥信息");
 		return cmckeyDao.get(merchantId);
 	}
 
 	@Override
 	public OriginalOrderInfo getOriginOrderInfo(String tranId) throws Exception {
-		
+
 		OriginalOrderInfo original = null;
 
 		PospTransInfo transInfo = pospTransInfoDAO.searchBytransOrderId(tranId);
@@ -93,7 +94,7 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 	}
 
 	public Map<String, String> payHandle(ClearPayRequestEntity originalinfo) throws Exception {
-		
+
 		logger.info("快捷(直清)支付请求参数：" + JSON.toJSONString(originalinfo));
 		Map<String, String> retMap = new HashMap();
 
@@ -119,11 +120,10 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 		original.setPageUrl(originalinfo.getV_url());
 		original.setBgUrl(originalinfo.getV_notify_url());
 		original.setAttach(originalinfo.getV_attach());
-		if(originalinfo.getV_userId()!=null)
-		{
+		if (originalinfo.getV_userId() != null) {
 			original.setByUser(originalinfo.getV_userId());
 		}
-		
+
 		originalDao.insert(original);
 
 		String mercId = originalinfo.getV_mid();
@@ -151,13 +151,15 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 
 				PmsBusinessPos pmsBusinessPos = selectKey(originalinfo.getV_mid());
 
-				ResultInfo payCheckResult =iPublicTradeVerifyService.amountVerifyOagent((int) Double.parseDouble(factAmount), TradeTypeEnum.merchantCollect, oAgentNo);
+				ResultInfo payCheckResult = iPublicTradeVerifyService.amountVerifyOagent(
+						(int) Double.parseDouble(factAmount), TradeTypeEnum.merchantCollect, oAgentNo);
 				if (!payCheckResult.getErrCode().equals("0")) {
-					logger.info("欧单金额限制，oAagentNo:" + oAgentNo + ",payType:"
-							+ PaymentCodeEnum.moBaoQuickPay.getTypeCode());
+					logger.info(
+							"欧单金额限制，oAagentNo:" + oAgentNo + ",payType:" + PaymentCodeEnum.moBaoQuickPay.getTypeCode());
 					return setResp("05", "欧单金额限制，请重试或联系客服");
 				}
-				ResultInfo resultInfoForOAgentNo = iPublicTradeVerifyService.moduleVerifyOagent(TradeTypeEnum.merchantCollect, oAgentNo);
+				ResultInfo resultInfoForOAgentNo = iPublicTradeVerifyService
+						.moduleVerifyOagent(TradeTypeEnum.merchantCollect, oAgentNo);
 				if (!resultInfoForOAgentNo.getErrCode().equals("0")) {
 					if (StringUtils.isEmpty(resultInfoForOAgentNo.getMsg())) {
 						logger.error("交易关闭，请重试或联系客服");
@@ -165,9 +167,11 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 					}
 					return setResp("07", "系统异常，请重试或联系客服");
 				}
-				ResultInfo payCheckResult3 =iPublicTradeVerifyService.moduelVerifyMer(TradeTypeEnum.merchantCollect,mercId);
+				ResultInfo payCheckResult3 = iPublicTradeVerifyService.moduelVerifyMer(TradeTypeEnum.merchantCollect,
+						mercId);
 				if (!payCheckResult3.getErrCode().equals("0")) {
-				    logger.info("商户模块限制，oAagentNo:" + oAgentNo + ",payType:"+ PaymentCodeEnum.moBaoQuickPay.getTypeCode());
+					logger.info(
+							"商户模块限制，oAagentNo:" + oAgentNo + ",payType:" + PaymentCodeEnum.moBaoQuickPay.getTypeCode());
 					return setResp("08", "商户模块限制,请重试或联系客服");
 				}
 				Map<String, String> paramMap = new HashMap();
@@ -209,7 +213,7 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 				pmsAppTransInfo.setFactamount(factBigDecimal.stripTrailingZeros().toPlainString());
 				pmsAppTransInfo.setOrderamount(orderAmountBigDecimal.stripTrailingZeros().toPlainString());
 				pmsAppTransInfo.setDrawMoneyType("1");
-				pmsAppTransInfo.setSettlementState("D0");			
+				pmsAppTransInfo.setSettlementState("D0");
 				Integer insertAppTrans = Integer.valueOf(pmsAppTransInfoDao.insert(pmsAppTransInfo));
 				if (insertAppTrans.intValue() == 1) {
 					pmsAppTransInfo = pmsAppTransInfoDao.searchOrderInfo(pmsAppTransInfo.getOrderid());
@@ -219,7 +223,7 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 					AppRateConfig appRate = new AppRateConfig();
 					appRate.setRateType(quickRateType);
 					appRate.setoAgentNo(oAgentNo);
-					AppRateConfig appRateConfig =appRateConfigDao.getByRateTypeAndoAgentNo(appRate);
+					AppRateConfig appRateConfig = appRateConfigDao.getByRateTypeAndoAgentNo(appRate);
 					if (appRateConfig == null) {
 						logger.info("没有查到相关费率配置：" + merchantinfo.getMobilephone());
 						return setResp("09", "没有查到相关费率配置,,请重试或联系客服");
@@ -230,7 +234,8 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 					paymentAmount = pmsAppTransInfo.getFactamount();
 					String minPoundageStr = appRateConfig.getBottomPoundage();
 					Double minPoundage = Double.valueOf(0.0D);
-					if ((StringUtils.isNotBlank(appRateConfig.getIsBottom()))&& (appRateConfig.getIsBottom().equals("1"))) {
+					if ((StringUtils.isNotBlank(appRateConfig.getIsBottom()))
+							&& (appRateConfig.getIsBottom().equals("1"))) {
 						if (StringUtils.isNotBlank(minPoundageStr)) {
 							minPoundage = Double.valueOf(Double.parseDouble(minPoundageStr));
 						} else {
@@ -243,7 +248,8 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 
 					BigDecimal fee = new BigDecimal(0);
 					String rateStr = "";
-					Integer amount=null;
+					Integer amount = null;
+					Double settleFee=null;
 					if ("1".equals(isTop)) {
 						rateStr = rate + "-" + topPoundage;
 
@@ -259,31 +265,33 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 						}
 					} else {
 						Double payfee = Double.parseDouble(merchantinfo.getCounter());
-						
-						Double userfee=Double.parseDouble(originalinfo.getV_userFee());
-						
-						Double settleFee=Double.parseDouble(originalinfo.getV_settleUserFee())*100;
-						amount=settleFee.intValue();
-						
-						Double dfpag=Double.parseDouble(merchantinfo.getPoundage());
+
+						Double userfee = Double.parseDouble(originalinfo.getV_userFee());
+
+					    settleFee = Double.parseDouble(originalinfo.getV_settleUserFee()) * 100;
+						amount = settleFee.intValue();
+
+						Double dfpag = Double.parseDouble(merchantinfo.getPoundage());
 
 						rateStr = rate;
 						if (Double.parseDouble(rateStr) <= userfee) {
-							fee = new BigDecimal(userfee).multiply(dfactAmount).add(new BigDecimal(minPoundage));
-							fee=new BigDecimal(fee.setScale(0, fee.ROUND_UP).intValue());
+							//fee = new BigDecimal(userfee).multiply(dfactAmount).add(new BigDecimal(minPoundage));
+							fee=new BigDecimal(dfactAmount.doubleValue()*userfee);
+							if (!this.isNumeric(fee.toString())) {
+								fee = new BigDecimal(fee.setScale(0, fee.ROUND_UP).intValue());
+							}
 						} else {
 							logger.info("费率低于成本费率：" + merchantinfo.getMercId());
 							return setResp("12", "费率低于成本费率");
 
 						}
-						if(dfpag!=null)
-						{
-						if (dfpag > Double.parseDouble(originalinfo.getV_settleUserFee())) {
+						if (dfpag != null) {
+							if (dfpag > Double.parseDouble(originalinfo.getV_settleUserFee())) {
 								logger.info("手续费低于最小手续费：" + merchantinfo.getMercId());
 								return setResp("20", "手续费低于最小手续费");
-							} else {		 
-							  fee.add(new BigDecimal(amount.toString()));
-						}
+							} else {
+								fee.add(new BigDecimal(amount.toString()));
+							}
 						}
 						payAmount = dfactAmount.subtract(fee).subtract(new BigDecimal(amount.toString()));
 						logger.info("清算金额:" + paymentAmount);
@@ -321,8 +329,8 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 					} else {
 						// 不存在流水，生成一个流水
 						pospTransInfo = generateTransFromAppTrans(pmsAppTransInfo);
-						
-						System.out.println("流水表生成的时间:"+pospTransInfo.getSenddate());
+
+						System.out.println("流水表生成的时间:" + pospTransInfo.getSenddate());
 						// 设置上送流水号
 						pospTransInfo.setTransOrderId(originalinfo.getV_oid());
 						insertOrUpdateFlag = 0;
@@ -348,22 +356,22 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 						switch (pmsBusinessPos.getChannelnum()) {
 						case "YT":
 							logger.info("################易通快捷(直清)支付开始处理#################");
-							Map<String , String> map=new HashMap<String,String>();
+							Map<String, String> map = new HashMap<String, String>();
 							map.put("version", "1.0.0");
 							map.put("transCode", "8888");
 							map.put("merchantId", "888201711310120");
 							map.put("merOrderNum", originalinfo.getV_oid());
 							map.put("bussId", "ONL0017");
-							amount=(int) (Double.parseDouble(originalinfo.getV_txnAmt())*100);
+							amount = (int) (Double.parseDouble(originalinfo.getV_txnAmt()) * 100);
 							map.put("tranAmt", amount.toString());
 							map.put("sysTraceNum", originalinfo.getV_oid());
 							map.put("tranDateTime", originalinfo.getV_time());
 							map.put("currencyType", "156");
-							map.put("merURL", "http://16j77178u5.iask.in:43879/app_posp/clearPay/clearPayNotifyUrl.action");
-							map.put("backURL", "http://16j77178u5.iask.in:43879/app_posp/clearPay/clearPayNotifyUrl.action");
-							map.put("orderInfo", "");	
+							map.put("merURL", BaseUtil.url + "/clearPay/clearPayNotifyUrl.action");
+							map.put("backURL", BaseUtil.url + "/clearPay/clearPayNotifyUrl.action");
+							map.put("orderInfo", "");
 							map.put("userId", "");
-							map.put("userNameHF",MD5Util.bytes2HexStr(originalinfo.getV_realName().getBytes("UTF-8")));
+							map.put("userNameHF", MD5Util.bytes2HexStr(originalinfo.getV_realName().getBytes("UTF-8")));
 							map.put("quickPayCertNo", originalinfo.getV_cert_no());
 							map.put("arrviedAcctNo", originalinfo.getV_settleCardNo());
 							map.put("arrviedPhone", originalinfo.getV_settlePhone());
@@ -373,46 +381,51 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 							map.put("cardCvn2", originalinfo.getV_cvn2());
 							map.put("cardExpire", originalinfo.getV_expired());
 							map.put("userIp", "");
-							map.put("bankId", "888880170122900");	
+							map.put("bankId", "888880170122900");
 							map.put("stlmId", "");
 							map.put("entryType", "1");
 							map.put("attach", originalinfo.getV_attach());
-							
-							Integer fees=fee.add(new BigDecimal(50)).intValue();
-							
+
+							Integer fees = fee.add(new BigDecimal(settleFee.intValue())).intValue();
+
 							map.put("reserver1", fees.toString());
 							map.put("reserver2", "");
 							map.put("reserver3", "");
 							map.put("reserver4", "7");
-					    	String datakey = "TLM3O9zGu69lP411";
-					    	String txnString = map.get("version") + "|" + map.get("transCode") + "|" + map.get("merchantId") + "|" + map.get("merOrderNum") + "|" + map.get("bussId")+ "|" + map.get("tranAmt")+ "|" + map.get("sysTraceNum")+ "|" + map.get("tranDateTime")+ "|" + map.get("currencyType")+ "|" + map.get("merURL")+ "|" + map.get("backURL")+ "|" + map.get("orderInfo")+ "|" + map.get("userId");
-					    	String signVal = xdt.quickpay.clearQuickPay.util.MD5.getInstance().getMD5ofStr(txnString + datakey);
+							String datakey = "TLM3O9zGu69lP411";
+							String txnString = map.get("version") + "|" + map.get("transCode") + "|"
+									+ map.get("merchantId") + "|" + map.get("merOrderNum") + "|" + map.get("bussId")
+									+ "|" + map.get("tranAmt") + "|" + map.get("sysTraceNum") + "|"
+									+ map.get("tranDateTime") + "|" + map.get("currencyType") + "|" + map.get("merURL")
+									+ "|" + map.get("backURL") + "|" + map.get("orderInfo") + "|" + map.get("userId");
+							String signVal = xdt.quickpay.clearQuickPay.util.MD5.getInstance()
+									.getMD5ofStr(txnString + datakey);
 							logger.info("生成的签名" + signVal);
 							map.put("signValue", signVal);
-							logger.info("上送的数据:"+map);
+							logger.info("上送的数据:" + map);
 							String encode = "utf-8";
 							String url = "https://cashier.etonepay.com/NetPay/SynonymNamePay.action";
-					    	HttpClient client = new HttpClient(url, 10000, 10000);
-							String result=client.send(map,encode);
-							logger.info("响应信息:"+result);
-						    Map<String, String> m =HttpClientUtil.transStringToMap(result, "&", "=");
-							logger.info("响应信息:"+m);
-							if("0000".equals(m.get("respCode")))
-							{
+							// HttpClient client = new HttpClient(url, 20000, 20000);
+							// String result=client.send(map,encode);
+							String result = HttpClientUtil.post(url, map);
+							logger.info("响应信息:" + result);
+							Map<String, String> m = HttpClientUtil.transStringToMap(result, "&", "=");
+							logger.info("响应信息:" + m);
+							if ("0000".equals(m.get("respCode"))) {
 								retMap.put("v_mid", originalinfo.getV_mid());
 								retMap.put("v_txnAmt", originalinfo.getV_txnAmt());
 								retMap.put("v_time", originalinfo.getV_time());
 								retMap.put("v_oid", originalinfo.getV_oid());
 								retMap.put("v_code", "00");
 								retMap.put("v_msg", "请求成功");
-							}else
-							{
+							} else {
 								retMap.put("v_code", "15");
-								retMap.put("v_msg", "请求失败:"+new String(MD5Util.hexStr2Bytes(m.get("reserver3")), "UTF-8"));
+								retMap.put("v_msg",
+										"请求失败:" + new String(MD5Util.hexStr2Bytes(m.get("reserver3")), "UTF-8"));
 								return retMap;
 							}
 							break;
-						default:							
+						default:
 							break;
 						}
 					}
@@ -431,12 +444,14 @@ public class ClearPayQuickServiceImpl extends BaseServiceImpl implements IClearP
 		}
 		return retMap;
 	}
+
 	private Map<String, String> setResp(String respCode, String respInfo) {
 		Map<String, String> result = new HashMap();
 		result.put("v_code", respCode);
 		result.put("v_msg", respInfo);
 		return result;
 	}
+
 	public void otherInvoke(String OrderId, String status) throws Exception {
 		this.logger.info("上游返回的订单号" + OrderId);
 		this.logger.info("上游返回的状态码" + status);

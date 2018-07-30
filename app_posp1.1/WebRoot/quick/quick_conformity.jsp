@@ -18,6 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    <input type="text" name="v_txnAmt" value="1">订单金额<br>
 		<input type="text" name="v_time" value="<%=UtilDate.getOrderNum()%>">订单时间(不为空,一共14 位，格式为：年[4位]月[2 位]日[2 位]时[2 位]分[2 位]秒[2位])<br>
 		<input type="text" name="v_productDesc" value="1234567890">商品名称<br>
+		<input type="text" name="v_card" value="6222380049724441">银行卡卡号<br>
 		<select name="v_cardType">
 			<option value="1" selected="selected">借记卡</option>
 			<option value="2">贷记卡</option>

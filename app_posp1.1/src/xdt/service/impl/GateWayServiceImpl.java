@@ -463,7 +463,7 @@ public class GateWayServiceImpl extends BaseServiceImpl implements IGateWayServi
 							logger.info("修改订单信息");
 							logger.info(pmsAppTransInfo);
 							int num=pmsAppTransInfoDao.update(pmsAppTransInfo);
-							insertProfit(originalinfo.getV_oid(), originalinfo.getV_txnAmt(), merchantinfo, PaymentCodeEnum.GatewayCodePay.getTypeName(), originalinfo.getV_channel());
+//							insertProfit(originalinfo.getV_oid(), originalinfo.getV_txnAmt(), merchantinfo, PaymentCodeEnum.GatewayCodePay.getTypeName(), originalinfo.getV_channel());
 							if (num>0) {
 								
 								retMap.put("v_code", "00");

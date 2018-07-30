@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
 import javax.annotation.Resource;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -39,6 +41,8 @@ import xdt.model.ViewKyChannelInfo;
 import xdt.quickpay.conformityQucikPay.entity.ConformityQucikPayRequestEntity;
 import xdt.quickpay.conformityQucikPay.entity.ConformityQuickPayQueryRequestEntity;
 import xdt.quickpay.conformityQucikPay.util.OrderStatusEnum;
+import xdt.quickpay.conformityQucikPay.util.RSAUtils;
+import xdt.quickpay.conformityQucikPay.util.StringUtil;
 import xdt.quickpay.conformityQucikPay.util.UtilDate;
 import xdt.quickpay.yb.util.YeepayService;
 import xdt.service.IConformityQucikPayService;
@@ -546,7 +550,7 @@ public class ConformityQucikPayServiceImpl extends BaseServiceImpl implements IC
 								}
 								break;
 						case "YSB":
-							this.logger.info("################银生宝(WAP)支付开始处理#################");
+							logger.info("################银生宝(WAP)支付开始处理#################");
 							Map<String, Object> infoMaps = new HashMap();
 							String accountId = pmsBusinessPos.getBusinessnum();
 							String customerId = originalinfo.getV_userId();
@@ -568,9 +572,9 @@ public class ConformityQucikPayServiceImpl extends BaseServiceImpl implements IC
 									+ orderNo + "&commodityName=" + commodityName + "&amount=" + amounts
 									+ "&responseUrl=" + responseUrl + "&pageResponseUrl=" + pageResponseUrl + "&key="
 									+ keys;
-							this.logger.info("银生宝生成签名前的数据:" + strss);
+							logger.info("银生宝生成签名前的数据:" + strss);
 							String signs = MD5Util.MD5Encode(strss).toUpperCase();
-							this.logger.info("银生宝生成的签名:" + signs);
+							logger.info("银生宝生成的签名:" + signs);
 							retMap.put("accountId", accountId);
 							retMap.put("customerId", customerId);
 							retMap.put("orderNo", orderNo);
@@ -580,6 +584,51 @@ public class ConformityQucikPayServiceImpl extends BaseServiceImpl implements IC
 							retMap.put("pageResponseUrl", pageResponseUrl);
 							retMap.put("mac", signs);
 							retMap.put("v_code", "00");
+							break;
+						case "TFB":
+							logger.info("################天付宝(WAP)支付开始处理#################");
+							TreeMap<String, String> paramsMap = new TreeMap<String, String>();
+							paramsMap.put("spid", "1800044038");
+							paramsMap.put("sp_userid", pmsBusinessPos.getBusinessnum());
+							paramsMap.put("spbillno",originalinfo.getV_oid() );
+							amountss = (Double.parseDouble(originalinfo.getV_txnAmt()) * 100);
+							aa = amountss.intValue();
+							paramsMap.put("money", aa.toString());
+							paramsMap.put("cur_type", "1");
+
+							paramsMap.put("notify_url", "http://localhost:8080/tfb_cardpay_JAVA_UTF8_MD5_RSA/notice_url.jsp");
+							paramsMap.put("return_url", "http://api.gcdev.tfb8.com/cgi-bin/v2.0/test_sp_callback.cgi");
+							paramsMap.put("errpage_url", "");
+							paramsMap.put("memo", originalinfo.getV_productDesc());
+							paramsMap.put("expire_time", "180000");
+
+							paramsMap.put("card_type", "");
+							paramsMap.put("bank_segment", "");
+							paramsMap.put("user_type", "1");
+							paramsMap.put("bank_accno", originalinfo.getV_card());
+							paramsMap.put("bank_acctype", "01");
+							paramsMap.put("channel", "1");
+							paramsMap.put("encode_type", "MD5");
+
+							 keys = pmsBusinessPos.getKek();
+
+							//拼接签名原串
+							String paramSrc = StringUtil.getParamSrc(paramsMap);
+							
+							String str=paramSrc + "&key=" +keys;
+
+							//生成签名
+							String sign = xdt.quickpay.conformityQucikPay.util.MD5Util.md5(str);
+
+							//rsa加密原串
+							String encryptSrc = paramSrc + "&sign=" + sign;//加密原串
+
+							//rsa密串
+							String cipherData = RSAUtils.encrypt(encryptSrc);
+							
+							retMap.put("cipherData", cipherData);
+							retMap.put("v_code", "00");
+							retMap.put("v_msg", "请求成功");
 							break;
 						default:							
 							break;

@@ -260,66 +260,66 @@ public class HttpClient {
     }
     
     public static void main(String[] args) throws Exception{
-//    	Map<String,String> mapData = new HashMap<String,String>();
-//    	String encode = "utf-8";
-//    	String url = "http://58.56.23.89:7002/NetPay/SynonymNamePay.action";
-//    	HttpClient client = new HttpClient(url, 60000, 60000);
-//    	String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 14) + "_CS";
-//    	System.out.println("merOrderNum:"+uuid);
-//    	String dateString = getStringDate();
-//    	mapData.put("version", "1.0.0");
-//    	mapData.put("transCode", "8888");
-//    	mapData.put("merchantId", "888888888888888");
-//    	mapData.put("merOrderNum", uuid);
-//    	mapData.put("bussId", "ONL0017");
-//    	mapData.put("tranAmt", "20");
-//    	mapData.put("sysTraceNum", dateString);
-//    	mapData.put("tranDateTime", dateString);
-//    	mapData.put("currencyType", "156");
-//    	mapData.put("merURL", "http://192.168.101.27:8080/NetPay/test/RcvTxn.jsp");
-//    	mapData.put("backURL", "http://192.168.101.27:8080/NetPay/test/RcvTxn.jsp");
-//    	mapData.put("orderInfo", "");
-//    	mapData.put("userId", "");
-//    	mapData.put("userNameHF", "e585a8e6b8a0e98193");//请用真实姓名16进制转换
-//    	mapData.put("quickPayCertNo", "341126197709218366");//请用真实的身份证号
-//    	mapData.put("arrviedAcctNo", "5200831111111113");//请用真实的入账卡号
-//    	mapData.put("arrviedPhone", "13552535506");//入账卡手机号
-//    	mapData.put("arrviedBankName", "农业银行");//开户行
-//    	mapData.put("userPhoneHF", "13552535506");//请用真实的交易卡手机号
-//    	mapData.put("userAcctNo", "6216261000000000018");//请用真实的交易卡卡号
-//    	mapData.put("cardCvn2", "");
-//    	mapData.put("cardExpire", "");
-//    	mapData.put("userIp", "");
-//    	mapData.put("bankId", "888880170122900");
-//    	mapData.put("stlmId", "");
-//    	mapData.put("entryType", "1");
-//    	mapData.put("attach", "");
-//    	mapData.put("reserver1", "5");
-//    	mapData.put("reserver2", "");
-//    	mapData.put("reserver3", "");
-//    	mapData.put("reserver4", "7");
-//    	String datakey = "8EF53C251102A4E6";
-//    	String txnString = mapData.get("version") + "|" + mapData.get("transCode") + "|" + mapData.get("merchantId") + "|" + mapData.get("merOrderNum") + "|" + mapData.get("bussId")+ "|" + mapData.get("tranAmt")+ "|" + mapData.get("sysTraceNum")+ "|" + mapData.get("tranDateTime")+ "|" + mapData.get("currencyType")+ "|" + mapData.get("merURL")+ "|" + mapData.get("backURL")+ "|" + mapData.get("orderInfo")+ "|" + mapData.get("userId");
-//    	String signVal = MD5.getInstance().getMD5ofStr(txnString + datakey);
-//    	System.out.println("txnString:"+ txnString);
-//    	System.out.println("signValue:"+signVal);
-//    	mapData.put("signValue", signVal);
-//    	client.send(mapData, encode);
     	Map<String,String> mapData = new HashMap<String,String>();
     	String encode = "utf-8";
-    	String url = "https://cashier.etonepay.com/NetPay/MerOrderQuery.action";
+    	String url = "https://cashier.etonepay.com/NetPay/SynonymNamePay.action";
+    	HttpClient client = new HttpClient(url, 60000, 60000);
+    	String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 14) + "_CS";
+    	System.out.println("merOrderNum:"+uuid);
     	String dateString = getStringDate();
+    	mapData.put("version", "1.0.0");
+    	mapData.put("transCode", "8888");
     	mapData.put("merchantId", "888201711310120");
-    	mapData.put("merOrderNum", "QP20180614152858986367");
-    	mapData.put("tranDate", dateString);
+    	mapData.put("merOrderNum", uuid);
+    	mapData.put("bussId", "ONL0017");
+    	mapData.put("tranAmt", "52846");
+    	mapData.put("sysTraceNum", dateString);
+    	mapData.put("tranDateTime", dateString);
+    	mapData.put("currencyType", "156");
+    	mapData.put("merURL", "http://192.168.101.27:8080/NetPay/test/RcvTxn.jsp");
+    	mapData.put("backURL", "http://192.168.101.27:8080/NetPay/test/RcvTxn.jsp");
+    	mapData.put("orderInfo", "");
+    	mapData.put("userId", "");
+    	mapData.put("userNameHF", "e5b09ae5bbb6e8b685");//请用真实姓名16进制转换
+    	mapData.put("quickPayCertNo", "410324199203231912");//请用真实的身份证号
+    	mapData.put("arrviedAcctNo", "6228480028542136370");//请用真实的入账卡号
+    	mapData.put("arrviedPhone", "18902195076");//入账卡手机号
+    	mapData.put("arrviedBankName", "农业银行");//开户行
+    	mapData.put("userPhoneHF", "18902195076");//请用真实的交易卡手机号
+    	mapData.put("userAcctNo", "6258081698129372");//请用真实的交易卡卡号
+    	mapData.put("cardCvn2", "269");
+    	mapData.put("cardExpire", "1122");
+    	mapData.put("userIp", "");
+    	mapData.put("bankId", "888880170122900");
+    	mapData.put("stlmId", "");
+    	mapData.put("entryType", "1");
+    	mapData.put("attach", "");
+    	mapData.put("reserver1", "257");
+    	mapData.put("reserver2", "");
+    	mapData.put("reserver3", "");
+    	mapData.put("reserver4", "7");
     	String datakey = "TLM3O9zGu69lP411";
-    	String txnString = mapData.get("merchantId") + "|" + mapData.get("merOrderNum") + "|" + mapData.get("tranDate");
+    	String txnString = mapData.get("version") + "|" + mapData.get("transCode") + "|" + mapData.get("merchantId") + "|" + mapData.get("merOrderNum") + "|" + mapData.get("bussId")+ "|" + mapData.get("tranAmt")+ "|" + mapData.get("sysTraceNum")+ "|" + mapData.get("tranDateTime")+ "|" + mapData.get("currencyType")+ "|" + mapData.get("merURL")+ "|" + mapData.get("backURL")+ "|" + mapData.get("orderInfo")+ "|" + mapData.get("userId");
     	String signVal = MD5.getInstance().getMD5ofStr(txnString + datakey);
     	System.out.println("txnString:"+ txnString);
     	System.out.println("signValue:"+signVal);
     	mapData.put("signValue", signVal);
-    	HttpClient client = new HttpClient(url, 10000, 10000);
     	client.send(mapData, encode);
+//    	Map<String,String> mapData = new HashMap<String,String>();
+//    	String encode = "utf-8";
+//    	String url = "https://cashier.etonepay.com/NetPay/MerOrderQuery.action";
+//    	String dateString = getStringDate();
+//    	mapData.put("merchantId", "888201711310120");
+//    	mapData.put("merOrderNum", "QP20180615163707424304");
+//    	mapData.put("tranDate", dateString);
+//    	String datakey = "TLM3O9zGu69lP411";
+//    	String txnString = mapData.get("merchantId") + "|" + mapData.get("merOrderNum") + "|" + mapData.get("tranDate");
+//    	String signVal = MD5.getInstance().getMD5ofStr(txnString + datakey);
+//    	System.out.println("txnString:"+ txnString);
+//    	System.out.println("signValue:"+signVal);
+//    	mapData.put("signValue", signVal);
+//    	HttpClient client = new HttpClient(url, 10000, 10000);
+//    	client.send(mapData, encode);
     	
     }
     

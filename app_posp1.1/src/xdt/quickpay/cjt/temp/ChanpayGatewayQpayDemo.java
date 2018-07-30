@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.druid.sql.visitor.functions.Concat;
 
@@ -150,21 +151,24 @@ public class ChanpayGatewayQpayDemo {
      * @return 拼接后字符串
      */
     public static Map<String, String> createLinkRequestParas(Map<String, String> params) {
-        Map<String, String> encodeParamsValueMap = new HashMap<String, String>();
-        List<String> keys = new ArrayList<String>(params.keySet());
-        String charset = params.get("_input_charset");
-        for (int i = 0; i < keys.size(); i++) {
-            String key = keys.get(i);
-            String value;
-            try {
-                value = URLEncoder.encode(params.get(key), charset);
-                encodeParamsValueMap.put(key, value);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
+    	Map<String, String> encodeParamsValueMap = new HashMap<String, String>();
+		List<String> keys = new ArrayList<String>(params.keySet());
+		String charset = params.get("Charset");
+		if (StringUtils.isBlank(charset)) {
+			charset = params.get("InputCharset");
+		}
+		for (int i = 0; i < keys.size(); i++) {
+			String key = keys.get(i);
+			String value;
+			try {
+				value = URLEncoder.encode(params.get(key), charset);
+				encodeParamsValueMap.put(key, value);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
 
-        return encodeParamsValueMap;
+		return encodeParamsValueMap;
     }
 
     /**

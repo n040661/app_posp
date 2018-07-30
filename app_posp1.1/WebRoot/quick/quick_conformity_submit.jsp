@@ -17,6 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    <input type="hidden" name="v_txnAmt" value="${temp.v_txnAmt}"><br>
 		<input type="hidden" name="v_time" value="${temp.v_time}"><br>
 		<input type="hidden" name="v_productDesc" value="${temp.v_productDesc}"><br>
+		<input type="hidden" name="v_card" value="${temp.v_card}"><br>
 		<input type="hidden" name="v_cardType" value="${temp.v_cardType}"><br>		 
 		<input type="hidden" name="v_type" value="${temp.v_type}"><br>
 		<input type="hidden" name="v_attach" value="${temp.v_attach}"><br>

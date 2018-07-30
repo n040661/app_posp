@@ -115,9 +115,9 @@ public class HttpClientUtil {
 	public static String post(String url, String data) throws ClientProtocolException, IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(url);
-		httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+		httpPost.setHeader("Content-Type", "text/json; charset=utf-8");
 		// httpPost.setEntity(new StringEntity(URLEncoder.encode(data, "UTF-8")));
-		httpPost.setEntity(new StringEntity(data));
+		httpPost.setEntity(new StringEntity(data, "UTF-8"));
 		HttpResponse response = httpClient.execute(httpPost);
 		String httpEntityContent = getHttpEntityContent(response);
 		httpPost.abort();

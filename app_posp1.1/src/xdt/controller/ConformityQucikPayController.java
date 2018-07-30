@@ -9,6 +9,7 @@ import com.yeepay.g3.sdk.yop.utils.InternalConfig;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import xdt.quickpay.conformityQucikPay.thread.QuickPayThread;
 import xdt.quickpay.conformityQucikPay.util.BeanToMapUtil;
 import xdt.quickpay.conformityQucikPay.util.EffersonPayService;
 import xdt.quickpay.conformityQucikPay.util.HttpClientUtil;
+import xdt.quickpay.conformityQucikPay.util.RSAUtils;
 import xdt.quickpay.conformityQucikPay.util.SignatureUtil;
 import xdt.schedule.ThreadPool;
 import xdt.service.IConformityQucikPayService;
@@ -176,6 +178,10 @@ public class ConformityQucikPayController extends BaseAction {
 					url = result.get("pl_url");
 					logger.info("银江苏电商快捷上送的数据:" + url);
 					outString(response, url);
+					break;
+				case "TFB"://天付宝
+					response.sendRedirect(RSAUtils.cardPayApplyApi + "?cipher_data="
+							+ URLEncoder.encode(result.get("cipherData"), RSAUtils.serverEncodeType));
 					break;
 				default:						
 					break;
@@ -980,6 +986,211 @@ public class ConformityQucikPayController extends BaseAction {
 						ThreadPool.executor(new QuickPayThread(originalInfo.getBgUrl(), HttpClientUtil.bean2QueryStr(consumeResponseEntity)));
 					}
 					logger.info("江苏电商支付向下游 发送数据成功");
+				} else {
+					logger.error("回调的参数为空!");
+					result.put("v_code", "15");
+					result.put("v_msg", "请求失败");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		/**
+		 * 江苏电商快捷同步响应信息
+		 * 
+		 * @param request
+		 * @param response
+		 * @throws Exception
+		 */
+		@ResponseBody
+		@RequestMapping(value = "txfReturnUrl")
+		public void txfReturnUrl(HttpServletRequest request, HttpServletResponse response) {
+			try {
+				response.setHeader("content-type","text/html;charset=utf-8");
+				response.setContentType("text/html;charset=utf-8");
+				logger.info("###########天下付支付同步#############");
+				String pl_sign=request.getParameter("pl_sign");
+                logger.info("天下付同步返回的签名:"+pl_sign);
+				String baseSign= URLDecoder.decode(pl_sign, "UTF-8");
+
+				baseSign = baseSign.replace(" ", "+");
+
+				byte[] a = RSAUtil.verify("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSUnSUG5I3Xh2ANLpC5xLe96WCVQG+A5iPBKPqRKBcF2OCdCtwNs8X40nyqYnVWqhkZwGiItT4+wFc04boL1Az01UJiZBLqmOumU0mxyyKCqGwFZakl3LWI4u2IBDuwyde3muXZDWtSDBH1k2BKzOHju3eeSicZu5D7SQ1Hol7AwIDAQAB",RSAUtil.base64Decode(baseSign));;
+
+				String Str = new String(a);
+
+				logger.info("天下付解析之后的数据:" + Str);
+				String[] array = Str.split("\\&");
+
+				logger.info("天下付拆分数据:" + array);
+				String[] list = array[0].split("\\=");
+				String orderNum = array[0].replace("orderNum=", "");
+				String pl_orderNum = array[1].replace("pl_orderNum=", "");
+				String pl_payState = array[2].replace("pl_payState=", "");
+				String pl_payMessage = array[3].replace("pl_payMessage=", "");
+				logger.info("天下付支付同步响应用户ID：" + pl_orderNum);
+				logger.info("天下付支付同步响应订单号：" + orderNum);
+				logger.info("天下付支付同步响应描述：" + pl_payMessage);
+				logger.info("天下付支付同步响应状态码：" + pl_payState);
+				OriginalOrderInfo originalInfo = null;
+				if (orderNum != null && orderNum != "") {
+					originalInfo = conformityService.getOriginOrderInfo(orderNum);
+				}
+				logger.info("天下付同步原始订单数据:" + JSON.toJSON(originalInfo));
+				logger.info("天下付给下游的同步地址" + originalInfo.getPageUrl());
+				TreeMap<String, String> result = new TreeMap<String, String>();
+				String params = "";
+				if (!StringUtils.isEmpty(orderNum)) {
+					ChannleMerchantConfigKey keyinfo = conformityService.getChannelConfigKey(originalInfo.getPid());
+					// 获取商户秘钥
+					String key = keyinfo.getMerchantkey();
+					result.put("v_oid", originalInfo.getOrderId());
+					result.put("v_txnAmt", originalInfo.getOrderAmount());
+					result.put("v_code", "00");
+					result.put("v_msg", "请求成功");
+					result.put("v_time", originalInfo.getOrderTime());
+					result.put("v_mid", originalInfo.getPid());
+					ConformityQucikPayResponseEntity consumeResponseEntity = (ConformityQucikPayResponseEntity) BeanToMapUtil
+							.convertMap(ConformityQucikPayResponseEntity.class, result);
+					String sign = SignatureUtil.getSign(beanToMap(consumeResponseEntity), key);
+					result.put("v_sign", sign);
+					params = HttpClientUtil.parseParams(result);
+					logger.info("天下付同步给下游的数据:" + params);
+					request.getSession();
+					try {
+						// 给下游手动返回支付结果
+						if (originalInfo.getPageUrl().indexOf("?") == -1) {
+
+							String path = originalInfo.getPageUrl() + "?" + params;
+							logger.info("天下付重定向地址：" + path);
+
+							response.sendRedirect(path.replace(" ", ""));
+						} else {
+							logger.info("天下付重定向地址：" + originalInfo.getPageUrl());
+							String path = originalInfo.getPageUrl() + "&" + params;
+							logger.info("天下付重定向地址：" + path);
+							response.sendRedirect(path.replace(" ", ""));
+						}
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+
+				} else {
+					logger.info("没有收到天下付的同步数据");
+				}
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+
+		}
+		/**
+		 * 江苏电商支付异步响应信息
+		 * 
+		 * @param request
+		 * @param response
+		 * @throws Exception
+		 */
+		@ResponseBody
+		@RequestMapping(value = "txfNotifyUrl")
+		public void txfNotifyUrl(HttpServletRequest request, HttpServletResponse response) {
+			try {
+				logger.info("#############天下付支付异步##############");
+				TreeMap<String, String> result = new TreeMap<>();
+				String pl_sign=request.getParameter("pl_sign");
+				String baseSign= URLDecoder.decode(pl_sign, "UTF-8");
+
+				baseSign = baseSign.replace(" ", "+");
+
+				byte[] a = RSAUtil.verify("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSUnSUG5I3Xh2ANLpC5xLe96WCVQG+A5iPBKPqRKBcF2OCdCtwNs8X40nyqYnVWqhkZwGiItT4+wFc04boL1Az01UJiZBLqmOumU0mxyyKCqGwFZakl3LWI4u2IBDuwyde3muXZDWtSDBH1k2BKzOHju3eeSicZu5D7SQ1Hol7AwIDAQAB",RSAUtil.base64Decode(baseSign));
+
+				String Str = new String(a);
+
+				System.out.println("天下付解析之后的数据:" + Str);
+				String[] array = Str.split("\\&");
+
+				System.out.println("天下付拆分数据:" + array);
+				String[] list = array[0].split("\\=");
+				String orderNum = array[0].replace("orderNum=", "");
+				String pl_orderNum = array[1].replace("pl_orderNum=", "");
+				String pl_payState = array[2].replace("pl_payState=", "");
+				String pl_payMessage = array[3].replace("pl_payMessage=", "");
+				logger.info("天下付支付异步响应用户ID：" + pl_orderNum);
+				logger.info("天下付支付异步响应订单号：" + orderNum);
+				logger.info("天下付支付异步响应描述：" + pl_payMessage);
+				logger.info("天下付支付异步响应状态码：" + pl_payState);
+				OriginalOrderInfo originalInfo = null;
+
+				if (!StringUtils.isEmpty(orderNum)) {
+					response.getWriter().write("SUCCESS");
+					if (orderNum != null && orderNum != "") {
+						originalInfo = conformityService.getOriginOrderInfo(orderNum);
+					}
+					logger.info("天下付支付异步原始订单信息:" + originalInfo.getOrderTime());
+					logger.info("天下付支付异步回调地址:" + originalInfo.getBgUrl());
+					result.put("v_mid", originalInfo.getPid());
+					result.put("v_oid", originalInfo.getOrderId());
+					result.put("v_txnAmt", originalInfo.getOrderAmount());
+					result.put("v_time", originalInfo.getOrderTime());
+					result.put("v_code", "00");
+					result.put("v_msg", "请求成功");
+					result.put("v_attach", originalInfo.getAttach());				
+					if ("4".equals(pl_payState)) {
+
+						result.put("v_payStatus", "0000");
+						result.put("v_payMsg", "支付成功");
+						int i = conformityService.updatePmsMerchantInfo80(originalInfo);
+						if (i > 0) {
+							logger.info("天下付*****实时入金完成");
+						} else {
+							logger.info("天下付*****实时入金失败");
+						}
+
+					} else {
+						result.put("v_payStatus", "1001");
+						result.put("v_payMsg", "支付失败:"+pl_payMessage);
+						logger.info("交易错误码:" + pl_payMessage + ",错误信息:"
+								+ pl_payMessage);
+					}
+					ChannleMerchantConfigKey keyinfo = conformityService.getChannelConfigKey(originalInfo.getPid());
+					// 获取商户秘钥
+					String key = keyinfo.getMerchantkey();
+					CallbackEntity consume = (CallbackEntity ) BeanToMapUtil
+							.convertMap(CallbackEntity.class, result);
+					// 修改订单状态
+					conformityService.otherInvoke(orderNum ,result.get("v_payStatus"));
+					logger.info("天下付支付异步回调地址:" + originalInfo.getBgUrl());
+					// 生成签名
+					String sign = SignatureUtil.getSign(beanToMap(consume), key);
+					result.put("v_sign", sign);
+
+					logger.info("天下付支付异步封装前参数：" + result);
+					CallbackEntity consumeResponseEntity = (CallbackEntity) BeanToMapUtil
+							.convertMap(CallbackEntity.class, result);
+					logger.info("天下付支付异步封装后参数：" + HttpClientUtil.bean2QueryStr(consumeResponseEntity));
+					String html = HttpClientUtil.post(originalInfo.getBgUrl(),
+							HttpClientUtil.bean2QueryStr(consumeResponseEntity));
+					logger.info("天下付支付下游响应信息:" + html);
+					JSONObject ob = JSONObject.fromObject(html);
+					Iterator it = ob.keys();
+					Map<String, String> map = new HashMap<>();
+					while (it.hasNext()) {
+						String keys = (String) it.next();
+						if (keys.equals("success")) {
+							String value = ob.getString(keys);
+							logger.info("天下付支付回馈的结果:" + "\t" + value);
+							map.put("success", value);
+						}
+					}
+					if (map.get("success").equals("false")) {
+
+						logger.info("天下付支付启动线程进行异步通知");
+						// 启线程进行异步通知
+						ThreadPool.executor(new QuickPayThread(originalInfo.getBgUrl(), HttpClientUtil.bean2QueryStr(consumeResponseEntity)));
+					}
+					logger.info("天下付支付向下游 发送数据成功");
 				} else {
 					logger.error("回调的参数为空!");
 					result.put("v_code", "15");

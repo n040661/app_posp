@@ -7,6 +7,7 @@ public class ConformityQucikPayRequestEntity {
 	  private String v_userId;
 	  private String v_oid;
 	  private String v_time;
+	  private String v_card;
 	  private String v_txnAmt;
 	  private String v_cardType;
 	  private String v_type;
@@ -44,6 +45,12 @@ public class ConformityQucikPayRequestEntity {
 	}
 	public void setV_time(String v_time) {
 		this.v_time = v_time;
+	}
+	public String getV_card() {
+		return v_card;
+	}
+	public void setV_card(String v_card) {
+		this.v_card = v_card;
 	}
 	public String getV_txnAmt() {
 		return v_txnAmt;
